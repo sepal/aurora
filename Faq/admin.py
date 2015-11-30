@@ -1,15 +1,17 @@
 from django.contrib import admin
 from Faq.models import Faq
 
+from suit.admin import SortableModelAdmin
 
-class FaqAdmin(admin.ModelAdmin):
+
+class FaqAdmin(SortableModelAdmin):
     fieldsets = [
         (
             None, {
                 'fields': [
                     'course',
                     'question',
-                    'answer',
+                    'answer'
                 ]
             }
         ),
@@ -18,5 +20,6 @@ class FaqAdmin(admin.ModelAdmin):
         'question',
         'answer',
     )
+    sortable = 'order'
 
 admin.site.register(Faq, FaqAdmin)
