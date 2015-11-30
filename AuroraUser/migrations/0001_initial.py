@@ -10,7 +10,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0001_initial'),
-        ('Course', '__first__'),
     ]
 
     operations = [

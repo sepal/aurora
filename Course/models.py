@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
+from datetime import datetime
 import Challenge.models
 
 
@@ -9,6 +10,8 @@ class Course(models.Model):
     short_title = models.CharField(max_length=10, unique=True)
     description = models.TextField()
     course_number = models.CharField(max_length=100, unique=True)
+    start_date = models.DateField(default=datetime.now, blank=True)
+    end_date = models.DateField(default=datetime.now, blank=True)
 
     def __unicode__(self):
         return str(self.title)
