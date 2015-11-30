@@ -57,7 +57,7 @@
         </div>
       </div>
 	  {% if not reviews and not challenge.is_final_challenge %}
-	  
+
 	  <div class="review_section">
 		<div onclick="$('.review_questions').slideToggle('fast');">
 			<i class="fa fa-toggle-down"></i>
@@ -81,25 +81,23 @@
 	  </div>
 	  {% endif %}
     </div>
-	  
+
 {% if user.is_staff %}
     [you are admin. you cannot accept tasks]
 {% else %}
 	{% if not elaboration.is_submitted %}
 		{% if not accepted %}
-{% comment %}
-            <div id="Caccept" class="button XL"
-    			onclick="$('.elaboration_block').slideDown('fast');$('#Caccept').slideUp('fast');$('#qa').slideUp('fast');">
-    			start this task
-    		</div>
-{% endcomment %}
+    {% if challenge.currently_active %}
+      <div id="Caccept" class="button XL"
+        onclick="$('.elaboration_block').slideDown('fast');$('#Caccept').slideUp('fast');$('#qa').slideUp('fast');">
+        start this task
+      </div>
+     {% else %}
+        <div class="button XL">This Challenge has already ended</div>
+     {% endif %}
 
-        {% comment %}
-            <div class="button XL">
-    			end of semester reached
-    		</div>
-        {% endcomment %}
 		{% endif  %}
+      {% if challenge.currently_active %}
     	<div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
 			{% if challenge.accepted_files %}
     		<div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
@@ -116,29 +114,27 @@
       <textarea id="editor">{{ elaboration.elaboration_text }}</textarea>
     </form>
       {% if not blocked %}
-{% comment %}
+        <button id="EWfE" class="{% if not lock %} submit {% endif %}XL R" {% if lock %}disabled="disabled" style="color:darkred;"{% endif %}>
+            {% if lock %}Enter this work for Evaluation on {{ lock }} or later
+            {% else %}Enter work for Evaluation
+            {% endif %}
+        </button>
+        <div class="submission_text" hidden>
+          <div>
+            I certify that the work presented here is, to the best of my knowledge and belief, original and the result of
+            my own investigations and creation, except as acknowledged, and has not been submitted, either in part or whole,
+            for a degree at this or any other University.
+          </div>
+          <div>
+            <button class="real_submit XL R" id="{{ challenge.id }}">Submit work</button>
+          </div>
 
-      <button id="EWfE" class="{% if not lock %} submit {% endif %}XL R" {% if lock %}disabled="disabled" style="color:darkred;"{% endif %}>
-          {% if lock %}Enter this work for Evaluation on {{ lock }} or later
-          {% else %}Enter work for Evaluation
-          {% endif %}
-      </button>
-      <div class="submission_text" hidden>
-        <div>
-          I certify that the work presented here is, to the best of my knowledge and belief, original and the result of
-          my own investigations and creation, except as acknowledged, and has not been submitted, either in part or whole,
-          for a degree at this or any other University.
         </div>
-        <div>
-          <button class="real_submit XL R" id="{{ challenge.id }}">Submit work</button>
-        </div>
-{% endcomment %}
-
-      </div>
 	  {% else %}
 	  <div class="XL R" style="color:lightgray;">(your work is saved; waiting for reviews on preparatory tasks before hand-in is possible)</div>
       {% endif %}
     </div>
+    {% endif %}
 {% else %}
 	Handed in <a style="color:black;text-decoration: none;" href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{elaboration.submission_time|naturaltime}}'); }, 3000);void(0);" title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i class="fa fa-calendar"></i></a> <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
 	{% if challenge.accepted_files %}

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import os
+import logging
 
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
@@ -101,6 +102,9 @@ class Challenge(models.Model):
 
     def is_first_challenge(self):
         return not self.prerequisite  # challenge without prerequisite is the first challenge
+
+    def currently_active(self):
+        return self.course.currently_active()
 
     @staticmethod
     def get_final_challenge_ids():
