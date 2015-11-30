@@ -6,6 +6,7 @@ database.db
 .idea
 admin
 .vagrant
+.venv
 vagrant_ansible_inventory_default
 .DS_Store
 Slides/settings.py
@@ -16,6 +17,7 @@ current_working_version_on_aurora
 current_working_version_on_unchained
 
 /aurora/static
+static-root
 
 # /aurora/media
 media/
