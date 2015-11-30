@@ -1,10 +1,12 @@
 from django.db import models
-
+from datetime import datetime 
 
 class Stack(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     course = models.ForeignKey('Course.Course')
+    start_date = models.DateField(default=datetime.now, blank=True)
+    end_date = models.DateField(default=datetime.now, blank=True)
 
     def get_first_challenge(self):
         for relation in StackChallengeRelation.objects.filter(stack=self):
