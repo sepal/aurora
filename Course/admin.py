@@ -11,11 +11,13 @@ class CourseAdmin(admin.ModelAdmin):
                     'short_title',
                     'description',
                     'course_number',
+                    'start_date',
+                    'end_date',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'title', 'short_title', 'description', 'course_number', )
+    list_display = ('id', 'title', 'short_title', 'description', 'course_number', 'start_date', 'end_date', )
 
 admin.site.register(Course, CourseAdmin)
 
@@ -34,4 +36,3 @@ class CourseUserRelationAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'course', )
 
 admin.site.register(CourseUserRelation, CourseUserRelationAdmin)
-
