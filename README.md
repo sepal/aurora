@@ -4,7 +4,6 @@ next generation of the portfolio
 
 ## Getting started
 
-
 - Install [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/)
 - Clone the project `git clone git@github.com:martflu/aurora.git`
 - cd to your project folder `cd aurora`
@@ -31,9 +30,12 @@ p.s. we use [PyCharm](https://www.jetbrains.com/pycharm/) for development. They 
 
 ### running aurora on your host machine
 
-If you use pyCharm, pyCharm installs the python requirements from `requirements.txt`. (See the settings at `File | Settings | Tools | Python Integrated Tools`)
+If you use pyCharm, pyCharm automatically installs the python requirements from `requirements.txt`. But actually
+`requirements.txt` contains production python packages including postgres modules. There is a `requirements_dev.txt`
+for development purposes, which you would have to set manually.
+See the settings at `File | Settings | Tools | Python Integrated Tools`
 
-- system requirements: python3, gcc or xcode and python dev headers
+- system requirements: python3, gcc or xcode and python3 headers.
 - python requirements: pip, virtualenv
 - Create a virtual environment (`https://www.jetbrains.com/pycharm/help/configuring-available-python-interpreters.html`):
   - Either via pyCharm `File | Settings | Project (aurora) | Project interpreter` `Create VirtualEnv` (Be sure to select python3)
