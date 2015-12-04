@@ -48,7 +48,7 @@
         	 	{% include "send_notification_button.html" %}
        		 {% endwith %}
   	 		&mdash;   <a href="user?id={{elaboration.user.id}}">{{elaboration.user.nickname}}'s work</a>
-            <div class="tags tags-{{ elaboration.user.get_content_type_id }}-{{ elaboration.user.id }}">
+            <div class="tags tags_user tags-{{ elaboration.user.get_content_type_id }}-{{ elaboration.user.id }}">
                 {% include 'tags.html' with tagged_object=elaboration.user %}
             </div>
 		 </div>
@@ -59,9 +59,9 @@
         {% if elaboration.elaboration_text|length != 0 %}
             <textarea id="editor_detail">{{ elaboration.elaboration_text}}</textarea>
         {% endif %}<br>
-        <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
+        <div class="tags tags_elab tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}" >
           {% include 'tags.html' with tagged_object=elaboration %}
-        </div><br><br>
+        </div>
         <div class="spacer"></div>
 
         {% if evaluation %}
@@ -96,7 +96,7 @@
              <div class="point_label">Points</div><div class="points" contenteditable="false" onkeyup="DelayedAutoSave({{ elaboration.id }})">
              </div>
              <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
-       {% endif %}
+       {% endif %}<br>
        <div class="spacer"></div>
 
 

@@ -838,7 +838,7 @@ td.diff_header {
 	box-sizing: border-box;
     height:1.85em;
     padding:3px 0 0 4px;
-    float:left;
+    float:left; 
     width:75px;
     white-space: nowrap;
 	overflow:hidden;
@@ -858,7 +858,7 @@ td.diff_header {
 	box-sizing: border-box;
     height:1.85em;
     padding:2px;
-    float:left;
+    float:left; 
     font-weight: bold;
 	width:1.65em;
     margin: 5px 0 0 0;
@@ -869,9 +869,17 @@ td.diff_header {
     border-radius:0 3px 3px 0;
 }
 
+
 .tags, .tag_list {
     clear:both;
+}
+
+.tags_user {
     width:80%;
+}
+
+.tags_elab, .tags_review {
+    font-size:85%;
 }
 
 .tag {
@@ -885,8 +893,18 @@ td.diff_header {
 	box-sizing: border-box;
     height:1.85em;
     padding:3px 3px 0 4px;
+    font-size:12px;
 }
 
 .tag_remove {
 	cursor:not-allowed;
+}
+
+.tag_block {
+	background:rgba(0,0,0,0.1);
+	padding-bottom:5px;
+	margin-top:5px;
+	padding-left:5px;
+	border-top:1px solid gray;
+	border-bottom:1px solid gray;
 }
