@@ -1,33 +1,19 @@
-__author__ = 'dan'
-
-from Review.models import Review
-from ReviewAnswer.models import ReviewAnswer
-from django.core.management.base import NoArgsCommand
-from datetime import datetime
-
+from django.core.management.base import BaseCommand
 from AuroraProject.views import get_result_reviews
 
-def time_to_unix_string(time):
-    if time is None:
-        return str(None)
+class Command(BaseCommand):
 
-    delta = time - datetime(1970, 1, 1)
-    hours = delta.days * 24
-    seconds = hours * 3600
-    seconds += delta.seconds
-    return str(seconds)
+    help = 'Prints review data for given course short title e.g.: python manage.py result_reviews gsi'
 
-class Command(NoArgsCommand):
-    def handle_noargs(self, **options):
+    def handle(self, *args, **options):
         """
-        review-autor (MNr) TAB
-        reviewed-elab-autor (MNr) TAB
-        reviewed-elab-challenge-ID TAB
-        review-creation-date TAB
-        review-submission-date TAB
-        länge des reviews (number of chars of all fields summiert)
+        ReviewID Task_ID AuthorOfReviewedElab_MNr ReviewedElab_ID ReviewAuthor_MNr ReviewPublicFields_∑chars ReviewLVAteamFields_∑chars ReviewEvaluation_value  FullText
+            wobei FullText = ReviewFrage1_ID+':'+Answer1_Text+'¶'+ReviewFrage2_ID+':'+Answer2_Text+'¶'+usw.
+            und alle CR in <br> und alle TAB in <tab>
         """
-
-        result = get_result_reviews()
+        if len(args) is not 1:
+            print(help)
+            exit()
+        result = get_result_reviews(args[0])
 
         print(result)

@@ -10,7 +10,8 @@ from django.core.urlresolvers import reverse
 from Course.models import Course
 from AuroraUser.models import AuroraUser
 from Evaluation.models import Evaluation
-from Review.models import Review
+from Review.models import Review, ReviewEvaluation
+from ReviewQuestion.models import ReviewQuestion
 from ReviewAnswer.models import ReviewAnswer
 from Elaboration.models import Elaboration
 from Evaluation.views import get_points
@@ -164,38 +165,54 @@ def result_elabs_final(request):
     return HttpResponse(s, mimetype="text/plain; charset=utf-8")
 
 
-def get_result_reviews():
+def get_result_reviews(course_short_title):
     """
     Since this is so slow (and can be too slow for a application server response, this is also being used
     as a command in Review.
 
-    review-autor (MNr) TAB
-    reviewed-elab-autor (MNr) TAB
-    reviewed-elab-challenge-ID TAB
-    review-creation-date TAB
-    review-submission-date TAB
-    länge des reviews (number of chars of all fields summiert)
+    ReviewID Task_ID AuthorOfReviewedElab_MNr ReviewedElab_ID ReviewAuthor_MNr ReviewPublicFields_∑chars ReviewLVAteamFields_∑chars ReviewEvaluation_value  FullText
+        wobei FullText = ReviewFrage1_ID+':'+Answer1_Text+'¶'+ReviewFrage2_ID+':'+Answer2_Text+'¶'+usw.
+        und alle CR in <br> und alle TAB in <tab>
     """
-    reviews = Review.objects.all().prefetch_related()
+    course = Course.get_or_raise_404(course_short_title)
+    reviews = Review.objects.filter(elaboration__challenge__course=course).prefetch_related()
     result = ""
     for review in reviews:
-        answers = ReviewAnswer.objects.filter(review=review.id)
-        answer_string = ""
-        for answer in answers:
-            answer_string += answer.text
-        length = len(answer_string)
+        fulltext = ''
+        public_chars = 0
+        lva_team_chars = 0
+        questions = ReviewQuestion.objects.filter(challenge=review.elaboration.challenge)
+        review_evaluation = None
+        try:
+            review_evaluation = ReviewEvaluation.objects.filter(review=review)[0].appraisal
+        except:
+            # no review evaluation for this review
+            pass
+        for question in questions:
+            answer_text = ''
+            try:
+                answer_text = ReviewAnswer.objects.filter(review=review, review_question=question)[0].text
+            except:
+                pass
+            if question.visible_to_author:
+                public_chars += len(answer_text)
+            else:
+                lva_team_chars += len(answer_text)
+            formatted_text = answer_text.replace('\n', '<br>').replace('\t', '<tab>')
+            fulltext += '{}:{}¶'.format(question.id, formatted_text)
 
-        result += "\t".join(["{}"] * 6).format(
-            review.reviewer.username,
-            review.elaboration.user.username,
-            review.elaboration.challenge_id,
-            time_to_unix_string(review.creation_time),
-            time_to_unix_string(review.submission_time),
-            str(length)
+        result += "\t".join(["{}"] * 9).format(
+            review.id,
+            review.elaboration.challenge.id,
+            review.elaboration.user.matriculation_number,
+            review.elaboration.id,
+            review.reviewer.matriculation_number,
+            public_chars,
+            lva_team_chars,
+            review_evaluation,
+            fulltext
         )
-
         result += "\n"
-
     return result
 
 
