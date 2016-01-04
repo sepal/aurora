@@ -33,7 +33,7 @@ class Course(models.Model):
 
     def currently_active(self):
         today = date.today()
-        if(today > self.start_date and today < self.end_date):
+        if(today >= self.start_date and today <= self.end_date):
             return True
         return False
 

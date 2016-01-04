@@ -104,7 +104,7 @@ class Challenge(models.Model):
         return not self.prerequisite  # challenge without prerequisite is the first challenge
 
     def currently_active(self):
-        return self.course.currently_active()
+        return self.get_stack().currently_active()
 
     @staticmethod
     def get_final_challenge_ids():

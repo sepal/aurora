@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime 
+from datetime import datetime, date
 
 class Stack(models.Model):
     title = models.CharField(max_length=100)
@@ -85,6 +85,12 @@ class Stack(models.Model):
                 if not elaboration.is_reviewed_2times():
                     return False
         return True
+
+    def currently_active(self):
+        today = date.today()
+        if(today >= self.start_date and today <= self.end_date):
+            return True
+        return False
 
     def __str__(self):
         return u'%s' % self.title
