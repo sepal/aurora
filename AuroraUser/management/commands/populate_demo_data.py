@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from datetime import date, timedelta
 
 import random
 import traceback
@@ -137,6 +138,8 @@ def import_data():
         short_title='gsi',
         description='GSI Description',
         course_number='123.456',
+        start_date=date.today() - timedelta(days=100),
+        end_date=date.today() + timedelta(days=100),
     )
     gsi.save()
 
@@ -146,6 +149,8 @@ def import_data():
         short_title='hci',
         description='HCI Description',
         course_number='123.457',
+        start_date=date.today() - timedelta(days=100),
+        end_date=date.today() + timedelta(days=100),
     )
     hci.save()
 
@@ -297,7 +302,7 @@ def import_data():
     challenge_9.save()
     ReviewQuestion(challenge=challenge_9, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
     ReviewQuestion(challenge=challenge_9, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
-     
+
     challenge_10 = Challenge(id=10,
                              title='schmetterling',
                              subtitle='schmetterling',
@@ -317,6 +322,8 @@ def import_data():
         title='Universal Design',
         description='In diesem Block setzen sie sich mit »Unversal Design« auseinander. Universal Design (Universelles Design) ist ein internationales Design-Konzept, das Produkte, Geräte, Umgebungen und Systeme derart gestaltet, dass sie für so viele Menschen wie möglich ohne weitere Anpassung oder Spezialisierung nutzbar sind. In der Informatik bedeutet das im allgemeinen, Systeme so zu gestalten, dass sie von Menschen mit Behinderungen, insbesondere blinde Menschen, auch benutzt werden können.',
         course=gsi,
+        start_date=date.today() - timedelta(days=100),
+        end_date=date.today() + timedelta(days=100),
     )
     accessibility.save()
 
@@ -325,6 +332,8 @@ def import_data():
         title='Copyleft vs. Business',
         description='In diesem Block geht es um die Suche nach neuen Business-Modellen für die geänderten Bedingngen, die durch neue Technologien geschaffen wurden. Viele traditionelel Business-Modelle gehen dabei den Bach runter, neue Ansätze sind gefragt.',
         course=gsi,
+        start_date=date.today() - timedelta(days=100),
+        end_date=date.today() + timedelta(days=100),
     )
     digitallife.save()
 
@@ -333,6 +342,8 @@ def import_data():
         title='Geschichte der Informatik',
         description='Dieser Block führt sie in die Geschichte der Informatik, zurück zu den Anfängen des interaktiven Computers. Sie setzen sich damit auseinander, welche Vorstellungen von Interaktivität im Laufe der Geschichte entstanden, probiert und wieder verworfen wurden. Dabei werden Darstellungen in Film und Fernsehen ebenso aufgearbeitet wie die Visionen der Techniker und wissenschaftliche Diskussionen.',
         course=gsi,
+        start_date=date.today() - timedelta(days=100),
+        end_date=date.today() + timedelta(days=100),
     )
     gtav.save()
 
@@ -484,7 +495,7 @@ def import_data():
         pub_date=datetime(2013, 2, 10, 15, 23, 17, 345952),
         filename="vo_10_02_13_3",
         tags='.preparation',
-    ).save()        
+    ).save()
     Slide(
         lecture_id=1,
         title="Super Sample Slide #1 - Lecture 1",
@@ -573,7 +584,7 @@ def import_data():
         filename="vo_17_02_13_2",
         tags='.exercise',
     ).save()
-    
+
     print("Adding sample stream")
     Stream(
         lecture_id=1,

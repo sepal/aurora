@@ -89,10 +89,12 @@ def challenges(request, course_short_title=None):
 
     user = RequestContext(request)['user']
     course_stacks = Stack.objects.all().filter(course=course)
+    # raise Exception(course_stacks)
     data['course_stacks'] = []
     for stack in course_stacks:
         submitted = stack.get_final_challenge().submitted_by_user(user)
         submission_time = None
+        currently_active = stack.currently_active()
         if submitted:
             print(submitted)
             submission_time = stack.get_final_challenge().get_elaboration(user).submission_time
@@ -100,6 +102,7 @@ def challenges(request, course_short_title=None):
             'stack': stack,
             'submitted': submitted,
             'submission_time': submission_time,
+            'currently_active': currently_active,
             'status': stack.get_status_text(user),
             'points': stack.get_points_earned(user)
         })
