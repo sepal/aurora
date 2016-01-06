@@ -24,7 +24,6 @@ class Migration(migrations.Migration):
                 ('matriculation_number', models.CharField(unique=True, null=True, blank=True, max_length=100)),
                 ('study_code', models.CharField(null=True, default='', blank=True, max_length=100)),
                 ('oid', models.CharField(unique=True, null=True, blank=True, max_length=30)),
-                ('last_selected_course', models.ForeignKey(to='Course.Course', blank=True, null=True)),
             ],
             options={
                 'verbose_name': 'user',
