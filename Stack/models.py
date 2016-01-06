@@ -1,10 +1,13 @@
 from django.db import models
 from datetime import datetime, date
 
+
 class Stack(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     course = models.ForeignKey('Course.Course')
+    chapter = models.ForeignKey(
+        'Stack.Chapter', null=True, blank=True, default=None)
     start_date = models.DateField(default=datetime.now, blank=True)
     end_date = models.DateField(default=datetime.now, blank=True)
 
@@ -95,6 +98,17 @@ class Stack(models.Model):
     def __str__(self):
         return u'%s' % self.title
 
+
 class StackChallengeRelation(models.Model):
     stack = models.ForeignKey('Stack.Stack')
     challenge = models.ForeignKey('Challenge.Challenge')
+
+
+class Chapter(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return str(self.name)
+
+    def __str__(self):
+        return str(self.name)
