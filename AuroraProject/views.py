@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from Course.models import Course
 from AuroraUser.models import AuroraUser
@@ -53,7 +54,7 @@ def course_selection(request):
     if next_url and course_from_next_url(next_url):
         return redirect(reverse("User:login", args=(course_from_next_url(next_url), )))
 
-    data = {'courses': Course.objects.all(), 'next': next}
+    data = {'courses': Course.objects.all(), 'next': next, 'debug': settings.DEBUG}
     return render_to_response('course_selection.html', data)
 
 
