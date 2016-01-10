@@ -2,6 +2,7 @@ import lmdb, json
 
 from db.plagdb import PlagDB, PlagReference
 
+
 class LmdbPlagDB(PlagDB):
 
     def __init__(self, file):
