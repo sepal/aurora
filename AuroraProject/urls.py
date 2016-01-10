@@ -3,10 +3,10 @@ from django.contrib import staticfiles
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from AuroraProject.settings import MEDIA_ROOT
+from django.conf.urls.static import static
 admin.autodiscover()
 
-from AuroraProject import views
+from AuroraProject import views, settings
 
 urlpatterns = [
     # TODO: add home without course
@@ -17,9 +17,6 @@ urlpatterns = [
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-
-    url(r'^media/(?P<path>.*)$', staticfiles.views.serve,
-        {'document_root': MEDIA_ROOT}),
 
     url(r'^comment/', include('Comments.urls', namespace='Comments')),
 
@@ -41,4 +38,4 @@ urlpatterns = [
     ])),
 
     url(r'', include('FileUpload.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
