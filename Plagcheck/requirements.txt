@@ -1,2 +1,6 @@
-lmdb
-celery
+# needed for the PlagDB database
+#lmdb
+
+# needed for plagcheck worker side
+celery==3.1.19
+flower==0.8.3

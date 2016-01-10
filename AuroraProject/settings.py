@@ -1,4 +1,4 @@
-import os
+import os, djcelery
 # Django settings for AuroraProject project.
 
 DEBUG = True
@@ -141,7 +141,9 @@ INSTALLED_APPS = (
     'Notification',
     'endless_pagination',
     'taggit',
-    'Faq'
+    'Faq',
+    'djcelery',
+    'Plagcheck',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
@@ -200,6 +202,39 @@ ENDLESS_PAGINATION_PREVIOUS_LABEL = (
 ENDLESS_PAGINATION_NEXT_LABEL = (
     '<div class="paginator next">next <i class="fa fa-angle-double-right"></i></div>'
 )
+
+# Plagcheck settings
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT=['json']
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ENABLE_UTC = True
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+CELERY_RESULT_BACKEND = 'db+postgresql://user:pass@host/plagcheck-db'
+
+if DEBUG:
+    # The monitors currently doesn't work with the Django broker.
+    #
+    # Means we can't use celerymon/flower monitor the django message broker, instead to properly
+    # monitor and debug events we need to use RabbitMQ message broker locally.
+    #
+    # Enable USE_DJANGO_BROKER to entirely run Plagcheck inside django, without RabbitMQ.
+    #
+    # http://stackoverflow.com/questions/5449163/django-celery-admin-interface-showing-zero-tasks-workers
+
+    USE_DJANGO_BROKER = False
+
+    if USE_DJANGO_BROKER is True:
+        CELERY_BROKER_BACKEND = "django"
+        CELERY_BROKER_URL = 'django://'
+
+    # kombu is used to use djangos database as message broker while debugging
+    INSTALLED_APPS += ('kombu.transport.django',)
+
+    djcelery.setup_loader()
+
+    CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 try:
     from local_settings import *
