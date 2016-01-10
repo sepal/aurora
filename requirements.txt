@@ -1,4 +1,4 @@
-Django==1.7
+Django==1.9
 Pillow==2.5.3
 coverage==3.7.1
 distribute==0.7.3
