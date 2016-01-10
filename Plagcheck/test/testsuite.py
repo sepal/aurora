@@ -1,8 +1,8 @@
 import glob
 import sys
 
-from Plagcheck.test.plag_json import *
-from Plagcheck.test.plag_lmdb import *
+from Plagcheck.test.db.plag_json import *
+from Plagcheck.test.db.plag_lmdb import *
 from Plagcheck.hashing import sherlock
 
 source_pattern = "source-document"
