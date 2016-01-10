@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 import Evaluation.views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', Evaluation.views.evaluation, name='home'),
     url(r'^detail$', Evaluation.views.detail, name='detail'),
     url(r'^$', Evaluation.views.back, name='back'),
@@ -34,4 +34,4 @@ urlpatterns = patterns('',
     url(r'^reopen_evaluation/$', Evaluation.views.reopen_evaluation),
     url(r'^add_tags/$', Evaluation.views.add_tags),
     url(r'^remove_tag/$', Evaluation.views.remove_tag),
-)
+]

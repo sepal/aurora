@@ -1,8 +1,7 @@
 from django.conf.urls import patterns, url
 from Slides import views
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', views.start, name="start"),
     url(r'^livecast/(?P<lecture_id>\d+)/$', views.livecast, name="livecast"),
     url(r'^livecast_new_slide/$', views.livecast_new_slide, name="livecast_new_slide"),
@@ -14,4 +13,4 @@ urlpatterns = patterns(
     url(r'^studio/search/$', views.studio_search, name="studio_search"),
     url(r'^mark_slide/(?P<slide_id>\d+)/(?P<marker>(liked|important|confusing))/(?P<value>(true|false|xxx))/json/$', 
         views.mark_slide, name='mark_slide'),
-)
+]
