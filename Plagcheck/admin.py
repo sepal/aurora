@@ -7,7 +7,7 @@ class ReferenceAdmin(admin.ModelAdmin):
 
 
 class ResultAdmin(admin.ModelAdmin):
-    list_display = ('doc', 'doc_version', 'overall_p', 'hash_count')
+    list_display = ('doc', 'doc_version', 'overall_percentage', 'hash_count', )
 
 admin.site.register(Reference, ReferenceAdmin)
 admin.site.register(Result, ResultAdmin)
