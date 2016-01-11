@@ -8,5 +8,7 @@ struct Sig
 };
 
 void	init_token_array(void);
+
 Sig * signature(FILE *f);
-Sig * signaturep(const char *filepath);
+Sig * signature_file(const char *filepath);
+Sig * signature_str(char *text);

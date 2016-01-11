@@ -7,9 +7,10 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AuroraProject.settings')
 
-from django.conf import settings  # noqa
-from Plagcheck.models import Reference, Result, Elaboration
-import sherlock
+from django.conf import settings     # noqa
+
+from Plagcheck.models import Reference, Result, Elaboration # noqa
+import sherlock # noqa
 
 app = Celery('AuroraProject')
 
@@ -19,56 +20,28 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
-
-    with open("/tmp/test.txt", 'w') as f:
-        test = ("this is a test %s" % time.strftime("%H:%M:%S"))
-        f.write(test)
-        print(test)
-        time.sleep(2)
-
-    return dict(result="Success", selse=None, test=self.request)
-
-
 @app.task()
 def check(doc, doc_id, doc_version, doc_type, username, is_new):
 
+    # delete existing references to older versions of this document
     if is_new is False:
-        try:
-            Reference.objects.filter(doc_id=doc_id).delete()
-        except Reference.DoesNotExist:
-            pass
+        Reference.del_ref(doc_id)
 
-    with open("/tmp/file.txt", 'w') as f:
-        f.write(doc)
+    # generate a list of hashes
+    hash_list = sherlock.signature_str(doc)
 
-    hash_list = sherlock.signature("/tmp/file.txt")
+    # check if hashes are generated which means punctuations found
+    overall_percentage = 0
+    if len(hash_list) > 0:
+        # store (new) references
+        Reference.store(hash_list, doc_id)
 
-    # check for equal signatures
-    same_hashes = 0
-    for _hash in hash_list:
-        hash = str(_hash)
-        try:
-            Reference.objects.get(hash=hash)
-            same_hashes += 1
-        except Reference.MultipleObjectsReturned as e:
-            pass
-        except Reference.DoesNotExist as e:
-            pass
+        # check for equal hashes
+        same_hashes = Reference.get_matching_count(doc_id)
 
-    try:
-        overall_p = (100.0/len(hash_list)) * same_hashes
-    except ZeroDivisionError as e:
-        overall_p = -1
+        overall_percentage = (100.0/len(hash_list)) * same_hashes
 
-    # create references
-    for _hash in hash_list:
-        hash = str(_hash)
-        Reference.objects.create(hash=hash, doc_id=doc_id)
-
-    result = Result.objects.create(overall_p=overall_p,
+    result = Result.objects.create(overall_percentage=overall_percentage,
                                    hash_count=len(hash_list),
                                    doc_id=doc_id,
                                    doc_version=doc_version,

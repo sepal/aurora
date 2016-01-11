@@ -33,12 +33,13 @@ char *		Ignore = " \t\n";
 char *		Punct_full = ",.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
 char *		Punct = "";
 
-
-
 void	init_token_array(void);
 Sig *	signature(FILE *);
 int	compare(Sig *, Sig *);
-Sig * signaturep(const char *filepath);
+
+/* wrapper functions */
+Sig * signature_file(const char *filepath);
+Sig * signature_str(char *text);
 
 void usage(void)
 {
@@ -159,22 +160,22 @@ int main(int argc, char *argv[])
 char * read_word(FILE *f, int *length, char *ignore, char *punct)
 {
 	long max;
-        char *word;
-        long pos;
-        char *c;
-        int ch, is_ignore, is_punct;
+    char *word;
+    long pos;
+    char *c;
+    int ch, is_ignore, is_punct;
 
-        /* check for EOF first */
-        if (feof(f)) {
-                length = 0;
-                return NULL;
-        }
+    /* check for EOF first */
+    if (feof(f)) {
+        length = 0;
+        return NULL;
+    }
 
-        /* allocate a buffer to hold the string */
-        pos = 0;
+    /* allocate a buffer to hold the string */
+    pos = 0;
 	max = 128;
-        word = malloc(sizeof(char) * max);
-        c = & word[pos];
+    word = malloc(sizeof(char) * max);
+    c = & word[pos];
 
 	/* initialise some defaults */
 	if (ignore == NULL)
@@ -182,8 +183,8 @@ char * read_word(FILE *f, int *length, char *ignore, char *punct)
 	if (punct == NULL)
 		punct = "";
 
-        /* read characters into the buffer, resizing it if necessary */
-        while ((ch = getc(f)) != EOF) {
+    /* read characters into the buffer, resizing it if necessary */
+    while ((ch = getc(f)) != EOF) {
 		is_ignore = (strchr(ignore, ch) != NULL);
 		if (pos == 0) {
 			if (is_ignore)
@@ -193,35 +194,36 @@ char * read_word(FILE *f, int *length, char *ignore, char *punct)
 		if (is_ignore)
 			/* ignorable char found after start, stop */
 			break;
-		is_punct = (strchr(punct, ch) != NULL);
-		if (is_punct && (pos > 0)) {
-			ungetc(ch, f);
-			break;
-		}
-                *c = ch;
-                c++;
-                pos++;
+        is_punct = (strchr(punct, ch) != NULL);
+        if (is_punct && (pos > 0)) {
+            ungetc(ch, f);
+            break;
+        }
+        *c = ch;
+        c++;
+        pos++;
 		if (is_punct)
 			break;
-                if (pos == max) {
-                        /* realloc buffer twice the size */
-                        max += max;
-                        word = realloc(word, max);
-                        c = & word[pos];
-                }
-        }
 
-        /* set length and check for EOF condition */
-        *length = pos;
-        if (pos == 0) {
-                free(word);
-                return NULL;
+        if (pos == max) {
+            /* realloc buffer twice the size */
+            max += max;
+            word = realloc(word, max);
+            c = & word[pos];
         }
+    }
 
-        /* terminate the string and shrink to smallest required space */
-        *c = '\0';
-        word = realloc(word, pos+1);
-        return word;
+    /* set length and check for EOF condition */
+    *length = pos;
+    if (pos == 0) {
+        free(word);
+        return NULL;
+    }
+
+    /* terminate the string and shrink to smallest required space */
+    *c = '\0';
+    word = realloc(word, pos+1);
+    return word;
 }
 
 /* ulcmp:  compare *p1 and *p2 */
@@ -263,7 +265,132 @@ void init_token_array(void)
 		token[i] = NULL;
 }
 
-Sig * signaturep(const char *filepath)
+char * read_word_str(char **text, int *length, char *ignore, char *punct)
+{
+	long max;
+    char *word;
+    long pos;
+    char *c;
+    int ch, is_ignore, is_punct;
+
+    /* check for EOF first */
+    if (**text == 0) {
+        length = 0;
+        return NULL;
+    }
+
+    /* allocate a buffer to hold the string */
+    pos = 0;
+	max = 128;
+    word = malloc(sizeof(char) * max);
+    c = & word[pos];
+
+	/* initialise some defaults */
+	if (ignore == NULL)
+		ignore = "";
+	if (punct == NULL)
+		punct = "";
+
+    /* read characters into the buffer, resizing it if necessary */
+    while ((ch = **text) != 0 && (*text)++) {
+		is_ignore = (strchr(ignore, ch) != NULL);
+		if (pos == 0) {
+			if (is_ignore)
+				/* ignorable char found at start, skip it */
+				continue;
+		}
+		if (is_ignore)
+			/* ignorable char found after start, stop */
+			break;
+        is_punct = (strchr(punct, ch) != NULL);
+
+        if (is_punct && (pos > 0)) {
+            *(*text--) = ch;
+            break;
+        }
+        *c = ch;
+        c++;
+        pos++;
+		if (is_punct)
+			break;
+
+        if (pos == max) {
+            /* realloc buffer twice the size */
+            max += max;
+            word = realloc(word, max);
+            c = & word[pos];
+        }
+    }
+
+    /* set length and check for EOF condition */
+    *length = pos;
+    if (pos == 0) {
+        free(word);
+        return NULL;
+    }
+
+    /* terminate the string and shrink to smallest required space */
+    *c = '\0';
+    word = realloc(word, pos+1);
+    return word;
+}
+
+Sig * signature_str(char *text)
+{
+	int nv, na;
+	unsigned long *v, h;
+	char *str;
+	int i, ntoken;
+	Sig *sig;
+
+	init_token_array();
+
+	/* start loading hash values, after we have Ntoken of them */
+	v = NULL;
+	na = 0;
+	nv = 0;
+	ntoken = 0;
+	while ((str = read_word_str(&text, &i, Ignore, Punct)) != NULL)
+	{
+		/* step words down by one */
+		free(token[0]);
+		for (i=0; i < Ntoken-1; i++)
+			token[i] = token[i+1];
+		/* add new word into array */
+		token[Ntoken-1] = str;
+
+		/* if we don't yet have enough words in the array continue */
+		ntoken++;
+		if (ntoken < Ntoken)
+			continue;
+
+		/* hash the array of words */
+		h = hash(token);
+		if ((h & zeromask) != 0)
+			continue;
+
+		/* discard zeros from end of hash value */
+		h = h >> Zerobits;
+
+		/* add value into the signature array, resizing if needed */
+		if (nv == na) {
+			na += 100;
+			v = realloc(v, na*sizeof(unsigned long));
+		}
+		v[nv++] = h;
+	}
+
+	/* sort the array of hash values for speed */
+	qsort(v, nv, sizeof(v[0]), ulcmp);
+
+	/* allocate and return the Sig structure for this file */
+	sig = malloc(sizeof(Sig));
+	sig->nval = nv;
+	sig->val = v;
+	return sig;
+}
+
+Sig * signature_file(const char *filepath)
 {
     FILE *infile;
     Sig *ret_sig;
