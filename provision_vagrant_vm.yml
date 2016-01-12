@@ -5,6 +5,7 @@
     dbname: aurora
     dbuser: aurora_dbuser
     dbpassword: nosecret
+    ansible_python_interpreter: "/usr/local/bin/python3"
   tasks:
 #  - name: apt-get update
 #    apt: update_cache=yes
@@ -51,12 +52,19 @@
   - apt: pkg=python-pip
   - apt: pkg=python3
   - apt: pkg=python3-dev
+  - apt: pkg=rabbitmq-server
   - pip: name=virtualenv
   - name: create virtualenv
     command: virtualenv -p /usr/bin/python3 {{ py3env }}
              creates={{ py3env }}
     sudo: yes
     sudo_user: vagrant
+  - name: "Copy virtualenv wrapper file"
+    synchronize: src=pyvenv
+                 dest="{{ py3env }}/bin/pyvenv"
+  vars:
+    ansible_python_interpreter: "{{ py3env }}/bin/pyvenv"
+  tasks:
 # ipython not working with python manage.py shell anymore :(
   - name: install ipython into virtualenv
     pip: name=ipython
@@ -95,3 +103,14 @@
                 line='export LC_ALL=en_US.UTF-8'
     sudo: yes
     sudo_user: vagrant
+  - name: Build sherlock
+    shell: "cd /vagrant/Plagcheck/hashing/sherlock && python setup install"
+  - name: start message queue
+    command: "{{ py3env }}/bin/celery -A Plagcheck worker --concurrency=1 --loglevel=DEBUG --detach"
+    sudo: no
+  - name: start aurora
+    command: "{{ py3env }}/bin/python manage.py runserver 0.0.0.0:8001"
+    sudo: no
+  - name: start message queue monitor
+    sudo: no
+    command: "{{ py3env }}/bin/celery -A Plagcheck flower --loglevel=DEBUG"
