@@ -23,7 +23,17 @@ next generation of the portfolio
 - collect all static files in one place `python manage.py collectstatic`
 - populate the database with some test data `python manage.py populate_demo_data`
 - start the dev server `python manage.py runserver 0.0.0.0:8000`
-- go to `http://localhost:8000` in your browser (find credentials in `AuroraUser/management/commands/populate_demo_data.py`)
+- go to `http://localhost:8000` in your browser
+
+    Dev users (password is same as username):
+    students: s[0-49]
+    dummy user: d[0-3]
+    tutors: t[0-4]
+    admin: amanaman
+    staff: hagrid
+
+    (from `AuroraUser/management/commands/populate_demo_data.py`)
+
 - have fun hacking!
 
 p.s. we use [PyCharm](https://www.jetbrains.com/pycharm/) for development. They provide free educational licences for owners of university email addresses.
