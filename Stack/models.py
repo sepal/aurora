@@ -8,8 +8,8 @@ class Stack(models.Model):
     course = models.ForeignKey('Course.Course')
     chapter = models.ForeignKey(
         'Stack.Chapter', null=True, blank=True, default=None)
-    start_date = models.DateField(default=datetime.now, blank=True)
-    end_date = models.DateField(default=datetime.now, blank=True)
+    start_date = models.DateTimeField(default=datetime.now, blank=True)
+    end_date = models.DateTimeField(default=datetime.now, blank=True)
 
     def get_first_challenge(self):
         for relation in StackChallengeRelation.objects.filter(stack=self):
@@ -90,10 +90,17 @@ class Stack(models.Model):
         return True
 
     def currently_active(self):
-        today = date.today()
-        if(today >= self.start_date and today <= self.end_date):
+        now = datetime.now()
+        if(now >= self.start_date and now <= self.end_date):
             return True
         return False
+
+    def active_status_text(self):
+        now = datetime.now()
+        if now <= self.start_date:
+            return 'This challenge will start at ' + self.start_date.strftime('%d.%m.%Y %H:%M')
+        if now >= self.end_date:
+            return 'This challenge ended at ' + self.end_date.strftime('%d.%m.%Y %H:%M')
 
     def __str__(self):
         return u'%s' % self.title
