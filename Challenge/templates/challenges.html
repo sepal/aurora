@@ -30,12 +30,14 @@
         {% if stack.currently_active %}
          <a href="stack?id={{ stack.stack.id }}" class="stack_action button XL" onclick="event.stopPropagation();">ENTER CHALLENGE</a>
         {% else %}
-          <a href="#" class="stack_action button XL" onclick="event.stopPropagation();">CHALLENGE NOT STARTED OR ALREADY ENDED</a>
+          <a href="#" class="stack_action button XL" onclick="event.stopPropagation();">{{ stack.stack.active_status_text|safe }}</a>
         {% endif %}
 			 <div class="stack_next">Status: <b>{{ stack.status.next }}
 				 {% if stack.points != 0 %}{{ stack.points }} {% else %} {% if stack.submitted %} 0 {% endif %}
 				 {% endif %}</b>
     			 {% if stack.submitted %}<div class="submission_time" style="display:inline"> (Handed in {{ stack.submission_time|naturaltime }})</div>{% endif %}
+           <br>
+           Kapitel: <strong>{{ stack.stack.chapter.name }}</strong>
 			  </div>
 		</div>
 		<div class="stack_done" {% if stack.points != 0 %}style="display:block;"{% endif %}><i class="fa fa-check"></i></div>
