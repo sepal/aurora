@@ -9,10 +9,26 @@ class StackAdmin(admin.ModelAdmin):
                     'title',
                     'description',
                     'course',
+                    'chapter',
+                    'start_date',
+                    'end_date',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'title', 'description', 'course', )
+    list_display = ('id', 'title', 'description', 'course', 'start_date', 'end_date', )
+
+class ChapterAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (
+            None, {
+                'fields': [
+                    'name',
+                ]
+            }
+        ),
+    ]
+    list_display = ('name',)
 
 admin.site.register(Stack, StackAdmin)
+admin.site.register(Chapter, ChapterAdmin)
