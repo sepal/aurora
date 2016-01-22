@@ -14,8 +14,8 @@
 	color:lightgray !important;
 }
 
-#tinymce p { 
-	font-family: Helvetica Neue, Arial, sans-serif !important; 
+#tinymce p {
+	font-family: Helvetica Neue, Arial, sans-serif !important;
 	font-size:13px;
 }
 
@@ -97,7 +97,7 @@
 
 .submission_text {
 	background:rgb(58,201,88);
-	padding:16px 16px 32px 16px;
+	padding:16px 16px 50px 16px;
 	color:white;
 	border-radius:3px;
 	margin-top:3px;
@@ -276,7 +276,7 @@ h1 {
 	filter:alpha(opacity=20); /* For IE8 and earlier */
 }
 
-.review_box.done {	
+.review_box.done {
 /*	background-color:rgb(251, 249, 149);*/
 }
 
