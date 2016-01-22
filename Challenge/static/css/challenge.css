@@ -127,8 +127,6 @@
 }
 
 .stack {
-    padding: 5px 10px 5px 10px;
-	clear:both;
 }
 
 
@@ -146,7 +144,7 @@ h1 {
 }
 
 #detail_area {
-    width: 940px;
+    width: 100%;
 }
 
 .stack_imgs {
@@ -177,7 +175,8 @@ h1 {
 }
 
 .stack_status {
-	
+	opacity:1!important;
+
 }
 
 .stack_action {
@@ -192,7 +191,7 @@ h1 {
 }
 
 .stack .title {
-    font-size: 1.6em;
+    font-size: 1.4em;
 	z-index:210;
 	position:relative;
 }
@@ -220,8 +219,9 @@ h1 {
 	margin-bottom:0.5em;
 }
 
-.stack {	
-	clear:both;
+.stack {
+    padding: 5px 10px 5px 10px;
+	width:450px;
 	position:relative;
 	padding: 1em;
 	margin-left:1.5em;
@@ -233,6 +233,10 @@ h1 {
 	box-shadow:0px 2px 7px rgba(0,0,0,0.1);
 	border-top:1px solid #e8e8e8;
 	border-top:1px solid #e8e8e8;
+}
+
+.forbiddenfruit div {
+	opacity:0.4;
 }
 
 .finished {

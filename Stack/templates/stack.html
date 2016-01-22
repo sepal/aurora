@@ -21,8 +21,10 @@
 <div id="detail_area">
   <div class="challenges_stack">
 	  <div class="stack_info">
+	  <div style="border-bottom:1px solid #ddd">{{stack.chapter|safe}}</div>
+		  
       <div class="info_title">
-          {{ stack.title|safe }}
+           <b>{{ stack.title|safe }}</b>
         </div>
       <div class="info_description">
           {{ stack.description|safe|urlize }}
