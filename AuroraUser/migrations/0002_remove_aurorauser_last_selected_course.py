@@ -11,8 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='aurorauser',
-            name='last_selected_course',
-        ),
     ]

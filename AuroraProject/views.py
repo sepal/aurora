@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from Course.models import Course
 from AuroraUser.models import AuroraUser
@@ -16,6 +17,7 @@ from Elaboration.models import Elaboration
 from Evaluation.views import get_points
 from Challenge.models import Challenge
 from Statistics.views import create_stat_data
+from Faq.models import Faq
 
 
 def get_next_url(request):
@@ -53,7 +55,7 @@ def course_selection(request):
     if next_url and course_from_next_url(next_url):
         return redirect(reverse("User:login", args=(course_from_next_url(next_url), )))
 
-    data = {'courses': Course.objects.all(), 'next': next}
+    data = {'courses': Course.objects.all(), 'next': next, 'debug': settings.DEBUG}
     return render_to_response('course_selection.html', data)
 
 
@@ -65,7 +67,8 @@ def home(request, course_short_title=None):
     course = Course.get_or_raise_404(course_short_title)
     data = get_points(request, user, course)
     data = create_stat_data(course,data)
-    context = RequestContext(request, {'newsfeed': data['course']})
+    faq_list = Faq.get_faqs(course_short_title)
+    context = RequestContext(request, {'newsfeed': data['course'], 'faq_list': faq_list})
 
     return render_to_response('home.html', data, context)
 

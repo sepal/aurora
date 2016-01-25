@@ -108,17 +108,22 @@
 <body bgcolor="black">
 
 {% block content %}
-<div class="course_selection_background">
-</div>
-	<div class="centered">
-		<div class="title">Welcome to Aurora 2015</div>
-		
-		<div class="choice">
-		{% for course in courses %}
-   			 &rarr; <a href="{% url 'home' course.short_title %}">{{ course.title }}</a><br>
-    	{% endfor %}</div>
-	</div>
-	{% endblock %}
+    <div class="course_selection_background">
+    </div>
+    <div class="centered">
+        <div class="title">Welcome to Aurora 2015</div>
+
+        <div class="choice">
+        {% for course in courses %}
+             &rarr; <a href="{% url 'home' course.short_title %}">{{ course.title }}</a><br>
+        {% endfor %}
+        </div>
+
+        {% if debug %}
+            <a href="/admin">ADMIN</a>
+        {% endif %}
+    </div>
+{% endblock %}
 
 </body>
 </html>

@@ -2,40 +2,49 @@
 
 {% block additional_headers %}
   <script type="text/javascript" src="{{ STATIC_URL }}js/challenges.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/masonry.pkgd.min.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
   {% load humanize %}
 {% endblock %}
 
 {% block content %}
 
-  <div id="detail_area">
-
 	  <div class="not_stack">
-		  Zur Zeit stehen folgende Challenges zur Verf&uuml;gung. Mehr werden im Laufe des Semesters hinzugef&uuml;gt. Bitte beachten Sie die allgemeinen Regeln, die in <a href="http://igw.tuwien.ac.at/aurora/aurora_challenges.pdf">Arbeiten in Aurora</a> und <a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf">zum Schreiben von Reviews</a> zusammengefasst sind.   
+		  Zur Zeit stehen folgende Challenges zur Verf&uuml;gung. Mehr werden im Laufe des Semesters hinzugef&uuml;gt. Bitte beachten Sie die allgemeinen Regeln, die in <a href="http://igw.tuwien.ac.at/aurora/aurora_challenges.pdf">Arbeiten in Aurora</a> und <a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf">zum Schreiben von Reviews</a> zusammengefasst sind.
 	  </div>
-	  <div class="stack_action button XL" onClick="javascript:$('.finished_challenge').toggle()">toggle finished challenges</div><br><br>
+	  <div class="stack_action button XL" style="float:left" onClick="javascript:$('.finished_challenge').toggle()">toggle finished challenges</div><br><br>
+  <div id="detail_area" class="grid" data-masonry='{ "itemSelector": ".stack", "columnWidth": 250, "gutter": 10 }'>
+
     {% for stack in course_stacks|dictsort:"stack.title" %}
-      <div class="stack {% cycle 'lineD' 'lineL' %}  {% if stack.submitted %}finished{% endif %}" id="{{ stack.stack.id }}">
+      <div class="stack {% cycle 'lineD' 'lineL' %}  {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %}" id="{{ stack.stack.id }}">
+		<div>{{ stack.stack.chapter.name }}</div>
 		<div class="title">
 			<b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks
+			{% comment %}
 			<div class="stack_icons" style="float:right">
         		{% for image_url in stack.stack.get_challenge_image_urls %}
         		<img class="stack_icon" src="{{ image_url }}"/>
         		{% endfor %}
        	 	</div>
+			{% endcomment %}
 		</div>
         <div class="description  {% if stack.submitted %}finished_challenge{% endif %}">{{ stack.stack.description|safe|urlize }}</div>
 
 		<div class="stack_status  {% if stack.submitted %}finished_challenge{% endif %}">
-			 <a href="stack?id={{ stack.stack.id }}" class="stack_action button XL" onclick="event.stopPropagation();">ENTER CHALLENGE</a>
-			 <div class="stack_next">Status: <b>{{ stack.status.next }}
+        {% if stack.currently_active %}
+         <a href="stack?id={{ stack.stack.id }}" class="stack_action button XL" onclick="event.stopPropagation();">ENTER CHALLENGE</a>
+        {% else %}
+          <a href="#" class="stack_action button XL" onclick="event.stopPropagation();">{{ stack.stack.active_status_text }} {{ stack.stack.active_status_date|naturaltime }}</a>
+        {% endif %}
+			 <div class="stack_next">Status: <b>{% if not stack.currently_active %} Inactive {% else %}{{ stack.status.next }}{% endif %}
 				 {% if stack.points != 0 %}{{ stack.points }} {% else %} {% if stack.submitted %} 0 {% endif %}
 				 {% endif %}</b>
     			 {% if stack.submitted %}<div class="submission_time" style="display:inline"> (Handed in {{ stack.submission_time|naturaltime }})</div>{% endif %}
+           <br>
 			  </div>
 		</div>
 		<div class="stack_done" {% if stack.points != 0 %}style="display:block;"{% endif %}><i class="fa fa-check"></i></div>
- 
+
       </div>
     {% endfor %}
 
