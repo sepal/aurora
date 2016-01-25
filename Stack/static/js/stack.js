@@ -4,7 +4,7 @@ $(function(){
 	    row: 4,
 		char: '… (click for full text)',
 	    onlyFullWords: true
-	});	
+	});
 	$('#challenges-li').addClass('uRhere');
 	window.document.title="Aurora: Challenges"
 });
@@ -41,7 +41,7 @@ function review_box_clicked(event) {
 function done_review_box_clicked(event) {
     event.stopPropagation();
     var challenge_id = $(event.target).parent().attr('challenge_id');;
-    window.location.href = 'myreview';
+    window.location.href = 'myreview?id=' + challenge_id;
 }
 
 function received_review_clicked(event) {
@@ -50,4 +50,3 @@ function received_review_clicked(event) {
     var challenge_id = challenge.attr('challenge_id');
     window.location.href = './challenge?id=' + challenge_id
 }
-
