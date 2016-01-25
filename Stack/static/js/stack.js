@@ -41,7 +41,7 @@ function review_box_clicked(event) {
 function done_review_box_clicked(event) {
     event.stopPropagation();
     var challenge_id = $(event.target).parent().attr('challenge_id');;
-    window.location.href = 'myreview?id=' + challenge_id;
+    window.location.href = 'myreviews?id=' + challenge_id;
 }
 
 function received_review_clicked(event) {

@@ -22,7 +22,7 @@ def stack(request, course_short_title=None):
 @login_required()
 def my_review(request, course_short_title=None):
     data = create_context_stack(request, course_short_title)
-    return render_to_response('my_review.html', data, context_instance=RequestContext(request))
+    return render_to_response('my_reviews.html', data, context_instance=RequestContext(request))
 
 def create_context_myreview(request, course_short_title):
         data = {}
