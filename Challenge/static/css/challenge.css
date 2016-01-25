@@ -103,7 +103,7 @@
 	margin-top:3px;
 }
 
-.real_submit {
+.real_submit, .real_submit_revised {
 	margin-top:10px;
 	color:white;
 	background:none;
