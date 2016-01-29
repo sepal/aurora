@@ -4,5 +4,6 @@ machine:
 dependencies:
   pre:
     - pip install --upgrade pip
+    - cp local_settings.example.py local_settings.py
   override:
     - pip install -r requirements_dev.txt
