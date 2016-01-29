@@ -8,4 +8,4 @@ dependencies:
 
 test:
   override:
-    - docker run -t  sepal/aurora python manage.py test
+    - docker run -t aurora python manage.py test
