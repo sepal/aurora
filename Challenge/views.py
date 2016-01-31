@@ -21,13 +21,26 @@ def stack(request, course_short_title=None):
 
 @login_required()
 def my_review(request, course_short_title=None):
-    data = create_context_stack(request, course_short_title)
+    data = create_context_myreview(request, course_short_title)
     return render_to_response('my_reviews.html', data, context_instance=RequestContext(request))
 
 def create_context_myreview(request, course_short_title):
         data = {}
+
+        if 'id' not in request.GET:
+            return data
+
+        user = RequestContext(request)['user']
+
+        #Check this
+        context_stack = Stack.objects.get(pk=request.GET.get('id'))
+        data['stack'] = context_stack
+        data['stack_blocked'] = context_stack.is_blocked(user)
+        stack_challenges = StackChallengeRelation.objects.all().filter(stack=context_stack)
+        challenge = stack_challenge.challenge
+        #
+
         data['course'] = Course.get_or_raise_404(course_short_title)
-        pprint(data)
         return data
 
 def create_context_stack(request, course_short_title):
