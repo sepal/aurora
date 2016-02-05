@@ -1,0 +1,18 @@
+db:
+  image: postgres
+  volumes:
+    - /etc/postgresql
+    - /var/log/postgresql
+    - /var/lib/postgresql
+  environment:
+    POSTGRES_USER: aurora
+  env_file: ../configs/aurora.env
+web:
+  build: .
+  command: python manage.py runserver 0.0.0.0:8000
+  volumes:
+    - .:/code
+  ports:
+    - "8000:8000"
+  links:
+    - db

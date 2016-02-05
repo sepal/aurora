@@ -3,7 +3,7 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
 ADD . /code/
-RUN pip install -r requirements_dev.txt
+RUN pip install -r requirements.txt
 COPY local_settings.example.py /code/local_settings.py
 RUN sed -i s:/vagrant/:/code/: local_settings.py
 EXPOSE 8000
