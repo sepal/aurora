@@ -28,14 +28,12 @@ def save_elaboration(request, course_short_title):
 
         if elaboration.can_be_revised and 'revised_elaboration_text' in request.POST:
             elaboration.revised_elaboration_text = request.POST['revised_elaboration_text']
-            pprint('elosave')
             elaboration.save()
 
         if not elaboration.is_submitted():
             elaboration_text = request.POST['elaboration_text']
             elaboration.elaboration_text = ''
             elaboration.elaboration_text = elaboration_text
-            elaboration.revised_elaboration_text = revised_elaboration_text
             elaboration.save()
         else:
             raise Http404

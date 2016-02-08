@@ -141,31 +141,20 @@
                         {% render_uploads elaboration %}
                     {% endif %}
 
+                    <textarea id="editor_challenge">{{ elaboration.elaboration_text }}</textarea>
+
                     {% if elaboration.can_be_revised %}
-                    <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
-                      <form method="post">
-                        <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
-                      </form>
-                      <button id="EWfE" class="{% if not lock %} submit {% endif %}XL R" {% if lock %}disabled="disabled" style="color:darkred;"{% endif %}>
-                        Enter work for Evaluation
-                      </button>
-                      <div class="submission_text" hidden>
-                        <div>
-                          I certify that the work presented here is, to the best of my knowledge and belief, original and the result of
-                          my own investigations and creation, except as acknowledged, and has not been submitted, either in part or whole,
-                          for a degree at this or any other University.
-                        </div>
-                        <div>
-                            <button class="real_submit_revised XL R" id="{{ challenge.id }}">Submit revised work</button>
-                        </div>
+                      <h1>Revised Elaboration:</h1>
+                      <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
+                        <form method="post">
+                          <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
+                        </form>
+                        <button class="real_submit_revised XL R" id="{{ challenge.id }}">Save revision</button>
                       </div>
                       <br>
                       <br>
                       <br>
-                    {% else %}
-                      <textarea id="editor_challenge">{{ elaboration.elaboration_text }}</textarea>
                     {% endif %}
-                  </div>
                     {% if evaluation %}
                         <div class="comments">
                             <div class="evaluation_text">Evaluation text: {{ evaluation.evaluation_text|safe }}</div>

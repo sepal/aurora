@@ -17,6 +17,7 @@ $(challenge_loaded);
 function challenge_loaded() {
     if ($('.elaboration_block').length) {
         init_tinymce();
+        init_tinymce_read_only();
         $('.submit').click(submit_clicked);
         $('.real_submit').click(real_submit_clicked);
         $('.real_submit_revised').click(real_submit_revised_clicked);
