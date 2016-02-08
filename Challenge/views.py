@@ -32,14 +32,7 @@ def create_context_myreview(request, course_short_title):
 
         user = RequestContext(request)['user']
 
-        #Check this
-        context_stack = Stack.objects.get(pk=request.GET.get('id'))
-        data['stack'] = context_stack
-        data['stack_blocked'] = context_stack.is_blocked(user)
-        stack_challenges = StackChallengeRelation.objects.all().filter(stack=context_stack)
-        challenge = stack_challenge.challenge
-        #
-
+        data['challenge'] = Challenge.objects.get(pk= request.GET.get('id'))
         data['course'] = Course.get_or_raise_404(course_short_title)
         return data
 
