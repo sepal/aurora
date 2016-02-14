@@ -5,5 +5,7 @@ dependencies:
   pre:
     - pip install --upgrade pip
     - cp local_settings.example.py local_settings.py
+    - cp Slides/settings.example.py Slides/settings.py
+    - sed -i s:/vagrant/aurora/:/`pwd`/: local_settings.py
   override:
     - pip install -r requirements_dev.txt
