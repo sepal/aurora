@@ -9,12 +9,10 @@
     <script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/challenge.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/review_evaluation.js"></script>
-    {% if not elaboration.is_submitted %}
-        <script type="text/javascript" src="{{ STATIC_URL }}dropzone/dropzone.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/file_upload.js"></script>
-        <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/dropzone.css" type="text/css" media="screen"/>
-        <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/basic.css" type="text/css" media="screen"/>
-    {% endif %}
+    <script type="text/javascript" src="{{ STATIC_URL }}dropzone/dropzone.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/file_upload.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/dropzone.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/basic.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
     <script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
@@ -145,6 +143,17 @@
 
                     {% if elaboration.can_be_revised %}
                       <h1>Revised Elaboration:</h1>
+                      {% if challenge.accepted_files %}
+                        <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
+                            <form action="/fileupload"
+                                  class="dropzone dz-clickable"
+                                  id="dropzone">
+                                <input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
+                                {% csrf_token %}
+                            </form>
+                            <div style="font-size:80%">Note: use »Fig.X« in your text to reference to uploaded images.</div>
+                        </div>
+                      {% endif %}
                       <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
                         <form method="post">
                           <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
