@@ -16,6 +16,18 @@ $(function() {
 		height:400,
 		readonly: 1
     });
+
+    tinymce.init({
+        // selector: "textarea#editor",
+		plugins: "wordcount",
+		mode : "exact",
+		elements :"revised_editor_detail",
+		menubar: false,
+		statusbar: true,
+		toolbar: false,
+		height:400,
+		readonly: 1
+    });
 });
 
 $(function() {

@@ -103,11 +103,17 @@
 	margin-top:3px;
 }
 
-.real_submit {
+.real_submit{
 	margin-top:10px;
 	color:white;
 	background:none;
 	border:1px solid white;
+}
+
+.real_submit_revised {
+	margin-top:10px;
+	color: rgb(58,201,88);
+	border: 1px solid rgb(58,201,88);
 }
 
 .challenge {
