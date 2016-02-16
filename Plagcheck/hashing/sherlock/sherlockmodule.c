@@ -1,9 +1,12 @@
 #include <Python.h>
 #include "sherlock.h"
 
+#define MAX_HASH_BUFFER_SIZE 255
+
 static PyObject *
 sherlock_signature(PyObject *self, PyObject *args)
 {
+    int i;
     const char *filepath;
     Sig *ret_sig;
 
@@ -14,9 +17,10 @@ sherlock_signature(PyObject *self, PyObject *args)
 
     PyObject* list = PyList_New(0);
 
-    int i = 0;
-    while (i++ < ret_sig->nval) {
-        PyObject *val = Py_BuildValue("l", ret_sig->val[i]);
+    for (i = 0; i < ret_sig->nval; i++) {
+        static char sigbuf[MAX_HASH_BUFFER_SIZE];
+        snprintf(sigbuf, MAX_HASH_BUFFER_SIZE, "%lx", ret_sig->val[i]);
+        PyObject *val = Py_BuildValue("s", sigbuf);
         PyList_Append(list, val);
     }
 
@@ -26,6 +30,7 @@ sherlock_signature(PyObject *self, PyObject *args)
 static PyObject *
 sherlock_signature_str(PyObject *self, PyObject *args)
 {
+    int i;
     char *text;
     Sig *ret_sig;
 
@@ -36,9 +41,10 @@ sherlock_signature_str(PyObject *self, PyObject *args)
 
     PyObject* list = PyList_New(0);
 
-    int i = 0;
-    while (i++ < ret_sig->nval) {
-        PyObject *val = Py_BuildValue("l", ret_sig->val[i]);
+    for (i = 0; i < ret_sig->nval; i++) {
+        static char sigbuf[MAX_HASH_BUFFER_SIZE];
+        snprintf(sigbuf, MAX_HASH_BUFFER_SIZE, "%lx", ret_sig->val[i]);
+        PyObject *val = Py_BuildValue("s", sigbuf);
         PyList_Append(list, val);
     }
 

@@ -1,0 +1,48 @@
+{% load endless %}
+{% load comments %}
+
+{% block content %}
+    <table class="overview_table">
+        <tr>
+            <th>
+                id
+            </th>
+            <th>
+                doc_id
+            </th>
+            <th>
+                similar_to
+            </th>
+            <th>
+                similarity
+            </th>
+        </tr>
+
+
+        {% for suspect in suspects %}
+            <tr class="{% cycle 'darkRow' 'lightRow' %}"
+                onclick="document.location = '{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=suspect.id %}'">&nbsp;
+                <td>{{ suspect.id }}</td>
+                <td>{{ suspect.doc_id }}</td>
+                <td>{{ suspect.similar_to_id }}</td>
+                <td>{{ suspect.percent }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="pagination">
+            <span class="step-links">
+                {% if suspects.has_previous %}
+                    <a href="?page={{ suspects.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ suspects.number }} of {{ suspects.paginator.num_pages }}.
+                </span>
+
+                {% if suspects.has_next %}
+                    <a href="?page={{ suspects.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+
+{% endblock %}

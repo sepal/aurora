@@ -12,8 +12,13 @@ def post_save_elaboration_callback(sender, **kwargs):
     doc = kwargs['instance']
 
     data = doc.elaboration_text
-
-    handle = tasks.check.delay(data, doc.id, 0, "default", "test", kwargs['created'])
+    if len(data) > 5:
+        handle = tasks.check.delay(doc=data,
+                                   doc_id=doc.id,
+                                   doc_version=0,
+                                   doc_type="default_type",
+                                   username="test",
+                                   is_new=kwargs['created'])
 
 # custom AppConfig class to register the post_save handler after django has initialized
 # the system
@@ -22,5 +27,5 @@ class ElaborationConfig(AppConfig):
     name = "Elaboration"
 
     def ready(self):
-        print("Install post_save_elaboration_callback")
+        # install post_save_elaboration_callback
         post_save.connect(post_save_elaboration_callback, sender=Elaboration)

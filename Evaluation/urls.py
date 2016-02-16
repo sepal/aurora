@@ -34,4 +34,7 @@ urlpatterns = patterns('',
     url(r'^reopen_evaluation/$', Evaluation.views.reopen_evaluation),
     url(r'^add_tags/$', Evaluation.views.add_tags),
     url(r'^remove_tag/$', Evaluation.views.remove_tag),
+
+    url(r'^plagcheck_suspects/$', Evaluation.views.plagcheck_suspects, name='plagcheck_suspects'),
+    url(r'^plagcheck_compare/(?P<suspect_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
 )
