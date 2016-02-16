@@ -6,58 +6,33 @@
 {% endblock %}
 
 {% block content %}
-
-    {% if not similarities %}
-        no similarities found.
-    {% endif %}
-
-    {% for similarity in similarities %}
-
-        {% if forloop.first %}
         <table>
-        {% endif %}
-
-            <img class="gravatar" src="{{ similarity.elaboration.user.avatar.url }}">
-            {{ similarity.elaboration.user.username }}<br/>
-            {{ similarity.elaboration.user.first_name }} {{ similarity.elaboration.user.last_name }}
-            <div class="spacer"></div>
-
-            {% render_uploads similarity.elaboration %}
-
-            {{ similarity.table|safe }}
-            <div class="spacer"></div>
-
-        {% if forloop.last %}
-            <table class="diff" summary="Legends">
-                <tbody>
-                    <tr><th colspan="2"> Legends </th></tr>
-                    <tr>
-                        <td>
-                            <table summary="Colors" border="">
-                                <tbody>
-                                    <tr><th> Colors </th></tr>
-                                    <tr><td class="diff_add">&nbsp;Added&nbsp;</td></tr>
-                                    <tr><td class="diff_chg">Changed</td> </tr>
-                                    <tr><td class="diff_sub">Deleted</td> </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table summary="Links" border="">
-                                <tbody>
-                                    <tr><th colspan="2"> Links </th> </tr>
-                                    <tr><td>(f)irst change</td> </tr>
-                                    <tr><td>(n)ext change</td> </tr>
-                                    <tr><td>(t)op</td> </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <tr>
+                <th>PersonA</th>
+                <th>PersonB</th>
+            </tr>
+            <tr>
+                <td>
+                    Name: {{ similarity.docA.user.nickname }}<br />
+                </td>
+                <td>
+                    Name: {{ similarity.docB.user.nickname }}<br />
+                </td>
+            </tr>
         </table>
-        {% endif %}
 
-    {% endfor %}
+        <div>
+            Similarity: {{ similarity.suspect.percent }}%<br />
+            Date: {{ similarity.suspect.created }}<br />
+        </div>
+        <div>
+        <p>Note: this output is produced by the python diff library and not the internal plagcheck library. The python
+        library compares each line with each line which is not the way the plagcheck library detects similarities. Therefore
+        don't rely solely on the coloring and formatting of this output.</p>
+        </div>
+
+
+        {{ similarity.table|safe }}
+
 
 {% endblock %}

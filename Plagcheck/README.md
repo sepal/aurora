@@ -32,4 +32,8 @@ Run the flower monitor:
 It will then be available at http://localhost:5555
 
 Now each elaboration save operation should trigger a plagiarism check on the worker. On the monitor website you can see
-when the worker finishes. The results are displayed on the monitor and within auroras admin page at 
+when the worker finishes. The results are displayed on the monitor and within auroras admin page.
+ 
+In case you need to purge a RabbitMQ queue:
+
+    rabbitmqctl purge_queue celery

@@ -273,6 +273,8 @@ char * read_word_str(char **text, int *length, char *ignore, char *punct)
     char *c;
     int ch, is_ignore, is_punct;
 
+    //fprintf(stderr, "read_word_str text:%s len:%i\n", *text, *length);
+
     /* check for EOF first */
     if (**text == 0) {
         length = 0;
@@ -352,6 +354,8 @@ Sig * signature_str(char *text)
 	ntoken = 0;
 	while ((str = read_word_str(&text, &i, Ignore, Punct)) != NULL)
 	{
+	    //fprintf(stderr, "str: %s\n", str);
+
 		/* step words down by one */
 		free(token[0]);
 		for (i=0; i < Ntoken-1; i++)
@@ -377,6 +381,9 @@ Sig * signature_str(char *text)
 			na += 100;
 			v = realloc(v, na*sizeof(unsigned long));
 		}
+
+		//fprintf(stderr, "hash: %lx\n", h);
+
 		v[nv++] = h;
 	}
 

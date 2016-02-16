@@ -204,6 +204,13 @@ ENDLESS_PAGINATION_NEXT_LABEL = (
 )
 
 # Plagcheck settings
+
+# a document scanned by Plagcheck needs to have the same or higher similarity percentage
+# than PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT's value to be reported as a possible
+# plagiarism.
+PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT = 50
+
+CELERY_ALWAYS_EAGER=False # set to True by unit tests
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT=['json']
