@@ -18,6 +18,7 @@ function challenge_loaded() {
     if ($('.elaboration_block').length) {
         init_tinymce();
         $('.submit').click(submit_clicked);
+		$('.save_back').click(go_back);
         $('.real_submit').click(real_submit_clicked);
     } else {
         try {
@@ -26,6 +27,10 @@ function challenge_loaded() {
             // TODO: improve!
         }
     }
+}
+
+function go_back() {
+	location.href = document.referrer;
 }
 
 function init_tinymce_read_only() {
@@ -47,6 +52,8 @@ function init_tinymce_read_only() {
         }
     });
 }
+
+var timeout;
 
 function init_tinymce() {
     tinymce.init({
@@ -82,15 +89,36 @@ function init_tinymce() {
         autoresize_min_height: 200,
         autoresize_max_height: 800,
 		paste_data_images: false,
-        setup: function (editor) {
+        /*setup: function (editor) {
             editor.on('change', function (e) {
                 var challenge = $('.challenge');
                 var challenge_id = challenge.attr('id');
                 elaboration_autosave(e, challenge_id);
             });
-        }
+        }*/
+		setup: function(editor) {
+			editor.on( 'keydown', function( args ) { if(timeout) {
+			clearTimeout(timeout);
+			timeout = null;
+			}
+			timeout = setTimeout(elaboration_save_intervalTimeOut, 1000) } );
+		}
     });
 }
+
+function elaboration_save_intervalTimeOut() {
+	var challenge = $('.challenge');
+    var challenge_id = challenge.attr('id');
+	clearTimeout(timeout);
+	elaboration_autosave_notify(challenge_id);
+	$('#saved_message').fadeIn(250).delay(3000).fadeOut(500);
+}
+
+function elaboration_autosave_notify(challenge_id) {
+	revert_submit_clicked();
+    elaboration_save(challenge_id);
+}
+
 
 function elaboration_autosave(e, challenge_id) {
     revert_submit_clicked();
@@ -115,13 +143,17 @@ function elaboration_save(challenge_id, submit) {
 
 function submit_clicked(event) {
     if (!$('#EWfE').hasClass('nope')) {
+		clearTimeout(timeout);
+		$('#saved_message').hide();
         $('.submit').hide().finish();
+        $('.save_back').hide().finish();
         $('.submission_text').slideDown('fast',function(){window.scrollBy(0, 500);});
     }
 }
 
 function revert_submit_clicked() {
     $('.submit').show();
+    $('.save_back').show();
     $('.submission_text').hide();
 }
 
@@ -131,7 +163,7 @@ function real_submit_clicked(event) {
     elaboration_save(challenge_id, true);
 }
 
-/*
+
 function send_submit() {
     var challenge = $('.challenge');
     var challenge_id = challenge.attr('id');
@@ -151,4 +183,3 @@ function send_submit() {
     };
     $.ajax(args);
 }
-*/

@@ -134,7 +134,9 @@ def lecturer_post(request):
 def create_comment(form, request):
     if not form.is_valid():
         raise ValidationError('The submitted form was not valid')
-
+    
+    homeURL = form.cleaned_data['uri']
+    
     context = RequestContext(request)
     user = context['user']
     ref_type_id = form.cleaned_data['reference_type_id']
@@ -370,14 +372,14 @@ def get_comment_list_update(request, client_revision, template='Comments/comment
     if revision > int(client_revision['number']):
         comment_list = Comment.query_top_level_sorted(ref_id, ref_type, user)
         id_suffix = "_" + str(ref_id) + "_" + str(ref_type)
-
         context = {'comment_list': comment_list,
                    'ref_type': ref_type,
                    'ref_id': ref_id,
                    'id_suffix': id_suffix,
                    'requester': user,
                    'revision': revision,
-                   'request': request}
+                   'request': request,
+                   'paginator': 20}
 
         return {
             'ref_id': ref_id,

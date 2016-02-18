@@ -164,6 +164,7 @@ class Elaboration(models.Model):
             .prefetch_related('elaboration')
             .values_list('elaboration__id', flat=True)
         )
+
         non_adequate_elaborations = (
             Elaboration.objects
             .filter(id__in=nothing_reviews, submission_time__isnull=False, user__is_staff=False,
@@ -190,7 +191,7 @@ class Elaboration(models.Model):
             .values_list('submission__user', 'submission__challenge__stackchallengerelation__stack__id')
         )
 
-
+        
         stack_lookup = {}
         for user, stack in submitted_evaluations:
             if not stack in stack_lookup:
@@ -204,7 +205,6 @@ class Elaboration(models.Model):
                 .filter(challenge__stackchallengerelation__stack__id=stack, user_id__in=users)
                 .values_list('id', flat=True)
             )
-
         return non_adequate_elaborations.exclude(id__in=exclude_elaboration_ids)
 
     @staticmethod

@@ -99,11 +99,12 @@
 }
 
 .view_review .appraisal {
+	display: inline-block;
 	position:relative;
 	border-radius: 0 20px 20px 0;
 	padding:0.5em;
+	padding-right:1.5em;
 	padding-left:1.5em;
-	width:33%;
 	margin-top:0.5em;
 	margin-left:-1em;
 	box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 1px 2px rgba(255,255,255,0.5) inset;
@@ -122,7 +123,6 @@
 	border-right: 19px solid gray;
 	border-top: 14px solid rgba(0, 0, 0, 0);
 	border-bottom: 14px solid rgba(0, 0, 0, 0);
-	
 }
 
 .Verdict_Success {

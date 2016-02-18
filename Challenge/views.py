@@ -76,7 +76,7 @@ def create_context_stack(request, course_short_title):
     data['challenges_active'] = challenges_active
     data['challenges_inactive'] = challenges_inactive
     data['course'] = Course.get_or_raise_404(course_short_title)
-
+    data['len'] = len(challenges_active) + len(challenges_inactive)
     return data
 
 
@@ -135,6 +135,7 @@ def create_context_challenge(request, course_short_title):
             data['success'] = elaboration.get_success_reviews()
             data['nothing'] = elaboration.get_nothing_reviews()
             data['fail'] = elaboration.get_fail_reviews()
+
             if Evaluation.objects.filter(submission=elaboration).exists():
                 data['evaluation'] = Evaluation.objects.filter(submission=elaboration)[0]
 
@@ -142,6 +143,10 @@ def create_context_challenge(request, course_short_title):
             data['blocked'] = not challenge.is_enabled_for_user(user)
             if challenge.is_in_lock_period(RequestContext(request)['user'], course):
                 data['lock'] = challenge.is_in_lock_period(RequestContext(request)['user'], course)
+#        else:
+#            context_stack = Stack.objects.get(pk=request.GET.get('id'))
+#            data['blocked'] = context_stack.is_blocked(user)
+        
     return data
 
 

@@ -44,17 +44,17 @@ class Challenge(models.Model):
     WAITING_FOR_EVALUATION = 6
     EVALUATED = 7
 
-    status_dict = {
-        -1: "Can not be submitted yet.",
-        0: "Not started (Click the green right-arrow-button).",
-        1: "Not submitted.",
-        2: "Waiting for you to write a review (click green pen)",
-        3: "Bad review. We need to look at this. Please be patient.",
-        4: "Done, waiting for reviews by others.",  # can proceed but will be a problem for final challenge
-        5: "Done, peer reviewed.",
-        6: "Waiting for evaluation.",
-        7: "Evaluated."
-    }
+#    status_dict = {
+#        -1: "Can not be submitted yet.",
+#        0: "Not started (Click card to proceed).",
+#        1: "Not submitted.",
+#        2: "Waiting for you to write a review",
+#        3: "Bad review. We need to look at this. Please be patient.",
+#        4: "Done, waiting for reviews by others.",  # can proceed but will be a problem for final challenge
+#        5: "Done, peer reviewed.",
+#        6: "Waiting for evaluation.",
+#        7: "Evaluated."
+#    }
 
     next_dict = {
         -1: "Not enabled...",
@@ -64,9 +64,10 @@ class Challenge(models.Model):
         3: "Blocked by negative review.",
         4: "Waiting for more reviews.",
         5: "All reviews are in, you can start the final task.",
-        6: "Still waiting for evaluation of final task.",
+        6: "Waiting for evaluation of final task.",
         7: "Challenge evaluated. Points received: "
     }
+
 
     def __str__(self):
         return u'%s' % self.title
@@ -177,10 +178,9 @@ class Challenge(models.Model):
 
     def get_status_text(self, user):
         status = self.get_status(user)
-        status_text = self.status_dict[status]
         next_text = self.next_dict[status]
         return {
-            'status': status_text,
+            'status': status,
             'next': next_text
         }
 
@@ -208,7 +208,7 @@ class Challenge(models.Model):
                 return False
 
         # for the final challenge to be enabled
-        # the prerequisite must have enough (3) user reviews,
+        # the prerequisite must have enough (2) user reviews,
         # the stack must not be blocked (by a bad review)
         # and the stack must have enough peer reviews
         else:
@@ -248,7 +248,7 @@ class Challenge(models.Model):
                 return self.USER_REVIEW_MISSING
 
             # user is done but needs peer reviews for final challenge
-            if not self.get_stack().has_enough_peer_reviews(user):
+            if not elaboration.is_reviewed_2times():
                 return self.DONE_MISSING_PEER_REVIEW
 
             # user is done and passed at least 2 peer reviews
