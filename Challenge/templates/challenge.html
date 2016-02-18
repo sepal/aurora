@@ -9,12 +9,10 @@
 <script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/challenge.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/review_evaluation.js"></script>
-{% if not elaboration.is_submitted %}
 <script type="text/javascript" src="{{ STATIC_URL }}dropzone/dropzone.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/file_upload.js"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/dropzone.css" type="text/css" media="screen"/>
 <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/basic.css" type="text/css" media="screen"/>
-{% endif %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
@@ -149,7 +147,32 @@
 	{% if challenge.accepted_files %}
 	{% render_uploads elaboration %}
 	{% endif %}
+
     <textarea id="editor_challenge">{{ elaboration.elaboration_text }}</textarea>
+
+                    {% if elaboration.can_be_revised %}
+                      <h1>Revised Elaboration:</h1>
+                      {% if challenge.accepted_files %}
+                        <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
+                            <form action="/fileupload"
+                                  class="dropzone dz-clickable"
+                                  id="dropzone">
+                                <input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
+                                {% csrf_token %}
+                            </form>
+                            <div style="font-size:80%">Note: use »Fig.X« in your text to reference to uploaded images.</div>
+                        </div>
+                      {% endif %}
+                      <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
+                        <form method="post">
+                          <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
+                        </form>
+                        <button class="real_submit_revised XL R" id="{{ challenge.id }}">Save revision</button>
+                      </div>
+                      <br>
+                      <br>
+                      <br>
+                    {% endif %}
 {% if evaluation %}
     <div class="comments">
       <div class="evaluation_header">Feedback from the LVA team </div>
@@ -178,6 +201,7 @@
       <div class="view_review">
 		  {% render_review_answers review_data.review_id %}
 			{% if review_data.appraisal == "Awesome" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b>
+                                        {% if review_data.appraisal == "Awesome" %} Accepted
 			{% elif review_data.appraisal == "Success" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted</b>
 			{% elif review_data.appraisal == "Fail" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted (Requirements missed)</b>
 			{% elif review_data.appraisal == "Not even trying" %} <div class="appraisal Verdict_Not"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Plagiarism or cheated</b>

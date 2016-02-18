@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load render_uploads %}
+{% load render_review_answers %}
+
+{% block additional_headers %}
+<script type="text/javascript" src="{{ STATIC_URL }}tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/challenge.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/review_evaluation.js"></script>
+{% if not elaboration.is_submitted %}
+<script type="text/javascript" src="{{ STATIC_URL }}dropzone/dropzone.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/file_upload.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/dropzone.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/basic.css" type="text/css" media="screen"/>
+{% endif %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
+{% load humanize %}
+{% endblock %}
+
+{% block content %}
+
+<div id="detail_area">
+    <div>&nbsp;</div>
+    <div class="challenge_title" style="cursor:pointer;">
+    {{challenge.title}}
+    </div>
+    <br>
+    <div class="title">You wrote the following reviews for this work:</div>
+      <div>&nbsp;</div>
+    <div class="all_reviews">
+{% for review_data in user_reviews %}
+    <div class="view_review">
+{% render_review_answers review_data.review_id %}
+        <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>
+{% if review_data.appraisal == "Awesome" %} Accepted
+{% elif review_data.appraisal == "Success" %} Accepted
+{% elif review_data.appraisal == "Fail" %} Accepted
+{% elif review_data.appraisal == "Not even trying" %} Plagiarism or cheated
+{% endif %}
+             </b>
+        </div>
+    <br>
+     <div class="review_evaluation_drawer">
+        Your review has been rated as: <br>
+        {% if review_data.evaluation == "P" %} Substantial and elaborate review.
+        {% elif review_data.evaluation == "D" %} Average review.
+        {% elif review_data.evaluation == "N" %} Meaningless or offensive review.
+        {% elif review_data.evaluation == "" %} Not rated yet.
+        {% endif %}
+     </div>
+    </div>
+
+    <br>
+
+
+{% endfor %}
+    </div>
+</div>
+{% endblock %}

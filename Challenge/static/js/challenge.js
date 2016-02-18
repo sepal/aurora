@@ -17,9 +17,11 @@ $(challenge_loaded);
 function challenge_loaded() {
     if ($('.elaboration_block').length) {
         init_tinymce();
+        init_tinymce_read_only();
         $('.submit').click(submit_clicked);
 		$('.save_back').click(go_back);
         $('.real_submit').click(real_submit_clicked);
+        $('.real_submit_revised').click(real_submit_revised_clicked);
     } else {
         try {
             init_tinymce_read_only();
@@ -89,13 +91,6 @@ function init_tinymce() {
         autoresize_min_height: 200,
         autoresize_max_height: 800,
 		paste_data_images: false,
-        /*setup: function (editor) {
-            editor.on('change', function (e) {
-                var challenge = $('.challenge');
-                var challenge_id = challenge.attr('id');
-                elaboration_autosave(e, challenge_id);
-            });
-        }*/
 		setup: function(editor) {
 			editor.on( 'keydown', function( args ) { if(timeout) {
 			clearTimeout(timeout);
@@ -129,12 +124,29 @@ function elaboration_save(challenge_id, submit) {
     var elaboration_text = tinyMCE.activeEditor.getContent().toString();
     var data = {
         challenge_id: challenge_id,
-        elaboration_text: elaboration_text
+        elaboration_text: elaboration_text,
+        revised_elaboration_text: elaboration_text
     };
     var args = { type: "POST", url: SAVE_URL, data: data,
         success: function () {
             if (submit) {
                 send_submit();
+            }
+        }
+    };
+    $.ajax(args);
+}
+
+function revised_elaboration_save(challenge_id, submit) {
+    var elaboration_text = tinyMCE.activeEditor.getContent().toString();
+    var data = {
+        challenge_id: challenge_id,
+        revised_elaboration_text: elaboration_text
+    };
+    var args = { type: "POST", url: SAVE_URL, data: data,
+        success: function () {
+            if (submit) {
+                send_revised_submit();
             }
         }
     };
@@ -163,6 +175,11 @@ function real_submit_clicked(event) {
     elaboration_save(challenge_id, true);
 }
 
+function real_submit_revised_clicked(event) {
+    var challenge = $('.challenge');
+    var challenge_id = challenge.attr('id');
+    revised_elaboration_save(challenge_id, true);
+}
 
 function send_submit() {
     var challenge = $('.challenge');
@@ -172,6 +189,26 @@ function send_submit() {
     var data = {
         challenge_id: challenge_id,
         elaboration_text: tinyMCE.activeEditor.getContent().toString()
+    };
+    var args = { type: "POST", url: SUBMIT_URL, data: data,
+        success: function () {
+            window.location.href = STACK_URL + "?id=" + stack_id;
+        },
+        error: function () {
+            alert("Error submitting elaboration!");
+        }
+    };
+    $.ajax(args);
+}
+
+function send_revised_submit() {
+    var challenge = $('.challenge');
+    var challenge_id = challenge.attr('id');
+    var stack_id = challenge.attr('stack');
+    ajax_setup();
+    var data = {
+        challenge_id: challenge_id,
+        revised_elaboration_text: tinyMCE.activeEditor.getContent().toString()
     };
     var args = { type: "POST", url: SUBMIT_URL, data: data,
         success: function () {

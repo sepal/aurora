@@ -8,7 +8,7 @@ import logging
 
 class Course(models.Model):
     title = models.CharField(max_length=100, unique=True)
-    short_title = models.CharField(max_length=10, unique=True)
+    short_title = models.CharField(max_length=30, unique=True)
     description = models.TextField()
     course_number = models.CharField(max_length=100, unique=True)
     start_date = models.DateField(default=datetime.now, blank=True)

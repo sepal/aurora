@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-
+import pprint
 from Course.models import Course
 
 from Stack.models import Stack, StackChallengeRelation
@@ -19,6 +19,37 @@ def stack(request, course_short_title=None):
     data = create_context_stack(request, course_short_title)
     return render_to_response('stack.html', data, context_instance=RequestContext(request))
 
+@login_required()
+def my_review(request, course_short_title=None):
+    data = create_context_myreview(request, course_short_title)
+    return render_to_response('my_reviews.html', data, context_instance=RequestContext(request))
+
+def create_context_myreview(request, course_short_title):
+        data = {}
+
+        if 'id' not in request.GET:
+            return data
+
+        user = RequestContext(request)['user']
+
+        data['challenge'] = Challenge.objects.get(pk= request.GET.get('id'))
+        challenge = Challenge.objects.get(pk= request.GET.get('id'))
+
+        data['user_reviews'] = []
+        for review in challenge.get_reviews_written_by_user(user):
+           review_data = {}
+           review_data['review_id'] = review.id
+           review_data['review'] = review
+           review_data['appraisal'] = review.get_appraisal_display()
+           evaluation = ReviewEvaluation.objects.filter(review=review)
+           review_data['evaluation'] = ''
+           if evaluation:
+                review_data['evaluation'] = evaluation[0].appraisal
+           data['user_reviews'].append(review_data)
+
+
+        data['course'] = Course.get_or_raise_404(course_short_title)
+        return data
 
 def create_context_stack(request, course_short_title):
     data = {}

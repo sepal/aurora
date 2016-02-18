@@ -11,6 +11,7 @@ from FileUpload.models import UploadFile
 from ReviewAnswer.models import ReviewAnswer
 from collections import Counter
 from taggit.managers import TaggableManager
+from pprint import pprint
 
 
 class Elaboration(models.Model):
@@ -18,6 +19,7 @@ class Elaboration(models.Model):
     user = models.ForeignKey('AuroraUser.AuroraUser')
     creation_time = models.DateTimeField(auto_now_add=True)
     elaboration_text = models.TextField(default='')
+    revised_elaboration_text = models.TextField(default='')
     submission_time = models.DateTimeField(null=True)
     tags = TaggableManager()
     comments = GenericRelation(Comment)
@@ -55,6 +57,16 @@ class Elaboration(models.Model):
             return False
         return True
 
+    def is_reviewed_3times(self):
+        if Review.objects.filter(elaboration=self, submission_time__isnull=False).count() < 3:
+            return False
+        return True
+
+    def is_reviewed_1times(self):
+        if Review.objects.filter(elaboration=self, submission_time__isnull=False).count() >= 1:
+            return True
+        return False
+
     def is_older_3days(self):
         if not self.is_submitted():
             return False
@@ -75,6 +87,23 @@ class Elaboration(models.Model):
             .exclude(pk=self.id)
         )
         return elaborations
+
+    def can_be_revised(self):
+        if self.is_evaluated():
+            return False
+
+        if not self.is_reviewed_1times():
+            return False
+
+        final_challenge = self.challenge.get_final_challenge()
+        if not final_challenge:
+            return False
+
+        final_challenge_elaboration = final_challenge.get_elaboration(self.user)
+        if final_challenge_elaboration and final_challenge_elaboration.is_submitted():
+            return False
+
+        return True
 
     def get_content_type_id(self):
         return ContentType.objects.get_for_model(self).id
