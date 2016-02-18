@@ -1,6 +1,6 @@
 {% load endless %}
 
-{% lazy_paginate comment_list %}
+{% lazy_paginate paginator comment_list %}
 {% for comment in comment_list %}
     <div class="comment_with_responses">
         {% include 'Comments/comment.html' %}

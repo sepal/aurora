@@ -1,7 +1,7 @@
 
 $(function(){
-	$('.challenge-text').ellipsis({
-	    row: 4,
+	$('.card_text').ellipsis({
+	    row: 9,
 		char: '… (click for full text)',
 	    onlyFullWords: true
 	});
@@ -16,17 +16,49 @@ $(stack_loaded);
 
 
 
+function status_text(status_ID) {
+	if (status_ID == -1) 
+		{return "Can not be submitted yet."}
+	else 
+		{
+			msgs = [
+				"Not started (Click card to proceed).",
+				"Not submitted.",
+				"Waiting for you to write a review",
+				"Bad review. We need to look at this. Please be patient.",
+				"Done, waiting for reviews by others.",
+				"Done, peer reviewed.",
+				"Waiting for evaluation.",
+				"Evaluated."];
+				return msgs[status_ID];
+		}
+}
+
+
+
 function stack_loaded() {
-	$(".one_challenge").click(challenge_clicked);
+	$(".card").click(challenge_clicked);
     $(".review_box.active").click(review_box_clicked);
     $(".review_box.in_progress").click(review_box_clicked);
     $(".review_box.done").click(done_review_box_clicked);
     $(".received_review").click(received_review_clicked);
+	$(".s3").click(show_reviews)
+	$(".card_reviews").click(close_reviews)
+}
+
+function close_reviews(event) {
+	$('#'+this.id).fadeToggle(400);
+	event.stopPropagation();
+}
+
+function show_reviews(event) {
+	$("#R"+this.id).fadeToggle(400);
+	event.stopPropagation();
 }
 
 function challenge_clicked(event) {
     event.stopPropagation();
-    var challenge = $(event.target).closest(".one_challenge");
+    var challenge = $(event.target).closest(".card");
     var challenge_id = challenge.attr('challenge_id');
     window.location.href = './challenge?id=' + challenge_id
 }

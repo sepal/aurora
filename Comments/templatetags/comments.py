@@ -16,6 +16,7 @@ class CommentListNode(template.Node):
         self.reference_var = template.Variable(reference)
         self.template = 'Comments/comments_with_forms.html'
         self.newest_last = False
+        self.paginator = 20
         self.options = []
 
     def render(self, context):
@@ -46,7 +47,8 @@ class CommentListNode(template.Node):
                             'ref_id': ref_object.id,
                             'id_suffix': id_suffix,
                             'requester': user,
-                            'revision': revision})
+                            'revision': revision,
+                            'paginator': self.paginator})
 
             return render_to_string(self.template, context)
         except template.VariableDoesNotExist:
@@ -57,6 +59,7 @@ class AdditionalCommentListNode(CommentListNode):
     def __init__(self, reference, options=[]):
         self.reference_var = template.Variable(reference)
         self.newest_last = 'newest_last' in options
+        self.paginator = 'endless' in options
         self.template = 'Comments/additional_comments.html'
 
 
@@ -64,6 +67,7 @@ class MultiCommentListNode(CommentListNode):
     def __init__(self, reference, options=[]):
         self.reference_var = template.Variable(reference)
         self.newest_last = 'newest_last' in options
+        self.paginator = 1000 if 'endless' in options else 20
         self.template = 'Comments/multi_comment.html'
 
 

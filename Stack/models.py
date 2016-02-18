@@ -83,7 +83,7 @@ class Stack(models.Model):
             if not challenge.is_final_challenge():
                 elaboration = challenge.get_elaboration(user)
                 if not elaboration:
-                    # this should never happen
+                    # this should never happen, but it happens if you have not started a challenge (task)
                     return False
                 if not elaboration.is_reviewed_2times():
                     return False

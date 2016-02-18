@@ -12,6 +12,8 @@ if (typeof(loadFilter) === 'undefined') {
     purgsLoadFilter = loadFilter;
 }
 
+
+
 var COMMENTS = (function (my, $, purgsLoadFilter) {
     "use strict";
 
@@ -188,7 +190,6 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
                 $commentTextarea.val(reply_text);
             }
             $(this).hide();
-
             return false;
         });
     };
@@ -504,7 +505,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
 
             $commentForm.hide();
             $newComment.show();
-
+						
             $.ajax({
                 url: my.POST_URL,
                 data: $commentForm.serialize(),
@@ -521,6 +522,15 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             });
 
             my.state.posting = false;
+			if(window.location.href.indexOf("/slides/studio/lecture/") != -1)
+			{
+				alert(window.location.href);
+				setTimeout(function () { 
+					var tp = $('#contentblock').scrollTop(); var lft = $('#contentblock').scrollLeft();
+		        	if (tp || lft) window.name = 'X_' + lft + '_' + tp + '_X';
+					location.reload(1); 
+				}, 500);
+			}
             return false;
         });
     };

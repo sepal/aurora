@@ -29,9 +29,15 @@
 <div id="contentblock">
 	<script>
 	jQuery(document).ready(function($) {
+		if (window.name.search('^X_(\\d+)_(\\d+)_') == 0) {
+			var nme = window.name.split('_');
+		    $('#contentblock').scrollLeft(nme[1]); $('#contentblock').scrollTop(nme[2]);
+		    window.name = "";
+		}
 		$('#contentblock').scroll(scrollEnded);
         $(window).resize(checkSlidesInView);
 		videoplayer = new Videoplayer("{{STATIC_URL}}flowplayer/", "{{videoclip_url}}", "{{videoclip_name}}", {{videoclip_chapters}})
+		/* added by purg to give better scrolling experience */
 	});
 	</script>	
 
@@ -75,7 +81,7 @@
 				</div>
 				<div id="lazyload_{{slide.id}}" class="lazyload">comments will load on demand</div>
 				<div id="comments_{{slide.id}}">
-					{% render_multi_comment_list for slide newest_last %}
+					{% render_multi_comment_list for slide newest_last endless %}
 				</div>
 			</td>
 	     {% endfor %}
