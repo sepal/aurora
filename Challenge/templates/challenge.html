@@ -201,7 +201,7 @@
       <div class="view_review">
 		  {% render_review_answers review_data.review_id %}
 			{% if review_data.appraisal == "Awesome" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b>
-                                        {% if review_data.appraisal == "Awesome" %} Accepted
+            {% elif review_data.appraisal == "Awesome" %} Accepted
 			{% elif review_data.appraisal == "Success" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted</b>
 			{% elif review_data.appraisal == "Fail" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted (Requirements missed)</b>
 			{% elif review_data.appraisal == "Not even trying" %} <div class="appraisal Verdict_Not"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Plagiarism or cheated</b>
