@@ -22,39 +22,36 @@
 
 {% block content %}
 
-<div id="detail_area">
-    <div>&nbsp;</div>
-    <div class="challenge_title" style="cursor:pointer;">
-    {{challenge.title}}
+<div id="detail_area" >
+	<div class="challenge">
+    <div class="challenge_title">
+    	{{challenge.title}}
     </div>
-    <br>
-    <div class="title">You wrote the following reviews for this work:</div>
-      <div>&nbsp;</div>
+	 <div class="challenge_description" >
+		  {{ challenge.description|safe|urlize }}
+	 </div>
+    <b>You wrote {{user_reviews|length}} reviews for this task</b>
     <div class="all_reviews">
-{% for review_data in user_reviews %}
-    <div class="view_review">
-{% render_review_answers review_data.review_id %}
-        <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>
-{% if review_data.appraisal == "Awesome" %} Accepted
-{% elif review_data.appraisal == "Success" %} Accepted
-{% elif review_data.appraisal == "Fail" %} Accepted
-{% elif review_data.appraisal == "Not even trying" %} Plagiarism or cheated
-{% endif %}
-             </b>
-        </div>
-    <br>
-     <div class="review_evaluation_drawer">
-        Your review has been rated as: <br>
-        {% if review_data.evaluation == "P" %} Substantial and elaborate review.
-        {% elif review_data.evaluation == "D" %} Average review.
-        {% elif review_data.evaluation == "N" %} Meaningless or offensive review.
-        {% elif review_data.evaluation == "" %} Not rated yet.
-        {% endif %}
-     </div>
-    </div>
+		{% for review_data in user_reviews %}
+		<div class="show_review">
+				{% render_review_answers review_data.review_id %}
+        <div class="show_review_verdict">
+			Your final verdict was <b>
+				{% if review_data.appraisal == "Awesome" %}&raquo;Exceptional&laquo;
+				{% elif review_data.appraisal == "Success" %}&raquo;All requirements met&laquo;
+				{% elif review_data.appraisal == "Fail" %}&raquo;Requirements missed&laquo;
+				{% elif review_data.appraisal == "Not even trying" %}&raquo;Plagiarism, cheated or empty&laquo;{% endif %}
+			             </b>
+		</div>
+        <div class="show_review_feedback">
 
-    <br>
-
+			{% if review_data.evaluation == "" %} Your review has not been rated yet.
+        	{% elif review_data.evaluation == "P" %} Your review has been rated as <b>&raquo;Helped my to improve my work&laquo;.
+        	{% elif review_data.evaluation == "D" %} Your review has been rated as <b>&raquo;Average&laquo;.
+       		{% elif review_data.evaluation == "N" %} Your review has been rated as <b>&raquo;Meaningless or offensive&laquo;.
+       		{% endif %}</b>
+		</div>
+	</div>
 
 {% endfor %}
     </div>

@@ -122,9 +122,6 @@
 }
 
 .real_submit_revised {
-	margin-top:10px;
-	color: rgb(58,201,88);
-	border: 1px solid rgb(58,201,88);
 }
 
 .challenge {
@@ -162,6 +159,7 @@ h1 {
 
 #detail_area {
     width: 100%;
+	padding:10px;
 }
 
 .stack_imgs {
@@ -356,4 +354,37 @@ h1 {
 	position:relative;
 	width:530px;
 	float:left;
+}
+
+.all_reviews {
+	
+}
+
+.show_review {
+	background-color:#eee;
+	padding:1em;
+	margin-bottom:1em;
+}
+
+.show_review_verdict {
+	margin-bottom:0.5em;
+}
+
+
+
+.create_revision_text {
+	color:gray;
+	margin-top:1em;
+	padding:0.5em;
+}
+
+.create_revision_link {
+	margin-bottom: 1em ;
+}
+
+.revision_section{
+	display:none;
+	margin-bottom:4em;
+	margin-top:2em;
+	clear:both;
 }

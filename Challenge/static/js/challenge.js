@@ -1,13 +1,16 @@
 $(function () {
     $('#challenges-li').addClass('uRhere');
     window.document.title = "Aurora: Challenges"
-});
-
-$(function () {
     $(".review_answer").each(function () {
         this.style.height = (this.scrollHeight+5)+'px';
     });
+	$(".create_revision_link").click(function (){
+		$('.create_revision').hide(300);
+		$('.revision_section').show(300);
+		
+	})
 });
+
 
 
 
