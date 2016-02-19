@@ -143,7 +143,7 @@
     </div>
     {% endif %}
 {% else %}
-	{% if elaboration.revised_elaboration_text %}Original h{% else %}H{% endif %}anded in <a style="color:black;text-decoration: none;" href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{elaboration.submission_time|naturaltime}}'); }, 3000);void(0);" title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i class="fa fa-calendar"></i></a> <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
+	{% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}Original h{% else %}H{% endif %}anded in <a style="color:black;text-decoration: none;" href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{elaboration.submission_time|naturaltime}}'); }, 3000);void(0);" title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i class="fa fa-calendar"></i></a> <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
 	{% if challenge.accepted_files %}
 	{% render_uploads elaboration %}
 	{% endif %}
@@ -208,11 +208,11 @@
     </div>
 {% endif %} <!-- in reviews -->
     {% if elaboration.can_be_revised %}
-		<div class="create_revision" {% if elaboration.revised_elaboration_text %}style="display:none"{% endif %}>
+		<div class="create_revision" {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}style="display:none"{% endif %}>
 			<div class="create_revision_text">Based on these reviews, you can create a revision of your work:</div>
 			<div class="create_revision_link XL button">Create revision. </div>
 		</div>
-		<div class="revision_section" {% if elaboration.revised_elaboration_text %}style="display:block"{% endif %}>
+		<div class="revision_section" {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}style="display:block"{% endif %}>
 	      Revised Work
 	      {% if challenge.accepted_files %}
 	        <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
