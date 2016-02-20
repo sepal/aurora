@@ -6,6 +6,8 @@ var loadMore_Timer;
 
 $(function() {
 	loadMore_Timer = setTimeout(function(){clickLoadMore()},1000);
+	 if ($(window).width() > 960) {$('#info_column').width($(window).width() - 660)};
+	 $('#info_column').masonry({itemSelector:'.sidebar_item',columWidth:330,gutter:14})
 })
 
 function clickLoadMore() {
