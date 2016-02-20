@@ -1,146 +1,163 @@
 {% extends "base.html" %}
 
+{% block additional_headers %}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/masonry.pkgd.min.js"></script>
+{% endblock %}
+
+
 {% block content %}
     {% include 'feed.html' %}
 
     <div id="info_column">
         {% if not user.is_staff %}
+		<div class="sidebar_item">
             <div class="feed_header"  id="part_0"><i class="fa fa-toggle-down half"></i> <b>Your work</b></div>
 			<div class="feed_column"  id="content_part_0">
             	{% include 'points.html' %}
           		{% include 'public_stats.html' %}
 			</div>
+		</div>
 		{% else %}
+		<div class="sidebar_item">
             <div class="feed_header"  id="part_0"><i class="fa fa-toggle-down half"></i> <b>Your work</b></div>
 			<div class="feed_column"  id="content_part_0">
             	{% include 'admin_points.html' %}
 				{% include 'public_stats.html' %}
 			</div>
+		</div>
         {% endif %}
 
 		{% if user.is_staff %}
-        <div class="feed_header" id="part_X">
-			<i class="fa fa-toggle-down half"></i> <b>LVA-Team Ressources </b>
-		</div>
-        <div class="feed_column" id="content_part_X">
-			<p><i style="color:gray" class="fa fa-arrow-right"></i> <a target="_blank" href="https://auri1-gsi.pbworks.com/w/page/77253689/FrontPage">Aurora Wiki</a><br>
-			<i style="color:gray" class="fa fa-arrow-right"></i> TUWEL <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5575">gsi</a> <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5581">bhci</a><br><br>
-			<i style="color:gray" class="fa fa-arrow-right"></i> <a href="/admin">django admin</a><br>
-			<i style="color:gray" class="fa fa-arrow-right"></i> some <a href="statistics">statistics</a></p><br>
+		<div class="sidebar_item">
+	        <div class="feed_header" id="part_X">
+				<i class="fa fa-toggle-down half"></i> <b>LVA-Team Ressources </b>
+			</div>
+	        <div class="feed_column" id="content_part_X">
+				<p><i style="color:gray" class="fa fa-arrow-right"></i> <a target="_blank" href="https://auri1-gsi.pbworks.com/w/page/77253689/FrontPage">Aurora Wiki</a><br>
+				<i style="color:gray" class="fa fa-arrow-right"></i> TUWEL <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5575">gsi</a> <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5581">bhci</a><br><br>
+				<i style="color:gray" class="fa fa-arrow-right"></i> <a href="/admin">django admin</a><br>
+				<i style="color:gray" class="fa fa-arrow-right"></i> some <a href="statistics">statistics</a></p><br>
+			</div>
 		</div>
 		{%  endif %}
-        <div class="feed_header" id="part_1">
-			<i class="fa fa-toggle-down half"></i> <b>General Information </b>
-		</div>
-        <div class="feed_column" id="content_part_1">
-			<p><b>Wesentliche Hinweise</b> ...<BR>
-				...zum <a href="http://igw.tuwien.ac.at/aurora/aurora_challenges.pdf">Arbeiten in Aurora</a><br>
-			 ...zum <a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf">Schreiben von Reviews</a><br>
-			 ...zu <a href="http://igw.tuwien.ac.at/aurora/plagiatsleitfaden.pdf">Plagiaten</a></p><br>
-	        <p>Hinweis: Diese Seite wird mit Mozilla- und Webkit-Browsern <b>(Firefox, Safari, Chrome)</b> entwickelt und getestet. Bitte verwenden sie Aurora mit einem dieser Browser. F&uuml;r alle anderen Browser &uuml;bernehmen wir keine Garantie. Melden Sie eventuelle Probleme auf unterstützten Browsern gegebenenfalls im &raquo;Bugs&amp;Feedback&laquo;-Bereich.</p><br>
-	       <p>Es gilt folgender <b>Punktespiegel:</b></p>
-	        <p>60 Punkte - sehr gut</p>
-	        <p>53 Punkte - gut</p>
-	        <p>47 Punkte - befriedigend</p>
-	        <p>40 Punkte - gen&uuml;gend</p><br>
-	        <p><b>Achtung:</b> F&uuml;r eine positive Note m&uuml;ssen Challenges im Umfang von 60 Punkten durchgearbeitet werden!</p><br>
-	        <br>
-	        <p><b>Video-Streams:</b></p>
-	        <br>
-	        <p>Die Video-Streams &uuml;bertragen w&auml;hrend der Vorlesungszeit die Vorlesung live: <br><br>
-				{% if course.short_title == "gsi" %}
-				&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=178741">GSI live stream</a></p><br>
-				{% else %}
-				&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=216701">BHCI live stream</a></p><br>
-				{% endif %}
-			<p>Ausserdem zeichnen wir diese Streams auf. Sie finden die Aufzeichnungen in tuwel!</p>
-	        <br><br>
+		<div class="sidebar_item">
+	        <div class="feed_header" id="part_1">
+				<i class="fa fa-toggle-down half"></i> <b>General Information </b>
+			</div>
+	        <div class="feed_column" id="content_part_1">
+				<p><b>Wesentliche Hinweise</b> ...<BR>
+					...zum <a href="http://igw.tuwien.ac.at/aurora/aurora_challenges.pdf">Arbeiten in Aurora</a><br>
+				 ...zum <a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf">Schreiben von Reviews</a><br>
+				 ...zu <a href="http://igw.tuwien.ac.at/aurora/plagiatsleitfaden.pdf">Plagiaten</a></p><br>
+		        <p>Hinweis: Diese Seite wird mit Mozilla- und Webkit-Browsern <b>(Firefox, Safari, Chrome)</b> entwickelt und getestet. Bitte verwenden sie Aurora mit einem dieser Browser. F&uuml;r alle anderen Browser &uuml;bernehmen wir keine Garantie. Melden Sie eventuelle Probleme auf unterstützten Browsern gegebenenfalls im &raquo;Bugs&amp;Feedback&laquo;-Bereich.</p><br>
+		       <p>Es gilt folgender <b>Punktespiegel:</b></p>
+		        <p>60 Punkte - sehr gut</p>
+		        <p>53 Punkte - gut</p>
+		        <p>47 Punkte - befriedigend</p>
+		        <p>40 Punkte - gen&uuml;gend</p><br>
+		        <p><b>Achtung:</b> F&uuml;r eine positive Note m&uuml;ssen Challenges im Umfang von 60 Punkten durchgearbeitet werden!</p><br>
+		        <br>
+		        <p><b>Video-Streams:</b></p>
+		        <br>
+		        <p>Die Video-Streams &uuml;bertragen w&auml;hrend der Vorlesungszeit die Vorlesung live: <br><br>
+					{% if course.short_title == "gsi" %}
+					&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=178741">GSI live stream</a></p><br>
+					{% else %}
+					&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=216701">BHCI live stream</a></p><br>
+					{% endif %}
+				<p>Ausserdem zeichnen wir diese Streams auf. Sie finden die Aufzeichnungen in tuwel!</p>
+		        <br><br>
 
-	        <p><b>Support:</b></p>
-	        <br>
-			<p>Wenn sie Probleme haben, sich nicht auskennen oder Hilfe ben&ouml;tigen, so stehen ihnen folgende Informationsquellen zur Verf&uuml;gung:</p>
-			<br>
-			<p>- Lesen sie die Sidebar sorgf&auml;tig. Die Informationen hier werden immer wieder aktualisiert.</p>
-			<p>- Wenn sie Fragen zu einem Task haben, dann nutzen sie bitte die M&ouml;glichkeit, bei den Beschreibungen der Tasks mit dem LVA-Team zu diskutieren. </p>
-			<p>- Wenn sie mit einem Review oder einer Bewertung nicht zufrieden sind, dann nutzen sie bitte die dort angegliederten Kommentare, um mit uns dar&uuml;ber zu reden.</p>
-			<p>- Wenn sie eine andere Frage haben, die im allgemeinen Interesse ist, dann posten sie diese hier im Newsfeed.</p>
-			<p>- Sollten sie eine Frage haben, die nur sie betrifft, dann schreiben sie uns bitte eine email:</p><br>
-			{% if course.short_title == "gsi" %}
-	        <p><i><a href="mailto:gsi@igw.tuwien.ac.at">gsi@igw.tuwien.ac.at</a></i></p>
-			{% else %}
-	        <p><i><a href="mailto:bhci@igw.tuwien.ac.at">bhci@igw.tuwien.ac.at</a></i></p>
-			{% endif %}
-	        <br><br>
+		        <p><b>Support:</b></p>
+		        <br>
+				<p>Wenn sie Probleme haben, sich nicht auskennen oder Hilfe ben&ouml;tigen, so stehen ihnen folgende Informationsquellen zur Verf&uuml;gung:</p>
+				<br>
+				<p>- Lesen sie die Sidebar sorgf&auml;tig. Die Informationen hier werden immer wieder aktualisiert.</p>
+				<p>- Wenn sie Fragen zu einem Task haben, dann nutzen sie bitte die M&ouml;glichkeit, bei den Beschreibungen der Tasks mit dem LVA-Team zu diskutieren. </p>
+				<p>- Wenn sie mit einem Review oder einer Bewertung nicht zufrieden sind, dann nutzen sie bitte die dort angegliederten Kommentare, um mit uns dar&uuml;ber zu reden.</p>
+				<p>- Wenn sie eine andere Frage haben, die im allgemeinen Interesse ist, dann posten sie diese hier im Newsfeed.</p>
+				<p>- Sollten sie eine Frage haben, die nur sie betrifft, dann schreiben sie uns bitte eine email:</p><br>
+				{% if course.short_title == "gsi" %}
+		        <p><i><a href="mailto:gsi@igw.tuwien.ac.at">gsi@igw.tuwien.ac.at</a></i></p>
+				{% else %}
+		        <p><i><a href="mailto:bhci@igw.tuwien.ac.at">bhci@igw.tuwien.ac.at</a></i></p>
+				{% endif %}
+		        <br><br>
+			</div>
 		</div>
-        <div class="feed_header" id="part_2">
-			<i class="fa fa-toggle-down half"></i> <b>Frequently Asked Questions</b>
+		<div class="sidebar_item">
+	        <div class="feed_header" id="part_2">
+				<i class="fa fa-toggle-down half"></i> <b>Frequently Asked Questions</b>
+			</div>
+	        <div class="feed_column" id="content_part_2">
+	            {% include "faq.html" %}
+			</div>
 		</div>
-        <div class="feed_column" id="content_part_2">
-            {% include "faq.html" %}
-		</div>
-        <div class="feed_header" id="part_3">
-			<i class="fa fa-toggle-down half"></i> <b>Lecture dates
-			{% if course.short_title == "hci" %}
-			BHCI
-			{% else %}
-			GSI
-			{% endif %}
-			</b>
-		</div>
-        <div class="feed_column" id="content_part_3">
-			<table width="100%">
-			{% if course.short_title == "hci" %}
-				<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
-					<td width="18%">
-					<td width="11%" align="right">10</td>
-					<td width="7%" align="right">11</td>
-					<td width="11%" align="right">17</td>
-					<td width="7%" align="right">18</td>
-					<td width="18%" align="right">24</td></tr>
-				<tr><td>April</td>
-					<td></td>
-					<td colspan=2 align="right">14</td>
-					<td colspan=2 align="right">21</td>
-					<td align="right">28</td></tr>
-				<tr bgcolor="#EEE"><td>Mai</td>
-					<td align="right">5</td>
-					<td colspan=2 align="right">12</td>
-					<td colspan=2 align="right">19</td>
-					<td></td></tr>
-				<tr><td>Juni</td>
-					<td align="right">*2</td>
-					<td colspan=2 align="right">*9</td>
-					<td colspan=2 align="right">*16</td>
-					<td align="right">*23</td></tr>
-			{% else %}
-				<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
-					<td width="22%" align="right"></td>
-					<td width="22%" align="right"></td>
-					<td width="22%" align="right"></td>
-					<td width="22%" align="right">25</td>
-					<td witdh="2%"></td></tr>
-				<tr><td>April</td>
-					<td></td>
-					<td align="right">15</td>
-					<td align="right">22</td>
-					<td align="right">29</td>
-					<td witdh="2%"></td></tr>
-				<tr bgcolor="#EEE"><td>Mai</td>
-					<td align="right">6</td>
-					<td align="right">13</td>
-					<td align="right">20</td>
-					<td align="right">27</td>
-					<td witdh="2%"></td></tr>
-				<tr><td>Juni</td>
-					<td align="right">3</td>
-					<td align="right">10</td>
-					<td align="right">*17</td>
-					<td align="right">*24</td>
-					<td witdh="2%"></td></tr>
-			{% endif %}
-			</table>
-			<br>
-			<span class="maybe" style="font-size:90%">* diese termine sind als reserve geplant. nach momentanen planungsstand findet da keine vorlesung statt. </span>
+		<div class="sidebar_item">
+	        <div class="feed_header" id="part_3">
+				<i class="fa fa-toggle-down half"></i> <b>Lecture dates
+				{% if course.short_title == "hci" %}
+				BHCI
+				{% else %}
+				GSI
+				{% endif %}
+				</b>
+			</div>
+	        <div class="feed_column" id="content_part_3">
+				<table width="100%">
+				{% if course.short_title == "hci" %}
+					<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
+						<td width="18%">
+						<td width="11%" align="right">10</td>
+						<td width="7%" align="right">11</td>
+						<td width="11%" align="right">17</td>
+						<td width="7%" align="right">18</td>
+						<td width="18%" align="right">24</td></tr>
+					<tr><td>April</td>
+						<td></td>
+						<td colspan=2 align="right">14</td>
+						<td colspan=2 align="right">21</td>
+						<td align="right">28</td></tr>
+					<tr bgcolor="#EEE"><td>Mai</td>
+						<td align="right">5</td>
+						<td colspan=2 align="right">12</td>
+						<td colspan=2 align="right">19</td>
+						<td></td></tr>
+					<tr><td>Juni</td>
+						<td align="right">*2</td>
+						<td colspan=2 align="right">*9</td>
+						<td colspan=2 align="right">*16</td>
+						<td align="right">*23</td></tr>
+				{% else %}
+					<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
+						<td width="22%" align="right"></td>
+						<td width="22%" align="right"></td>
+						<td width="22%" align="right"></td>
+						<td width="22%" align="right">25</td>
+						<td witdh="2%"></td></tr>
+					<tr><td>April</td>
+						<td></td>
+						<td align="right">15</td>
+						<td align="right">22</td>
+						<td align="right">29</td>
+						<td witdh="2%"></td></tr>
+					<tr bgcolor="#EEE"><td>Mai</td>
+						<td align="right">6</td>
+						<td align="right">13</td>
+						<td align="right">20</td>
+						<td align="right">27</td>
+						<td witdh="2%"></td></tr>
+					<tr><td>Juni</td>
+						<td align="right">3</td>
+						<td align="right">10</td>
+						<td align="right">*17</td>
+						<td align="right">*24</td>
+						<td witdh="2%"></td></tr>
+				{% endif %}
+				</table>
+				<br>
+				<span class="maybe" style="font-size:90%">* diese termine sind als reserve geplant. nach momentanen planungsstand findet da keine vorlesung statt. </span>
+			</div>
 		</div>
 		<br><br><br><br><br>
     </div>
