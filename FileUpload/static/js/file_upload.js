@@ -9,6 +9,7 @@ function file_upload_loaded() {
         return;
     }
     var is_submitted = $("#dropzone").hasClass('is_submitted');
+    var revised_elaboration = $("#dropzone").hasClass('dropzone-revised');
 
     var read_write_options = {
         maxFilesize: 100, // MB
@@ -86,11 +87,16 @@ function file_upload_loaded() {
     }
     dropzone_instance = new Dropzone("#dropzone");
     var elaboration_id = $('#elaboration_id').val();
-    load_files(elaboration_id, is_submitted)
+    load_files(elaboration_id, is_submitted, revised_elaboration)
 }
 
-function load_files(elaboration_id, is_submitted) {
-    var url = '/fileupload/all?elaboration_id=' + elaboration_id;
+function load_files(elaboration_id, is_submitted, revised_elaboration) {
+    if(!revised_elaboration) {
+        var url = '/fileupload/original?elaboration_id=' + elaboration_id;
+    } else {
+        var url = '/fileupload/revised?elaboration_id=' + elaboration_id;
+    }
+
     $.get(url, function (data) {
         var data = JSON.parse(data);
         if (data.length === 0 && is_submitted) {
