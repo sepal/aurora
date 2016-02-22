@@ -56,10 +56,12 @@
 
         {% render_uploads elaboration %}
 
-        {% if elaboration.elaboration_text %}
+        {% if elaboration.elaboration_text  %}
             <textarea id="editor_detail">{{ elaboration.elaboration_text}}</textarea>
-            <br /><h1>Revised Work</h1>
-            <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
+            {% if elaboration.revised_elaboration_text != elaboration.elaboration_text and elaboration.revised_elaboration_text != "" %}
+				<br /><h1>Revised Work</h1>
+            	<textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
+			{% endif %}
         {% endif %}<br>
         <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
           {% include 'tags.html' with tagged_object=elaboration %}
