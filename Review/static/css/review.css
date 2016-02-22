@@ -249,6 +249,10 @@ input[type=submit] {
 	line-height:16px;
 }
 
+.review_evaluation:not(.active) {
+	color:black;
+}
+
 
 .review_evaluation.positive.active {
     color: rgb(47,162,71);

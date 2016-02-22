@@ -21,6 +21,7 @@ function challenge_loaded() {
     if ($('.elaboration_block').length) {
         init_tinymce();
         init_tinymce_read_only();
+        init_tinymce_read_only_orig();
         $('.submit').click(submit_clicked);
 		$('.save_back').click(go_back);
         $('.real_submit').click(real_submit_clicked);
@@ -28,6 +29,7 @@ function challenge_loaded() {
     } else {
         try {
             init_tinymce_read_only();
+            init_tinymce_read_only_orig();
         } catch (err) {
             // TODO: improve!
         }
@@ -57,6 +59,24 @@ function init_tinymce_read_only() {
         }
     });
 }
+
+function init_tinymce_read_only_orig() {
+    tinymce.init({
+        // selector: "textarea#editor",
+        mode: "exact",
+        elements: "editor_challenge_orig",
+        menubar: false,
+        statusbar: false,
+        toolbar: false,
+        height: 150,
+//        plugins: "autoresize",
+        autoresize_min_height: 150,
+        autoresize_max_height: 800,
+        readonly: 1
+        
+    });
+}
+
 
 var timeout;
 
