@@ -38,11 +38,12 @@ class ElaborationAdmin(admin.ModelAdmin):
                     'elaboration_text',
                     'submission_time',
                     'tags',
+					'revised_elaboration_text',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'challenge', 'user', 'creation_time', 'elaboration_text', 'submission_time', )
+    list_display = ('id', 'challenge', 'user', 'creation_time', 'elaboration_text', 'submission_time', 'revised_elaboration_text',)
     search_fields = ('user__username','challenge__id',)
     readonly_fields = ("creation_time",)
     actions = [export_csv]
