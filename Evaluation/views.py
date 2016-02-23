@@ -27,7 +27,10 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from Plagcheck.models import Suspect, Result, Reference
+from Plagcheck.models import Suspect, Result, Reference, SuspectState, SuspectFilter
+from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
+from django.db import IntegrityError
+from django.shortcuts import redirect
 
 # TODO: Use same pagination for all views, see django pagination class
 # TODO: Why are there mostly 2 templates processed for each view?
@@ -466,7 +469,7 @@ def similarities(request, course_short_title=None):
                                                             similar_to.elaboration_text.splitlines())
         similarities.append(similarity)
 
-    return render_to_response('similarities.html', {'similarities': similarities}, RequestContext(request))
+    return render_to_response('plagcheck_similarities.html', {'similarities': similarities}, RequestContext(request))
 
 
 @csrf_exempt
@@ -903,11 +906,29 @@ def remove_tag(request, course_short_title=None):
 
     return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
 
+
 @csrf_exempt
 @staff_member_required
 def plagcheck_suspects(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
-    suspect_list = Suspect.objects.all()
+
+    show_filtered = 0
+    try:
+        show_filtered = int(request.GET.get('show_filtered', 0))
+    except ValueError:
+        pass
+
+    if show_filtered is not 0:
+        suspect_list = Suspect.objects.all()
+    else:
+        suspect_list = Suspect.objects.exclude(state=SuspectState.AUTO_FILTERED.value)
+
+    # for i in range(0, len(suspect_list)):
+    #     if i != 0:
+    #         suspect_list[i].prev_id = suspect_list[i-1].id
+    #
+    #     if i != len(suspect_list)-1:
+    #         suspect_list[i].next_id = suspect_list[i+1].id
 
     paginator = Paginator(suspect_list, 25) # Show 25 contacts per page
 
@@ -921,13 +942,21 @@ def plagcheck_suspects(request, course_short_title=None):
         # If page is out of range (e.g. 9999), deliver last page of results.
         suspects = paginator.page(paginator.num_pages)
 
+    context = {
+        'course': course,
+        'suspects': suspects,
+        'suspect_states': SuspectState.states(),
+        'show_filtered': show_filtered,
+    }
+
     return render_to_response('evaluation.html',
-                              {'overview': render_to_string('plagcheck_suspects.html', {'suspects':suspects, 'course': course},
+                              {'overview': render_to_string('plagcheck_suspects.html', context,
                                                             RequestContext(request)),
                                'stabilosiert_plagcheck_suspects': 'stabilosiert',
                                'course': course,
                               },
                               context_instance=RequestContext(request))
+
 
 @csrf_exempt
 @staff_member_required
@@ -939,21 +968,58 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
     docA = Elaboration.objects.get(pk=suspect.doc_id)
     docB = Elaboration.objects.get(pk=suspect.similar_to_id)
 
-    similarity = dict()
-    similarity['table'] = difflib.HtmlDiff(wrapcolumn=100).make_table(docA.elaboration_text.splitlines(),
+    table = difflib.HtmlDiff(wrapcolumn=70).make_table(docA.elaboration_text.splitlines(),
                                                         docB.elaboration_text.splitlines())
 
-    similarity['docA'] = docA
-    similarity['docB'] = docB
-
-    similarity['suspect'] = suspect
+    context = {
+        'course': course,
+        'similarity_table': table,
+        'suspect': suspect,
+        'docA': docA,
+        'docB': docB,
+        'suspect_states': SuspectState.states()
+    }
 
     return render_to_response('evaluation.html',
-                              {'overview': render_to_string('similarities.html', {'similarity': similarity,
-                                                                                  'course': course,
-                                                                                  },
+                              {'overview': render_to_string('plagcheck_similarities.html', context,
                                                             RequestContext(request)),
                                'stabilosiert_plagcheck_compare': 'stabilosiert',
                                'course': course
                               },
                               context_instance=RequestContext(request))
+
+
+@csrf_exempt
+@staff_member_required
+@require_POST
+def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=None):
+    suspect = Suspect.objects.get(pk=suspect_id)
+
+    new_state_str = request.POST.get('suspect_state_selection', None)
+
+    if new_state_str is None:
+        raise SuspiciousOperation("invalid state")
+
+    try:
+        # check if new_state is a valid SuspectState
+        new_state = int(new_state_str)
+        tmp = SuspectState(new_state)
+    except ValueError:
+        raise SuspiciousOperation("invalid SuspectState")
+
+    suspect.state = new_state
+    suspect.save()
+
+    if suspect.state is SuspectState.FILTER.value:
+        try:
+            SuspectFilter.objects.create(doc_id=suspect.doc_id)
+        except IntegrityError:
+            pass
+    else:
+        try:
+            SuspectFilter.objects.get(doc_id=suspect.doc_id).delete()
+        except ObjectDoesNotExist:
+            pass
+
+    return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
+

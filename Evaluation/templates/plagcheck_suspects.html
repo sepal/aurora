@@ -1,21 +1,18 @@
-{% load endless %}
-{% load comments %}
+{% load filter %}
 
 {% block content %}
+    {% if show_filtered == 0 %}
+        <a href="?show_filtered=1">Show auto-filtered suspects</a>
+    {% else %}
+        <a href="?show_filtered=0">Don't show auto-filtered suspects</a>
+    {% endif %}
     <table class="overview_table">
         <tr>
-            <th>
-                id
-            </th>
-            <th>
-                doc_id
-            </th>
-            <th>
-                similar_to
-            </th>
-            <th>
-                similarity
-            </th>
+            <th>id</th>
+            <th>doc_id</th>
+            <th>similar_to</th>
+            <th>similarity</th>
+            <th>state</th>
         </tr>
 
 
@@ -26,13 +23,14 @@
                 <td>{{ suspect.doc_id }}</td>
                 <td>{{ suspect.similar_to_id }}</td>
                 <td>{{ suspect.percent }}</td>
+                <td>{{ suspect_states|index:suspect.state|index:'name' }}</td>
             </tr>
         {% endfor %}
     </table>
     <div class="pagination">
             <span class="step-links">
                 {% if suspects.has_previous %}
-                    <a href="?page={{ suspects.previous_page_number }}">previous</a>
+                    <a href="?{% url_replace request 'page' suspects.previous_page_number %}">previous</a>
                 {% endif %}
 
                 <span class="current">
@@ -40,7 +38,7 @@
                 </span>
 
                 {% if suspects.has_next %}
-                    <a href="?page={{ suspects.next_page_number }}">next</a>
+                    <a href="?{% url_replace request 'page' suspects.next_page_number %}">next</a>
                 {% endif %}
             </span>
         </div>

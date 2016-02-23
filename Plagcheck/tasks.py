@@ -8,8 +8,9 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AuroraProject.settings')
 
 from django.conf import settings     # noqa
+from django.db.utils import OperationalError
 
-from Plagcheck.models import Reference, Result, Suspect, Elaboration # noqa
+from Plagcheck.models import Reference, Result, Suspect, SuspectState # noqa
 from AuroraProject.settings import PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT
 import sherlock # noqa
 
@@ -26,54 +27,73 @@ class PlagcheckError(Exception):
         self.msg = msg
 
 
-@app.task()
-def check(**kwargs):
-    doc_id = kwargs['doc_id']
+@app.task(bind=True)
+def check(self, **kwargs):
+    try:
+        doc_id = kwargs['doc_id']
 
-    # delete existing references to older versions of this document
-    if kwargs['is_new'] is False:
+        # delete existing references to older versions of this document
         Reference.del_ref(doc_id)
 
-    # generate a list of hashes
-    hash_list = sherlock.signature_str(kwargs['doc'])
+        # generate a list of hashes
+        hash_list = sherlock.signature_str(kwargs['doc'])
 
-    hash_count = len(hash_list)
+        # remove duplicate hashes from the list
+        hash_set = set(hash_list)
 
-    # check if hashes are generated which means punctuations found
-    ovl_similarity = 0
-    match_count = 0
-    similarities = list()
-    if hash_count > 0:
-        # store (new) references
-        Reference.store(hash_list, doc_id)
+        hash_count = len(hash_set)
 
-        # compute overall similarity by checking how many hashes
-        # inserted for the last document match those which are
-        # already in the database.
-        match_count = Reference.get_match_count(doc_id)
-        assert(match_count <= hash_count)
-        ovl_similarity = (100.0/hash_count) * match_count
-        assert(ovl_similarity <= 100)
+        # check if hashes are generated which means punctuations found
+        suspects = list()
+        auto_filtered = False
+        if hash_count > 0:
+            # store (new) references
+            Reference.store_references(doc_id, hash_set)
 
-        # compute single similarity by computing the count
-        # of matches for each other document. This returns a list
-        # of possible matching documents.
-        similar_elaborations = Reference.get_similar_elaborations(doc_id)
-        for (similar_doc_id, match_count) in similar_elaborations:
-            percent = (100.0/hash_count) * match_count
-            assert(percent <= 100)
-            similarities.append((similar_doc_id, percent))
+            # compute individual similarity by computing the count
+            # of matches for each other document. This returns a list
+            # of possible matching documents.
+            similar_elaborations = Reference.get_similar_elaborations(doc_id)
+            for (similar_doc_id, match_count, filter_id) in similar_elaborations:
+                percent = (100.0/hash_count) * match_count
 
-    result = Result.objects.create(similarity=ovl_similarity,
-                                   hash_count=len(hash_list),
-                                   doc_id=doc_id,
-                                   doc_version=kwargs['doc_version'],
-                                   doc_type=kwargs['doc_type'],
-                                   username=kwargs['username'],
-                                   match_count=match_count)
+                assert(percent <= 100)
 
-    for (similar_doc_id, percent) in similarities:
-        if percent > PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT:
-            Suspect.objects.create(doc_id=doc_id, similar_to_id=similar_doc_id, percent=percent, result=result)
+                if percent > PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT:
+                    if filter_id is not None:
+                        auto_filtered = True
 
-    return result.celery_result()
+                    # put them in a list so that filtered
+                    # findings can be handled later
+                    suspects.append({
+                        'similar_doc_id': similar_doc_id,
+                        'percent': percent,
+                        'filter_id': filter_id,
+                        'match_count': match_count
+                    })
+
+        result = Result.objects.create(
+            hash_count=hash_count,
+            doc_id=doc_id,
+        )
+
+        # if there is a similar document that was assigned the state
+        # FILTER then mark all suspecting elaborations as AUTO_FILTERED
+        state = SuspectState.SUSPECTED
+        if auto_filtered:
+            state = SuspectState.AUTO_FILTERED.value
+
+        for suspect in suspects:
+            Suspect.objects.create(
+                doc_id=doc_id,
+                similar_to_id=suspect['similar_doc_id'],
+                percent=suspect['percent'],
+                match_count=suspect['match_count'],
+                result=result,
+                state=state
+            )
+
+        return result.celery_result()
+    except OperationalError as e:
+        print("Got an OperationalError, retrying")
+        self.retry(exc=e, max_retries=2)

@@ -7,8 +7,6 @@ from Plagcheck import tasks
 # gets executed when a elaboration gets saved (created/updated)
 # and triggers the Plagcheck task.
 def post_save_elaboration_callback(sender, **kwargs):
-    print("post_save_elaboration_callback")
-
     doc = kwargs['instance']
 
     data = doc.elaboration_text

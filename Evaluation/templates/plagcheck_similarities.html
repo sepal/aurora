@@ -1,0 +1,55 @@
+{% load filter %}
+
+{% block additional_headers %}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/info_area.js"></script>
+{% endblock %}
+
+{% block content %}
+        <div>
+            <form name="suspect_state" method="post"
+                  action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspect_id=suspect.id %}">
+                <label>Suspect state:</label>
+                <select name="suspect_state_selection" onchange="suspect_state.submit()">
+                    {% for state in suspect_states %}
+                        <option {% if suspect.state == state.value %} selected {% endif %}
+                                value="{{ state.value }}">{{ state.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        <div>
+        Result:<br />
+        # hashes: {{ suspect.result.hash_count }}<br />
+        # matching hashes: {{ suspect.match_count }}<br />
+        Similarity: {{ suspect.percent }}%<br />
+        Date: {{ suspect.result.created }}<br />
+        </div>
+
+
+        <table>
+            <tr>
+                <th>PersonA</th>
+                <th>PersonB</th>
+            </tr>
+            <tr>
+                <td>
+                    Name: {{ docA.user.nickname }}<br />
+                    Doc ID: {{ docA.id }}
+                </td>
+                <td>
+                    Name: {{ docB.user.nickname }}<br />
+                    Doc ID: {{ docB.id }}
+                </td>
+            </tr>
+        </table>
+        <div>
+        <p>Note: this output is produced by the python diff library and not the internal plagcheck library. The python
+        library compares each line with each line which is not the way the plagcheck library detects similarities. Therefore
+        don't rely solely on the coloring and formatting of this output.</p>
+        </div>
+
+
+        {{ similarity_table|safe }}
+
+
+{% endblock %}
