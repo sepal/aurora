@@ -242,10 +242,12 @@
 	      </div>
 	 	</div>
 	{% else %} <!-- this is an obscure bug fix. without this form, comments don't work on this page. no idea why :( -->
+	{% comment %}
 	      {% if challenge.accepted_files %}
 	            <form action="/fileupload" id="dropzone" style="display:none">
 	            </form>
 	      {% endif %}
+	{% endcomment %}
     {% endif %}
 {% endif %}
 {% endif %}
