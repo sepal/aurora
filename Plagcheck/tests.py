@@ -3,7 +3,7 @@ from unittest import skip
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from Plagcheck.models import Reference, Result, Suspect
+from Plagcheck.models import Reference, Result, Suspect, SuspectFilter, SuspectState
 from Plagcheck import tasks
 from ddt import ddt, data
 
@@ -31,24 +31,22 @@ class PlagcheckTestData:
     @staticmethod
     def get_text(filename):
         text_file = PlagcheckTestData.get_text_path(filename)
-        try:
-            with codecs.open(text_file, "r", encoding='utf-8', errors='ignore') as f:
-                return f.read()
-        except FileNotFoundError as e:
-            raise FileNotFoundError("Could not find text file at %s" % text_file, e)
+        with codecs.open(text_file, "r", encoding='utf-8', errors='ignore') as f:
+            return f.read()
 
     @staticmethod
-    def get_random_text():
+    def get_random_text_path():
         file_list = []
         for root, dirnames, filenames in os.walk(PlagcheckTestData.get_data_root_path()):
             for filename in fnmatch.filter(filenames, '*.txt'):
                 file_list.append(os.path.join(root, filename))
 
-
-        #file_list = glob.iglob('%s/**/*.txt' % PlagcheckTestData.get_data_root_path(), recursive=True)
         rand_index = random.randrange(0, len(file_list)-1, 1)
-        return PlagcheckTestData.get_text(file_list[rand_index])
+        return file_list[rand_index]
 
+    @staticmethod
+    def get_random_text():
+        return PlagcheckTestData.get_text(PlagcheckTestData.get_random_text_path())
 
 @ddt
 @override_settings(CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
@@ -68,7 +66,7 @@ class PlagCheckTestCase(TestCase):
 
     # Helpers
     def import_text(self, filename, doc_id, user=None, challenge=None, is_new=True):
-        text = get_text(filename)
+        text = PlagcheckTestData.get_text(filename)
 
         if not user:
             user = self.user
@@ -84,24 +82,33 @@ class PlagCheckTestCase(TestCase):
                            username=user.nickname,
                            is_new=False)
 
+    def insert_random_texts(self, count):
+        for i in range(0, count):
+            self.import_text(PlagcheckTestData.get_random_text_path(), i)
+
     def do_pair_test(self, prefix, expected_similarity):
         ret = self.import_text("%s_src.txt" % prefix, 0)
-        self.assertEqual(ret['similarity'], 0)
+
+        self.assertEqual(len(Suspect.objects.all()), 0)
+
+        result = Result.objects.get(doc_id=0)
+
+        self.assertEqual(result.)
 
         ret = self.import_text("%s_susp.txt" % prefix, 1)
-        self.assertGreaterEqual(ret['similarity'], expected_similarity)
+        self.assertGreaterEqual(Reference.overall_similarity(1, ret['hash_count']), expected_similarity)
 
     # Tests
     def test_sherlock_mod(self):
         """ Check if modification to sherlock didn't affect results """
-        hashes1 = sherlock.signature_str(get_text("simple/hello_world.txt"))
-        hashes2 = sherlock.signature(get_text_path("simple/hello_world.txt"))
+        hashes1 = sherlock.signature_str(PlagcheckTestData.get_text("simple/hello_world.txt"))
+        hashes2 = sherlock.signature(PlagcheckTestData.get_text_path("simple/hello_world.txt"))
         self.assertSequenceEqual(hashes1, hashes2)
 
     def test_native_simple_repeatability(self):
         """ Generate hashes of a 3 word text with sherlock directly """
 
-        text = get_text("simple/hello_world.txt")
+        text = PlagcheckTestData.get_text("simple/hello_world.txt")
         hashes1 = sherlock.signature_str(text)
         hashes2 = sherlock.signature_str(text)
         self.assertSequenceEqual(hashes1, hashes2)
@@ -141,13 +148,13 @@ class PlagCheckTestCase(TestCase):
         """ Import a 3 word text 3 times and check similarity """
 
         ret = self.import_text("simple/hello_world.txt", 0)
-        self.assertEqual(ret['similarity'], 0)
+        self.assertEqual(Reference.overall_similarity(0, ret['hash_count']), 0)
 
         ret = self.import_text("simple/hello_world.txt", 1)
-        self.assertEqual(ret['similarity'], 100)
+        self.assertEqual(Reference.overall_similarity(1, ret['hash_count']), 100)
 
         ret = self.import_text("simple/hello_world.txt", 1)
-        self.assertEqual(ret['similarity'], 100)
+        self.assertEqual(Reference.overall_similarity(1, ret['hash_count']), 100)
 
     def test_elaboration_single_similar(self):
         """ Test if similar document is found """
@@ -157,7 +164,7 @@ class PlagCheckTestCase(TestCase):
         ret2 = self.import_text("simple/hello_world.txt", 1)
 
         similarities = Reference.get_similar_elaborations(1)
-        (doc_id, similar_hashes) = similarities[0]
+        (doc_id, similar_hashes, filter_id) = similarities[0]
 
         self.assertEqual(doc_id, ret1['doc'])
         self.assertEqual(similar_hashes, ret1['hash_count'])
@@ -171,11 +178,11 @@ class PlagCheckTestCase(TestCase):
         ret3 = self.import_text("simple/hello_world.txt", 2)
 
         similarities = Reference.get_similar_elaborations(2)
-        (doc_id, similar_hashes) = similarities[0]
+        (doc_id, similar_hashes, filter_id) = similarities[0]
         self.assertEqual(doc_id, ret1['doc'])
         self.assertEqual(similar_hashes, 3)
 
-        (doc_id, similar_hashes) = similarities[1]
+        (doc_id, similar_hashes, filter_id) = similarities[1]
         self.assertEqual(doc_id, ret2['doc'])
         self.assertEqual(similar_hashes, 3)
 
@@ -192,8 +199,65 @@ class PlagCheckTestCase(TestCase):
 
         self.assertEqual(suspect.doc_id, 1)
         self.assertEqual(suspect.similar_to_id, 0)
-        self.assertEqual(suspect.percent, 75);
+        self.assertEqual(suspect.percent, 75)
 
+    def test_duplicate_hash(self):
+        self.import_text("simple/duplicate_hash.txt", 0)
+        self.import_text("simple/duplicate_hash.txt", 1)
+        suspect = Suspect.objects.get()
+        self.assertEqual(suspect.percent, 100)
+
+    def test_filter(self):
+        self.import_text("simple/hello_world.txt", 0)
+        SuspectFilter.objects.create(doc_id=0)
+        self.import_text("simple/hello_world.txt", 1)
+        suspect = Suspect.objects.get()
+        self.assertEqual(suspect.percent, 100)
+        self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
+
+    def test_filter_small_diff(self):
+        self.import_text("simple/der_kommentar.txt", 0)
+        SuspectFilter.objects.create(doc_id=0)
+        self.import_text("simple/das_kommentar.txt", 1)
+        suspect = Suspect.objects.get()
+        self.assertGreater(suspect.percent, 50)
+        self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
+
+    def test_filter_small_diff_reverse(self):
+        self.import_text("simple/das_kommentar.txt", 0)
+        SuspectFilter.objects.create(doc_id=0)
+        self.import_text("simple/der_kommentar.txt", 1)
+        suspect = Suspect.objects.get()
+        self.assertGreater(suspect.percent, 50)
+        self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
+
+    def test_filter_small_diff_others(self):
+        self.import_text("simple/der_kommentar.txt", 0)
+        SuspectFilter.objects.create(doc_id=0)
+        self.import_text("simple/der_kommentar.txt", 1)
+        self.import_text("simple/der_kommentar.txt", 2)
+        suspects = Suspect.objects.all()
+
+        for suspect in suspects:
+            print(str(suspect))
+            self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
+
+    @skip("deprecated")
+    def test_match_count(self):
+
+        self.insert_random_texts(20)
+
+        self.import_text("simple/match_count_bug_review.txt", 20)
+        self.import_text("simple/match_count_bug_review.txt", 21)
+
+        match_count = Reference.get_match_count(1)
+        similar = Reference.get_similar_elaborations(1)
+
+        computed_match_count = 0
+        for (doc_id, similar_hashes, filter_id) in similar:
+            computed_match_count += similar_hashes
+
+        self.assertEqual(computed_match_count, match_count)
 
     @data(("princeton/princeton_001", 75), ("princeton/princeton_002", 30), ("princeton/princeton_003", 80))
     def test_princeton_dataset(self, value):

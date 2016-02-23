@@ -8,12 +8,17 @@ class ReferenceAdmin(admin.ModelAdmin):
 
 
 class ResultAdmin(admin.ModelAdmin):
-    list_display = ('doc', 'doc_version', 'similarity', 'hash_count', 'match_count')
+    list_display = ('doc', 'hash_count')
 
 
 class SuspectsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'doc', 'similar_to', 'percent', 'created', )
+    list_display = ('id', 'doc', 'similar_to', 'percent', 'state')
+
+
+class SuspectFilterAdmin(admin.ModelAdmin):
+    list_display = ('id', 'doc')
 
 admin.site.register(Reference, ReferenceAdmin)
 admin.site.register(Result, ResultAdmin)
 admin.site.register(Suspect, SuspectsAdmin)
+admin.site.register(SuspectFilter, SuspectFilterAdmin)
