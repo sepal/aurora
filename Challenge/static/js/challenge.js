@@ -97,7 +97,7 @@ function init_tinymce() {
                     });
                     var fullHtml = "";
                     $(content).each(function () {
-                        fullHtml += '<p>' + $(this).html() + '</p>';
+                        fullHtml += $(this).html();
                     });
                     args.content = fullHtml;
                 }
