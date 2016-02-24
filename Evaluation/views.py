@@ -469,7 +469,7 @@ def similarities(request, course_short_title=None):
                                                             similar_to.elaboration_text.splitlines())
         similarities.append(similarity)
 
-    return render_to_response('plagcheck_similarities.html', {'similarities': similarities}, RequestContext(request))
+    return render_to_response('plagcheck_compare.html', {'similarities': similarities}, RequestContext(request))
 
 
 @csrf_exempt
@@ -912,50 +912,34 @@ def remove_tag(request, course_short_title=None):
 def plagcheck_suspects(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    show_filtered = 0
-    try:
-        show_filtered = int(request.GET.get('show_filtered', 0))
-    except ValueError:
-        pass
-
-    if show_filtered is not 0:
+    show_filtered = int(request.GET.get('show_filtered', 0))
+    if show_filtered is 1:
         suspect_list = Suspect.objects.all()
     else:
         suspect_list = Suspect.objects.exclude(state=SuspectState.AUTO_FILTERED.value)
 
-    # for i in range(0, len(suspect_list)):
-    #     if i != 0:
-    #         suspect_list[i].prev_id = suspect_list[i-1].id
-    #
-    #     if i != len(suspect_list)-1:
-    #         suspect_list[i].next_id = suspect_list[i+1].id
-
-    paginator = Paginator(suspect_list, 25) # Show 25 contacts per page
+    paginator = Paginator(suspect_list, 25)
 
     page = request.GET.get('page')
     try:
         suspects = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
         suspects = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
         suspects = paginator.page(paginator.num_pages)
 
     context = {
         'course': course,
         'suspects': suspects,
-        'suspect_states': SuspectState.states(),
+        'suspect_states': SuspectState.choices(),
         'show_filtered': show_filtered,
     }
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('plagcheck_suspects.html', context,
-                                                            RequestContext(request)),
-                               'stabilosiert_plagcheck_suspects': 'stabilosiert',
-                               'course': course,
-                              },
-                              context_instance=RequestContext(request))
+    return render_to_response('evaluation.html', {
+            'overview': render_to_string('plagcheck_suspects.html', context, RequestContext(request)),
+            'course': course,
+        },
+        context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -971,22 +955,23 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
     table = difflib.HtmlDiff(wrapcolumn=70).make_table(docA.elaboration_text.splitlines(),
                                                         docB.elaboration_text.splitlines())
 
+    show_filtered = int(request.GET.get('show_filtered', 0))
+    (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(show_filtered)
+
     context = {
         'course': course,
-        'similarity_table': table,
+        'diff_table': table,
         'suspect': suspect,
-        'docA': docA,
-        'docB': docB,
-        'suspect_states': SuspectState.states()
+        'suspect_states': SuspectState.states(),
+        'next_suspect_id': next_suspect_id,
+        'prev_suspect_id': prev_suspect_id,
     }
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('plagcheck_similarities.html', context,
-                                                            RequestContext(request)),
-                               'stabilosiert_plagcheck_compare': 'stabilosiert',
-                               'course': course
-                              },
-                              context_instance=RequestContext(request))
+    return render_to_response('evaluation.html', {
+            'overview': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
+            'course': course
+        },
+        context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -995,31 +980,13 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
 def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=None):
     suspect = Suspect.objects.get(pk=suspect_id)
 
-    new_state_str = request.POST.get('suspect_state_selection', None)
+    new_state = request.POST.get('suspect_state_selection', None)
 
-    if new_state_str is None:
-        raise SuspiciousOperation("invalid state")
+    suspect.suspect_state = new_state
 
-    try:
-        # check if new_state is a valid SuspectState
-        new_state = int(new_state_str)
-        tmp = SuspectState(new_state)
-    except ValueError:
-        raise SuspiciousOperation("invalid SuspectState")
-
-    suspect.state = new_state
     suspect.save()
 
-    if suspect.state is SuspectState.FILTER.value:
-        try:
-            SuspectFilter.objects.create(doc_id=suspect.doc_id)
-        except IntegrityError:
-            pass
-    else:
-        try:
-            SuspectFilter.objects.get(doc_id=suspect.doc_id).delete()
-        except ObjectDoesNotExist:
-            pass
+    SuspectFilter.update_filter(suspect)
 
     return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
 
