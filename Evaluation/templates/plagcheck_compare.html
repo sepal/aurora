@@ -6,12 +6,20 @@
 
 {% block content %}
         <div>
+            {% if prev_suspect_id %}
+                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=prev_suspect_id %}?{{ request.GET.urlencode }}">Prev</a>
+            {% endif %}
+            {% if next_suspect_id %}
+                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=next_suspect_id %}?{{ request.GET.urlencode }}">Next</a>
+            {% endif %}
+        </div>
+        <div>
             <form name="suspect_state" method="post"
                   action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspect_id=suspect.id %}">
                 <label>Suspect state:</label>
                 <select name="suspect_state_selection" onchange="suspect_state.submit()">
                     {% for state in suspect_states %}
-                        <option {% if suspect.state == state.value %} selected {% endif %}
+                        <option {% if suspect.suspect_state.value == state.value %} selected {% endif %}
                                 value="{{ state.value }}">{{ state.name }}</option>
                     {% endfor %}
                 </select>
@@ -33,12 +41,12 @@
             </tr>
             <tr>
                 <td>
-                    Name: {{ docA.user.nickname }}<br />
-                    Doc ID: {{ docA.id }}
+                    Name: {{ suspect.doc.user.nickname }}<br />
+                    Doc ID: {{ suspect.doc_id }}
                 </td>
                 <td>
-                    Name: {{ docB.user.nickname }}<br />
-                    Doc ID: {{ docB.id }}
+                    Name: {{ suspect.similar_to.user.nickname }}<br />
+                    Doc ID: {{ suspect.similar_to_id }}
                 </td>
             </tr>
         </table>
@@ -49,7 +57,7 @@
         </div>
 
 
-        {{ similarity_table|safe }}
+        {{ diff_table|safe }}
 
 
 {% endblock %}

@@ -93,7 +93,7 @@ class PlagCheckTestCase(TestCase):
 
         result = Result.objects.get(doc_id=0)
 
-        self.assertEqual(result.)
+        #self.assertEqual(result.)
 
         ret = self.import_text("%s_susp.txt" % prefix, 1)
         self.assertGreaterEqual(Reference.overall_similarity(1, ret['hash_count']), expected_similarity)
@@ -119,10 +119,7 @@ class PlagCheckTestCase(TestCase):
         ret = self.import_text("simple/hello_world.txt", 0)
 
         self.assertEqual(ret['doc'], 0)
-        self.assertEqual(ret['username'], "plagcheck-test")
-        self.assertEqual(ret['doc_type'], "default_type")
         self.assertEqual(ret['hash_count'], 3)
-        self.assertEqual(ret['similarity'], 0)
 
     def test_repeatability(self):
         """Import a 3 words text twice and check if hashes match"""

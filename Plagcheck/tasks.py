@@ -33,7 +33,7 @@ def check(self, **kwargs):
         doc_id = kwargs['doc_id']
 
         # delete existing references to older versions of this document
-        Reference.del_ref(doc_id)
+        Reference.remove_references(doc_id)
 
         # generate a list of hashes
         hash_list = sherlock.signature_str(kwargs['doc'])
@@ -79,7 +79,7 @@ def check(self, **kwargs):
 
         # if there is a similar document that was assigned the state
         # FILTER then mark all suspecting elaborations as AUTO_FILTERED
-        state = SuspectState.SUSPECTED
+        state = Suspect.DEFAULT_STATE.value
         if auto_filtered:
             state = SuspectState.AUTO_FILTERED.value
 

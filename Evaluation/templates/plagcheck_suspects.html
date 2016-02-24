@@ -1,10 +1,10 @@
 {% load filter %}
 
 {% block content %}
-    {% if show_filtered == 0 %}
-        <a href="?show_filtered=1">Show auto-filtered suspects</a>
-    {% else %}
+    {% if show_filtered %}
         <a href="?show_filtered=0">Don't show auto-filtered suspects</a>
+    {% else %}
+        <a href="?show_filtered=1">Show auto-filtered suspects</a>
     {% endif %}
     <table class="overview_table">
         <tr>
@@ -18,12 +18,12 @@
 
         {% for suspect in suspects %}
             <tr class="{% cycle 'darkRow' 'lightRow' %}"
-                onclick="document.location = '{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=suspect.id %}'">&nbsp;
+                onclick="document.location = '{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=suspect.id %}?{{ request.GET.urlencode }}'">&nbsp;
                 <td>{{ suspect.id }}</td>
                 <td>{{ suspect.doc_id }}</td>
                 <td>{{ suspect.similar_to_id }}</td>
                 <td>{{ suspect.percent }}</td>
-                <td>{{ suspect_states|index:suspect.state|index:'name' }}</td>
+                <td>{{ suspect.suspect_state.name }}</td>
             </tr>
         {% endfor %}
     </table>

@@ -3,11 +3,13 @@ from django.db import connection
 
 from Plagcheck.models import *
 
+
 class Command(BaseCommand):
     help = 'Populates database with demo data'
 
     def handle(self, *args, **options):
         clear_plagcheck_but_filtered()
+
 
 def clear_plagcheck_but_filtered():
     cursor = connection.cursor()
