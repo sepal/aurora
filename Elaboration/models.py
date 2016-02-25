@@ -21,6 +21,7 @@ class Elaboration(models.Model):
     elaboration_text = models.TextField(default='')
     revised_elaboration_text = models.TextField(default='')
     revised_elaboration_changelog = models.TextField(default='')
+    most_helpful_other_user = models.IntegerField(null=True)
     submission_time = models.DateTimeField(null=True)
     tags = TaggableManager()
     comments = GenericRelation(Comment)
@@ -305,6 +306,9 @@ class Elaboration(models.Model):
 
     def get_awesome_reviews(self):
         return Review.objects.filter(elaboration=self, submission_time__isnull=False, appraisal=Review.AWESOME)
+
+    def get_reviews(self):
+        return Review.objects.filter(elaboration=self, submission_time__isnull=False).order_by("appraisal")
 
     def get_lva_team_notes(self):
         reviews = (
