@@ -20,6 +20,7 @@ class Elaboration(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     elaboration_text = models.TextField(default='')
     revised_elaboration_text = models.TextField(default='')
+    revised_elaboration_changelog = models.TextField(default='')
     submission_time = models.DateTimeField(null=True)
     tags = TaggableManager()
     comments = GenericRelation(Comment)
@@ -220,7 +221,7 @@ class Elaboration(models.Model):
             .values_list('submission__user', 'submission__challenge__stackchallengerelation__stack__id')
         )
 
-        
+
         stack_lookup = {}
         for user, stack in submitted_evaluations:
             if not stack in stack_lookup:

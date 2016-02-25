@@ -22,7 +22,10 @@ def file_upload(request):
             elaboration = Elaboration.objects.get(pk=elaboration_id)
             if not elaboration.user == user:
                 return file_upload_failed_response()
-            upload_file = UploadFile(user=user, elaboration_id=elaboration_id, upload_file=file)
+            if not elaboration.is_submitted():
+                upload_file = UploadFile(user=user, elaboration_id=elaboration_id, upload_file=file)
+            else:
+                upload_file = UploadFile(user=user, elaboration_id=elaboration_id, upload_file=file, elaboration_version='revision')
         except Exception as e:
             return file_upload_failed_response(str(e))
         if file.name.endswith('.pdf'):
@@ -88,6 +91,50 @@ def all_files(request):
             raise Http404
         data = []
         for upload_file in UploadFile.objects.filter(user=elaboration.user, elaboration__id=elaboration_id).order_by('creation_time'):
+            data.append({
+                'name': os.path.basename(upload_file.upload_file.name),
+                'size': upload_file.upload_file.size,
+                'url': upload_file.upload_file.url,
+                'thumbnail_url': upload_file.thumbnail.url,
+                'id': upload_file.id,
+            })
+    return HttpResponse(json.dumps(data))
+
+@login_required()
+def original_files(request):
+    user = RequestContext(request)['user']
+    if 'elaboration_id' in request.GET:
+        elaboration_id = request.GET.get('elaboration_id')
+        try:
+            elaboration = Elaboration.objects.get(pk=elaboration_id)
+            if not elaboration.user == user:
+                raise Http404
+        except:
+            raise Http404
+        data = []
+        for upload_file in UploadFile.objects.filter(user=elaboration.user, elaboration__id=elaboration_id, elaboration_version='original').order_by('creation_time'):
+            data.append({
+                'name': os.path.basename(upload_file.upload_file.name),
+                'size': upload_file.upload_file.size,
+                'url': upload_file.upload_file.url,
+                'thumbnail_url': upload_file.thumbnail.url,
+                'id': upload_file.id,
+            })
+    return HttpResponse(json.dumps(data))
+
+@login_required()
+def revised_files(request):
+    user = RequestContext(request)['user']
+    if 'elaboration_id' in request.GET:
+        elaboration_id = request.GET.get('elaboration_id')
+        try:
+            elaboration = Elaboration.objects.get(pk=elaboration_id)
+            if not elaboration.user == user:
+                raise Http404
+        except:
+            raise Http404
+        data = []
+        for upload_file in UploadFile.objects.filter(user=elaboration.user, elaboration__id=elaboration_id, elaboration_version='revision').order_by('creation_time'):
             data.append({
                 'name': os.path.basename(upload_file.upload_file.name),
                 'size': upload_file.upload_file.size,

@@ -7,7 +7,7 @@ $(function () {
 	$(".create_revision_link").click(function (){
 		$('.create_revision').hide(300);
 		$('.revision_section').show(300);
-		
+
 	})
 });
 
@@ -150,6 +150,7 @@ function elaboration_save(challenge_id, submit) {
         elaboration_text: elaboration_text,
         revised_elaboration_text: elaboration_text
     };
+      console.log('Clicked real submit');
     var args = { type: "POST", url: SAVE_URL, data: data,
         success: function () {
             if (submit) {
@@ -162,9 +163,11 @@ function elaboration_save(challenge_id, submit) {
 
 function revised_elaboration_save(challenge_id, submit) {
     var elaboration_text = tinyMCE.activeEditor.getContent().toString();
+    var changelog = $('#changelog').prop('value')
     var data = {
         challenge_id: challenge_id,
-        revised_elaboration_text: elaboration_text
+        revised_elaboration_text: elaboration_text,
+        revised_elaboration_changelog: changelog
     };
     var args = { type: "POST", url: SAVE_URL, data: data,
         success: function () {

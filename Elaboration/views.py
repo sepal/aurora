@@ -27,6 +27,9 @@ def save_elaboration(request, course_short_title):
 
         if elaboration.can_be_revised and 'revised_elaboration_text' in request.POST:
             elaboration.revised_elaboration_text = request.POST['revised_elaboration_text'] # sanitze here
+            if 'revised_elaboration_changelog' in request.POST:
+                elaboration.revised_elaboration_changelog = request.POST['revised_elaboration_changelog']
+
             elaboration.save()
 
         # only save if it is unsubmitted (because of js raise condition)

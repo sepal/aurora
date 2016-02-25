@@ -26,7 +26,7 @@
 <script type="text/javascript">
 
   var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
-  var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}"; 
+  var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
   var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
   var REVIEW_EVALUATION_URL = "{% url 'Review:evaluate' course_short_title=course.short_title %}";
 
@@ -35,7 +35,7 @@
 <div id="detail_area">
   <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
-    {{ challenge.title|safe }} 
+    {{ challenge.title|safe }}
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
 	{% endif %}
@@ -86,7 +86,7 @@
 	{% if not elaboration.is_submitted %}
 		{% if not accepted %}
 			{% if blocked %}
-				<div class="XL" style="color:gray;">You cannot start this task now. Go back and check the status of the other tasks.  </div>			  
+				<div class="XL" style="color:gray;">You cannot start this task now. Go back and check the status of the other tasks.  </div>
 			{% elif challenge.currently_active  %}
 			<div id="Caccept" class="button XL" onclick="$('.elaboration_block').slideDown('fast');$('#Caccept').slideUp('fast');$('#qa').slideUp('fast');">
 				start this task
@@ -146,7 +146,7 @@
 	{% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}Original h{% else %}H{% endif %}anded in <a style="color:black;text-decoration: none;" href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{elaboration.submission_time|naturaltime}}'); }, 3000);void(0);" title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i class="fa fa-calendar"></i></a> <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
 	
 	{% if challenge.accepted_files %}
-	{% render_uploads elaboration %}
+	{% render_original_uploads elaboration %}
 	{% endif %}
 
     {% if not elaboration.can_be_revised and elaboration.revised_elaboration_text != elaboration.elaboration_text%}
@@ -201,7 +201,7 @@
         <div id="{{ review_data.review_id }}" class="review_evaluation_container">
             <div review_id="{{ review_data.review_id }}" appraisal="P"
                  class="review_evaluation positive {% if review_data.evaluation == "P" %} active{% endif %}">
-                ...helped me to improve my work 
+                ...helped me to improve my work
             </div>
             <div review_id="{{ review_data.review_id }}" appraisal="D"
                  class="review_evaluation neutral {% if review_data.evaluation == "D" %} active{% endif %}">
@@ -227,7 +227,7 @@
 	      {% if challenge.accepted_files %}
 	        <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
 	            <form action="/fileupload"
-	                  class="dropzone dz-clickable"
+	                  class="dropzone dz-clickable dropzone-revised"
 	                  id="dropzone">
 	                <input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
 	            </form>
@@ -237,6 +237,7 @@
 	      <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
 	        <form method="post">
 	          <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
+            Changelog: <input type="text" id="changelog" placeholder="What did you change in your revision?"  />
 	        </form>
 	        <button class="real_submit_revised XL R button" id="{{ challenge.id }}">Save revision</button>
 	      </div>
