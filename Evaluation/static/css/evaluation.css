@@ -70,8 +70,9 @@
 }
 
 .question_container div {
-	color:#666;
+/*	color:#666; */
 }
+
 .review_answer {
 	box-sizing: border-box;
 	background:transparent;

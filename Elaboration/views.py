@@ -5,7 +5,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.html import escape
 from Challenge.models import Challenge
 from Elaboration.models import Elaboration
 from AuroraUser.models import AuroraUser
@@ -27,7 +26,7 @@ def save_elaboration(request, course_short_title):
         elaboration = Elaboration.objects.all().filter(challenge=challenge, user=user).order_by('id').latest('creation_time')
 
         if elaboration.can_be_revised and 'revised_elaboration_text' in request.POST:
-            elaboration.revised_elaboration_text = request.POST['revised_elaboration_text']
+            elaboration.revised_elaboration_text = request.POST['revised_elaboration_text'] # sanitze here
             if 'revised_elaboration_changelog' in request.POST:
                 elaboration.revised_elaboration_changelog = request.POST['revised_elaboration_changelog']
 
@@ -35,7 +34,7 @@ def save_elaboration(request, course_short_title):
 
         # only save if it is unsubmitted (because of js raise condition)
         if not elaboration.is_submitted():
-            elaboration_text = request.POST['elaboration_text']
+            elaboration_text = request.POST['elaboration_text'] # sanitze here
             elaboration.elaboration_text = ''
             elaboration.elaboration_text = elaboration_text
             elaboration.save()
@@ -65,7 +64,7 @@ def submit_elaboration(request, course_short_title):
    if elaboration.is_submitted():
        raise Http404
 
-   elaboration.elaboration_text = escape(request.POST['elaboration_text'])
+   elaboration.elaboration_text = request.POST['elaboration_text'] # sanitze here
    elaboration.revised_elaboration_text = elaboration.elaboration_text
 
    if elaboration.elaboration_text or UploadFile.objects.filter(elaboration=elaboration).exists():

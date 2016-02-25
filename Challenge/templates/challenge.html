@@ -144,11 +144,20 @@
     {% endif %}
 {% else %}
 	{% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}Original h{% else %}H{% endif %}anded in <a style="color:black;text-decoration: none;" href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{elaboration.submission_time|naturaltime}}'); }, 3000);void(0);" title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i class="fa fa-calendar"></i></a> <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
+	
 	{% if challenge.accepted_files %}
 	{% render_original_uploads elaboration %}
 	{% endif %}
 
-    <textarea id="editor_challenge">{{ elaboration.elaboration_text }}</textarea>
+    {% if not elaboration.can_be_revised and elaboration.revised_elaboration_text != elaboration.elaboration_text%}
+     	 Revised text
+		<textarea id="editor_challenge">{{ elaboration.revised_elaboration_text }}</textarea>
+		
+		<br>Original text
+		<textarea id="editor_challenge_orig">{{ elaboration.elaboration_text }}</textarea>
+	{% else %}
+		<textarea id="editor_challenge">{{ elaboration.elaboration_text }}</textarea>
+	{% endif %}
 
 {% if evaluation %}
     <div class="comments">
@@ -175,6 +184,7 @@
       <div class="title">You received the following reviews for your work</div>
       <div>&nbsp;</div>
 	  {% for review_data in reviews %}
+	 &nbsp; Review {{ forloop.counter }}
       <div class="view_review">
 		  {% render_review_answers review_data.review_id %}
 			{% if review_data.appraisal == "Awesome" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b>
@@ -220,7 +230,6 @@
 	                  class="dropzone dz-clickable dropzone-revised"
 	                  id="dropzone">
 	                <input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
-	                {% csrf_token %}
 	            </form>
 	            <div style="font-size:80%">Note: use »Fig.X« in your text to reference to uploaded images.</div>
 	        </div>
@@ -233,8 +242,14 @@
 	        <button class="real_submit_revised XL R button" id="{{ challenge.id }}">Save revision</button>
 	      </div>
 	 	</div>
+	{% else %} <!-- this is an obscure bug fix. without this form, comments don't work on this page. no idea why :( -->
+	{% comment %}
+	      {% if challenge.accepted_files %}
+	            <form action="/fileupload" id="dropzone" style="display:none">
+	            </form>
+	      {% endif %}
+	{% endcomment %}
     {% endif %}
-
 {% endif %}
 {% endif %}
   </div>

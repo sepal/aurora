@@ -49,20 +49,23 @@ $(function() {
 
 
 	$("#dateSort").on("click", function () {
-    
+		location.reload();
+		/*
 	    var $wrapper = $('#detail_area'),
 	        $art = $wrapper.children('.stack');
 
 	    $art.sort(function(a, b) {
-	        return +$(a).attr('ID') > +$(b).attr('ID') ? 1 : -1;
+	        return +$(a).attr('ID') < +$(b).attr('ID') ? 1 : -1;
 	    })
 	    .each(function() {
 	        $wrapper.append(this);
 		});
 		$('#detail_area').masonry('reloadItems');
 		$('#detail_area').masonry('layout');
+		*/
 	});
 	$('#detail_area').masonry({itemSelector:'.stack',columWidth:0})
+
 });
 
 
