@@ -43,6 +43,7 @@ class Challenge(models.Model):
     DONE_PEER_REVIEWED = 5
     WAITING_FOR_EVALUATION = 6
     EVALUATED = 7
+    REVIEW_FEEDBACK_GIVEN = 8
 
 #    status_dict = {
 #        -1: "Can not be submitted yet.",
@@ -229,6 +230,9 @@ class Challenge(models.Model):
 
         elaboration = self.get_elaboration(user)
 
+        # any challenge is blocked, so stack is blocked
+        if self.get_stack().is_blocked(user):
+            return self.BLOCKED_BAD_REVIEW
         # user did not start to write an elaboration
         if not elaboration or not elaboration.is_started():
             return self.NOT_STARTED
