@@ -404,3 +404,12 @@ h1 {
 	margin-top:2em;
 	clear:both;
 }
+
+.changelog {
+	margin-top:1em;
+}
+
+.changelog input[type=text] {
+	width:100%;
+	text-align:top;
+}

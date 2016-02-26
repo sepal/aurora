@@ -76,7 +76,7 @@ function init_tinymce_read_only_orig() {
         autoresize_min_height: 150,
         autoresize_max_height: 800,
         readonly: 1
-        
+
     });
 }
 
@@ -167,10 +167,12 @@ function elaboration_save(challenge_id, submit) {
 function revised_elaboration_save(challenge_id, submit) {
     var elaboration_text = tinyMCE.activeEditor.getContent().toString();
     var changelog = $('#changelog').prop('value')
+    var review_id = $("#most_helpful_other_user").val()
     var data = {
         challenge_id: challenge_id,
         revised_elaboration_text: elaboration_text,
-        revised_elaboration_changelog: changelog
+        revised_elaboration_changelog: changelog,
+        most_helpful_other_user: review_id
     };
     var args = { type: "POST", url: SAVE_URL, data: data,
         success: function () {
