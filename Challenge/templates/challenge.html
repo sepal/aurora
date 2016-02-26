@@ -230,6 +230,7 @@
 	                  class="dropzone dz-clickable dropzone-revised"
 	                  id="dropzone">
 	                <input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
+					{% csrf_token %}
 	            </form>
 	            <div style="font-size:80%">Note: use »Fig.X« in your text to reference to uploaded images.</div>
 	        </div>

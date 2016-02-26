@@ -37,6 +37,9 @@ function challenge_loaded() {
 }
 
 function go_back() {
+    var challenge = $('.challenge');
+    var challenge_id = challenge.attr('id');
+    elaboration_save(challenge_id);
 	location.href = document.referrer;
 }
 
