@@ -237,17 +237,19 @@
 	      <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
 	        <form method="post">
 	          <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
-            Changelog: <input type="text" value="{{ elaboration.revised_elaboration_changelog}}" id="changelog" placeholder="What did you change in your revision?"  />
-            Most helpful other user:
-            <select id="most_helpful_other_user" name="most_helpful_other_user">
-              <option>Please Select...</option>
-              <option {% if elaboration.most_helpful_other_user == -1 %} selected {% endif %} value="-1">Tutor / LVA </option>
-              {% for review in elaboration.get_reviews %}
-              {{review.reviewer.pk}}
-                <option {% if review.reviewer.pk == elaboration.most_helpful_other_user %} selected {% endif %}
-                value="{{ review.id }}">Review {{forloop.counter}}</option>
-              {% endfor %}
-            </select>
+              <div class="changelog">
+				  Briefly describe what changes you made from your original elaboration<br><input type="text" value="{{ elaboration.revised_elaboration_changelog}}" id="changelog"  />
+				  <br><br>Which review was most helpful for this revision:
+            	  <select id="most_helpful_other_user" name="most_helpful_other_user">
+					  <option>Please Select...</option>
+           		   {% for review in elaboration.get_reviews %}
+         			  {{review.reviewer.pk}}
+            			<option {% if review.reviewer.pk == elaboration.most_helpful_other_user %} selected {% endif %}
+              			  value="{{ review.id }}">Review {{forloop.counter}}</option>
+           	   	   {% endfor %}
+            		  <option {% if elaboration.most_helpful_other_user == -1 %} selected {% endif %} value="-1">Tutor / LVA </option>
+           	 	 </select>
+				</div>
 	        </form>
 	        <button class="real_submit_revised XL R button" id="{{ challenge.id }}">Save revision</button>
 	      </div>
