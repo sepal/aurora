@@ -278,7 +278,7 @@ class Challenge(models.Model):
         return result
 
     def is_in_lock_period(self, user, course):
-        PERIOD = 99
+        PERIOD = 14
         START_YEAR = 2015
         START_MONTH = 3
         START_DAY = 1
@@ -286,12 +286,12 @@ class Challenge(models.Model):
         final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
         elaborations = (
             Elaboration.objects
-            .filter(challenge__id__in=final_challenge_ids, user=user, submission_time__gt=datetime(START_YEAR, START_MONTH, START_DAY))
+            .filter(challenge__id__in=final_challenge_ids, user=user, creation_time__gt=datetime(START_YEAR, START_MONTH, START_DAY))
         )
         if elaborations:
-            last_submit = elaborations.latest('submission_time')
-            if last_submit.submission_time < (datetime.now() - timedelta(days=PERIOD)):
+            last_creation = elaborations.latest('creation_time')
+            if datetime.now() > (last_creation.creation_time  + timedelta(days=PERIOD)):
                 return False
             else:
-                return (last_submit.submission_time + timedelta(days=PERIOD))
+                return (last_creation.creation_time + timedelta(days=PERIOD))
         return False
