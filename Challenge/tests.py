@@ -597,7 +597,7 @@ class ChallengeTest(TestCase):
         bad_review.appraisal = Review.NOTHING
         bad_review.save()
         assert challenge2.is_enabled_for_user(user1)
-        assert challenge2.get_status(user1) == Challenge.NOT_STARTED
+        assert challenge2.get_status(user1) == Challenge.BLOCKED_BAD_REVIEW
 
     def test_status_user_review_missing(self):
         challenge1 = self.challenge
@@ -686,7 +686,7 @@ class ChallengeTest(TestCase):
         assert challenge1.get_status(user1) == Challenge.DONE_MISSING_PEER_REVIEW
         Review(elaboration=elaboration1, submission_time=datetime.now(), reviewer=user3,
                appraisal=Review.SUCCESS).save()
-        assert challenge1.get_status(user1) == Challenge.DONE_MISSING_PEER_REVIEW
+        assert challenge1.get_status(user1) == Challenge.DONE_PEER_REVIEWED
 
     def test_status_final_challenge(self):
         challenge1 = self.challenge
