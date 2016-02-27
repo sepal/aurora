@@ -143,7 +143,7 @@ INSTALLED_APPS = (
     'taggit',
     'Faq',
     'djcelery',
-    'Plagcheck',
+    'PlagCheck',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
@@ -203,9 +203,9 @@ ENDLESS_PAGINATION_NEXT_LABEL = (
     '<div class="paginator next">next <i class="fa fa-angle-double-right"></i></div>'
 )
 
-# Plagcheck settings
+# PlagCheck settings
 
-# a document scanned by Plagcheck needs to have the same or higher similarity percentage
+# a document scanned by PlagCheck needs to have the same or higher similarity percentage
 # than PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT's value to be reported as a possible
 # plagiarism.
 PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT = 50
@@ -226,7 +226,7 @@ if DEBUG:
     # Means we can't use celerymon/flower monitor the django message broker, instead to properly
     # monitor and debug events we need to use RabbitMQ message broker locally.
     #
-    # Enable USE_DJANGO_BROKER to entirely run Plagcheck inside django, without RabbitMQ.
+    # Enable USE_DJANGO_BROKER to entirely run PlagCheck inside django, without RabbitMQ.
     #
     # http://stackoverflow.com/questions/5449163/django-celery-admin-interface-showing-zero-tasks-workers
 

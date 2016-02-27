@@ -3,8 +3,9 @@ from unittest import skip
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from Plagcheck.models import Reference, Result, Suspect, SuspectFilter, SuspectState
-from Plagcheck import tasks
+from PlagCheck.models import Reference, Result, Suspect, SuspectFilter, SuspectState
+from PlagCheck import tasks
+from AuroraProject.settings import PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT
 from ddt import ddt, data
 
 from Elaboration.models import Elaboration
@@ -13,11 +14,13 @@ from AuroraUser.models import AuroraUser
 from Course.models import Course
 import sherlock # noqa
 
+
 def hashes(doc_id):
     ret = list()
     for ref in Reference.objects.all().filter(doc_id=doc_id):
         ret.append(ref.hash)
     return ret
+
 
 class PlagcheckTestData:
     @staticmethod
@@ -65,38 +68,43 @@ class PlagCheckTestCase(TestCase):
         # self.users = AuroraUser.objects.all()
 
     # Helpers
-    def import_text(self, filename, doc_id, user=None, challenge=None, is_new=True):
+    def import_text(self, filename, doc_id=None, user=None, challenge=None, is_new=True):
         text = PlagcheckTestData.get_text(filename)
 
         if not user:
             user = self.user
 
         if not challenge:
-            challange = self.challenge
+            challenge = self.challenge
 
-        # Elaboration.objects.create(challenge=challenge, user=user, elaboration_text=text)
-        return tasks.check(doc=text,
-                           doc_id=doc_id,
-                           doc_version=0,
-                           doc_type="default_type",
-                           username=user.nickname,
-                           is_new=False)
+        ret = dict()
+
+        ret['elaboration'] = Elaboration.objects.create(challenge=challenge, user=user, elaboration_text=text)
+        ret['result'] = Result.objects.get(doc_id=ret['elaboration'].id)
+        ret['suspects'] = Suspect.objects.filter(doc_id=ret['elaboration'].id)
+
+        return ret
+
+        #return tasks.check(doc=text,
+        #                   doc_id=doc_id,
+        #                   doc_version=0,
+        #                   doc_type="default_type",
+        #                   username=user.nickname,
+        #                   is_new=False)
 
     def insert_random_texts(self, count):
         for i in range(0, count):
             self.import_text(PlagcheckTestData.get_random_text_path(), i)
 
     def do_pair_test(self, prefix, expected_similarity):
-        ret = self.import_text("%s_src.txt" % prefix, 0)
+        ret1 = self.import_text("%s_src.txt" % prefix)
 
-        self.assertEqual(len(Suspect.objects.all()), 0)
+        self.assertEqual(len(ret1['suspects']), 0)
 
-        result = Result.objects.get(doc_id=0)
+        if expected_similarity > PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT:
 
-        #self.assertEqual(result.)
-
-        ret = self.import_text("%s_susp.txt" % prefix, 1)
-        self.assertGreaterEqual(Reference.overall_similarity(1, ret['hash_count']), expected_similarity)
+            ret2 = self.import_text("%s_susp.txt" % prefix)
+            self.assertGreaterEqual(ret2['suspects'][0].similarity, expected_similarity)
 
     # Tests
     def test_sherlock_mod(self):
@@ -116,145 +124,117 @@ class PlagCheckTestCase(TestCase):
     def test_task_entry(self):
         """ Import a 3 words text and check API return values """
 
-        ret = self.import_text("simple/hello_world.txt", 0)
+        ret = self.import_text("simple/hello_world.txt")
 
-        self.assertEqual(ret['doc'], 0)
-        self.assertEqual(ret['hash_count'], 3)
+        self.assertEqual(ret['result'].hash_count, 3)
 
     def test_repeatability(self):
         """Import a 3 words text twice and check if hashes match"""
 
-        self.import_text("simple/hello_world.txt", 0)
-        first_hashes = hashes(0)
+        ret1 = self.import_text("simple/hello_world.txt")
+        first_hashes = hashes(ret1['elaboration'].id)
 
-        self.import_text("simple/hello_world.txt", 1)
-        second_hashes = hashes(1)
+        ret2 = self.import_text("simple/hello_world.txt")
+        second_hashes = hashes(ret2['elaboration'].id)
 
         self.assertSequenceEqual(first_hashes, second_hashes)
 
     def test_hello_world_update(self):
-        """ Import a 3 word text twice and check similarity """
-
-        ret = self.import_text("simple/hello_world.txt", 0)
-        self.assertEqual(ret['similarity'], 0)
-
-        ret = self.import_text("simple/hello_world.txt", 1)
-        self.assertEqual(ret['similarity'], 100)
-
-    def test_hello_world_update(self):
         """ Import a 3 word text 3 times and check similarity """
 
-        ret = self.import_text("simple/hello_world.txt", 0)
-        self.assertEqual(Reference.overall_similarity(0, ret['hash_count']), 0)
+        ret = self.import_text("simple/hello_world.txt")
+        self.assertEqual(len(ret['suspects']), 0)
 
-        ret = self.import_text("simple/hello_world.txt", 1)
-        self.assertEqual(Reference.overall_similarity(1, ret['hash_count']), 100)
+        ret = self.import_text("simple/hello_world.txt")
+        self.assertEqual(len(ret['suspects']), 1)
 
-        ret = self.import_text("simple/hello_world.txt", 1)
-        self.assertEqual(Reference.overall_similarity(1, ret['hash_count']), 100)
+        ret = self.import_text("simple/hello_world.txt")
+        self.assertEqual(len(ret['suspects']), 2)
 
+    #@skip("remove this")
     def test_elaboration_single_similar(self):
         """ Test if similar document is found """
 
         # import same text with different doc_id
-        ret1 = self.import_text("simple/hello_world.txt", 0)
-        ret2 = self.import_text("simple/hello_world.txt", 1)
+        ret1 = self.import_text("simple/hello_world.txt")
+        ret2 = self.import_text("simple/hello_world.txt")
 
-        similarities = Reference.get_similar_elaborations(1)
+        similarities = Reference.get_similar_elaborations(ret2['elaboration'].id)
         (doc_id, similar_hashes, filter_id) = similarities[0]
 
-        self.assertEqual(doc_id, ret1['doc'])
-        self.assertEqual(similar_hashes, ret1['hash_count'])
+        self.assertEqual(doc_id, ret1['result'].doc_id)
+        self.assertEqual(similar_hashes, ret1['result'].hash_count)
 
     def test_elaboration_multi_similar(self):
         """ Test if similar document is found """
 
         # import same text with different doc_id
-        ret1 = self.import_text("simple/hello_world.txt", 0)
-        ret2 = self.import_text("simple/hello_world.txt", 1)
-        ret3 = self.import_text("simple/hello_world.txt", 2)
+        ret1 = self.import_text("simple/hello_world.txt")
+        ret2 = self.import_text("simple/hello_world.txt")
+        ret3 = self.import_text("simple/hello_world.txt")
 
         similarities = Reference.get_similar_elaborations(2)
         (doc_id, similar_hashes, filter_id) = similarities[0]
-        self.assertEqual(doc_id, ret1['doc'])
         self.assertEqual(similar_hashes, 3)
 
         (doc_id, similar_hashes, filter_id) = similarities[1]
-        self.assertEqual(doc_id, ret2['doc'])
         self.assertEqual(similar_hashes, 3)
 
     def test_suspect_single_similar(self):
-        self.import_text("princeton/princeton_001_src.txt", 0)
+        ret1 = self.import_text("princeton/princeton_001_src.txt")
 
         self.assertEqual(Suspect.objects.all().count(), 0)
 
-        self.import_text("princeton/princeton_001_susp.txt", 1)
+        ret2 = self.import_text("princeton/princeton_001_susp.txt")
 
         self.assertEqual(Suspect.objects.all().count(), 1)
 
         suspect = Suspect.objects.get()
 
-        self.assertEqual(suspect.doc_id, 1)
-        self.assertEqual(suspect.similar_to_id, 0)
-        self.assertEqual(suspect.percent, 75)
+        self.assertEqual(suspect.doc_id, ret2['elaboration'].id)
+        self.assertEqual(suspect.similar_to_id, ret1['elaboration'].id)
+        self.assertEqual(suspect.similarity, 75)
 
     def test_duplicate_hash(self):
-        self.import_text("simple/duplicate_hash.txt", 0)
-        self.import_text("simple/duplicate_hash.txt", 1)
+        self.import_text("simple/duplicate_hash.txt")
+        self.import_text("simple/duplicate_hash.txt")
         suspect = Suspect.objects.get()
-        self.assertEqual(suspect.percent, 100)
+        self.assertEqual(suspect.similarity, 100)
 
     def test_filter(self):
-        self.import_text("simple/hello_world.txt", 0)
-        SuspectFilter.objects.create(doc_id=0)
-        self.import_text("simple/hello_world.txt", 1)
+        ret = self.import_text("simple/hello_world.txt")
+        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
+        self.import_text("simple/hello_world.txt")
         suspect = Suspect.objects.get()
-        self.assertEqual(suspect.percent, 100)
-        self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
+        self.assertEqual(suspect.similarity, 100)
+        self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
 
     def test_filter_small_diff(self):
-        self.import_text("simple/der_kommentar.txt", 0)
-        SuspectFilter.objects.create(doc_id=0)
-        self.import_text("simple/das_kommentar.txt", 1)
+        ret = self.import_text("simple/der_kommentar.txt")
+        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
+        self.import_text("simple/das_kommentar.txt")
         suspect = Suspect.objects.get()
-        self.assertGreater(suspect.percent, 50)
-        self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
+        self.assertGreater(suspect.similarity, 50)
+        self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
 
     def test_filter_small_diff_reverse(self):
-        self.import_text("simple/das_kommentar.txt", 0)
-        SuspectFilter.objects.create(doc_id=0)
-        self.import_text("simple/der_kommentar.txt", 1)
+        ret = self.import_text("simple/das_kommentar.txt")
+        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
+        self.import_text("simple/der_kommentar.txt")
         suspect = Suspect.objects.get()
-        self.assertGreater(suspect.percent, 50)
-        self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
+        self.assertGreater(suspect.similarity, 50)
+        self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
 
     def test_filter_small_diff_others(self):
-        self.import_text("simple/der_kommentar.txt", 0)
-        SuspectFilter.objects.create(doc_id=0)
-        self.import_text("simple/der_kommentar.txt", 1)
-        self.import_text("simple/der_kommentar.txt", 2)
+        ret = self.import_text("simple/der_kommentar.txt")
+        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
+        self.import_text("simple/der_kommentar.txt")
+        self.import_text("simple/der_kommentar.txt")
         suspects = Suspect.objects.all()
 
         for suspect in suspects:
-            print(str(suspect))
-            self.assertEqual(suspect.state, SuspectState.AUTO_FILTERED.value)
-
-    @skip("deprecated")
-    def test_match_count(self):
-
-        self.insert_random_texts(20)
-
-        self.import_text("simple/match_count_bug_review.txt", 20)
-        self.import_text("simple/match_count_bug_review.txt", 21)
-
-        match_count = Reference.get_match_count(1)
-        similar = Reference.get_similar_elaborations(1)
-
-        computed_match_count = 0
-        for (doc_id, similar_hashes, filter_id) in similar:
-            computed_match_count += similar_hashes
-
-        self.assertEqual(computed_match_count, match_count)
+            #print(str(suspect))
+            self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
 
     @data(("princeton/princeton_001", 75), ("princeton/princeton_002", 30), ("princeton/princeton_003", 80))
     def test_princeton_dataset(self, value):
@@ -275,11 +255,11 @@ class PlagCheckTestCase(TestCase):
         for test in data:
             try:
 
-                self.import_text("sheffield/orig_%s.txt" % (test[1]), 0)
+                self.import_text("sheffield/orig_%s.txt" % (test[1]))
 
-                ret = self.import_text("sheffield/%s_%s.txt" % (test[0], test[1]), 1)
-                self.assertGreaterEqual(ret['similarity'], 0)
+                ret = self.import_text("sheffield/%s_%s.txt" % (test[0], test[1]))
+                #self.assertGreaterEqual(ret['similarity'], 0)
 
-                print("testing %s_%s.txt against orig_%s.txt gives %i%% similarity" % (test[0], test[1], test[1], ret['similarity']))
+                #print("testing %s_%s.txt against orig_%s.txt gives %i%% similarity" % (test[0], test[1], test[1], ret['similarity']))
             except UnicodeDecodeError:
                 continue

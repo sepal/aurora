@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Plagcheck.models import *
+from PlagCheck.models import *
 from django.core import urlresolvers
 
 
@@ -12,7 +12,7 @@ class ResultAdmin(admin.ModelAdmin):
 
 
 class SuspectsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'doc', 'similar_to', 'percent', 'state')
+    list_display = ('id', 'doc', 'similar_to', 'similarity', 'state')
 
 
 class SuspectFilterAdmin(admin.ModelAdmin):

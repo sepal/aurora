@@ -19,7 +19,7 @@
                 <label>Suspect state:</label>
                 <select name="suspect_state_selection" onchange="suspect_state.submit()">
                     {% for state in suspect_states %}
-                        <option {% if suspect.suspect_state.value == state.value %} selected {% endif %}
+                        <option {% if suspect.state_enum.value == state.value %} selected {% endif %}
                                 value="{{ state.value }}">{{ state.name }}</option>
                     {% endfor %}
                 </select>
@@ -29,7 +29,7 @@
         Result:<br />
         # hashes: {{ suspect.result.hash_count }}<br />
         # matching hashes: {{ suspect.match_count }}<br />
-        Similarity: {{ suspect.percent }}%<br />
+        Similarity: {{ suspect.similarity }}%<br />
         Date: {{ suspect.result.created }}<br />
         </div>
 
