@@ -27,7 +27,7 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from Plagcheck.models import Suspect, Result, Reference, SuspectState, SuspectFilter
+from PlagCheck.models import Suspect, Result, Reference, SuspectState, SuspectFilter
 from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
 from django.db import IntegrityError
 from django.shortcuts import redirect
@@ -982,7 +982,7 @@ def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=No
 
     new_state = request.POST.get('suspect_state_selection', None)
 
-    suspect.suspect_state = new_state
+    suspect.state_enum = new_state
 
     suspect.save()
 

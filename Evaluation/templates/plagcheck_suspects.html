@@ -22,8 +22,8 @@
                 <td>{{ suspect.id }}</td>
                 <td>{{ suspect.doc_id }}</td>
                 <td>{{ suspect.similar_to_id }}</td>
-                <td>{{ suspect.percent }}</td>
-                <td>{{ suspect.suspect_state.name }}</td>
+                <td>{{ suspect.similarity }}</td>
+                <td>{{ suspect.state_enum.name }}</td>
             </tr>
         {% endfor %}
     </table>

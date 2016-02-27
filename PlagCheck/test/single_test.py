@@ -1,7 +1,7 @@
 import sys
 
-from Plagcheck.test.db.plag_json import *
-from Plagcheck.hashing import sherlock
+from PlagCheck.test.db.plag_json import *
+from PlagCheck.hashing import sherlock
 
 
 def main(file):

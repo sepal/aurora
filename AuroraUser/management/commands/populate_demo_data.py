@@ -22,7 +22,7 @@ from Faq.models import Faq
 from AuroraProject.settings import STATIC_ROOT
 import os
 from django.core.files import File
-from Plagcheck.tests import PlagcheckTestData
+from PlagCheck.tests import PlagcheckTestData
 
 
 class Command(BaseCommand):

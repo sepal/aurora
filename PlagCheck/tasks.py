@@ -1,18 +1,18 @@
 from __future__ import absolute_import
 
-import os, time
+import os
 
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AuroraProject.settings')
 
-from django.conf import settings     # noqa
+from django.conf import settings
 from django.db.utils import OperationalError
 
-from Plagcheck.models import Reference, Result, Suspect, SuspectState # noqa
+from PlagCheck.models import Reference, Result, Suspect, SuspectState
 from AuroraProject.settings import PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT
-import sherlock # noqa
+import sherlock
 
 app = Celery('AuroraProject')
 
@@ -29,6 +29,27 @@ class PlagcheckError(Exception):
 
 @app.task(bind=True)
 def check(self, **kwargs):
+    """
+    Do a check of a document against the hashes documents in the db.
+
+    Call this function directly to run the check synchronously:
+
+        tasks.check(args)
+
+    or call this function asynchronously like:
+
+        tasks.check.delay(args)
+
+    to schedule a check at the celery worker process using a RabbitMQ message.
+
+    TODO: currently the document text is required as kwargs argument!
+    The reason is that it is easier to run tests.
+
+    :param kwargs['doc_id'] -- ID of the document
+    :param kwargs['doc'] -- Text of the document
+    :return: Future object of this task invocation when called asynchronously,
+    or the result if called synchronously.
+    """
     try:
         doc_id = kwargs['doc_id']
 
@@ -55,11 +76,11 @@ def check(self, **kwargs):
             # of possible matching documents.
             similar_elaborations = Reference.get_similar_elaborations(doc_id)
             for (similar_doc_id, match_count, filter_id) in similar_elaborations:
-                percent = (100.0/hash_count) * match_count
+                similarity = (100.0/hash_count) * match_count
 
-                assert(percent <= 100)
+                assert(similarity <= 100)
 
-                if percent > PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT:
+                if similarity > PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT:
                     if filter_id is not None:
                         auto_filtered = True
 
@@ -67,7 +88,7 @@ def check(self, **kwargs):
                     # findings can be handled later
                     suspects.append({
                         'similar_doc_id': similar_doc_id,
-                        'percent': percent,
+                        'similarity': similarity,
                         'filter_id': filter_id,
                         'match_count': match_count
                     })
@@ -87,7 +108,7 @@ def check(self, **kwargs):
             Suspect.objects.create(
                 doc_id=doc_id,
                 similar_to_id=suspect['similar_doc_id'],
-                percent=suspect['percent'],
+                similarity=suspect['similarity'],
                 match_count=suspect['match_count'],
                 result=result,
                 state=state
@@ -96,4 +117,4 @@ def check(self, **kwargs):
         return result.celery_result()
     except OperationalError as e:
         print("Got an OperationalError, retrying")
-        self.retry(exc=e, max_retries=2)
+        self.retry(exc=e, max_retries=2, countdown=5)
