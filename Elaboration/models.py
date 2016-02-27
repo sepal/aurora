@@ -26,7 +26,7 @@ class Elaboration(models.Model):
     tags = TaggableManager()
     comments = GenericRelation(Comment)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.id)
 
     def is_started(self):

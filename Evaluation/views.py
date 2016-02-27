@@ -1,5 +1,5 @@
 from datetime import datetime
-from difflib import SequenceMatcher
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import difflib
 import json
 from django.contrib.contenttypes.models import ContentType
@@ -27,7 +27,13 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
+from PlagCheck.models import Suspect, Result, Reference, SuspectState, SuspectFilter
+from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
+from django.db import IntegrityError
+from django.shortcuts import redirect
 
+# TODO: Use same pagination for all views, see django pagination class
+# TODO: Why are there mostly 2 templates processed for each view?
 
 @login_required()
 @staff_member_required
@@ -444,26 +450,26 @@ def challenge_txt(request, course_short_title=None):
 @login_required()
 @staff_member_required
 def similarities(request, course_short_title=None):
-    elaboration = Elaboration.objects.get(pk=request.session.get('elaboration_id', ''))
-    challenge_elaborations = Elaboration.objects.filter(challenge=elaboration.challenge,
-                                                        submission_time__isnull=False).exclude(pk=elaboration.id)
 
-    similarities = []
-    if elaboration.elaboration_text:
-        for challenge_elaboration in challenge_elaborations:
-            if challenge_elaboration.elaboration_text:
-                similarity = {}
-                s = SequenceMatcher(lambda x: x == " ",
-                                    elaboration.elaboration_text,
-                                    challenge_elaboration.elaboration_text)
+    # elaboration = Elaboration.objects.get(pk=request.session.get('elaboration_id', ''))
+    # challenge_elaborations = Elaboration.objects.filter(challenge=elaboration.challenge,
+    #                                                     submission_time__isnull=False).exclude(pk=elaboration.id)
 
-                if (s.ratio() > 0.5):
-                    similarity['elaboration'] = challenge_elaboration
-                    similarity['table'] = difflib.HtmlDiff().make_table(elaboration.elaboration_text.splitlines(),
-                                                                        challenge_elaboration.elaboration_text.splitlines())
-                    similarities.append(similarity)
+    suspected = Suspect.objects.all()
 
-    return render_to_response('similarities.html', {'similarities': similarities}, RequestContext(request))
+    similarities = list()
+    for suspect in suspected:
+        doc = Elaboration.objects.all().get(pk=suspect.doc_id)
+        similar_to = Elaboration.objects.all().get(pk=suspect.similar_to_id)
+
+
+        similarity = dict()
+        similarity['elaboration'] = Elaboration.objects.all().get(pk=suspect.doc_id)
+        similarity['table'] = difflib.HtmlDiff().make_table(doc.elaboration_text.splitlines(),
+                                                            similar_to.elaboration_text.splitlines())
+        similarities.append(similarity)
+
+    return render_to_response('plagcheck_compare.html', {'similarities': similarities}, RequestContext(request))
 
 
 @csrf_exempt
@@ -769,6 +775,7 @@ def search_user(request, course_short_title=None):
     return evaluation(request, course_short_title)
 
 
+# TODO: Do we really want to submit the users current list to server and then sort it there?
 @login_required()
 @staff_member_required
 def sort(request, course_short_title=None):
@@ -898,3 +905,88 @@ def remove_tag(request, course_short_title=None):
     taggable_object.remove_tag(tag)
 
     return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+
+
+@csrf_exempt
+@staff_member_required
+def plagcheck_suspects(request, course_short_title=None):
+    course = Course.get_or_raise_404(short_title=course_short_title)
+
+    show_filtered = int(request.GET.get('show_filtered', 0))
+    if show_filtered is 1:
+        suspect_list = Suspect.objects.all()
+    else:
+        suspect_list = Suspect.objects.exclude(state=SuspectState.AUTO_FILTERED.value)
+
+    paginator = Paginator(suspect_list, 25)
+
+    page = request.GET.get('page')
+    try:
+        suspects = paginator.page(page)
+    except PageNotAnInteger:
+        suspects = paginator.page(1)
+    except EmptyPage:
+        suspects = paginator.page(paginator.num_pages)
+
+    context = {
+        'course': course,
+        'suspects': suspects,
+        'suspect_states': SuspectState.choices(),
+        'show_filtered': show_filtered,
+    }
+
+    return render_to_response('evaluation.html', {
+            'overview': render_to_string('plagcheck_suspects.html', context, RequestContext(request)),
+            'course': course,
+        },
+        context_instance=RequestContext(request))
+
+
+@csrf_exempt
+@staff_member_required
+def plagcheck_compare(request, course_short_title=None, suspect_id=None):
+    course = Course.get_or_raise_404(short_title=course_short_title)
+
+    suspect = Suspect.objects.get(pk=suspect_id)
+
+    docA = Elaboration.objects.get(pk=suspect.doc_id)
+    docB = Elaboration.objects.get(pk=suspect.similar_to_id)
+
+    table = difflib.HtmlDiff(wrapcolumn=70).make_table(docA.elaboration_text.splitlines(),
+                                                        docB.elaboration_text.splitlines())
+
+    show_filtered = int(request.GET.get('show_filtered', 0))
+    (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(show_filtered)
+
+    context = {
+        'course': course,
+        'diff_table': table,
+        'suspect': suspect,
+        'suspect_states': SuspectState.states(),
+        'next_suspect_id': next_suspect_id,
+        'prev_suspect_id': prev_suspect_id,
+    }
+
+    return render_to_response('evaluation.html', {
+            'overview': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
+            'course': course
+        },
+        context_instance=RequestContext(request))
+
+
+@csrf_exempt
+@staff_member_required
+@require_POST
+def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=None):
+    suspect = Suspect.objects.get(pk=suspect_id)
+
+    new_state = request.POST.get('suspect_state_selection', None)
+
+    suspect.state_enum = new_state
+
+    suspect.save()
+
+    SuspectFilter.update_filter(suspect)
+
+    return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
+

@@ -22,6 +22,7 @@ from Faq.models import Faq
 from AuroraProject.settings import STATIC_ROOT
 import os
 from django.core.files import File
+from PlagCheck.tests import PlagcheckTestData
 
 
 class Command(BaseCommand):
@@ -459,11 +460,11 @@ def import_data():
     for challenge in challenges:
         for dummy_user in dummy_users:
             if not challenge.is_final_challenge():
-                Elaboration(challenge=challenge, user=dummy_user, elaboration_text="dummy elaboration %s" % dummy_user.username,
+                Elaboration(challenge=challenge, user=dummy_user, elaboration_text=PlagcheckTestData.get_random_text(),
                             submission_time='2013-11-01 10:00:00').save()
 
     print('adding final elaboration 1 for challenge 10')
-    de4 = Elaboration(challenge=challenge_10, user=d1, elaboration_text="final submission user d1",
+    de4 = Elaboration(challenge=challenge_10, user=d1, elaboration_text="final submission user d1 " + PlagcheckTestData.get_random_text(),
                       submission_time=datetime.now())
     de4.save()
 
@@ -471,18 +472,18 @@ def import_data():
     Review(elaboration=de4, reviewer=d3, appraisal='F', submission_time=datetime.now()).save()
 
     print('adding final elaboration 2 for challenge 10')
-    de5 = Elaboration(challenge=challenge_10, user=d2, elaboration_text="final submission user d2",
+    de5 = Elaboration(challenge=challenge_10, user=d2, elaboration_text="final submission user d2 " + PlagcheckTestData.get_random_text(),
                       submission_time=datetime.now())
     de5.save()
 
     print('adding final elaboration 1 for challenge 8')
-    de6 = Elaboration(challenge=challenge_8, user=d3, elaboration_text="final submission user d3",
+    de6 = Elaboration(challenge=challenge_8, user=d3, elaboration_text="final submission user d3 " + PlagcheckTestData.get_random_text(),
                       submission_time=datetime.now())
     de6.save()
 
     # create elaboration for challenge 1 for s0
     print('adding elaboration for challenge 1 for s0')
-    e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this elaboration text is from populate demo data",
+    e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this elaboration text is from populate demo data " + PlagcheckTestData.get_random_text(),
                      submission_time=datetime.now())
     e1.save()
 
@@ -506,7 +507,7 @@ def import_data():
 
     # create elaboration for challenge 2 for s0
     print('adding elaboration for challenge 2 for s0')
-    e2 = Elaboration(challenge=challenge_2, user=s0, elaboration_text="this elaboration text is from populate demo data",
+    e2 = Elaboration(challenge=challenge_2, user=s0, elaboration_text="this elaboration text is from populate demo data " + PlagcheckTestData.get_random_text(),
                      submission_time=datetime.now())
     e2.save()
 
