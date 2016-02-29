@@ -153,7 +153,7 @@ function elaboration_save(challenge_id, submit) {
         elaboration_text: elaboration_text,
         revised_elaboration_text: elaboration_text
     };
-      console.log('Clicked real submit');
+
     var args = { type: "POST", url: SAVE_URL, data: data,
         success: function () {
             if (submit) {
@@ -165,7 +165,7 @@ function elaboration_save(challenge_id, submit) {
 }
 
 function revised_elaboration_save(challenge_id, submit) {
-    var elaboration_text = tinyMCE.activeEditor.getContent().toString();
+    var elaboration_text = tinyMCE.get('editor').getContent().toString();
     var changelog = $('#changelog').prop('value')
     var review_id = $("#most_helpful_other_user").val()
     var data = {
@@ -209,7 +209,7 @@ function real_submit_clicked(event) {
 function real_submit_revised_clicked(event) {
     var challenge = $('.challenge');
     var challenge_id = challenge.attr('id');
-    revised_elaboration_save(challenge_id, true);
+    revised_elaboration_save(challenge_id, false);
 }
 
 function send_submit() {
