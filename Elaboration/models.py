@@ -107,6 +107,10 @@ class Elaboration(models.Model):
 
         return True
 
+    def has_revision(self):
+        if self.elaboration_text != self.revised_elaboration_text:
+            return True
+
     def get_content_type_id(self):
         return ContentType.objects.get_for_model(self).id
 

@@ -34,8 +34,9 @@
 
 <div id="detail_area">
   <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
+	  
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
-    {{ challenge.title|safe }}
+	{{ challenge.title|safe }}
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
 	{% endif %}
@@ -106,7 +107,7 @@
         			<input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
 					{% csrf_token %}
       			</form>
-      			<div style="font-size:80%">Note: use »Fig.X« in your text to reference to uploaded images.</div>
+      			<div style="font-size:80%;color:white;background:black"><b>Important note:</b> reload this page after image uploads are finished! Then, you can use »Fig.X« in your text to reference uploaded images. </div><br>
     		</div>
 			{% endif %}
     <form method="post">
@@ -218,11 +219,11 @@
     </div>
 {% endif %} <!-- in reviews -->
     {% if elaboration.can_be_revised %}
-		<div class="create_revision" {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}style="display:none"{% endif %}>
+		<div class="create_revision" {% if elaboration.has_revision %}style="display:none"{% endif %}>
 			<div class="create_revision_text">Based on these reviews, you can create a revision of your work:</div>
 			<div class="create_revision_link XL button">Create revision. </div>
 		</div>
-		<div class="revision_section" {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}style="display:block"{% endif %}>
+		<div class="revision_section" {% if elaboration.has_revision %}style="display:block"{% endif %}>
 	      Revised Work
 	      {% if challenge.accepted_files %}
 	        <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
@@ -232,11 +233,10 @@
 	                <input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
 					{% csrf_token %}
 	            </form>
-	            <div style="font-size:80%">Note: use »Fig.X« in your text to reference to uploaded images.</div>
+	            <div style="font-size:80%%;color:white;background:black"><b>Important note:</b> reload this page after image uploads are finished! Then, you can use »Fig.X« in your text to reference uploaded images.</div><br>
 	        </div>
 	      {% endif %}
 	      <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
-	        <form method="post">
 	          <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
               <div class="changelog">
 				  Briefly describe what changes you made from your original elaboration<br><input type="text" value="{{ elaboration.revised_elaboration_changelog}}" id="changelog"  />
@@ -251,8 +251,7 @@
             		  <option {% if elaboration.most_helpful_other_user == -1 %} selected {% endif %} value="-1">Tutor / LVA </option>
            	 	 </select>
 				</div>
-	        </form>
-	        <button class="real_submit_revised XL R button" id="{{ challenge.id }}">Save revision</button>
+	        <button class="real_submit_revised XL R button" id="{{ challenge.id }}">Save revision and go back</button>
 	      </div>
 	 	</div>
 	{% else %} <!-- this is an obscure bug fix. without this form, comments don't work on this page. no idea why :( -->

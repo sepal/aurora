@@ -132,7 +132,7 @@ function elaboration_save_intervalTimeOut() {
     var challenge_id = challenge.attr('id');
 	clearTimeout(timeout);
 	elaboration_autosave_notify(challenge_id);
-	$('#saved_message').fadeIn(250).delay(3000).fadeOut(500);
+	$('#saved_message').fadeIn(250).delay(1000).fadeOut(750);
 }
 
 function elaboration_autosave_notify(challenge_id) {
@@ -168,12 +168,15 @@ function revised_elaboration_save(challenge_id, submit) {
     var elaboration_text = tinyMCE.get('editor').getContent().toString();
     var changelog = $('#changelog').prop('value')
     var review_id = $("#most_helpful_other_user").val()
+	if(isNaN(review_id)){alert("select something from the »most helpful« menu!");return false}
     var data = {
         challenge_id: challenge_id,
         revised_elaboration_text: elaboration_text,
         revised_elaboration_changelog: changelog,
         most_helpful_other_user: review_id
     };
+	
+	
     var args = { type: "POST", url: SAVE_URL, data: data,
         success: function () {
             if (submit) {
@@ -209,7 +212,7 @@ function real_submit_clicked(event) {
 function real_submit_revised_clicked(event) {
     var challenge = $('.challenge');
     var challenge_id = challenge.attr('id');
-    revised_elaboration_save(challenge_id, false);
+    if (revised_elaboration_save(challenge_id, false) != false) {location.href = document.referrer;};
 }
 
 function send_submit() {
