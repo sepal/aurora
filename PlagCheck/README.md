@@ -10,6 +10,14 @@ The following steps need to run all in the same python virtualenv environment.
 
 Be sure to have the requirements from requirements_dev.txt file installed.
 
+Either run the vagrant provisioning again, or issue the following:
+
+    pip install -r requirements.txt
+    
+or this one if you are in a development environment:
+
+    pip install -r requirements_dev.txt
+
 ### Sherlock
 
 The worker needs to include the sherlock module, which is a external C module inside the a package. In order to use it
