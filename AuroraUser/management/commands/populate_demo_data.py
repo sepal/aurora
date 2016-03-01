@@ -49,7 +49,7 @@ def import_data():
     CommentsConfig.setup()
 
     number_of_users = 50
-    number_of_tutors = 10
+    number_of_tutors = 5
     users = []
     dummy_users = []
     tutors = []
@@ -298,9 +298,8 @@ def import_data():
 
     ReviewQuestion(challenge=challenge_1, order=1, text='In wie fern stellt der gepostete Artikel einen Beitrag zur Entwicklung der Gesellschaft dar?').save()
     ReviewQuestion(challenge=challenge_1, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_1, order=3, text="Entspricht die Abgabe den Kriterien?", visible_to_author=False).save()
-    ReviewQuestion(challenge=challenge_1, order=4, text="Anmerkungen an das LVA-Team:", visible_to_author=False).save()
-
+    ReviewQuestion(challenge=challenge_1, order=3, text="Anmerkungen an das LVA-Team:", visible_to_author=False).save()
+	
     challenge_2 = Challenge(id=2,
                             title='rage-comic',
                             subtitle='rage-comic',
@@ -315,9 +314,7 @@ def import_data():
 
     ReviewQuestion(challenge=challenge_2, order=1, text="Empfinden Sie den Webcomic als lustig? Begründen Sie Ihre Antwort.").save()
     ReviewQuestion(challenge=challenge_2, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_2, order=3, text="Entspricht die Abgabe den Kriterien?",
-                   visible_to_author=False).save()
-    ReviewQuestion(challenge=challenge_2, order=4, text="Anmerkungen an das LVA-Team:",
+    ReviewQuestion(challenge=challenge_2, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 
     challenge_3 = Challenge(id=3,
@@ -334,18 +331,16 @@ def import_data():
 
     ReviewQuestion(challenge=challenge_3, order=1, text="Was möchte die Autorin bzw. der Autor mit den 4 Absätzen ausdrücken?").save()
     ReviewQuestion(challenge=challenge_3, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_3, order=3, text="Entspricht die Abgabe den Kriterien?",
+    ReviewQuestion(challenge=challenge_3, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
-    ReviewQuestion(challenge=challenge_3, order=4, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
+				   
     challenge_4 = Challenge(id=4,
                             title='wissenschaft',
                             subtitle='wissenschaft',
                             prerequisite=challenge_3,
                             description='Finden Sie einen pseudowissenschaftlichen Artikel und laden Sie ihn hier hoch.',
                             accepted_files='application/pdf',
-                            course=gsi,
+                            course=hci,
                             points=9,
     )
     challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
@@ -361,32 +356,27 @@ def import_data():
     )
     challenge_5.image.save('5.png', File(open(os.path.join(STATIC_ROOT, 'img', '5.png'), 'rb')))
     challenge_5.save()
-    
     ReviewQuestion(challenge=challenge_5, order=1, text="In welchem Zusammenhang stehen die Bilder? Ist ein Muster erkennbar?").save()
     ReviewQuestion(challenge=challenge_5, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_5, order=3, text="Entspricht die Abgabe den Kriterien?",
+    ReviewQuestion(challenge=challenge_5, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
-    ReviewQuestion(challenge=challenge_5, order=4, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
+				   
     challenge_6 = Challenge(id=6,
                             title='advice animal',
                             subtitle='advice animal',
                             prerequisite=challenge_5,
                             description='Suchen Sie ein »advice animal« Bild und posten Sie es hier. Geben sie die Quelle dazu an.',
                             accepted_files='image/*',
-                            course=gsi,
+                            course=hci,
                             points=12,
     )
     challenge_6.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
     challenge_6.save()
+	
     ReviewQuestion(challenge=challenge_6, order=1, text="Was steckt hinter dem »advice«? Welche Probleme werden dadurch aufgezeigt?").save()
     ReviewQuestion(challenge=challenge_6, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_6, order=3, text="Entspricht die Abgabe den Kriterien?",
+    ReviewQuestion(challenge=challenge_6, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
-    ReviewQuestion(challenge=challenge_6, order=4, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
 
     challenge_7 = Challenge(id=7,
                             title='animated gif',
@@ -394,16 +384,14 @@ def import_data():
                             prerequisite=challenge_6,
                             description='suchen sie ein animated gif und posten sie es. geben sie die quelle dazu an.',
                             accepted_files='image/gif',
-                            course=gsi,
+                            course=hci,
                             points=14,
     )
     challenge_7.image.save('7.png', File(open(os.path.join(STATIC_ROOT, 'img', '7.png'), 'rb')))
     challenge_7.save()
     ReviewQuestion(challenge=challenge_7, order=1, text="Weshalb wurde das GIF animiert? Würde es auch ohne Animation funktionieren? Begründen Sie Ihre Antwort.").save()
     ReviewQuestion(challenge=challenge_7, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_7, order=3, text="Entspricht die Abgabe den Kriterien?",
-                   visible_to_author=False).save()
-    ReviewQuestion(challenge=challenge_7, order=4, text="Anmerkungen an das LVA-Team:",
+    ReviewQuestion(challenge=challenge_7, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 
     challenge_8 = Challenge(id=8,
@@ -412,7 +400,7 @@ def import_data():
                             prerequisite=challenge_7,
                             description='Laden Sie zwei Bilder von zwei verschiedenen Menschen hoch. Erklären Sie dann, wer diese beiden Menschen sind. Vergessen Sie nicht auf die Quellenangabe!!11elf',
                             accepted_files='image/*',
-                            course=gsi,
+                            course=hci,
                             points=5,
     )
     challenge_8.image.save('8.png', File(open(os.path.join(STATIC_ROOT, 'img', '8.png'), 'rb')))
@@ -434,13 +422,12 @@ def import_data():
                    visible_to_author=False, boolean_answer=True).save()
     ReviewQuestion(challenge=challenge_9, order=4, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
-
+				   
     challenge_10 = Challenge(id=10,
                              title='schmetterling',
                              subtitle='schmetterling',
                              prerequisite=challenge_9,
                              description='Suchen Sie in Google Image Search Schmetterlingsbilder und laden Sie diese hier hoch. Vergessen Sie nicht auf die Quellenangaben!',
-
                              accepted_files='image/*',
                              course=gsi,
                              points=3,
@@ -732,4 +719,3 @@ def import_data():
 
 if __name__ == '__main__':
     populate_demo_data()
-
