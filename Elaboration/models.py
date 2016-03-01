@@ -26,7 +26,7 @@ class Elaboration(models.Model):
     tags = TaggableManager()
     comments = GenericRelation(Comment)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.id)
 
     def is_started(self):
@@ -108,7 +108,7 @@ class Elaboration(models.Model):
         return True
 
     def has_revision(self):
-        if self.elaboration_text != self.revised_elaboration_text:
+        if self.elaboration_text != self.revised_elaboration_text or self.revised_elaboration_changelog:
             return True
 
     def get_content_type_id(self):
