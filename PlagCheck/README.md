@@ -50,7 +50,7 @@ django apps are listed.
 
 ### Worker process
 
-    celery -A Plagcheck worker --concurrency=1 --loglevel=DEBUG
+    python manage.py celery worker -E --loglevel=INFO
 
 Only one worker can run at the same time, because:
  - sherlock is not yet multi-thread ready
@@ -58,7 +58,7 @@ Only one worker can run at the same time, because:
 
 ### Task monitor
 
-    celery -A Plagcheck flower --loglevel=DEBUG
+    celery -A PlagCheck flower
 
 It will then be available at http://localhost:5555
 
