@@ -66,8 +66,8 @@ class AuroraUser(User):
             result = urllib.request.urlretrieve(gravatarurl)
             self.avatar.save(avatar_path(self, ''), File(open(result[0], 'rb')))
         except IOError:
-            from shutil import copyfile
-            copyfile(os.path.join(STATIC_ROOT, 'img', 'default_gravatar.png'), os.path.join(self.upload_path, filename))
+            from shutil import copy
+            copy(os.path.join(STATIC_ROOT, 'img', 'default_gravatar.png'), os.path.join(MEDIA_ROOT, avatar_path(self, '')))
         self.avatar = os.path.join(self.upload_path, filename)
         self.save()
 
