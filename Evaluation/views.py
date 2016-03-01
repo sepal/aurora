@@ -918,8 +918,8 @@ def plagcheck_suspects(request, course_short_title=None):
     else:
         suspect_list = Suspect.objects.exclude(state=SuspectState.AUTO_FILTERED.value)
 
+    # pagination
     paginator = Paginator(suspect_list, 25)
-
     page = request.GET.get('page')
     try:
         suspects = paginator.page(page)
@@ -928,16 +928,22 @@ def plagcheck_suspects(request, course_short_title=None):
     except EmptyPage:
         suspects = paginator.page(paginator.num_pages)
 
+    # number of suspected documents
+    suspects_count = Suspect.objects.filter(state=SuspectState.SUSPECTED.value).count()
+
     context = {
         'course': course,
         'suspects': suspects,
         'suspect_states': SuspectState.choices(),
+        'suspects_count': suspects_count,
         'show_filtered': show_filtered,
     }
 
     return render_to_response('evaluation.html', {
             'overview': render_to_string('plagcheck_suspects.html', context, RequestContext(request)),
             'course': course,
+            'stabilosiert_plagcheck_suspects': 'stabilosiert',
+            'count_plagcheck_suspects': suspects_count,
         },
         context_instance=RequestContext(request))
 
@@ -967,9 +973,14 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
         'prev_suspect_id': prev_suspect_id,
     }
 
+    # number of suspected documents
+    suspects_count = Suspect.objects.filter(state=SuspectState.SUSPECTED.value).count()
+
     return render_to_response('evaluation.html', {
             'overview': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
-            'course': course
+            'course': course,
+            'stabilosiert_plagcheck_suspects': 'stabilosiert',
+            'count_plagcheck_suspects': suspects_count,
         },
         context_instance=RequestContext(request))
 
