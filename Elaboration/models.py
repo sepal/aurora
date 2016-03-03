@@ -54,20 +54,30 @@ class Elaboration(models.Model):
             return evaluation[0]
         return None
 
+    def number_of_reviews(self):
+        return Review.objects.filter(elaboration=self, submission_time__isnull=False).count()
+
+    def number_of_reviews_with_feedback(self):
+        count = 0
+        for review in Review.objects.filter(elaboration=self, submission_time__isnull=False):
+            if review.is_evaluated():
+                count += 1
+        return count
+
     def is_reviewed_2times(self):
-        if Review.objects.filter(elaboration=self, submission_time__isnull=False).count() < 2:
+        if self.number_of_reviews() < 2:
             return False
         return True
 
     def is_reviewed_3times(self):
-        if Review.objects.filter(elaboration=self, submission_time__isnull=False).count() < 3:
+        if self.number_of_reviews() < 3:
             return False
         return True
 
     def is_reviewed_1times(self):
-        if Review.objects.filter(elaboration=self, submission_time__isnull=False).count() >= 1:
-            return True
-        return False
+        if self.number_of_reviews() < 1:
+            return False
+        return True
 
     def is_older_3days(self):
         if not self.is_submitted():

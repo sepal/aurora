@@ -84,14 +84,20 @@ def create_context_stack(request, course_short_title):
             reviews.append({})
         submitted = challenge.submitted_by_user(user)
         submission_time = None
+        number_of_reviews = 0
+        number_of_reviews_with_feedback = 0
         if submitted:
             submission_time = challenge.get_elaboration(user).submission_time
+            number_of_reviews = challenge.get_elaboration(user).number_of_reviews()
+            number_of_reviews_with_feedback = challenge.get_elaboration(user).number_of_reviews_with_feedback()
         challenge_active = {
             'challenge': challenge,
             'submitted': submitted,
             'submission_time': submission_time,
             'reviews': reviews,
-            'status': challenge.get_status_text(user)
+            'status': challenge.get_status_text(user),
+            'number_of_reviews': number_of_reviews,
+            'number_of_reviews_with_feedback': number_of_reviews_with_feedback
         }
         elaboration = Elaboration.objects.filter(challenge=challenge, user=user)
         if elaboration:
@@ -177,7 +183,7 @@ def create_context_challenge(request, course_short_title):
 #        else:
 #            context_stack = Stack.objects.get(pk=request.GET.get('id'))
 #            data['blocked'] = context_stack.is_blocked(user)
-        
+
     return data
 
 
