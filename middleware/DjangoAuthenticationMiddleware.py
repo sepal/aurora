@@ -5,7 +5,7 @@ from AuroraUser.models import AuroraUser
 
 class DjangoAuthenticationMiddleware(object):
     """
-
+    AuthenticationMiddleware so that request.user is of type AuroraUser.
     """
 
     def authenticate(self, username=None, password=None):
