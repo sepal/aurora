@@ -254,6 +254,7 @@ h1 {
 	cursor:pointer;
 	overflow:hidden;
 	margin-bottom:0.5em;
+	width:960px;
 }
 
 .filterbar {
