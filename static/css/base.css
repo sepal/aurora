@@ -112,7 +112,7 @@ abbr, acronym {
 	font-size:1.5em;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	padding:0.4em;
-	text-shadow: 0 0 3px rgba(58,201,88,0.5);
+	text-shadow: 0 0 2px rgba(58,201,88,0.7);
 	background:none;
     vertical-align:middle;
     cursor:pointer;
@@ -150,13 +150,13 @@ abbr, acronym {
     font-family: 'yanone_kaffeesatzthin';
 	color:rgb(58,201,88);
 	font-size:2.5em;
-	text-shadow: 0 0 5px rgba(0,0,0,0.4);
+	text-shadow: 0 0 6px rgba(255,255,255,0.7);
 	margin-bottom:1em;
 }
 
 .login input{
     font: 1.5em Helvetica Neue, Arial, sans-serif;
-	background:rgba(0,0,0,0.5);
+	background:rgba(255,255,255,0.5);
 	color:rgba(58,201,88,1);
 	box-shadow: 0 0 20px rgba(58,201,88,0.8) inset;
 	width:500px;
@@ -176,13 +176,17 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 .login {
     color: black;
 	position:absolute;
-	width:500px;
-	height:300px;
-	left:50%;
+	width:600px;
+	left:43%;
 	top:36%;
-	margin-left:-250px;
+	margin-left:-200px;
 	margin-top:-200px;
     text-align: left;
+	padding:50px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	background-color:rgba(255,255,255,0.9);
+	border-radius: 20px;
 }
 
 .login_background {
@@ -199,13 +203,32 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	height:100%;
 }
 
+.course_selection_background {
+	background: url("../img/aurora@2x.jpg");
+	background-size:cover;
+	background-repeat:no-repeat;
+	background-color:black;
+	background-position:bottom;
+	
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+    filter: blur(8px) opacity(0.9) invert(1) hue-rotate(180deg)  ;
+	
+}
+
+
 .alternate_login {
 	text-decoration:none;
 	text-transform:uppercase;
 	color:rgb(58,201,88);
 	font-size:1.5em;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	margin-top:2em;
+	margin-top:80px;
+	border-top:1px solid rgba(58,201,88,0.5);
+	padding-top:30px;
 }
 
 .alternate_login a {
@@ -220,8 +243,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 .alternate_login span {
 	padding:0.4em;
 	display:block;
-	color:rgba(58,201,88,0.25);
-	text-shadow: 0 0 10px rgba(0,0,0,0.4), 0 0 5px rgba(58,201,88,0.5),0 0 2px rgba(58,201,88,0.5);
+	color:rgba(58,201,88,0.7);
 }
 
 .login hr {
@@ -239,7 +261,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
     -moz-appearance:none;
     appearance:none;
 	box-shadow: 0 0 20px rgb(58,201,88);
-	background:rgba(0,0,0,0.3);
+	background:rgba(255,255,255,0.5);
 	border:none;
 	white-space: nowrap;
 	border-radius:0.5em;
@@ -274,9 +296,9 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 
 .course_selected {
     font-family: 'yanone_kaffeesatzthin';
-    color: rgb(110,184,99);
+    color: black; /*rgb(110,184,99);*/
     font-size: 30px;
-	text-shadow: 0 0 5px rgba(0,0,0,1);
+	text-shadow: 0 0 5px rgba(255,255,255,1);
 	cursor:pointer;
 	z-index:4201;
 	display:inline;
@@ -332,7 +354,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
     min-height: 96px;
-    color: white;
+    color: black;
 	padding-left:12px;
     font-size: 32px;
     vertical-align: bottom;
@@ -360,7 +382,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 }
 
 .pagehead a {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
@@ -384,8 +406,8 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	right:0px;
 	height:96px;
 	width:96px;
-	opacity: 0.2;
-	filter:alpha(opacity=20); /* For IE8 and earlier */	
+	opacity: 0.5;
+	filter:alpha(opacity=70); /* For IE8 and earlier */	
 	background-size:96px 96px;
 	background-position: 0 0;
 }
@@ -440,14 +462,13 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 
 .unread_notifications {
 	border-radius:12px;
-	background: rgba(0,0,0,0.1);
+	background-color: rgba(255,255,255,0.5);
 	text-align:center;
 }
 
 .glow {
-	box-shadow: 0 0 15px rgba(58,201,88,1),0 0 15px rgba(58,201,88,1);
+/*	box-shadow: 0 0 15px rgba(58,201,88,1),0 0 15px rgba(58,201,88,1);*/
 	
-	background:none;
 	border:none;
 	color:black;
 }
@@ -456,7 +477,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	display:inline-block;
 	position:relative;
 	width:30px;
-	color:white;
+	color:black;
 }
 
 
@@ -543,4 +564,7 @@ button:hover, .button:hover{
 .not {
 	color:#e8e8e8;
 }
+
+
+
 
