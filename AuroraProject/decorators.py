@@ -35,7 +35,7 @@ def aurora_login_required():
                 course_title = request.path.split("/")[1]
                 course = Course.objects.get(short_title=course_title)
             except (IndexError, Course.DoesNotExist):
-                assert False, "aurora_login_required - can only be used when the url contains the course."
+                raise LookupError("aurora_login_required - can only be used when the url contains the course.")
 
             if request.user.is_authenticated() and (request.user.is_staff or course.user_is_enlisted(request.user)):
                 return view_func(request, *args, **kwargs)
