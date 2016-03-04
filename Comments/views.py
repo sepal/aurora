@@ -14,6 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 import json
 from AuroraUser.models import AuroraUser
 
+#TODO @aurora_login_required() cannot be used here, change urls.py
 #from AuroraProject.decorators import aurora_login_required
 from Comments.models import Comment, CommentsConfig, CommentList, Vote, CommentReferenceObject
 from Course.models import Course

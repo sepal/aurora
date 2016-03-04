@@ -1,19 +1,21 @@
 import json
 import os
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.core.files import File
 from tempfile import NamedTemporaryFile
 from PIL import ImageFile, Image, ImageOps
 
-from AuroraProject.decorators import aurora_login_required
+#TODO @aurora_login_required() cannot be used here, change urls.py
+#from AuroraProject.decorators import aurora_login_required
 from Elaboration.models import Elaboration
 from FileUpload.models import UploadFile
 from django.http import Http404
 from django.conf import settings
 
-@aurora_login_required()
+@login_required()
 def file_upload(request):
     user = RequestContext(request)['user']
     file = request.FILES['file']
@@ -66,7 +68,7 @@ def create_thumbnail(file, filename, save_function):
         save_function(filename, tmp_file, False)
 
 
-@aurora_login_required()
+@login_required()
 def file_remove(request):
     user = RequestContext(request)['user']
     if 'id' in request.GET:
@@ -79,7 +81,7 @@ def file_remove(request):
     return HttpResponse("OK")
 
 
-@aurora_login_required()
+@login_required()
 def all_files(request):
     user = RequestContext(request)['user']
     if 'elaboration_id' in request.GET:
@@ -101,7 +103,7 @@ def all_files(request):
             })
     return HttpResponse(json.dumps(data))
 
-@aurora_login_required()
+@login_required()
 def original_files(request):
     user = RequestContext(request)['user']
     if 'elaboration_id' in request.GET:
@@ -123,7 +125,7 @@ def original_files(request):
             })
     return HttpResponse(json.dumps(data))
 
-@aurora_login_required()
+@login_required()
 def revised_files(request):
     user = RequestContext(request)['user']
     if 'elaboration_id' in request.GET:
