@@ -875,7 +875,7 @@ def get_points(request, user, course):
         stack_data['evaluated_points_available_total'] = evaluated_points_available_total
         stack_data['submitted_points_available_total'] = submitted_points_available_total
         stack_data['started_points_available_total'] = started_points_available_total
-        stack_data['lock_period'] = Challenge.is_in_lock_period(user, course)
+        stack_data['lock_period'] = stack.get_final_challenge().is_in_lock_period(user, course)
         data['stacks'].append(stack_data)
 
     return data
