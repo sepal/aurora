@@ -1,6 +1,5 @@
 from django.views.decorators.http import require_GET, require_POST
 import json
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login as django_login, logout
 from django.template import RequestContext
@@ -11,6 +10,8 @@ from django.core.urlresolvers import reverse
 from Course.models import Course
 from django.conf import settings
 from django.http import Http404
+
+from AuroraProject.decorators import aurora_login_required
 
 import logging
 logger = logging.getLogger(__name__)
@@ -113,14 +114,14 @@ def sso_auth_callback(request):
     return redirect(reverse('course_selection'))
 
 
-@login_required
+@aurora_login_required()
 @ensure_csrf_cookie
 def profile(request, course_short_title):
     user = RequestContext(request)['user']
     selected_course = Course.get_or_raise_404(course_short_title)
     return render_to_response('profile.html', {'user': user, 'course': selected_course}, context_instance=RequestContext(request))
 
-@login_required()
+@aurora_login_required()
 def profile_save(request, course_short_title):
     data = {}
     user = RequestContext(request)['user']
@@ -177,7 +178,8 @@ def is_valid_email(email, text_limit):
         return False
 
 
-@login_required()
+@DeprecationWarning
+@aurora_login_required()
 def course(request):
     user = RequestContext(request)['user']
     response_data = {}

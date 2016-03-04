@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
@@ -17,6 +16,8 @@ from taggit.models import TaggedItem
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden
 
+
+from AuroraProject.decorators import aurora_login_required
 from Challenge.models import Challenge
 from Course.models import Course, CourseUserRelation
 from Elaboration.models import Elaboration
@@ -35,7 +36,7 @@ from django.shortcuts import redirect
 # TODO: Use same pagination for all views, see django pagination class
 # TODO: Why are there mostly 2 templates processed for each view?
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def evaluation(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -90,7 +91,7 @@ def evaluation(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def missing_reviews(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -118,7 +119,7 @@ def missing_reviews(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def non_adequate_work(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -146,7 +147,7 @@ def non_adequate_work(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def top_level_tasks(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -174,7 +175,7 @@ def top_level_tasks(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def complaints(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -199,7 +200,7 @@ def complaints(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def awesome(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -235,7 +236,7 @@ def awesome(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def questions(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -262,7 +263,7 @@ def questions(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def detail(request, course_short_title=None):
 
@@ -364,7 +365,7 @@ def detail(request, course_short_title=None):
 
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def start_evaluation(request, course_short_title=None):
     if not 'elaboration_id' in request.GET:
@@ -396,7 +397,7 @@ def start_evaluation(request, course_short_title=None):
     return HttpResponse(state)
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def stack(request, course_short_title=None):
     elaboration = Elaboration.objects.get(pk=request.session.get('elaboration_id', ''))
@@ -405,7 +406,7 @@ def stack(request, course_short_title=None):
     return render_to_response('tasks.html', {'stack_elaborations': stack_elaborations}, RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def others(request, course_short_title=None):
     # get selected elaborations from session
@@ -438,7 +439,7 @@ def others(request, course_short_title=None):
                               RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def challenge_txt(request, course_short_title=None):
     elaboration = Elaboration.objects.get(pk=request.session.get('elaboration_id', ''))
@@ -447,7 +448,7 @@ def challenge_txt(request, course_short_title=None):
                               RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def similarities(request, course_short_title=None):
 
@@ -567,7 +568,7 @@ def set_appraisal(request, course_short_title=None):
 
 
 @csrf_exempt
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def search(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -615,7 +616,7 @@ def search(request, course_short_title=None):
     return evaluation(request, course_short_title)
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def autocomplete_challenge(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -627,7 +628,7 @@ def autocomplete_challenge(request, course_short_title=None):
     return HttpResponse(response_data, content_type='application/json; charset=utf-8')
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def autocomplete_user(request, course_short_title=None):
     term = request.GET.get('term', '')
@@ -639,7 +640,7 @@ def autocomplete_user(request, course_short_title=None):
     return HttpResponse(response_data, content_type='application/json; charset=utf-8')
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def autocomplete_tag(request, course_short_title=None):
     term = request.GET.get('term', '')
@@ -655,7 +656,7 @@ def autocomplete_tag(request, course_short_title=None):
     return HttpResponse(response_data, content_type='application/json; charset=utf-8')
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def load_reviews(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -671,7 +672,7 @@ def load_reviews(request, course_short_title=None):
 
 @require_POST
 @csrf_exempt
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def review_answer(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -713,7 +714,7 @@ def review_answer(request, course_short_title=None):
     return HttpResponse(evaluation_url)
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def back(request, course_short_title=None):
     selection = request.session.get('selection', 'error')
@@ -744,7 +745,7 @@ def back(request, course_short_title=None):
     return evaluation(request, course_short_title)
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def reviewlist(request, course_short_title=None):
     elaboration = Elaboration.objects.get(pk=request.session.get('elaboration_id', ''))
@@ -754,7 +755,7 @@ def reviewlist(request, course_short_title=None):
     return render_to_response('reviewlist.html', {'reviews': reviews}, RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def search_user(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -776,7 +777,7 @@ def search_user(request, course_short_title=None):
 
 
 # TODO: Do we really want to submit the users current list to server and then sort it there?
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def sort(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
@@ -814,7 +815,7 @@ def sort(request, course_short_title=None):
     return HttpResponse(json.dumps(data))
 
 
-@login_required()
+@aurora_login_required()
 def get_points(request, user, course):
     is_correct_user_request = RequestContext(request)['user'].id == user.id
     is_staff_request = RequestContext(request)['user'].is_staff

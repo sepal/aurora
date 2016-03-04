@@ -3,8 +3,9 @@ from django.contrib.auth.tests import *
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+
+from AuroraProject.decorators import aurora_login_required
 from Challenge.models import Challenge
 from Elaboration.models import Elaboration
 from AuroraUser.models import AuroraUser
@@ -51,7 +52,7 @@ def save_elaboration(request, course_short_title):
 
     return HttpResponse()
 
-@login_required()
+@aurora_login_required()
 def submit_elaboration(request, course_short_title):
    if not 'challenge_id' in request.POST:
        raise Http404

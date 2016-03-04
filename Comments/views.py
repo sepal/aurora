@@ -6,7 +6,6 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
 
-from django.contrib.auth.decorators import login_required
 from django import forms
 from django.utils import timezone
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
@@ -14,6 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 import json
 from AuroraUser.models import AuroraUser
 
+from AuroraProject.decorators import aurora_login_required
 from Comments.models import Comment, CommentsConfig, CommentList, Vote, CommentReferenceObject
 from Course.models import Course
 from Notification.models import Notification
@@ -41,7 +41,7 @@ class ReplyForm(forms.Form):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def post_comment(request):
     form = CommentForm(request.POST)
     try:
@@ -53,7 +53,7 @@ def post_comment(request):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def delete_comment(request):
     comment_id = request.POST['comment_id']
     deleter = RequestContext(request)['user']
@@ -74,7 +74,7 @@ def delete_comment(request):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def post_reply(request):
     form = ReplyForm(request.POST)
     try:
@@ -85,7 +85,7 @@ def post_reply(request):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def edit_comment(request):
     data = request.POST
     context = RequestContext(request)
@@ -112,7 +112,7 @@ def edit_comment(request):
 
 
 @csrf_exempt
-@require_POST
+@aurora_login_required()
 def lecturer_post(request):
     data = request.POST
     if data['secret'] != LECTURER_SECRET:
@@ -215,7 +215,7 @@ def create_comment(form, request):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def vote_on_comment(request):
     data = request.POST
 
@@ -260,7 +260,7 @@ def vote_down_on(comment, voter):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def bookmark_comment(request):
     data = request.POST
 
@@ -283,7 +283,7 @@ def bookmark_comment(request):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def mark_seen(request):
     requester = RequestContext(request)['user']
 
@@ -307,7 +307,7 @@ def mark_seen(request):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def promote_comment(request):
     data = request.POST
 
@@ -328,7 +328,7 @@ def promote_comment(request):
 
 
 @require_POST
-@login_required
+@aurora_login_required()
 def update_comments(request):
     polling_active, polling_idle = CommentsConfig.get_polling_interval()
 
@@ -348,7 +348,7 @@ def update_comments(request):
     return HttpResponse(template_response, content_type="application/json")
 
 @require_GET
-@login_required
+@aurora_login_required()
 def comment_list_page(request):
     client_revision = {
         'number': -1,
@@ -407,7 +407,7 @@ def unpack_revisions(revisions):
 
 
 # TODO is this just a test method? (delete or mark if yes)
-@login_required
+@aurora_login_required()
 def feed(request):
     try:
         o = CommentReferenceObject.objects.get(id=1)
@@ -420,7 +420,7 @@ def feed(request):
     return render(request, 'Comments/feed.html', {'object': o, 'object2': o2})
 
 
-@login_required
+@aurora_login_required()
 def bookmarks(request):
     requester = RequestContext(request)['user']
     comment_list = Comment.query_bookmarks(requester)
