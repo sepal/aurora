@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.shortcuts import redirect
@@ -82,7 +83,7 @@ def time_to_unix_string(time):
     return str(seconds)
 
 
-@aurora_login_required()
+@login_required()
 @staff_member_required
 def result_users(request):
     s = ""
@@ -99,7 +100,7 @@ def result_users(request):
     return HttpResponse(s, mimetype="text/plain; charset=utf-8")
 
 
-@aurora_login_required()
+@login_required()
 @staff_member_required
 def result_elabs_nonfinal(request):
     """
@@ -133,7 +134,7 @@ def result_elabs_nonfinal(request):
     return HttpResponse(s, mimetype="text/plain; charset=utf-8")
 
 
-@aurora_login_required()
+@login_required()
 @staff_member_required
 def result_elabs_final(request):
     """
@@ -200,7 +201,7 @@ def get_result_reviews():
     return result
 
 
-@aurora_login_required()
+@login_required()
 @staff_member_required
 def result_reviews(request):
     result = get_result_reviews()
