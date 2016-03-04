@@ -105,10 +105,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'middleware.DjangoAuthenticationMiddleware.DjangoAuthenticationMiddleware',
-)
+#AUTHENTICATION_BACKENDS = (
+#    'django.contrib.auth.backends.ModelBackend',
+#    'middleware.DjangoAuthenticationMiddleware.DjangoAuthenticationMiddleware',
+#)
 
 ROOT_URLCONF = 'AuroraProject.urls'
 
