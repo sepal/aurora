@@ -18,6 +18,12 @@ def aurora_login_required():
 
      This decorator works just for views for whose url contains the course short title.
      It is then extracted and used to authenticate the user.
+
+    Usage: Put @aurora_login_required() right above a view function. Remember to not forget the brackets.
+
+    TODO: discuss if it would be better to use first view argument as course_short_title
+     instead of extracting course_short_title from request path. It would imply that every view
+     using the @aurora_login_required() decorator has a course_short_title as first parameter.
     """
 
     def decorator(view_func):
