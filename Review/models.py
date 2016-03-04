@@ -24,6 +24,10 @@ class Review(models.Model):
     def __unicode__(self):
         return str(self.id)
 
+
+    def is_evaluated(self):
+        return ReviewEvaluation.objects.filter(review=self).count() > 0
+
     def get_content_type_id(self):
         return ContentType.objects.get_for_model(self).id
 
