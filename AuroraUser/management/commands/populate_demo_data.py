@@ -285,7 +285,8 @@ def import_data():
 
     # create challenges
     print('adding challenges')
-    challenge_1 = Challenge(title='meine meinung',
+    challenge_1 = Challenge(id=1,
+                            title='meine meinung',
                             subtitle='meine meinung',
                             description='Gehen Sie nach derstandard.at, suchen Sie einen beliebigen Artikel und posten Sie den Text dieses Artikels hier.',
                             accepted_files='',
@@ -299,7 +300,8 @@ def import_data():
     ReviewQuestion(challenge=challenge_1, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
     ReviewQuestion(challenge=challenge_1, order=3, text="Anmerkungen an das LVA-Team:", visible_to_author=False).save()
 	
-    challenge_2 = Challenge(title='rage-comic',
+    challenge_2 = Challenge(id=2,
+                            title='rage-comic',
                             subtitle='rage-comic',
                             prerequisite=challenge_1,
                             description='Finden Sie einen Webcomic, den Sie lustig finden und laden Sie ihn hier hoch. Beschreiben Sie kurz, wie lange Sie diesen Webcomic schon lesen.',
@@ -315,7 +317,8 @@ def import_data():
     ReviewQuestion(challenge=challenge_2, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 
-    challenge_3 = Challenge(title='wikipedia',
+    challenge_3 = Challenge(id=3,
+                            title='wikipedia',
                             subtitle='wikipedia',
                             prerequisite=challenge_2,
                             description='Kopieren Sie 4 Absätze aus einem Wikipedia-Artikel und geben Sie sie ab! Setzen Sie ans Ende der arbeit den Link auf den Wikipedia-Artikel!',
@@ -331,7 +334,8 @@ def import_data():
     ReviewQuestion(challenge=challenge_3, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 				   
-    challenge_4 = Challenge(title='wissenschaft',
+    challenge_4 = Challenge(id=4,
+                            title='wissenschaft',
                             subtitle='wissenschaft',
                             prerequisite=challenge_3,
                             description='Finden Sie einen pseudowissenschaftlichen Artikel und laden Sie ihn hier hoch.',
@@ -342,7 +346,8 @@ def import_data():
     challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
     challenge_4.save()
 
-    challenge_5 = Challenge(title='ping',
+    challenge_5 = Challenge(id=5,
+                            title='ping',
                             subtitle='ping',
                             description='Laden Sie drei Bilder im png-Format hoch. Beschreiben Sie dann kurz, was auf diesen Bildern zu sehen ist.',
                             accepted_files='image/png',
@@ -356,7 +361,8 @@ def import_data():
     ReviewQuestion(challenge=challenge_5, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 				   
-    challenge_6 = Challenge(title='advice animal',
+    challenge_6 = Challenge(id=6,
+                            title='advice animal',
                             subtitle='advice animal',
                             prerequisite=challenge_5,
                             description='Suchen Sie ein »advice animal« Bild und posten Sie es hier. Geben sie die Quelle dazu an.',
@@ -372,7 +378,8 @@ def import_data():
     ReviewQuestion(challenge=challenge_6, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 
-    challenge_7 = Challenge(title='animated gif',
+    challenge_7 = Challenge(id=7,
+                            title='animated gif',
                             subtitle='animated gif',
                             prerequisite=challenge_6,
                             description='suchen sie ein animated gif und posten sie es. geben sie die quelle dazu an.',
@@ -387,7 +394,8 @@ def import_data():
     ReviewQuestion(challenge=challenge_7, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 
-    challenge_8 = Challenge(title='zwei menschen',
+    challenge_8 = Challenge(id=8,
+                            title='zwei menschen',
                             subtitle='zwei menschen',
                             prerequisite=challenge_7,
                             description='Laden Sie zwei Bilder von zwei verschiedenen Menschen hoch. Erklären Sie dann, wer diese beiden Menschen sind. Vergessen Sie nicht auf die Quellenangabe!!11elf',
@@ -398,7 +406,8 @@ def import_data():
     challenge_8.image.save('8.png', File(open(os.path.join(STATIC_ROOT, 'img', '8.png'), 'rb')))
     challenge_8.save()
 
-    challenge_9 = Challenge(title='youtube',
+    challenge_9 = Challenge(id=9,
+                            title='youtube',
                             subtitle='youtube',
                             description='Suchen Sie ein gutes YouTube-Video und posten Sie den Link hier. Wenn Sherlock Holmes darin vorkommt, dann können Sie auch einen Extrapunkt bekommen.',
                             accepted_files='',
@@ -414,7 +423,8 @@ def import_data():
     ReviewQuestion(challenge=challenge_9, order=4, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 				   
-    challenge_10 = Challenge(title='schmetterling',
+    challenge_10 = Challenge(id=10,
+                             title='schmetterling',
                              subtitle='schmetterling',
                              prerequisite=challenge_9,
                              description='Suchen Sie in Google Image Search Schmetterlingsbilder und laden Sie diese hier hoch. Vergessen Sie nicht auf die Quellenangaben!',

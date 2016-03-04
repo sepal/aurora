@@ -43,12 +43,6 @@ For MAC:
     brew update
     brew install rabbitmq
 
-### As a daemon
-
-Get https://raw.githubusercontent.com/ask/celery/master/contrib/generic-init.d/celeryd
-
-
-
 ## Usage
 
 Run all of these commands under your repository root, where all the
