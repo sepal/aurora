@@ -63,7 +63,7 @@ def submit_elaboration(request, course_short_title):
    course = Course.get_or_raise_404(short_title=course_short_title)
    if not challenge.is_enabled_for_user(user):
        raise Http404
-   if challenge.is_final_challenge() and challenge.is_in_lock_period(user, course):
+   if challenge.is_final_challenge() and Challenge.is_in_lock_period(user, course):
        raise Http404
    elaboration, created = Elaboration.objects.get_or_create(challenge=challenge, user=user)
 

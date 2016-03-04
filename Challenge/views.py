@@ -178,8 +178,8 @@ def create_context_challenge(request, course_short_title):
 
         if challenge.is_final_challenge():
             data['blocked'] = not challenge.is_enabled_for_user(user)
-            if challenge.is_in_lock_period(RequestContext(request)['user'], course):
-                data['lock'] = challenge.is_in_lock_period(RequestContext(request)['user'], course)
+            if Challenge.is_in_lock_period(RequestContext(request)['user'], course):
+                data['lock'] = Challenge.is_in_lock_period(RequestContext(request)['user'], course)
 #        else:
 #            context_stack = Stack.objects.get(pk=request.GET.get('id'))
 #            data['blocked'] = context_stack.is_blocked(user)

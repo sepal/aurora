@@ -277,7 +277,8 @@ class Challenge(models.Model):
 
         return result
 
-    def is_in_lock_period(self, user, course):
+    @staticmethod
+    def is_in_lock_period(user, course):
         PERIOD = 0
         START_YEAR = 2015
         START_MONTH = 3
