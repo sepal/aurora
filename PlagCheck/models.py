@@ -205,17 +205,17 @@ class Reference(models.Model):
         cursor = connection.cursor()
 
         # with inner join
-        cursor.execute('SELECT similar.doc_id, COUNT(similar.hash), filter.id '
+        cursor.execute('SELECT "similar".doc_id, COUNT("similar".doc_id), "filter".id '
                        'FROM ('
-                           'SELECT id, hash, doc_id '
-                           'FROM Plagcheck_reference '
+                           'SELECT hash, doc_id '
+                           'FROM "PlagCheck_reference" '
                            'WHERE doc_id = %s '
                            'GROUP BY hash, doc_id'
-                           ') as suspect '
-                       'INNER JOIN Plagcheck_reference as similar ON suspect.hash=similar.hash '
-                       'LEFT OUTER JOIN Plagcheck_suspectfilter as filter ON similar.doc_id=filter.doc_id '
-                       'WHERE similar.doc_id != %s '
-                       'GROUP BY similar.doc_id', [doc_id, doc_id])
+                           ') as "suspect" '
+                       'INNER JOIN "PlagCheck_reference" as "similar" ON "suspect".hash="similar".hash '
+                       'LEFT OUTER JOIN "PlagCheck_suspectfilter" as "filter" ON "similar".doc_id="filter".doc_id '
+                       'WHERE "similar".doc_id != %s '
+                       'GROUP BY "similar".doc_id, "filter".id ', [doc_id, doc_id])
 
         ret = list()
         for row in cursor.fetchall():

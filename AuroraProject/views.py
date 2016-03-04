@@ -20,12 +20,9 @@ from Statistics.views import create_stat_data
 from Faq.models import Faq
 
 
-def get_next_url(request):
-    if 'next' in request.GET:
-        return request.GET['next']
-    elif 'param' in request.GET:
-        return request.GET['param']
-    return None
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def course_from_next_url(next):
@@ -41,7 +38,10 @@ def course_from_next_url(next):
 def course_selection(request):
 
     # store next_url if available inside the session
-    next_url = get_next_url(request)
+    next_url = None
+    if 'next' in request.GET:
+        next_url = request.GET['next']
+
     if next_url:
         request.session['next_url'] = next_url
 
@@ -52,10 +52,11 @@ def course_selection(request):
 
     # automatically redirect the user to its course login page
     # if a next_url is defined.
-    if next_url and course_from_next_url(next_url):
-        return redirect(reverse("User:login", args=(course_from_next_url(next_url), )))
+    course = course_from_next_url(next_url)
+    if next_url and course:
+        return redirect(reverse("User:login", args=(course, )))
 
-    data = {'courses': Course.objects.all(), 'next': next, 'debug': settings.DEBUG}
+    data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
     return render_to_response('course_selection.html', data)
 
 
