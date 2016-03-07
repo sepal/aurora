@@ -105,6 +105,11 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+#AUTHENTICATION_BACKENDS = (
+#    'django.contrib.auth.backends.ModelBackend',
+#    'middleware.DjangoAuthenticationMiddleware.DjangoAuthenticationMiddleware',
+#)
+
 ROOT_URLCONF = 'AuroraProject.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.

@@ -2,15 +2,15 @@ from django.core import urlresolvers
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
+from AuroraProject.decorators import aurora_login_required
 from Notification.models import Notification
 from AuroraUser.models import AuroraUser
 from Course.models import Course, CourseUserRelation
 
 
-@login_required()
+@aurora_login_required()
 def notifications(request, course_short_title=None):
     data = {}
     user = RequestContext(request)['user']
@@ -37,7 +37,7 @@ def notifications(request, course_short_title=None):
     return render_to_response('notifications.html', data, context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def write_notification(request, course_short_title=None):
     if not 'user' in request.GET:
@@ -49,7 +49,7 @@ def write_notification(request, course_short_title=None):
     return render_to_response('send_notification.html', data, context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 @staff_member_required
 def send_notification(request, course_short_title=None):
     if not 'user_id' in request.POST:
@@ -70,7 +70,7 @@ def send_notification(request, course_short_title=None):
     return HttpResponse("Notification sent to user with id: %s" % user.nickname)
 
 
-@login_required()
+@aurora_login_required()
 def read(request, course_short_title=None):
     user = RequestContext(request)['user']
     course = Course.get_or_raise_404(course_short_title)
@@ -83,7 +83,7 @@ def read(request, course_short_title=None):
     return HttpResponse()
 
 
-@login_required()
+@aurora_login_required()
 def refresh(request, course_short_title=None):
     user = RequestContext(request)['user']
     course = Course.get_or_raise_404(course_short_title)
