@@ -21,7 +21,7 @@
 	left:0px;
 	width:100%;
 	height:100%;
-    filter: blur(5px) opacity(0.4);
+    filter: blur(8px) opacity(0.9) invert(1) hue-rotate(180deg)  ;
 	
 }
 
@@ -105,13 +105,48 @@
 
 </style>
 </head>
-<body bgcolor="black">
+<body bgcolor="white">
 
 {% block content %}
+<script>
+
+$(function(){
+
+    /*
+    Add this code to every page.
+
+    We start by hiding the body, and then fading it in.
+    */
+    $('body').hide().fadeIn('slow');
+
+    /*
+    Now we deal with all 'a' tags...
+    */
+    $('a').click(function(){
+        /*
+        Get the url from this anchors href
+        */
+        var link = $(this).attr('href');
+        /*
+        Fade out the whole page
+        */
+        $('body').fadeOut('slow', function(){
+            /*
+            When that's done (on the 'callback') send the browser to the link.
+            */
+            window.location.href = link;
+        });
+        return false;
+    });
+
+});
+
+</script>
+
     <div class="course_selection_background">
     </div>
     <div class="centered">
-        <div class="title">Welcome to Aurora 2015</div>
+        <div class="title">Welcome to Aurora 2016</div>
 
         <div class="choice">
         {% for course in courses %}

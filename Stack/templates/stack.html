@@ -47,8 +47,10 @@
 			<div class="card_description">
                 <div class="card_headline">{{ challenge_dict.challenge.title|safe }}</div>
                 <div class="card_text">{{ challenge_dict.challenge.description|safe}}</div>
-                Number of Reviews: {{ challenge_dict.number_of_reviews }} <br>
+                {% comment %} 
+				Number of Reviews: {{ challenge_dict.number_of_reviews }} <br>
                 Number of Reviews with Feedback: {{ challenge_dict.number_of_reviews_with_feedback }}
+				{% endcomment %}
 			</div>
 			<div class="card_status_area" {% if challenge_dict.status.status == -1 %}style="color:gray"{% endif %}>
 				{% if challenge_dict.status.status == 3 or stack_blocked %}
@@ -114,10 +116,18 @@
 								<span class="review_token red">{{ challenge_dict.nothing }}</span>
 							{% endif %}
 						</div> <!-- peer reviews -->
+						{% if challenge_dict.number_of_reviews_with_feedback != challenge_dict.number_of_reviews%}
+							<span style="color:gray">&rang;</span>
+							<span class="fa fa-square-o"></span>
+						{% else %}
+							<span style="color:gray">&rang;</span>
+							<span class="fa fa-check-square-o" style="color:darkgray"></span>
+						{% endif %}
 					{% endif %}
 
 				{% elif challenge_dict.status.status != 7 %}
-					<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span class="step s5" title="Finished"><i class="fa fa-check"></i>
+					&rang; <span class="step" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 				{% endif %}
 
 
@@ -162,9 +172,6 @@
 
       {% for challenge in challenges_inactive %}
 		<div class="card not_yet_active"  challenge_id="{{ challenge.id }}" style="background-image: url('{{ challenge.image.url }}')">
-			<div class="card_status callout top">
-              <span>{{ challenge_dict.status.status }} </span>
-			</div>
 			<div class="card_description">
                 <div class="card_headline">{{ challenge.title|safe }}</div>
                 <div class="card_text">{{ challenge.description|safe}}</div>
@@ -188,6 +195,8 @@
 					{% endif %}
 					<span style="color:gray">&rang;</span>
 				<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span style="color:gray">&rang;</span>
+				<span class="step s5" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 				{% endif%}
 			</div>
 			<div class="card_reviews">
@@ -214,6 +223,8 @@
 				<span class="step s4" title="Wait for reviews"><i class="fa fa-clock-o "></i></span>
 					<span style="color:gray">&rang;</span>
 				<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span style="color:gray">&rang;</span>
+				<span class="step s5" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 			</div>
 			<div class="card_reviews">
 			</div>
@@ -238,6 +249,8 @@
 				<span class="step s4" title="Wait for reviews"><i class="fa fa-clock-o "></i></span>
 					<span style="color:gray">&rang;</span>
 				<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span style="color:gray">&rang;</span>
+				<span class="step s5" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 			</div>
 			<div class="card_reviews">
 			</div>
