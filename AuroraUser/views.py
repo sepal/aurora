@@ -1,25 +1,25 @@
 from django.views.decorators.http import require_GET, require_POST
 import json
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login as django_login, logout
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from AuroraUser.models import AuroraUser
-from datetime import datetime
 from django.core.urlresolvers import reverse
-
 from Course.models import Course
-
-from hashlib import sha1
-from hmac import new as hmac_new
 from django.conf import settings
 from django.http import Http404
+
+from AuroraProject.decorators import aurora_login_required
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 @require_POST
 def signin(request, course_short_title=None):
+
     if 'username' not in request.POST or 'password' not in request.POST or 'remember' not in request.POST:
         response_data = {'success': False, 'message': 'Something went wrong. Please contact the LVA team'}
         return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -56,7 +56,7 @@ def signout(request, course_short_title=None):
 
 @ensure_csrf_cookie
 def login(request, course_short_title=None):
-    next_url = ""
+
     if 'next_url' in request.session and request.session['next_url'] is not None:
         next_url = request.session['next_url']
     else:
@@ -78,16 +78,21 @@ def login(request, course_short_title=None):
         return render_to_response('login.html', data, context_instance=RequestContext(request))
 
 
-@DeprecationWarning
-def sso_auth_redirect():
-    return redirect(settings.SSO_URI)
-
-
 @require_GET
 def sso_auth_callback(request):
+    """
+    This view is used in conjunction with ZIDAuthenticationMiddleware
+    :param request:
+    :return:
+    """
+
     values = request.GET
 
     user = authenticate(params=values)
+
+    if user is None:
+        logger.error("User with following params not found")
+        logger.error(values)
 
     if user is None:
         return redirect(reverse('course_selection'))
@@ -102,69 +107,21 @@ def sso_auth_callback(request):
     if not user.avatar:
         user.get_gravatar()
 
+    # redirect the user to his/her desired location
+    if 'param' in request.GET:
+        return HttpResponseRedirect(request.GET.get('param', ""))
+
     return redirect(reverse('course_selection'))
 
 
-class ZidSSOBackend():
-    def authenticate(self, params):
-        param_keys = params.keys()
-
-        if 'sKey' in param_keys:
-            hmac_received = params['sKey']
-        elif 'logout' in param_keys:
-            hmac_received = params['logout']
-        else:
-            return None
-
-        # make sure order is correct by creating a new list and putting in the available keys one by one
-        values = ''
-        for key in ['oid', 'mn', 'firstName', 'lastName', 'mail']:
-            if key in param_keys:
-                values += params[key]
-
-        shared_secret = settings.SSO_SHARED_SECRET.encode(encoding='latin1')
-        utc_now = (datetime.utcnow() - datetime(1970, 1, 1)).total_seconds()
-        now = int(utc_now / 10)
-        user = None
-        for offset in [0, -1, 1, -2, 2]:
-            values_string = values + str(now + offset)
-            values_string = values_string.encode(encoding='latin1')
-            hmac_calced = hmac_new(shared_secret, values_string, sha1).hexdigest()
-
-            if hmac_calced == hmac_received:
-                try:
-                    user = AuroraUser.objects.get(matriculation_number=params['mn'])
-                except AuroraUser.DoesNotExist:
-                    try:
-                        user = AuroraUser.objects.get(oid=params['oid'])
-                    except AuroraUser.DoesNotExist:
-                        user = None
-
-        return user
-
-    def get_user(self, user_id):
-        try:
-            user = AuroraUser.objects.get(pk=user_id)
-        except AuroraUser.DoesNotExist:
-            user = None
-
-        return user
-
-    def __str__(self):
-        return('ZidSSOBackend')
-
-    def __unicode__(self):
-        return('ZidSSOBackend')
-
-
-@login_required
+@aurora_login_required()
 @ensure_csrf_cookie
 def profile(request, course_short_title):
     user = RequestContext(request)['user']
     selected_course = Course.get_or_raise_404(course_short_title)
     return render_to_response('profile.html', {'user': user, 'course': selected_course}, context_instance=RequestContext(request))
 
-@login_required()
+@aurora_login_required()
 def profile_save(request, course_short_title):
     data = {}
     user = RequestContext(request)['user']
@@ -221,7 +178,8 @@ def is_valid_email(email, text_limit):
         return False
 
 
-@login_required()
+@DeprecationWarning
+@aurora_login_required()
 def course(request):
     user = RequestContext(request)['user']
     response_data = {}

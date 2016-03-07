@@ -1,13 +1,14 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
+from AuroraProject.decorators import aurora_login_required
 from Course.models import Course
 from AuroraUser.models import AuroraUser
 from Evaluation.models import Evaluation
@@ -19,13 +20,9 @@ from Challenge.models import Challenge
 from Statistics.views import create_stat_data
 from Faq.models import Faq
 
+import logging
 
-def get_next_url(request):
-    if 'next' in request.GET:
-        return request.GET['next']
-    elif 'param' in request.GET:
-        return request.GET['param']
-    return None
+logger = logging.getLogger(__name__)
 
 
 def course_from_next_url(next):
@@ -41,7 +38,10 @@ def course_from_next_url(next):
 def course_selection(request):
 
     # store next_url if available inside the session
-    next_url = get_next_url(request)
+    next_url = None
+    if 'next' in request.GET:
+        next_url = request.GET['next']
+
     if next_url:
         request.session['next_url'] = next_url
 
@@ -52,16 +52,15 @@ def course_selection(request):
 
     # automatically redirect the user to its course login page
     # if a next_url is defined.
-    if next_url and course_from_next_url(next_url):
-        return redirect(reverse("User:login", args=(course_from_next_url(next_url), )))
+    course = course_from_next_url(next_url)
+    if next_url and course:
+        return redirect(reverse("User:login", args=(course, )))
 
-    data = {'courses': Course.objects.all(), 'next': next, 'debug': settings.DEBUG}
+    data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
     return render_to_response('course_selection.html', data)
 
-
+@aurora_login_required()
 def home(request, course_short_title=None):
-    if not request.user.is_authenticated():
-        return redirect(reverse('User:login', args=(course_short_title, )))
 
     user = RequestContext(request)['user']
     course = Course.get_or_raise_404(course_short_title)

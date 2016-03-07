@@ -17,10 +17,10 @@
   var REVIEW_ANSWER_URL = "{% url 'Review:review_answer' course_short_title=course.short_title %}";
   var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
 
-  history.pushState(null, null, 'write review');
-  window.addEventListener('popstate', function(event) {
-  history.pushState(null, null, 'write review');
-  });
+  //history.pushState(null, null, 'write_review');
+  // window.addEventListener('popstate', function(event) {
+  // history.pushState(null, null, 'write_review');
+  // });
 
 </script>
 
@@ -51,7 +51,7 @@
     </div>
 
 	<div class="betweentext"><i class="fa fa-arrow-right"></i> <b>Before you start reviewing, please read
-		<a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf" style="color:yellow">About Reviewing</a>. 
+		<a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf" style="color:yellow">About Reviewing</a>.
 		Then, carefully examine the work shown above and answer the following questions:</b> </div>
     <form>
 {% for question in questions %}

@@ -3,9 +3,9 @@ from datetime import datetime
 from random import randint
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 
+from AuroraProject.decorators import aurora_login_required
 from Course.models import Course
 from Review.models import Review, ReviewEvaluation
 from Elaboration.models import Elaboration
@@ -44,14 +44,14 @@ def create_context_review(request):
     return data
 
 
-@login_required()
+@aurora_login_required()
 def review(request, course_short_title):
     data = create_context_review(request)
     data['course'] = Course.get_or_raise_404(course_short_title)
     return render_to_response('review.html', data, context_instance=RequestContext(request))
 
 
-@login_required()
+@aurora_login_required()
 def review_answer(request, course_short_title):
     user = RequestContext(request)['user']
     if request.POST:
@@ -88,7 +88,7 @@ def review_answer(request, course_short_title):
 
     return HttpResponse()
 
-@login_required()
+@aurora_login_required()
 def evaluate(request, course_short_title):
     user = RequestContext(request)['user']
     if not request.GET:

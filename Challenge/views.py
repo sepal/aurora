@@ -1,10 +1,10 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
 from django.http import Http404
 import pprint
 from Course.models import Course
 
+from AuroraProject.decorators import aurora_login_required
 from Stack.models import Stack, StackChallengeRelation
 from Evaluation.models import Evaluation
 from Review.models import Review, ReviewEvaluation
@@ -13,13 +13,12 @@ from Challenge.models import Challenge
 from ReviewQuestion.models import ReviewQuestion
 from ReviewAnswer.models import ReviewAnswer
 
-
-@login_required()
+@aurora_login_required()
 def stack(request, course_short_title=None):
     data = create_context_stack(request, course_short_title)
     return render_to_response('stack.html', data, context_instance=RequestContext(request))
 
-@login_required()
+@aurora_login_required()
 def my_review(request, course_short_title=None):
     data = create_context_myreview(request, course_short_title)
     return render_to_response('my_reviews.html', data, context_instance=RequestContext(request))
@@ -84,14 +83,20 @@ def create_context_stack(request, course_short_title):
             reviews.append({})
         submitted = challenge.submitted_by_user(user)
         submission_time = None
+        number_of_reviews = 0
+        number_of_reviews_with_feedback = 0
         if submitted:
             submission_time = challenge.get_elaboration(user).submission_time
+            number_of_reviews = challenge.get_elaboration(user).number_of_reviews()
+            number_of_reviews_with_feedback = challenge.get_elaboration(user).number_of_reviews_with_feedback()
         challenge_active = {
             'challenge': challenge,
             'submitted': submitted,
             'submission_time': submission_time,
             'reviews': reviews,
-            'status': challenge.get_status_text(user)
+            'status': challenge.get_status_text(user),
+            'number_of_reviews': number_of_reviews,
+            'number_of_reviews_with_feedback': number_of_reviews_with_feedback
         }
         elaboration = Elaboration.objects.filter(challenge=challenge, user=user)
         if elaboration:
@@ -111,7 +116,7 @@ def create_context_stack(request, course_short_title):
     return data
 
 
-@login_required()
+@aurora_login_required()
 def challenges(request, course_short_title=None):
     data = {}
 
@@ -177,11 +182,11 @@ def create_context_challenge(request, course_short_title):
 #        else:
 #            context_stack = Stack.objects.get(pk=request.GET.get('id'))
 #            data['blocked'] = context_stack.is_blocked(user)
-        
+
     return data
 
 
-@login_required()
+@aurora_login_required()
 def challenge(request, course_short_title=None):
     data = create_context_challenge(request, course_short_title)
     user = RequestContext(request)['user']

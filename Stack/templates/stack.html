@@ -18,14 +18,14 @@
   var REVIEW_URL = "{% url 'Review:review' course_short_title=course.short_title %}";
   $('.card_status').show();
   $('.status_info').hover(function() {$('.card_status').show();},function() {$('.card_status').hide();})
-  	  
+
 </script>
 
 <div id="detail_area">
   <div class="challenges_stack">
 	  <div class="stack_info">
 	  <div style="border-bottom:1px solid #ddd">{{stack.chapter|safe}}</div>
-		  
+
       <div class="info_title">
            <b>{{ stack.title|safe }}</b>
         </div>
@@ -36,22 +36,26 @@
 </div>
     <div class="card_list">
      {% if not user.is_staff %}
- 
+
 
       {% for challenge_dict in challenges_active %}
 		<div class="card active" challenge_id="{{ challenge_dict.challenge.id }}" style="background-image: url('{{ challenge_dict.challenge.image.url }}')">
 			<div class="card_status callout top {% if not challenge_dict.submitted %}invisiblZ{% endif %}">
               {% if challenge_dict.submitted %}<i class="fa fa-paper-plane-o"></i>&nbsp;&nbsp;{{ challenge_dict.submission_time|naturaltime }}{% endif %}
-			  
+
 			</div>
 			<div class="card_description">
                 <div class="card_headline">{{ challenge_dict.challenge.title|safe }}</div>
                 <div class="card_text">{{ challenge_dict.challenge.description|safe}}</div>
+                {% comment %} 
+				Number of Reviews: {{ challenge_dict.number_of_reviews }} <br>
+                Number of Reviews with Feedback: {{ challenge_dict.number_of_reviews_with_feedback }}
+				{% endcomment %}
 			</div>
 			<div class="card_status_area" {% if challenge_dict.status.status == -1 %}style="color:gray"{% endif %}>
 				{% if challenge_dict.status.status == 3 or stack_blocked %}
 					<span class="step donot">
-						BLOCKED 
+						BLOCKED
 					</span>
 				{% else %}
 				{% if challenge_dict.status.status == 0 %}
@@ -61,7 +65,7 @@
 				{% else %}
 					<span class="step s1 {% if challenge_dict.status.status > 0%}done{% endif %}" title="Start task"><i class="fa fa-pencil "></i></span>
 				{% endif %}<span style="color:gray">&rang;</span>
-				
+
 				{% if challenge_dict.status.status == 1 %}
 					<span class="step donow">
 						Hand in
@@ -69,18 +73,18 @@
 				{% else %}
 				<span class="step s2 {% if challenge_dict.status.status > 1%}done{% endif %}" title="Enter your work for evaluation"><i class="fa fa-paper-plane  "></i></span>
 				{% endif %}<span style="color:gray">&rang;</span>
-				
-				{% if forloop.counter != len %} 
+
+				{% if forloop.counter != len %}
 					{% if challenge_dict.status.status == 2 %}
 						<span id="{{challenge_dict.challenge.id}}" class="step donow s3">
-							Write reviews 
+							Write reviews
 						</span>
 					{% else %}
-						<span id="{{challenge_dict.challenge.id}}" class="step s3" title="Write reviews"><i class="fa fa-eye {% if challenge_dict.status.status > 2%}donow{% endif %}" id="XY"></i> <i class="fa fa-pencil {% if challenge_dict.status.status > 2%}done{% endif %}"></i></span> 
+						<span id="{{challenge_dict.challenge.id}}" class="step s3" title="Write reviews"><i class="fa fa-eye {% if challenge_dict.status.status > 2%}donow{% endif %}" id="XY"></i> <i class="fa fa-pencil {% if challenge_dict.status.status > 2%}done{% endif %}"></i></span>
 					{% endif %}<span style="color:gray">&rang;</span>
 				{% endif %}
-				
-				{% if forloop.counter != len %} 
+
+				{% if forloop.counter != len %}
 					{% if challenge_dict.status.status == 4 %}
 						<span class="step donot">
 							Wait for reviews
@@ -95,15 +99,15 @@
 						<span class="step donot">
 							Wait for evaluation
 						</span>
-						
+
 					{% else %}
 						<span class="step s4" title="Wait for evaluation"><i class="fa fa-clock-o "></i></span>
 					{% endif %}
 				{% endif %}<span style="color:gray">&rang;</span>
-				
+
 				{% if challenge_dict.status.status == 5 %}
 					{% if challenge_dict.awesome or challenge_dict.success or challenge_dict.fail or challenge_dict.nothing %}
-					<span class="step donow">RESULT: 
+					<span class="step donow">RESULT:
 						<div class="peer_reviews" challenge_id="{{ challenge_dict.challenge.id }}">
 							{% if challenge_dict.awesome or challenge_dict.success or challenge_dict.fail%}
 								<span class="review_token">{{ challenge_dict.awesome | add:challenge_dict.success | add:challenge_dict.fail}}</span>
@@ -112,18 +116,26 @@
 								<span class="review_token red">{{ challenge_dict.nothing }}</span>
 							{% endif %}
 						</div> <!-- peer reviews -->
+						{% if challenge_dict.number_of_reviews_with_feedback != challenge_dict.number_of_reviews%}
+							<span style="color:gray">&rang;</span>
+							<span class="fa fa-square-o"></span>
+						{% else %}
+							<span style="color:gray">&rang;</span>
+							<span class="fa fa-check-square-o" style="color:darkgray"></span>
+						{% endif %}
 					{% endif %}
-					
+
 				{% elif challenge_dict.status.status != 7 %}
-					<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span class="step s5" title="Finished"><i class="fa fa-check"></i>
+					&rang; <span class="step" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 				{% endif %}
-				
+
 
 				{% if challenge_dict.status.status == 7 %}
 						<span class="step donow""> EVALUATED: </i><span style="font-weight:bold;">{{ challenge_dict.points }}</span> POINTS</span>
 				{% endif %}
 			{% endif %}
-				
+
 
 			</div>
 			<div class="card_reviews" id="R{{challenge_dict.challenge.id}}">
@@ -157,12 +169,9 @@
 				{% endif %}
 		</div> <!-- card -->
       {% endfor %}
-	  
+
       {% for challenge in challenges_inactive %}
 		<div class="card not_yet_active"  challenge_id="{{ challenge.id }}" style="background-image: url('{{ challenge.image.url }}')">
-			<div class="card_status callout top">
-              <span>{{ challenge_dict.status.status }} </span> 
-			</div>
 			<div class="card_description">
                 <div class="card_headline">{{ challenge.title|safe }}</div>
                 <div class="card_text">{{ challenge.description|safe}}</div>
@@ -170,7 +179,7 @@
 			<div class="card_status_area">
 				{% if challenge_dict.status.status == 3 or stack_blocked %}
 					<span class="step donot">
-						BLOCKED 
+						BLOCKED
 					</span>
 				{% else %}
 					<span class="step s1 {% if challenge_dict.status.status > 0 %}done{% endif %}" title="Start task"><i class="fa fa-pencil "></i></span>
@@ -178,7 +187,7 @@
 				<span class="step s2 {% if challenge_dict.status.status > 1%}done{% endif %}" title="Enter your work for evaluation"><i class="fa fa-paper-plane  "></i></span>
 					<span style="color:gray">&rang;</span>
 					{% if challenges_active|length|add:forloop.counter != len %}
-						<span id="{{challenge_dict.challenge.id}}" class="step s3" title="Write reviews"><i class="fa fa-eye {% if challenge_dict.status.status > 2%}donow{% endif %}" id="XY"></i> <i class="fa fa-pencil {% if challenge_dict.status.status > 2%}done{% endif %}"></i></span> 
+						<span id="{{challenge_dict.challenge.id}}" class="step s3" title="Write reviews"><i class="fa fa-eye {% if challenge_dict.status.status > 2%}donow{% endif %}" id="XY"></i> <i class="fa fa-pencil {% if challenge_dict.status.status > 2%}done{% endif %}"></i></span>
 						<span style="color:gray">&rang;</span>
 						<span class="step s4" title="Wait for reviews"><i class="fa fa-clock-o "></i></span>
 					{% else %}
@@ -186,6 +195,8 @@
 					{% endif %}
 					<span style="color:gray">&rang;</span>
 				<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span style="color:gray">&rang;</span>
+				<span class="step s5" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 				{% endif%}
 			</div>
 			<div class="card_reviews">
@@ -195,7 +206,7 @@
 	  {% else %} <!--user not staff-->
       {% for challenge_dict in challenges_active %}
 		<div class="card "  challenge_id="{{ challenge_dict.challenge.id }}" style="background-image: url('{{ challenge_dict.challenge.image.url }}')">
-			<div class="card_status callout top invisiblZ">			  
+			<div class="card_status callout top invisiblZ">
 			</div>
 			<div class="card_description">
                 <div class="card_headline">{{ challenge_dict.challenge.title|safe }}</div>
@@ -205,22 +216,24 @@
 					<span class="step s1 {% if challenge_dict.status.status > 0%}done{% endif %}" title="Start task"><i class="fa fa-pencil "></i></span>
 					<span style="color:gray">&rang;</span>
 				<span class="step s2 {% if challenge_dict.status.status > 1%}done{% endif %}" title="Enter your work for evaluation"><i class="fa fa-paper-plane  "></i></span>
-					<span style="color:gray">&rang;</span> 
-					
-						<span id="{{challenge_dict.challenge.id}}" class="step s3 {% if challenge_dict.status.status > 2%}doneR{% endif %}" title="Write reviews"><i class="fa fa-eye" id="XY"></i> <i class="fa fa-pencil"></i></span> 
+					<span style="color:gray">&rang;</span>
+
+						<span id="{{challenge_dict.challenge.id}}" class="step s3 {% if challenge_dict.status.status > 2%}doneR{% endif %}" title="Write reviews"><i class="fa fa-eye" id="XY"></i> <i class="fa fa-pencil"></i></span>
 						<span style="color:gray">&rang;</span>
 				<span class="step s4" title="Wait for reviews"><i class="fa fa-clock-o "></i></span>
 					<span style="color:gray">&rang;</span>
 				<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span style="color:gray">&rang;</span>
+				<span class="step s5" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 			</div>
 			<div class="card_reviews">
 			</div>
 		</div> <!-- card -->
       {% endfor %}
-	  
+
       {% for challenge in challenges_inactive %}
 		<div class="card "  challenge_id="{{ challenge.id }}" style="background-image: url('{{ challenge.image.url }}')">
-			<div class="card_status callout top invisiblZ">			  
+			<div class="card_status callout top invisiblZ">
 			</div>
 			<div class="card_description">
                 <div class="card_headline">{{ challenge.title|safe }}</div>
@@ -231,20 +244,22 @@
 					<span style="color:gray">&rang;</span>
 				<span class="step s2 {% if challenge_dict.status.status > 1%}done{% endif %}" title="Enter your work for evaluation"><i class="fa fa-paper-plane  "></i></span>
 					<span style="color:gray">&rang;</span>
-				<span id="{{challenge_dict.challenge.id}}" class="step s3 {% if challenge_dict.status.status > 2%}doneR{% endif %}" title="Write reviews"><i class="fa fa-eye" id="XY"></i> <i class="fa fa-pencil"></i></span> 
+				<span id="{{challenge_dict.challenge.id}}" class="step s3 {% if challenge_dict.status.status > 2%}doneR{% endif %}" title="Write reviews"><i class="fa fa-eye" id="XY"></i> <i class="fa fa-pencil"></i></span>
 					<span style="color:gray">&rang;</span>
 				<span class="step s4" title="Wait for reviews"><i class="fa fa-clock-o "></i></span>
 					<span style="color:gray">&rang;</span>
 				<span class="step s5" title="Finished"><i class="fa fa-check  "></i>
+					<span style="color:gray">&rang;</span>
+				<span class="step s5" title="Give feedback to your reviewers"><i class="fa fa-square-o"></i>
 			</div>
 			<div class="card_reviews">
 			</div>
 		</div> <!-- card -->
       {% endfor %}
-	  
+
 	  {% endif %}
 	</div><!-- card_list -->
-	
+
   </div>
 </div>
 {% endblock %}

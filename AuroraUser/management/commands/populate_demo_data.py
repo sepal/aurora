@@ -285,10 +285,9 @@ def import_data():
 
     # create challenges
     print('adding challenges')
-    challenge_1 = Challenge(id=1,
-                            title='meine meinung',
+    challenge_1 = Challenge(title='meine meinung',
                             subtitle='meine meinung',
-                            description='gehen sie nach derstandard.at, suchen sie einen beliebigen artikel, und posten sie den text dieses artikels hier.',
+                            description='Gehen Sie nach derstandard.at, suchen Sie einen beliebigen Artikel und posten Sie den Text dieses Artikels hier.',
                             accepted_files='',
                             course=gsi,
                             points=15,
@@ -296,14 +295,14 @@ def import_data():
     challenge_1.image.save('1.png', File(open(os.path.join(STATIC_ROOT, 'img', '1.png'), 'rb')))
     challenge_1.save()
 
-    ReviewQuestion(challenge=challenge_1, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_1, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
-
-    challenge_2 = Challenge(id=2,
-                            title='rage-comic',
+    ReviewQuestion(challenge=challenge_1, order=1, text='In wie fern stellt der gepostete Artikel einen Beitrag zur Entwicklung der Gesellschaft dar?').save()
+    ReviewQuestion(challenge=challenge_1, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    ReviewQuestion(challenge=challenge_1, order=3, text="Anmerkungen an das LVA-Team:", visible_to_author=False).save()
+	
+    challenge_2 = Challenge(title='rage-comic',
                             subtitle='rage-comic',
                             prerequisite=challenge_1,
-                            description='finden sie einen web-comic, den sie lustig finden, und laden sie ihn hier hoch. beschreiben sie kurz, wie lange sie diesen webcomic schon lesen.',
+                            description='Finden Sie einen Webcomic, den Sie lustig finden und laden Sie ihn hier hoch. Beschreiben Sie kurz, wie lange Sie diesen Webcomic schon lesen.',
                             accepted_files='image/*',
                             course=gsi,
                             points=10,
@@ -311,18 +310,15 @@ def import_data():
     challenge_2.image.save('2.png', File(open(os.path.join(STATIC_ROOT, 'img', '2.png'), 'rb')))
     challenge_2.save()
 
-    ReviewQuestion(challenge=challenge_2, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_2, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
-    ReviewQuestion(challenge=challenge_2, order=3, text="Ist der Webcomic lustig?",
-                   boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_2, order=4, text="Ist dieser Webcomic interessant?", boolean_answer=True,
+    ReviewQuestion(challenge=challenge_2, order=1, text="Empfinden Sie den Webcomic als lustig? Begründen Sie Ihre Antwort.").save()
+    ReviewQuestion(challenge=challenge_2, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    ReviewQuestion(challenge=challenge_2, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
 
-    challenge_3 = Challenge(id=3,
-                            title='wikipedia',
+    challenge_3 = Challenge(title='wikipedia',
                             subtitle='wikipedia',
                             prerequisite=challenge_2,
-                            description='kopieren sie 4 absätze aus einem  wikipedia-artikel und geben sie sie ab! setzen sie ans ende der arbeit den link auf den wikipedia-artikel!',
+                            description='Kopieren Sie 4 Absätze aus einem Wikipedia-Artikel und geben Sie sie ab! Setzen Sie ans Ende der arbeit den Link auf den Wikipedia-Artikel!',
                             accepted_files='',
                             course=gsi,
                             points=8,
@@ -330,14 +326,15 @@ def import_data():
     challenge_3.image.save('3.png', File(open(os.path.join(STATIC_ROOT, 'img', '3.png'), 'rb')))
     challenge_3.save()
 
-    ReviewQuestion(challenge=challenge_3, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_3, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
-
-    challenge_4 = Challenge(id=4,
-                            title='wissenschaft',
+    ReviewQuestion(challenge=challenge_3, order=1, text="Was möchte die Autorin bzw. der Autor mit den 4 Absätzen ausdrücken?").save()
+    ReviewQuestion(challenge=challenge_3, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    ReviewQuestion(challenge=challenge_3, order=3, text="Anmerkungen an das LVA-Team:",
+                   visible_to_author=False).save()
+				   
+    challenge_4 = Challenge(title='wissenschaft',
                             subtitle='wissenschaft',
                             prerequisite=challenge_3,
-                            description='finden sie einen pseudowissenschaftlichen artikel und laden sie ihn hier hoch.',
+                            description='Finden Sie einen pseudowissenschaftlichen Artikel und laden Sie ihn hier hoch.',
                             accepted_files='application/pdf',
                             course=hci,
                             points=9,
@@ -345,35 +342,37 @@ def import_data():
     challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
     challenge_4.save()
 
-    challenge_5 = Challenge(id=5,
-                            title='ping',
+    challenge_5 = Challenge(title='ping',
                             subtitle='ping',
-                            description='laden sie drei bilder im png-format hoch. beschreiben sie dann kurz, was auf diesen bildern zu sehen ist.',
+                            description='Laden Sie drei Bilder im png-Format hoch. Beschreiben Sie dann kurz, was auf diesen Bildern zu sehen ist.',
                             accepted_files='image/png',
                             course=gsi,
                             points=10,
     )
     challenge_5.image.save('5.png', File(open(os.path.join(STATIC_ROOT, 'img', '5.png'), 'rb')))
     challenge_5.save()
-    ReviewQuestion(challenge=challenge_5, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_5, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
-
-    challenge_6 = Challenge(id=6,
-                            title='advice animal',
+    ReviewQuestion(challenge=challenge_5, order=1, text="In welchem Zusammenhang stehen die Bilder? Ist ein Muster erkennbar?").save()
+    ReviewQuestion(challenge=challenge_5, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    ReviewQuestion(challenge=challenge_5, order=3, text="Anmerkungen an das LVA-Team:",
+                   visible_to_author=False).save()
+				   
+    challenge_6 = Challenge(title='advice animal',
                             subtitle='advice animal',
                             prerequisite=challenge_5,
-                            description='suchen sie ein »advice animal« bild und posten sie es hier. geben sie die quelle dazu an.',
+                            description='Suchen Sie ein »advice animal« Bild und posten Sie es hier. Geben sie die Quelle dazu an.',
                             accepted_files='image/*',
                             course=hci,
                             points=12,
     )
     challenge_6.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
     challenge_6.save()
-    ReviewQuestion(challenge=challenge_6, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_6, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
+	
+    ReviewQuestion(challenge=challenge_6, order=1, text="Was steckt hinter dem »advice«? Welche Probleme werden dadurch aufgezeigt?").save()
+    ReviewQuestion(challenge=challenge_6, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    ReviewQuestion(challenge=challenge_6, order=3, text="Anmerkungen an das LVA-Team:",
+                   visible_to_author=False).save()
 
-    challenge_7 = Challenge(id=7,
-                            title='animated gif',
+    challenge_7 = Challenge(title='animated gif',
                             subtitle='animated gif',
                             prerequisite=challenge_6,
                             description='suchen sie ein animated gif und posten sie es. geben sie die quelle dazu an.',
@@ -383,14 +382,15 @@ def import_data():
     )
     challenge_7.image.save('7.png', File(open(os.path.join(STATIC_ROOT, 'img', '7.png'), 'rb')))
     challenge_7.save()
-    ReviewQuestion(challenge=challenge_7, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_7, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
+    ReviewQuestion(challenge=challenge_7, order=1, text="Weshalb wurde das GIF animiert? Würde es auch ohne Animation funktionieren? Begründen Sie Ihre Antwort.").save()
+    ReviewQuestion(challenge=challenge_7, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    ReviewQuestion(challenge=challenge_7, order=3, text="Anmerkungen an das LVA-Team:",
+                   visible_to_author=False).save()
 
-    challenge_8 = Challenge(id=8,
-                            title='zwei menschen',
+    challenge_8 = Challenge(title='zwei menschen',
                             subtitle='zwei menschen',
                             prerequisite=challenge_7,
-                            description='laden sie zwei bilder von zwei verschiedenen menschen hoch. erklären sie dann, wer diese beiden menschen sind. vergessen sie nicht auf die quellenangabe!',
+                            description='Laden Sie zwei Bilder von zwei verschiedenen Menschen hoch. Erklären Sie dann, wer diese beiden Menschen sind. Vergessen Sie nicht auf die Quellenangabe!!11elf',
                             accepted_files='image/*',
                             course=hci,
                             points=5,
@@ -398,25 +398,26 @@ def import_data():
     challenge_8.image.save('8.png', File(open(os.path.join(STATIC_ROOT, 'img', '8.png'), 'rb')))
     challenge_8.save()
 
-    challenge_9 = Challenge(id=9,
-                            title='youtube',
+    challenge_9 = Challenge(title='youtube',
                             subtitle='youtube',
-                            description='suchen sie ein gutes youtube-video und posten sie den link hier. wenn sherlock holmes darin vorkommt, dann können sie auch einen extrapunkt bekommen.',
+                            description='Suchen Sie ein gutes YouTube-Video und posten Sie den Link hier. Wenn Sherlock Holmes darin vorkommt, dann können Sie auch einen Extrapunkt bekommen.',
                             accepted_files='',
                             course=gsi,
                             points=25,
     )
     challenge_9.image.save('9.png', File(open(os.path.join(STATIC_ROOT, 'img', '9.png'), 'rb')))
     challenge_9.save()
-    ReviewQuestion(challenge=challenge_9, order=1, text="Erfüllt diese Arbeit die gestellte Aufgabe?", boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_9, order=2, text="Falls nicht: Was fehlt? Was sollte anders sein? Was ist zuviel?").save()
-
-    challenge_10 = Challenge(id=10,
-                             title='schmetterling',
+    ReviewQuestion(challenge=challenge_9, order=1, text="Beschreiben Sie jemandem der Blind ist die Szene. Versuchen Sie dabei auch auf Details einzugehen, die für das Gesamtverständnis von Relevanz sein könnten.").save()
+    ReviewQuestion(challenge=challenge_9, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    ReviewQuestion(challenge=challenge_9, order=3, text="Kommt in dem Video Sherlock Holmes vor?",
+                   visible_to_author=False, boolean_answer=True).save()
+    ReviewQuestion(challenge=challenge_9, order=4, text="Anmerkungen an das LVA-Team:",
+                   visible_to_author=False).save()
+				   
+    challenge_10 = Challenge(title='schmetterling',
                              subtitle='schmetterling',
                              prerequisite=challenge_9,
-                             description='suchen sie in google image search schmetterlingsbilder und laden sie diese hier hoch. vergessen sie nicht auf die quellenangaben!',
-
+                             description='Suchen Sie in Google Image Search Schmetterlingsbilder und laden Sie diese hier hoch. Vergessen Sie nicht auf die Quellenangaben!',
                              accepted_files='image/*',
                              course=gsi,
                              points=3,
