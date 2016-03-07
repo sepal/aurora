@@ -15,7 +15,7 @@
 	  filterString = filterString + "invert(" + inValue + ") hue-rotate(" + i + "deg) ";
 	  grayValue = Math.round(Math.abs(1-Math.abs(1-i/90))*100);  // 180:0 90:100 0:1
 	  filterString = filterString + "grayscale(" + grayValue +"%)";
-	  document.getElementById("BG").style.webkitFilter = filterString;
+	  document.getElementById("BG").style.filter = filterString;
 	  
 	  if (i > 0) {setTimeout(showMore,10,i-5)} else {$('.login').show()};
   }
