@@ -172,9 +172,6 @@
 
       {% for challenge in challenges_inactive %}
 		<div class="card not_yet_active"  challenge_id="{{ challenge.id }}" style="background-image: url('{{ challenge.image.url }}')">
-			<div class="card_status callout top">
-              <span>{{ challenge_dict.status.status }} </span>
-			</div>
 			<div class="card_description">
                 <div class="card_headline">{{ challenge.title|safe }}</div>
                 <div class="card_text">{{ challenge.description|safe}}</div>
