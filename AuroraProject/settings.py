@@ -156,11 +156,7 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -191,7 +187,6 @@ LOGGING = {
         },
         'file': {
             'level': 'DEBUG',
-            'filters': ['require_debug_true'],
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 1024*1024*10,
             'backupCount': 1,
@@ -199,24 +194,51 @@ LOGGING = {
             'formatter': 'timed',
         },
     },
-    'loggers': {
-#        'django.request': {
-#            'handlers': ['file'],
-#            'level': 'DEBUG',
-#            'propagate': True,
-#        },
+    'loggers': {} # loggers are set below
+}
+
+# production log handling
+if not DEBUG:
+    LOGGING['loggers'] = {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        # django logs
+        'django': {
+            'handlers': ['file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        # python logs
+        '': {
+            'handlers': ['file'],
+            'level': 'CRITICAL',
+            'propagate': True,
+        },
+    }
+# debug log handling
+else:
+    LOGGING['loggers'] = {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        # django logs
         'django': {
             'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
         },
+        # python logs
         '': {
             'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
         },
     }
-}
 
 LOGIN_URL = '/'
 
