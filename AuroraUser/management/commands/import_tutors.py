@@ -44,7 +44,7 @@ def import_tutors():
                     else:
                         print("user already in db")
                         continue
-                    # student.matriculation_number = matriculation_number
+                    student.matriculation_number = matriculation_number
                     student.last_name = last_name
                     student.first_name = first_name
                     student.email = email

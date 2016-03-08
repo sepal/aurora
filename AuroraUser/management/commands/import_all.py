@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from Comments.models import Comment, CommentsConfig
 
 class Command(BaseCommand):
     help = 'Populates database with demo data'
@@ -24,3 +25,4 @@ def import_all():
     call_command('import_students')
     call_command('import_faq')
     call_command('import_chapters')
+    CommentsConfig.setup
