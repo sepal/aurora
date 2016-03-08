@@ -114,7 +114,6 @@ def edit_comment(request):
 
 
 @csrf_exempt
-@login_required()
 def lecturer_post(request):
     data = request.POST
     if data['secret'] != LECTURER_SECRET:
