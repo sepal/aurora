@@ -67,6 +67,10 @@ class Stack(models.Model):
 
     def get_status_text(self, user):
         last_available_challenge = self.get_last_available_challenge(user)
+        # TODO: workaround to avoid exception when a user with no stack relations logs in
+        # this should only be the case if the user is staff and has no access
+        if last_available_challenge is None:
+            return None
         return last_available_challenge.get_status_text(user)
 
     def is_blocked(self, user):

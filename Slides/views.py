@@ -1,6 +1,5 @@
 import datetime
 from datetime import timedelta
-from django.contrib.auth.decorators import login_required
 import re
 import time
 import json
@@ -13,6 +12,7 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 
+from AuroraProject.decorators import aurora_login_required
 from Course.models import Course
 from Slides.models import Lecture, Slide, Stream
 from Slides.settings import LIVECAST_START
@@ -39,7 +39,7 @@ the following tags can be attached to slides:
 """
 
 
-@login_required
+@aurora_login_required()
 def start(request, course_short_title=None):
     course = Course.get_or_raise_404(course_short_title)
     lectures = _get_contentbar_data(course)

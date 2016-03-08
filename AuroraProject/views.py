@@ -1,13 +1,14 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
+from AuroraProject.decorators import aurora_login_required
 from Course.models import Course
 from AuroraUser.models import AuroraUser
 from Evaluation.models import Evaluation
@@ -18,7 +19,6 @@ from Evaluation.views import get_points
 from Challenge.models import Challenge
 from Statistics.views import create_stat_data
 from Faq.models import Faq
-
 
 import logging
 
@@ -59,10 +59,8 @@ def course_selection(request):
     data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
     return render_to_response('course_selection.html', data)
 
-
+@aurora_login_required()
 def home(request, course_short_title=None):
-    if not request.user.is_authenticated():
-        return redirect(reverse('User:login', args=(course_short_title, )))
 
     user = RequestContext(request)['user']
     course = Course.get_or_raise_404(course_short_title)

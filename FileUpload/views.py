@@ -7,6 +7,9 @@ from django.template import RequestContext
 from django.core.files import File
 from tempfile import NamedTemporaryFile
 from PIL import ImageFile, Image, ImageOps
+
+#TODO @aurora_login_required() cannot be used here, change urls.py
+#from AuroraProject.decorators import aurora_login_required
 from Elaboration.models import Elaboration
 from FileUpload.models import UploadFile
 from django.http import Http404

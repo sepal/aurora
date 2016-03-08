@@ -28,7 +28,7 @@ Selbstverständnis, Geschichte und Stimmen der Informatik als Technologie und ak
     print('adding course bhci')
     hci = Course(
         title='Basics of Human Computer Interaction',
-        short_title='bhci',
+        short_title='hci',
         description = """/
 Ziele der Lehrveranstaltung
 Work in teams on reflection and design problems; Be able to discuss technologies and needs with potential users; Come up with innovative ideas for interactive technologies; Approach open and ambiguous problem situations in a proactive and self-organized way.
