@@ -22,3 +22,5 @@ def import_all():
     call_command('import_courses')
     call_command('import_tutors')
     call_command('import_students')
+    call_command('import_faq')
+    call_command('import_chapters')

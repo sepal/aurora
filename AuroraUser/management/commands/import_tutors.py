@@ -68,3 +68,24 @@ def import_tutors():
     except Exception as e:
         print(e)
         return
+        
+    dummy_users = []
+    #create the three dummy users for jumpstarting the peer review process
+    for i in range(4):
+        print("adding dummy user %s of %s" % (i, 4))
+        username = "d%s" % i
+        dummy_user = AuroraUser(username=username)
+        dummy_user.email = '%s@student.tuwien.ac.at' % username
+        dummy_user.first_name = 'Firstname_%s' % username
+        dummy_user.last_name = 'Lastname_%s' % username
+        dummy_user.nickname = 'Nickname_%s' % username
+        dummy_user.is_staff = False
+        dummy_user.is_superuser = False
+        password = username
+        dummy_user.set_password(password)
+        dummy_user.save()
+        dummy_users.append(dummy_user)
+    d1 = dummy_users[0]
+    d2 = dummy_users[1]
+    d3 = dummy_users[2]
+    d4 = dummy_users[3]

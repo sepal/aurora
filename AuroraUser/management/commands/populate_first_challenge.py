@@ -30,47 +30,47 @@ class Command(BaseCommand):
 def init_data():
     CommentsConfig.setup()
 
-    number_of_users = 3
-    users = []
-    dummy_users = []
-    tutors = []
+    # number_of_users = 3
+    # users = []
+    # dummy_users = []
+    # tutors = []
 
-    for i in range(number_of_users):
-        print("adding student %s of %s" % (i, number_of_users))
-        username = "s%s" % i
-        user = AuroraUser(username=username)
-        user.email = '%s@student.tuwien.ac.at' % username
-        user.first_name = 'Firstname_%s' % username
-        user.last_name = 'Lastname_%s' % username
-        user.nickname = 'Nickname_%s' % username
-        user.matriculation_number = "{0:0=2d}".format(i) + ''.join(["%s" % random.randint(0, 9) for num in range(0, 5)])
-        user.is_staff = False
-        user.is_superuser = False
-        password = username
-        user.set_password(password)
-        user.save()
-        users.append(user)
-    s0 = users[0]
+    # for i in range(number_of_users):
+        # print("adding student %s of %s" % (i, number_of_users))
+        # username = "s%s" % i
+        # user = AuroraUser(username=username)
+        # user.email = '%s@student.tuwien.ac.at' % username
+        # user.first_name = 'Firstname_%s' % username
+        # user.last_name = 'Lastname_%s' % username
+        # user.nickname = 'Nickname_%s' % username
+        # user.matriculation_number = "{0:0=2d}".format(i) + ''.join(["%s" % random.randint(0, 9) for num in range(0, 5)])
+        # user.is_staff = False
+        # user.is_superuser = False
+        # password = username
+        # user.set_password(password)
+        # user.save()
+        # users.append(user)
+    # s0 = users[0]
 
-    # create the three dummy users for jumpstarting the peer review process
-    for i in range(4):
-        print("adding dummy user %s of %s" % (i, 4))
-        username = "d%s" % i
-        dummy_user = AuroraUser(username=username)
-        dummy_user.email = '%s@student.tuwien.ac.at' % username
-        dummy_user.first_name = 'Firstname_%s' % username
-        dummy_user.last_name = 'Lastname_%s' % username
-        dummy_user.nickname = 'Nickname_%s' % username
-        dummy_user.is_staff = False
-        dummy_user.is_superuser = False
-        password = username
-        dummy_user.set_password(password)
-        dummy_user.save()
-        dummy_users.append(dummy_user)
-    d1 = dummy_users[0]
-    d2 = dummy_users[1]
-    d3 = dummy_users[2]
-    d4 = dummy_users[3]
+    # # create the three dummy users for jumpstarting the peer review process
+    # for i in range(4):
+        # print("adding dummy user %s of %s" % (i, 4))
+        # username = "d%s" % i
+        # dummy_user = AuroraUser(username=username)
+        # dummy_user.email = '%s@student.tuwien.ac.at' % username
+        # dummy_user.first_name = 'Firstname_%s' % username
+        # dummy_user.last_name = 'Lastname_%s' % username
+        # dummy_user.nickname = 'Nickname_%s' % username
+        # dummy_user.is_staff = False
+        # dummy_user.is_superuser = False
+        # password = username
+        # dummy_user.set_password(password)
+        # dummy_user.save()
+        # dummy_users.append(dummy_user)
+    # d1 = dummy_users[0]
+    # d2 = dummy_users[1]
+    # d3 = dummy_users[2]
+    # d4 = dummy_users[3]
 
 
     # create an admin user with password amanaman
@@ -98,8 +98,8 @@ def init_data():
         )
         gsi.save()
 
-    if Course.objects.filter(short_title='bhci').exists():
-        hci = Course.objects.get(short_title='bhci')
+    if Course.objects.filter(short_title='hci').exists():
+        hci = Course.objects.get(short_title='hci')
     elif Course.objects.filter(short_title='hci').exists():
         hci = Course.objects.get(short_title='hci')
     else:
@@ -112,25 +112,24 @@ def init_data():
         )
         hci.save()
 
-    for user in users:
-        CourseUserRelation(course=gsi, user=user).save()
-        CourseUserRelation(course=hci, user=user).save()
+    # for user in users:
+        # CourseUserRelation(course=gsi, user=user).save()
+        # CourseUserRelation(course=hci, user=user).save()
 
     # create course-user relations
-    print('adding course-user relations for dummy users')
-    CourseUserRelation(course=gsi, user=d1).save()
-    CourseUserRelation(course=hci, user=d1).save()
-    CourseUserRelation(course=gsi, user=d2).save()
-    CourseUserRelation(course=hci, user=d2).save()
-    CourseUserRelation(course=gsi, user=d3).save()
-    CourseUserRelation(course=hci, user=d3).save()
-    CourseUserRelation(course=gsi, user=d4).save()
-    CourseUserRelation(course=hci, user=d4).save()
+    # print('adding course-user relations for dummy users')
+    # CourseUserRelation(course=gsi, user=d1).save()
+    # CourseUserRelation(course=hci, user=d1).save()
+    # CourseUserRelation(course=gsi, user=d2).save()
+    # CourseUserRelation(course=hci, user=d2).save()
+    # CourseUserRelation(course=gsi, user=d3).save()
+    # CourseUserRelation(course=hci, user=d3).save()
+    # CourseUserRelation(course=gsi, user=d4).save()
+    # CourseUserRelation(course=hci, user=d4).save()
 
     # create challenges
     print('adding challenges')
-    challenge_1 = Challenge(id=1,
-                            title='Personalisieren',
+    challenge_1 = Challenge(title='Personalisieren',
                             subtitle='Personalisieren',
                             description='Setzen sie in ihrem Profil ein Avatar-Bild, das ein anderes ist als der Default. Achten sie dabei bitte darauf, dass die Abbildungen'
                                         ' weder rassistisch noch sexistisch sind. Es muss allerdings auch kein Foto von ihnen sein. Machen sie dann einen Screenshot, auf dem'
@@ -140,6 +139,7 @@ def init_data():
                                         'Ausschnitt sieht.',
                             accepted_files='image/*',
                             course=gsi,
+                            points=1,
     )
     challenge_1.image.save('1.png', File(open(os.path.join(STATIC_ROOT, 'img', '1.png'), 'rb')))
     challenge_1.save()
@@ -148,8 +148,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_1, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
     ReviewQuestion(challenge=challenge_1, order=3, text="Finden sie den Avatar nett?", boolean_answer=True).save()
 
-    challenge_2 = Challenge(id=2,
-                            title='Kommentieren',
+    challenge_2 = Challenge(title='Kommentieren',
                             subtitle='Kommentieren',
                             prerequisite=challenge_1,
                             description='Posten sie einen Kommentar zu den Folien der ersten Vorlesung. Dieser soll entweder einen inhaltlichen Bezug zum Inhalt einer Folie'
@@ -161,6 +160,7 @@ def init_data():
                                         'den Titel der Folie an, zu der sie den Kommentar gepostet haben.',
                             accepted_files='image/*',
                             course=gsi,
+                            points=1,
     )
     challenge_2.image.save('2.png', File(open(os.path.join(STATIC_ROOT, 'img', '2.png'), 'rb')))
     challenge_2.save()
@@ -172,8 +172,7 @@ def init_data():
                         " schon eine Antwort bekommen hat.",
                    boolean_answer=True).save()
 
-    challenge_3 = Challenge(id=3,
-                            title='Markieren',
+    challenge_3 = Challenge(title='Markieren',
                             subtitle='Markieren',
                             prerequisite=challenge_2,
                             description='Markieren Sie Folien! Im Bereich »Slides« gibt es bei jeder Folie rechts oben drei »Lesezeichen«-Symbole, mit denen sie verwirrende '
@@ -183,6 +182,7 @@ def init_data():
                                         'Geben sie diese drei Screenshots ab.',
                             accepted_files='image/*',
                             course=gsi,
+                            points=1,
     )
     challenge_3.image.save('3.png', File(open(os.path.join(STATIC_ROOT, 'img', '3.png'), 'rb')))
     challenge_3.save()
@@ -190,8 +190,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_3, order=1, text="Wurde die Aufgabe im wesentlichen erfüllt?", boolean_answer=True).save()
     ReviewQuestion(challenge=challenge_3, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
 
-    challenge_4 = Challenge(id=4,
-                            title='Bewerten',
+    challenge_4 = Challenge(title='Bewerten',
                             subtitle='Bewerten',
                             prerequisite=challenge_3,
                             description='Bewerten sie einen oder mehrere Kommentare in den Slides mit Hilfe der Bewertungspfeile rechts oben im Kommentar. '
@@ -199,6 +198,7 @@ def init_data():
                                         'Machen sie einen Screenshot von einem Kommentar, den sie bewertet haben, und geben sie diesen ab.',
                             accepted_files='image/*',
                             course=gsi,
+                            points=1,
     )
     challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
     challenge_4.save()
@@ -206,8 +206,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_4, order=1, text="Wurde die Aufgabe im wesentlichen erfüllt?", boolean_answer=True).save()
     ReviewQuestion(challenge=challenge_4, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
 
-    challenge_5 = Challenge(id=5,
-                            title='Vormerken',
+    challenge_5 = Challenge(title='Vormerken',
                             subtitle='Vormerken',
                             prerequisite=challenge_4,
                             description='Markieren sie Kommentare! Möchten sie einen Kommentar vormerken, zB. weil er wichtige Informationen enthält, oder weil'
@@ -217,6 +216,7 @@ def init_data():
                                         'Kommentare. Geben sie diesen Screenshot ab.',
                             accepted_files='image/*',
                             course=gsi,
+                            points=1,
     )
     challenge_5.image.save('5.png', File(open(os.path.join(STATIC_ROOT, 'img', '5.png'), 'rb')))
     challenge_5.save()
@@ -224,8 +224,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_5, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
     ReviewQuestion(challenge=challenge_5, order=3, text="Schätzen sie: wurden hier sinnvolle Kommentare markiert?", boolean_answer=True).save()
 
-    challenge_6 = Challenge(id=6,
-                            title='Erwarten',
+    challenge_6 = Challenge(title='Erwarten',
                             subtitle='Erwarten',
                             prerequisite=challenge_5,
                             description='Was erwarten Sie sich von dieser Lehrveranstaltung? Was, meinen sie, werden sie hier lernen? Schreiben sie etwa einen Absatz'
@@ -233,14 +232,14 @@ def init_data():
                                         ' zu dieser Lehrveranstaltung (Organisation, Experience, Unterhaltungswert, etc.).',
                             accepted_files='',
                             course=gsi,
+                            points=1,
     )
     challenge_6.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
     challenge_6.save()
 
 
 
-    challenge_7 = Challenge(id=7,
-                            title='Personalisieren',
+    challenge_7 = Challenge(title='Personalisieren',
                             subtitle='Personalisieren',
                             description='Setzen sie in ihrem Profil ein Avatar-Bild, das ein anderes ist als der Default. Achten sie dabei bitte darauf, dass die Abbildungen'
                                         ' weder rassistisch noch sexistisch sind. Es muss allerdings auch kein Foto von ihnen sein. Machen sie dann einen Screenshot, auf dem'
@@ -250,6 +249,7 @@ def init_data():
                                         'Ausschnitt sieht.',
                             accepted_files='image/*',
                             course=hci,
+                            points=1,
     )
     challenge_7.image.save('1.png', File(open(os.path.join(STATIC_ROOT, 'img', '1.png'), 'rb')))
     challenge_7.save()
@@ -258,8 +258,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_7, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
     ReviewQuestion(challenge=challenge_7, order=3, text="Finden sie den Avatar nett?", boolean_answer=True).save()
 
-    challenge_8 = Challenge(id=8,
-                            title='Kommentieren',
+    challenge_8 = Challenge(title='Kommentieren',
                             subtitle='Kommentieren',
                             prerequisite=challenge_7,
                             description='Posten sie einen Kommentar zu den Folien der ersten Vorlesung. Dieser soll entweder einen inhaltlichen Bezug zum Inhalt einer Folie'
@@ -271,6 +270,7 @@ def init_data():
                                         'den Titel der Folie an, zu der sie den Kommentar gepostet haben.',
                             accepted_files='image/*',
                             course=hci,
+                            points=1,
     )
     challenge_8.image.save('2.png', File(open(os.path.join(STATIC_ROOT, 'img', '2.png'), 'rb')))
     challenge_8.save()
@@ -282,8 +282,7 @@ def init_data():
                         " schon eine Antwort bekommen hat.",
                    boolean_answer=True).save()
 
-    challenge_9 = Challenge(id=9,
-                            title='Markieren',
+    challenge_9 = Challenge(title='Markieren',
                             subtitle='Markieren',
                             prerequisite=challenge_8,
                             description='Markieren Sie Folien! Im Bereich »Slides« gibt es bei jeder Folie rechts oben drei »Lesezeichen«-Symbole, mit denen sie verwirrende '
@@ -293,6 +292,7 @@ def init_data():
                                         'Geben sie diese drei Screenshots ab.',
                             accepted_files='image/*',
                             course=hci,
+                            points=1,
     )
     challenge_9.image.save('3.png', File(open(os.path.join(STATIC_ROOT, 'img', '3.png'), 'rb')))
     challenge_9.save()
@@ -300,8 +300,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_9, order=1, text="Wurde die Aufgabe im wesentlichen erfüllt?", boolean_answer=True).save()
     ReviewQuestion(challenge=challenge_9, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
 
-    challenge_10 = Challenge(id=10,
-                            title='Bewerten',
+    challenge_10 = Challenge(title='Bewerten',
                             subtitle='Bewerten',
                             prerequisite=challenge_9,
                             description='Bewerten sie einen oder mehrere Kommentare in den Slides mit Hilfe der Bewertungspfeile rechts oben im Kommentar. '
@@ -309,6 +308,7 @@ def init_data():
                                         'Machen sie einen Screenshot von einem Kommentar, den sie bewertet haben, und geben sie diesen ab.',
                             accepted_files='image/*',
                             course=hci,
+                            points=1,
     )
     challenge_10.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
     challenge_10.save()
@@ -316,8 +316,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_10, order=1, text="Wurde die Aufgabe im wesentlichen erfüllt?", boolean_answer=True).save()
     ReviewQuestion(challenge=challenge_10, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
 
-    challenge_11 = Challenge(id=11,
-                            title='Vormerken',
+    challenge_11 = Challenge(title='Vormerken',
                             subtitle='Vormerken',
                             prerequisite=challenge_10,
                             description='Markieren sie Kommentare! Möchten sie einen Kommentar vormerken, zB. weil er wichtige Informationen enthält, oder weil'
@@ -327,6 +326,7 @@ def init_data():
                                         'Kommentare. Geben sie diesen Screenshot ab.',
                             accepted_files='image/*',
                             course=hci,
+                            points=1,
     )
     challenge_11.image.save('5.png', File(open(os.path.join(STATIC_ROOT, 'img', '5.png'), 'rb')))
     challenge_11.save()
@@ -334,8 +334,7 @@ def init_data():
     ReviewQuestion(challenge=challenge_11, order=2, text="Falls nein: Beschreiben sie, warum die Aufgabe nicht erfüllt wurde!").save()
     ReviewQuestion(challenge=challenge_11, order=3, text="Schätzen sie: wurden hier sinnvolle Kommentare markiert?", boolean_answer=True).save()
 
-    challenge_12 = Challenge(id=12,
-                            title='Erwarten',
+    challenge_12 = Challenge(title='Erwarten',
                             subtitle='Erwarten',
                             prerequisite=challenge_11,
                             description='Was erwarten Sie sich von dieser Lehrveranstaltung? Was, meinen sie, werden sie hier lernen? Schreiben sie etwa einen Absatz'
@@ -343,6 +342,7 @@ def init_data():
                                         ' zu dieser Lehrveranstaltung (Organisation, Experience, Unterhaltungswert, etc.).',
                             accepted_files='',
                             course=hci,
+                            points=1,
     )
     challenge_12.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
     challenge_12.save()
@@ -352,10 +352,9 @@ def init_data():
     print('adding stack aurora gsi')
     aurora_gsi = Stack(
         title='Einstieg - Aurora kennenlernen',
-        description='Diese Challenge soll ermöglichen, Aurora besser kennenzulernen, und gibt auch uns Gelegenheit, das System bei voller Nutzerlast testen zu können. '
-                    'Rechnen sie mit Problemen und Bugs, und nutzen sie gegebenenfalls bitte den Menüpunkt »Bugs & Feedback«, um diese zu dokumentieren.<br/><br/>'
-                    'Im Gegensatz zu allen anderen Challenges sind sie bei diesen Tasks gegenüber ihren Kollegen im Review <b>nicht anonym</b>, da sie ja Screenshots '
-                    'abgeben, mit denen sie identifiziert werden können. Das ist leider unvermeidbar, und wird, wenn alles gut geht, die einzige Ausnahme bleiben.',
+        description='Diese Challenge soll ermöglichen, Aurora besser kennenzulernen. Die Tasks schickt Sie durch einige Bereiche von Aurora, die Sie in den nächsten Monaten verwenden werden.<br> <br>'
+        'Beachten Sie bitte, dass sie im Gegensatz zu allen anderen Challenges bei diesen Tasks gegenüber ihren Kollegen im Review teilweise nicht anonym sind, da sie ja Screenshots abgeben, mit denen sie identifiziert werden können. Das ist leider unvermeidbar, und wird die einzige Ausnahme bleiben.<br> <br>'
+        'Anmerkung: diese Challenge zählt zu keinem Kapitel, ist deshalb einem (imaginären) Kapitel 0 zugeordnet.',
         course=gsi,
     )
     aurora_gsi.save()
@@ -363,10 +362,9 @@ def init_data():
     print('adding aurora hci')
     aurora_hci = Stack(
         title='Einstieg - Aurora kennenlernen',
-        description='Diese Challenge soll ermöglichen, Aurora besser kennenzulernen, und gibt auch uns Gelegenheit, das System bei voller Nutzerlast testen zu können. '
-                    'Rechnen sie mit Problemen und Bugs, und nutzen sie gegebenenfalls bitte den Menüpunkt »Bugs & Feedback«, um diese zu dokumentieren.'
-                    'Im Gegensatz zu allen anderen Challenges sind sie bei diesen Tasks gegenüber ihren Kollegen im Review <b>nicht anonym</b>, da sie ja Screenshots '
-                    'abgeben, mit denen sie identifiziert werden können. Das ist leider unvermeidbar, und wird, wenn alles gut geht, die einzige Ausnahme bleiben.',
+        description='Diese Challenge soll ermöglichen, Aurora besser kennenzulernen. Die Tasks schickt Sie durch einige Bereiche von Aurora, die Sie in den nächsten Monaten verwenden werden.<br> <br>'
+        'Beachten Sie bitte, dass sie im Gegensatz zu allen anderen Challenges bei diesen Tasks gegenüber ihren Kollegen im Review nicht anonym sind, da sie ja Screenshots abgeben, mit denen sie identifiziert werden können. Das ist leider unvermeidbar, und wird die einzige Ausnahme bleiben.<br><br>'
+        'Sie können für diese Challenge <b>6 Punkte</b> bekommen.<br> <br>Anmerkung: diese Challenge zählt zu keinem Kapitel, ist deshalb einem (imaginären) Kapitel 0 zugeordnet.',
         course=hci,
     )
     aurora_hci.save()
