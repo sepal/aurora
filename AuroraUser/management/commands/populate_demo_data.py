@@ -298,7 +298,7 @@ def import_data():
     ReviewQuestion(challenge=challenge_1, order=1, text='In wie fern stellt der gepostete Artikel einen Beitrag zur Entwicklung der Gesellschaft dar?').save()
     ReviewQuestion(challenge=challenge_1, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
     ReviewQuestion(challenge=challenge_1, order=3, text="Anmerkungen an das LVA-Team:", visible_to_author=False).save()
-	
+
     challenge_2 = Challenge(title='rage-comic',
                             subtitle='rage-comic',
                             prerequisite=challenge_1,
@@ -330,13 +330,13 @@ def import_data():
     ReviewQuestion(challenge=challenge_3, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
     ReviewQuestion(challenge=challenge_3, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
-				   
+
     challenge_4 = Challenge(title='wissenschaft',
                             subtitle='wissenschaft',
                             prerequisite=challenge_3,
                             description='Finden Sie einen pseudowissenschaftlichen Artikel und laden Sie ihn hier hoch.',
                             accepted_files='application/pdf',
-                            course=hci,
+                            course=gsi,
                             points=9,
     )
     challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
@@ -355,18 +355,18 @@ def import_data():
     ReviewQuestion(challenge=challenge_5, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
     ReviewQuestion(challenge=challenge_5, order=3, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
-				   
+
     challenge_6 = Challenge(title='advice animal',
                             subtitle='advice animal',
                             prerequisite=challenge_5,
                             description='Suchen Sie ein »advice animal« Bild und posten Sie es hier. Geben sie die Quelle dazu an.',
                             accepted_files='image/*',
-                            course=hci,
+                            course=gsi,
                             points=12,
     )
     challenge_6.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
     challenge_6.save()
-	
+
     ReviewQuestion(challenge=challenge_6, order=1, text="Was steckt hinter dem »advice«? Welche Probleme werden dadurch aufgezeigt?").save()
     ReviewQuestion(challenge=challenge_6, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
     ReviewQuestion(challenge=challenge_6, order=3, text="Anmerkungen an das LVA-Team:",
@@ -377,7 +377,7 @@ def import_data():
                             prerequisite=challenge_6,
                             description='suchen sie ein animated gif und posten sie es. geben sie die quelle dazu an.',
                             accepted_files='image/gif',
-                            course=hci,
+                            course=gsi,
                             points=14,
     )
     challenge_7.image.save('7.png', File(open(os.path.join(STATIC_ROOT, 'img', '7.png'), 'rb')))
@@ -392,7 +392,7 @@ def import_data():
                             prerequisite=challenge_7,
                             description='Laden Sie zwei Bilder von zwei verschiedenen Menschen hoch. Erklären Sie dann, wer diese beiden Menschen sind. Vergessen Sie nicht auf die Quellenangabe!!11elf',
                             accepted_files='image/*',
-                            course=hci,
+                            course=gsi,
                             points=5,
     )
     challenge_8.image.save('8.png', File(open(os.path.join(STATIC_ROOT, 'img', '8.png'), 'rb')))
@@ -413,7 +413,7 @@ def import_data():
                    visible_to_author=False, boolean_answer=True).save()
     ReviewQuestion(challenge=challenge_9, order=4, text="Anmerkungen an das LVA-Team:",
                    visible_to_author=False).save()
-				   
+
     challenge_10 = Challenge(title='schmetterling',
                              subtitle='schmetterling',
                              prerequisite=challenge_9,
