@@ -270,6 +270,8 @@
 .card_text {
 	margin-top:0.5em;
 	z-index:0;
+	font-size:120%;
+	line-height:120%;
 }
 
 .card_status_area {
