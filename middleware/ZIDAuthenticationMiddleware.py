@@ -40,19 +40,18 @@ class ZIDAuthenticationMiddleware(object):
             hmac_calced = hmac_new(shared_secret, values_string, sha1).hexdigest()
 
             if hmac_calced == hmac_received:
-                logger.info("Matching HMAC")
                 try:
                     user = AuroraUser.objects.get(matriculation_number=params['mn'])
                 except AuroraUser.DoesNotExist:
-                    logger.warn("User with Matr.Nr.: %s not found" % params['mn'])
+                    logger.debug("User with Matr.Nr.: %s not found" % params['mn'])
                     try:
                         user = AuroraUser.objects.get(oid=params['oid'])
                     except AuroraUser.DoesNotExist:
-                        logger.error("User with OID:%s not found" % params['oid'])
+                        logger.debug("User with OID:%s not found" % params['oid'])
                         user = None
 
         if user is None:
-            logger.error("HMAC doesn't match. Abort.")
+            logger.debug("HMAC doesn't match. Abort authentication.")
 
         return user
 
