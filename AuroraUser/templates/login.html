@@ -1,32 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-  <script type="text/javascript">
-  var next = "{{ next }}";
-  var signin_url = "{{ signin_url }}";
-  
-  
-  
-  function showMore(i) {
-	  blurValue = Math.round(i/2.25)/10;
-	  filterString = "blur(" + blurValue + "px) ";
-	  opaValue = 1;
-	  filterString = filterString + "opacity(" + opaValue + ") ";
-	  inValue = Math.round(i/18)/10;
-	  filterString = filterString + "invert(" + inValue + ") hue-rotate(" + i + "deg) ";
-	  grayValue = Math.round(Math.abs(1-Math.abs(1-i/90))*100);  // 180:0 90:100 0:1
-	  filterString = filterString + "grayscale(" + grayValue +"%)";
-	  document.getElementById("BG").style.filter = filterString;
-	  
-	  if (i > 0) {setTimeout(showMore,10,i-5)} else {$('.login').show()};
-  }
-  
-  $(function () {
-	  showMore(180);	  
-  });
-
-  </script>
+<script type="text/javascript">
+	var next = "{{ next }}";
+	var signin_url = "{{ signin_url }}";
+</script>
 <div id="BG" class="course_selection_background">
-    <div class="login"  id="loginXL" style="display:none">
+    <div class="login"  id="loginXL">
         <form>
             <div class="title">
                 Welcome to Aurora 2016
