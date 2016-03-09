@@ -38,7 +38,8 @@ $(function() {
 	$('#feed-li').addClass('uRhere');
 	window.document.title="Aurora: Newsfeed"
 	$('.feed_header').click(function(){
-		$('#content_'+$(this).attr('id')).slideToggle('fast');
+		$('#content_'+$(this).attr('id')).slideToggle('fast',function(){$('#info_column').masonry('layout');});
+		
 	})
 });
 
