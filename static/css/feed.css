@@ -32,20 +32,28 @@
 	margin-top:2em;
 }
 
-@media all and (min-width: 961px) {
+@media all and (min-width: 966px) {
 	#info_column {
 		float:left;
 		margin-top:2em;
 		margin-left:1em;
 	}
+	
+	.sidebar_item {
+		width:330px;
+	}
 }
 
-@media all and (max-width: 960px) {
+@media all and (max-width: 965px) {
 	#info_column {
 		float:left;
 		width:580px;
 		margin-top:1em;
 		margin-left:1em;
+	}
+	
+	.sidebar_item {
+		width:580px;
 	}
 }
 
@@ -112,6 +120,3 @@
 .seen_link {display:none;}
 .mark_seen_link {display:none;}
 
-.sidebar_item {
-	width:330px;
-}
