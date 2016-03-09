@@ -23,3 +23,4 @@ class AuroraUserAdmin(admin.ModelAdmin):
     readonly_fields = ("last_activity", "upload_path", )
 
 admin.site.register(AuroraUser, AuroraUserAdmin)
+admin.site.register(LoggedUser)

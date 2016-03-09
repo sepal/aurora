@@ -10,6 +10,8 @@ from django.contrib.contenttypes.models import ContentType
 from AuroraProject.settings import STATIC_ROOT, MEDIA_ROOT
 from Elaboration.models import Elaboration
 from django.core.files import File
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+
 
 def avatar_path(instance, filename):
     name = 'avatar_%s' % instance.id
@@ -90,3 +92,23 @@ class AuroraUser(User):
     def display_name(self):
         display_name = self.username if self.nickname is None else self.nickname
         return display_name
+
+
+class LoggedUser(models.Model):
+    user = models.ForeignKey(User, primary_key=True)
+
+    def __unicode__(self):
+        return self.user.username
+
+    def login_user(sender, request, user, **kwargs):
+        LoggedUser(user=user).save()
+
+    def logout_user(sender, request, user, **kwargs):
+        try:
+            u = LoggedUser.objects.get(user=user)
+            u.delete()
+        except LoggedUser.DoesNotExist:
+            pass
+
+    user_logged_in.connect(login_user)
+    user_logged_out.connect(logout_user)
