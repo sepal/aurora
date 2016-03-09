@@ -524,7 +524,6 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             my.state.posting = false;
 			if(window.location.href.indexOf("/slides/studio/lecture/") != -1)
 			{
-				alert(window.location.href);
 				setTimeout(function () { 
 					var tp = $('#contentblock').scrollTop(); var lft = $('#contentblock').scrollLeft();
 		        	if (tp || lft) window.name = 'X_' + lft + '_' + tp + '_X';
