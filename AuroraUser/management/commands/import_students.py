@@ -39,6 +39,7 @@ def import_students():
                         matriculation_number, last_name, first_name, email, study_code = values
                         username = matriculation_number
                         student, created = AuroraUser.objects.get_or_create(username=username)
+                        CourseUserRelation.objects.get_or_create(course=course, user=student)
                         if created:
                             print("new user")
                         else:
@@ -57,7 +58,6 @@ def import_students():
                         password = hashlib.sha256(seed).hexdigest()
                         student.set_password(password)
                         student.save()
-                        CourseUserRelation.objects.get_or_create(course=course, user=student)
                         print("adding student %s %s to %s:" % (last_name, first_name, course.short_title))
                         print(values)
                     elif len(values) != 0:
