@@ -574,3 +574,8 @@ ul.content_navigation_list li {
 .comment_seen {
 	display:none;
 }
+
+
+.mark_seen_link {
+	visibility:none;
+} 

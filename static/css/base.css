@@ -93,7 +93,7 @@ abbr, acronym {
 }
 
 .uRhere {
-	border-bottom:3px solid rgba(255,255,255,0.3);
+	border-bottom:3px solid rgba(0,0,0,0.4);
 }
 
 .login input[type="checkbox"] {

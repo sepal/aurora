@@ -18,16 +18,13 @@
 
       <ul>
          <li id="feed-li">
-            <a href="{% url 'home' course.short_title %}">Newsfeed</a>
-         </li>
+            <a href="{% url 'home' course.short_title %}">Newsfeed</a></li>
 
         <li id="challenges-li">
-          <a href="{% url 'Challenge:home' course.short_title %}">Challenges</a>
-        </li>
+          <a href="{% url 'Challenge:home' course.short_title %}">Challenges</a></li>
 
         <li id="slides-li">
-          <a href="{% url 'Slides:start' course.short_title %}">Slides</a>
-        </li>
+          <a href="{% url 'Slides:start' course.short_title %}">Slides</a></li>
 			
         <li id="bugs-li">
           <a href="https://titanpad.com/EU1ZC3KTzf" target="_blank">Bugs &amp; Feedback</a>
@@ -35,14 +32,12 @@
 
         {% if user.is_staff %}
           <li id="evaluation-li">
-            <a href="{% url 'Evaluation:home' course.short_title %}">Evaluation</a>
-          </li>
+            <a href="{% url 'Evaluation:home' course.short_title %}">Evaluation</a></li>
         {% endif %}
 
         {% if user.is_superuser %}
           <li id="statistics-li">
-            <a href="{% url 'Statistics:home' course.short_title %}">Statistics</a>
-          </li>
+            <a href="{% url 'Statistics:home' course.short_title %}">Statistics</a></li>
         {% endif %}
         <li id="notifications-li" class="unread_notifications">
           <a id="unread_notifications"  href="{% url 'Notification:list' course.short_title %}">{{ unread_notifications|length }}</a>
