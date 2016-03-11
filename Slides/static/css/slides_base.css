@@ -581,3 +581,11 @@ ul.content_navigation_list li {
 .mark_seen_link {
 	visibility:none;
 } 
+
+
+.noslideshere {
+	padding:2em;
+	color:darkgray;
+	font-size:120%;
+	width:50%;
+}
