@@ -1,0 +1,23 @@
+<div class="post level{{ depth }} {% if post.filtered_post_set.count > 0 %}has_children{% endif %} {% if post.id in expanded_posts %}show_child{% endif %}">
+
+    <a class="arrow_wrapper" href="{% url 'diskurs:thread_post' thread.id post.id %}" id="show-{{ post.id }}"><span class="arrow nicetip right"><span class="tip"></span></span></a>
+    <div class="child_post {% if post.id in expanded_posts and post.id != last_post_id %}show_child{% endif %}">
+        {% for post in post.filtered_post_set.all %}
+            {% include "diskurs/thread/post.html" with post=post depth=depth|add:"1" thread=thread last_post_id=last_post_id %}
+        {% endfor %}
+        <div class="post_reply">
+            <form method="post" action="{% url 'diskurs:new_post' thread.id %}">
+                <input type="hidden" name="parent_post_id" value="{{ post.id }}" />
+                {% csrf_token %}
+                <textarea class="reply_area" name="content"></textarea><br/>
+                <button type="submit">REPLY</button>
+                <button type="button" class="toggle_emojipicker">EMOJIS</button>
+            </form>
+        </div>
+    </div>
+    {% if post.deleted %}
+        {% include "diskurs/thread/post/content_deleted.html" with post=post thread=thread %}
+    {% else %}
+        {% include "diskurs/thread/post/content.html" with post=post thread=thread %}
+    {% endif %}
+</div>

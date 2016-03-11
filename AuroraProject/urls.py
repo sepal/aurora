@@ -40,4 +40,6 @@ urlpatterns = patterns('',
         ))),
 
     url(r'', include('FileUpload.urls')),
+
+    url(r'^diskurs/', include('diskurs.urls', namespace="diskurs")),
 )

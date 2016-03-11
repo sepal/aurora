@@ -23,6 +23,12 @@ DATABASES = {
     }
 }
 
+MARKUP_SETTINGS = {
+    'markdown': {
+        'safe_mode': True
+    }
+}
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -150,6 +156,8 @@ INSTALLED_APPS = (
     'Faq',
     'djcelery',
     'PlagCheck',
+    'diskurs',
+    'django_markup',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
