@@ -305,7 +305,8 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	z-index:4201;
 	display:inline;
 	position:relative;
-	top:8px;}
+	top:8px;
+}
 
 #course_select {
 	z-index:100000;

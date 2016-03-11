@@ -279,6 +279,8 @@ ul.content_navigation_list li {
 	background-image:url('../img/search.png');
 	background-repeat:no-repeat;
 	background-position: 3px 3px;
+	position:relative;
+	top:-4px;
 }
 
 .b_play {

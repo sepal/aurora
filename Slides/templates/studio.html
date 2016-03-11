@@ -20,6 +20,10 @@
 
 
 <link rel="stylesheet" href="{{ STATIC_URL }}Comments/comments.css" type="text/css" media="screen"/>
+
+<style>
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -41,7 +45,7 @@
 		/* added by purg to give better scrolling experience */
 	   	$("#contentblock").mousewheel(function(event, delta) {
 			if (event.altKey) {
-				this.scrollLeft -= (delta * 20);
+				this.scrollLeft += (delta * 20);
 				event.preventDefault();
 			}
 		});
