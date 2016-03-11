@@ -578,12 +578,12 @@ ul.content_navigation_list li {
 /* END LIVECAST */
 
 .comment_seen {
-	display:hidden;
+	display:none;
 }
 
 
 .mark_seen_link {
-	visibility:none;
+	visibility:hidden;
 } 
 
 
