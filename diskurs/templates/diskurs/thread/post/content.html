@@ -22,7 +22,7 @@
         <span class="count">{{ post.post_set.count }}</span>
     </div>
     <div class="post_content">
-        {{ post.content|apply_markup:'markdown'}}
+        {{ post.content|apply_markup:'markdown_giffer'}}
     </div>
     <div class="post_footer">
         <span class="timestamp">{{ post.created_at|timesince }}</span>

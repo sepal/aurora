@@ -36,6 +36,8 @@ function diskursNewPost(e) {
                 });
                 form.find('textarea').val('');
                 form.parent().parent().parent().removeClass('show_reply');
+
+                Gifffer();
             } else {
                 alert(data.message);
             }
@@ -207,3 +209,7 @@ window.onpopstate = function(event) {
         $('#diskurs').find('.show_child').removeClass('show_child');
     }
 };
+
+window.onload = function() {
+  Gifffer();
+}
