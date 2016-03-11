@@ -20,6 +20,10 @@
 
 
 <link rel="stylesheet" href="{{ STATIC_URL }}Comments/comments.css" type="text/css" media="screen"/>
+
+<style>
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -41,7 +45,7 @@
 		/* added by purg to give better scrolling experience */
 	   	$("#contentblock").mousewheel(function(event, delta) {
 			if (event.altKey) {
-				this.scrollLeft -= (delta * 20);
+				this.scrollLeft += (delta * 20);
 				event.preventDefault();
 			}
 		});
@@ -55,6 +59,10 @@
 		<br />
 		Your search for {{search_text}} found {{slides.count}} results. <br />
 	 {% endif %} 
+	 
+	 {% if not slides %}
+		<div class="noslideshere">this lecture will take place on {{lecture.start.day}}.{{lecture.start.month}}.,  {{lecture.start.hour}}:{{lecture.start.minute|stringformat:"02d"}}. slides and comments will be available shortly after the lecture is over.</div>
+	 {% endif %}
 	<table id="slides_table">
 	 <tr>
 		 {% with user.customuser as customuser %}
