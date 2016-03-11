@@ -1,0 +1,13 @@
+{% extends "diskurs/base.html" %}
+
+{% block content %}
+    <div id="diskurs-list">
+        <ul>
+            {% for thread in threads %}
+                <li>
+                    <a href="{% url 'diskurs:thread' thread.id %}">{{ thread.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{%  endblock %}

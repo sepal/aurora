@@ -4,6 +4,7 @@ from . import views
 
 
 urlpatterns = [
+    url(r'^$', views.index, name='index'),
     url(r'^(?P<thread_id>[0-9]+)/newpost/$', views.new_post, name='new_post'),
     url(r'^(?P<thread_id>[0-9]+)/upvote/(?P<post_id>[0-9]+)/$', views.upvote_post, name='upvote_post'),
     url(r'^(?P<thread_id>[0-9]+)/downvote/(?P<post_id>[0-9]+)/$', views.downvote_post, name='downvote_post'),

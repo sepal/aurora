@@ -8,6 +8,13 @@ from .models import Thread, Post, PostVote, Group, UserGroup
 
 
 @login_required
+def index(request):
+    threads = Thread.objects.filter(group__usergroup__user=request.user)
+
+    return render(request, 'diskurs/index.html', {'threads': threads})
+
+
+@login_required
 def thread(request, thread_id):
     thread_object = get_object_or_404(Thread, pk=thread_id)
 
