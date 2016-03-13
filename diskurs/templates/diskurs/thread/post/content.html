@@ -2,12 +2,12 @@
 {% load markup_tags %}
 
 <div class="container{%  if post.user == request.user %} my_post{% endif %}{%  if post.user == thread.user %} op_post{% endif %}">
-    {%  if post.user.avatar %}
+    {%  if post.user_avatar %}
         <div class="post_avatar">
-            <img src="{{ post.user.avatar.url }}" />
+            <img src="{{ post.user_avatar.url }}" />
         </div>
     {% endif %}
-    <div class="post_header{%  if post.user.avatar %} has_avatar{% endif %}">
+    <div class="post_header{%  if post.user_avatar %} has_avatar{% endif %}">
         <span class="user">{{ post.user.username }}</span>
         <span class="votes">{{ post.sum_votes }}</span>
         {% if post.parent_post_id and post.user == request.user or post.parent_post_id and perms.delete_post %}

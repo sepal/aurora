@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.aggregates import Sum
 from django.contrib.auth.models import User
+from AuroraUser.models import AuroraUser
 
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -37,6 +38,11 @@ class Post(models.Model):
             return self.post_set.filter(group_id=self.filter_group_id)
         else:
             return self.post_set
+
+    @property
+    def user_avatar(self):
+        aurora_user = AuroraUser.objects.get(pk=self.user)
+        return aurora_user.avatar
 
 
 class Thread(models.Model):
