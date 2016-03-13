@@ -55,9 +55,63 @@ def thread_post(request, thread_id, post_id):
 
 
 @login_required
+def post_list(request, thread_id, post_id):
+    try:
+        thread_object = Thread.objects.get(pk=thread_id)
+        post = Post.objects.get(pk=post_id)
+        last_id = int(request.GET.get('last_id', 0))
+
+        if thread_object.use_group_logic and not request.user.has_perm('view_post'):
+            user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
+
+            if user_group and (user_group == post.group_id or not post.group_id):
+                posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id, group_id=user_group.group_id)\
+                    .order_by('id')
+            else:
+                return JsonResponse({
+                    'success': True,
+                    'posts': '',
+                })
+
+        else:
+            posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id).order_by('id')
+
+        if posts.count() > 0:
+            depth = 1
+            while post.parent_post is not None:
+                post = post.parent_post
+                depth += 1
+
+            template = loader.get_template('diskurs/post_list.html')
+            context = RequestContext(request, {
+                'posts': posts,
+                'depth': depth,
+                'thread': thread_object,
+            })
+
+            return JsonResponse({
+                'success': True,
+                'posts': template.render(context),
+                'new_last_id': posts.last().id,
+            })
+        else:
+            return JsonResponse({
+                'success': True,
+                'posts': '',
+            })
+
+    except ValueError:
+        return JsonResponse({
+            'error': True,
+            'message': 'Invalid ID provided!'
+        })
+
+
+@login_required
 def new_post(request, thread_id):
     try:
         parent_post_id = int(request.POST.get('parent_post_id', 0))
+        last_id = int(request.POST.get('last_id', 0))
         content = request.POST.get('content', '')
 
         if len(content) > 0:
@@ -88,16 +142,25 @@ def new_post(request, thread_id):
                 if thread_object.first_post_id == parent_post.id:
                     post.save()
 
-                    template = loader.get_template('diskurs/thread/post.html')
+                    if thread_object.use_group_logic and not request.user.has_perm('view_post'):
+                        posts = Post.objects\
+                            .filter(parent_post_id=parent_post_id, id__gt=last_id, group_id=post.group_id)\
+                            .order_by('id')
+                    else:
+                        posts = Post.objects.filter(parent_post_id=parent_post_id, id__gt=last_id)\
+                                        .order_by('id')
+
+                    template = loader.get_template('diskurs/post_list.html')
                     context = RequestContext(request, {
-                        'post': post,
+                        'posts': posts,
                         'depth': depth,
                         'thread': thread_object,
                     })
 
                     return JsonResponse({
                         'success': True,
-                        'post': template.render(context),
+                        'posts': template.render(context),
+                        'new_last_id': posts.last().id,
                     })
 
                 else:

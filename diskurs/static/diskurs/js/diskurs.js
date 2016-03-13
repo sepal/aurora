@@ -17,6 +17,9 @@ function diskursReply() {
 function diskursNewPost(e) {
     var form = $(this);
     var postData = form.serializeArray();
+    if (form.parent().parent().prev('.arrow_wrapper').data('last_id')) {
+        postData[postData.length] = { name: "last_id", value: form.parent().parent().prev('.arrow_wrapper').data('last_id') };
+    }
     var formURL = form.attr('action');
     $.ajax({
         url : formURL,
@@ -25,15 +28,16 @@ function diskursNewPost(e) {
         success:function(data, textStatus, jqXHR)
         {
             if (data.success) {
-                form.parent().before(data.post);
+                form.parent().before(data.posts);
                 form.parent().parent().parent().addClass('has_children');
-                var count = parseInt(form.parent().parent().parent().children('.container').children('.post_header').children('.count').html()) + 1;
+                var count = parseInt(form.parent().parent().children('.post').length);
                 form.parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
                 form.parent().prev().children('.container').children('.post_content').readmore({
                     speed: 75,
                     lessLink: '<a class="read_less" href="#">Read less</a>',
                     moreLink: '<a class="read_more" href="#">Read more</a>'
                 });
+                form.parent().parent().prev('.arrow_wrapper').data('last_id', data.new_last_id);
                 form.find('textarea').val('');
                 form.parent().parent().parent().removeClass('show_reply');
 
@@ -56,6 +60,30 @@ function diskursShowPost(element) {
     });
     parent.parent().addClass('show_child');
     parent.find('.show_child').removeClass('show_child');
+
+    url = element.attr('href');
+
+    $.ajax({
+        url: url + 'ajax/',
+        data: { 'last_id': $(element).data('last_id')},
+        success:function(data, textStatus, jqXHR)
+            {
+                if (data.success) {
+                    if (data.new_last_id) {
+                        $(element).next('.child_post').children('.post_reply').before(data.posts);
+
+                        var count = parseInt($(element).next('.child_post').children('.post').length);
+                        parent.children('.container').children('.post_header').children('.count').html(count);
+
+                        $(element).data('last_id', data.new_last_id);
+
+                        Gifffer();
+                    }
+                } else {
+                    alert(data.message);
+                }
+            },
+    });
 }
 
 function diskursHidePost(element) {

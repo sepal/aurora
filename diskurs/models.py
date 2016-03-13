@@ -35,9 +35,9 @@ class Post(models.Model):
     @property
     def filtered_post_set(self):
         if self.filter_group_id:
-            return self.post_set.filter(group_id=self.filter_group_id)
+            return self.post_set.filter(group_id=self.filter_group_id).order_by('id')
         else:
-            return self.post_set
+            return self.post_set.order_by('id')
 
     @property
     def user_avatar(self):

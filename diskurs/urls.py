@@ -14,4 +14,5 @@ urlpatterns = [
         name='choose_group_set'),
     url(r'^(?P<thread_id>[0-9]+)/$', views.thread, name='thread'),
     url(r'^(?P<thread_id>[0-9]+)/post/(?P<post_id>[0-9]+)/$', views.thread_post, name='thread_post'),
+    url(r'^(?P<thread_id>[0-9]+)/post/(?P<post_id>[0-9]+)/ajax/$', views.post_list, name='post_list'),
 ]
