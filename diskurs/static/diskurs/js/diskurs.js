@@ -11,6 +11,10 @@ function diskursReply() {
     $('.show_reply').removeClass('show_reply');
     parent.addClass('show_child show_reply');
     parent.parent().addClass('show_child');
+
+    var arrow = parent.children('.arrow_wrapper').first();
+    history.pushState({post: '#'+$(arrow).attr('id')}, '', $(arrow).attr('href'));
+
     parent.find('textarea').focus();
 }
 
