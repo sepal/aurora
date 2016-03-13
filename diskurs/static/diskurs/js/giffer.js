@@ -81,6 +81,10 @@ function process(el) {
     w = w || el.width;
     h = h || el.height;
 
+    if (w < el.width) {
+      h = w / el.width * el.height;
+    }
+
     // creating the container
     if (!cc) cc = createContainer(w, h, el);
     con = cc.c;
