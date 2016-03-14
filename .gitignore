@@ -33,3 +33,5 @@ static/slides/gsi/thumb/vo_10_02_13_2_thumb.jpg
 *.so
 
 *.o
+
+database-mine.db

@@ -37,10 +37,20 @@
 
 	<div class="elab_in_detail minElab" id="EiD"><i class="fa fa-toggle-down fa-2x klapp" onClick="if ($('#EiD').hasClass('minElab')) {$('#EiD').removeClass('minElab')} else {$('#EiD').addClass('minElab')}"></i> {{ elaboration.challenge.description|safe|urlizetrunc:30 }}</div>
 	
-    {% render_uploads elaboration %}
+	<br>
+	<div style="width:100%;border-bottom:1px solid silver">original</div>
+    {% render_original_uploads elaboration %}
 
     {% if elaboration.elaboration_text|length != 0 %}
         <textarea id="editor_stack_rev">{{ elaboration.elaboration_text }}</textarea>
+    {% endif %}
+    <div class="spacer"></div>
+
+	<div style="width:100%;border-bottom:1px solid silver">revision</div>
+	{% render_revised_uploads elaboration %}
+
+    {% if elaboration.revised_elaboration_text|length != 0 %}
+        <textarea id="editor_stack_rev">{{ elaboration.revised_elaboration_text }}</textarea>
     {% endif %}
     <div class="spacer"></div>
 
