@@ -2,7 +2,7 @@ $(function() {
     tinymce.init({
         // selector: "textarea#editor",
         mode : "exact",
-        elements :"editor_stack_rev, editor_others",
+        elements :"editor_stack_rev, editor_others, editor_stack_orig",
         menubar: false,
         statusbar: true,
 		toolbar: false,
