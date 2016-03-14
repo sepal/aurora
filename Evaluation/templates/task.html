@@ -49,7 +49,7 @@
 	<div style="width:100%;border-bottom:1px solid silver;font-weight:bold;">Revised Work</div>
 	{% render_revised_uploads elaboration %}
 
-    {% if elaboration.revised_elaboration_text|length != 0 %}
+    {% if elaboration.revised_elaboration_text|length != 0 and elaboration.revised_elaboration_text != elaboration.elaboration_text %}
         <textarea id="editor_stack_rev">{{ elaboration.revised_elaboration_text }}</textarea>
     {% endif %}
     <div class="spacer"></div>
