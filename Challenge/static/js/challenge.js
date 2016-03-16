@@ -204,6 +204,8 @@ function revert_submit_clicked() {
 }
 
 function real_submit_clicked(event) {
+	$('.real_submit').unbind('click');
+	$('.real_submit').hide();
     var challenge = $('.challenge');
     var challenge_id = challenge.attr('id');
     elaboration_save(challenge_id, true);
