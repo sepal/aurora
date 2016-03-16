@@ -60,6 +60,10 @@ input:-moz-placeholder { color:gray; }
 	opacity:0.7;
 }
 
+.futureSlide {
+	opacity:0.4;
+}
+
 .confused_bookmark {
 	background-image: url('../img/confused_bookmark.png');
 	background-size:160px 90px;
