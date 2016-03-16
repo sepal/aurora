@@ -1,7 +1,7 @@
 from django.db import models
 from Elaboration.models import Elaboration
 from django.forms import model_to_dict
-from django.db import connection
+from django.db import connections
 from django.db import transaction
 from enum import IntEnum
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,6 +11,8 @@ from django.utils.encoding import *
 
 from django.db.models import Lookup
 from django.db.models.fields import Field
+
+from AuroraProject.settings import PLAGCHECK_DATABASE
 
 
 @Field.register_lookup
@@ -202,7 +204,7 @@ class Reference(models.Model):
         :param doc_id: Document to check against.
         :return: List of Tuples (similar_doc_id, # similar hashes, filter id)
         """
-        cursor = connection.cursor()
+        cursor = connections[PLAGCHECK_DATABASE].cursor()
 
         # with inner join
         cursor.execute('SELECT "similar".doc_id, COUNT("similar".doc_id), "filter".id '

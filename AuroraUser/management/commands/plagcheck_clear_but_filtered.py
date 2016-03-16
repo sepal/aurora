@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
-from django.db import connection
+from django.db import connections
+from AuroraProject.settings import PLAGCHECK_DATABASE
 
 from PlagCheck.models import *
 
@@ -12,7 +13,7 @@ class Command(BaseCommand):
 
 
 def clear_plagcheck_but_filtered():
-    cursor = connection.cursor()
+    cursor = connections[PLAGCHECK_DATABASE].cursor()
 
     cursor.execute(
         'DELETE '
