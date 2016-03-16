@@ -20,6 +20,15 @@ DATABASES = {
         'PASSWORD': 'root',
         'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '8080',                      # Set to empty string for default.
+    },
+    'plagcheck': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'plagcheck-database.db',
+        # The following settings are not used with sqlite3:
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '8080',
     }
 }
 
@@ -270,6 +279,7 @@ ENDLESS_PAGINATION_NEXT_LABEL = (
 # than PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT's value to be reported as a possible
 # plagiarism.
 PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT = 50
+PLAGCHECK_DATABASE = 'plagcheck'
 
 CELERY_ALWAYS_EAGER=False # set to True by unit tests
 CELERY_TASK_SERIALIZER = 'json'
