@@ -56,11 +56,12 @@
 	<br />
 	<div id="flowplayer_invisible"></div>
 	 {% if slidecasting_mode == 'search_results'%}
+		&nbsp;&nbsp;&nbsp;Your search for {{search_text}} found {{slides.count}} results. <br />
 		<br />
-		Your search for {{search_text}} found {{slides.count}} results. <br />
-	 {% endif %} 
-	 
-	 {% if not slides %}
+	{% elif slidecasting_mode == 'marked_slides' %}
+		&nbsp;&nbsp;&nbsp;{{slides.count}} slides marked as &raquo;{{marker}}&laquo;. <br />
+		<br />
+	 {% elif not slides %}
 		<div class="noslideshere">this lecture will take place on {{lecture.start.day}}.{{lecture.start.month}}.,  {{lecture.start.hour}}:{{lecture.start.minute|stringformat:"02d"}}. slides and comments will be available shortly after the lecture is over.</div>
 	 {% endif %}
 	<table id="slides_table">
