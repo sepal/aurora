@@ -333,13 +333,19 @@ def detail(request, course_short_title=None):
     reviews = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False)
 
     next = prev = None
-    index = elaborations.index(elaboration)
-    if index + 1 < len(elaborations):
-        next = elaborations[index + 1].id
-    if not index == 0:
-        prev = elaborations[index - 1].id
-    count_next = len(elaborations) - index - 1
-    count_prev = index
+
+    try:
+        index = elaborations.index(elaboration)
+        if index + 1 < len(elaborations):
+            next = elaborations[index + 1].id
+        if not index == 0:
+            prev = elaborations[index - 1].id
+        count_next = len(elaborations) - index - 1
+        count_prev = index
+    except ValueError:
+        index = 0
+        count_next = 0
+        count_prev = 0
 
     stack_elaborations = elaboration.user.get_stack_elaborations(elaboration.challenge.get_stack())
     # sort stack_elaborations by submission time
@@ -472,6 +478,11 @@ def similarities(request, course_short_title=None):
 
     return render_to_response('plagcheck_compare.html', {'similarities': similarities}, RequestContext(request))
 
+@aurora_login_required()
+@staff_member_required
+def user_detail(request, course_short_title=None):
+    user = Elaboration.objects.get(pk=request.session.get('elaboration_id', '')).user
+    return render_to_response('user.html', {'user': user, 'course_short_title': course_short_title}, RequestContext(request))
 
 @csrf_exempt
 @staff_member_required
@@ -1001,4 +1012,3 @@ def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=No
     SuspectFilter.update_filter(suspect)
 
     return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
-

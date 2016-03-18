@@ -1,0 +1,40 @@
+
+{% block content %}
+  <div class="author_detail staff_detail" id="top_detail" style="overflow:auto; height:auto;">
+    <img src='{{user.avatar.url}}'>
+    <span class="nick">{{user.nickname}}</span><br>
+    &quot;{{user.statement|urlizetrunc:50}}&quot;<br>
+    {{user.matriculation_number}} - {{user.first_name}} {{user.last_name}}<br>
+    <a href="mailto:{{user.email}}">{{user.email}}</a> &mdash;
+  </div>
+
+  <br>
+
+  <h1>User Tags</h1>
+  {% for tag in user.tags.names %}
+    <div class="tag">{{tag}}</div>
+  {% endfor %}
+
+  <br>
+  <br>
+  <br>
+
+  <h1>Elaboration Tags</h1>
+  {% for elaboration in user.get_elaborations %}
+    {% for tag in elaboration.tags.names %}
+      <div class="tag"><a href="/{{course_short_title}}/evaluation/detail?elaboration_id={{elaboration.id}}">{{tag}}</a></div>
+    {% endfor %}
+  {% endfor %}
+
+  <br>
+  <br>
+  <br>
+
+  <h1>Review Tags</h1>
+  {% for review in user.get_reviews %}
+    {% for tag in review.tags.names %}
+      <div class="tag"><a href="/{{course_short_title}}/evaluation/detail?elaboration_id={{review.elaboration.id}}">{{tag}}</a></div>
+    {% endfor %}
+  {% endfor %}
+
+{% endblock %}

@@ -268,7 +268,7 @@ th {
     float: right;
 }
 
-.stack, .others, .challenge_txt, .review_list, .similarities {
+.stack, .others, .challenge_txt, .review_list, .similarities, .user-detail {
 	text-transform:uppercase;
 	margin-right:0.5em;
     text-align: center;
@@ -279,7 +279,7 @@ th {
 	border-radius:1em;
 }
 
-.review_list.selected, .stack.selected, .others.selected, .challenge_txt.selected, .similarities.selected {
+.review_list.selected, .stack.selected, .others.selected, .challenge_txt.selected, .similarities.selected, .user-detail.selected {
 	background-color:rgb(58,201,88);
 	color:white;
 }
@@ -472,7 +472,7 @@ th {
 	border:1px solid #eee!important;
 	box-shadow: 1px 1px 1px rgba(0,0,0,0.3) inset!important;
 	opacity:0.55;
-	filter:alpha(opacity=35); /* For IE8 and earlier */	
+	filter:alpha(opacity=35); /* For IE8 and earlier */
 }
 
 .zero_reviews:after {
@@ -510,7 +510,7 @@ th {
     height:17px;
 	width:20px;
 	opacity:0.55;
-	filter:alpha(opacity=35); /* For IE8 and earlier */	
+	filter:alpha(opacity=35); /* For IE8 and earlier */
 }
 
 .evaluation_lock {
@@ -547,7 +547,7 @@ th {
     text-align: center;
     margin-right: 2px;
     border:1px solid gray;
-    position: relative;	
+    position: relative;
 	background-color: rgba(0,0,0,.1);
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255,255,255,.7) 3px, rgba(255,255,255,.7) 6px);
 }
@@ -565,7 +565,7 @@ th {
 	-webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
 	border-bottom:1px solid gray;
 	border-right:1px solid gray;
-	
+
 }
 
 .invisible_comments:after {
@@ -589,7 +589,7 @@ th {
     text-align: center;
     margin-right: 2px;
     border-top:1px solid gray;
-    position: relative;	
+    position: relative;
 	background-color: rgba(0,0,0,.1);
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255,255,255,.7) 3px, rgba(255,255,255,.7) 6px);
 }
@@ -597,7 +597,7 @@ th {
 .mini_task_img {
 	width:32px;
 	height:32px;
-	border-radius:2px; 
+	border-radius:2px;
 }
 
 .gravatar {
@@ -631,7 +631,7 @@ th {
 }
 
 .evc_description {
-	
+
 }
 
 .evc_challenge_image {
