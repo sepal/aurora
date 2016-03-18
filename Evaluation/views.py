@@ -472,6 +472,11 @@ def similarities(request, course_short_title=None):
 
     return render_to_response('plagcheck_compare.html', {'similarities': similarities}, RequestContext(request))
 
+@aurora_login_required()
+@staff_member_required
+def user_detail(request, course_short_title=None):
+    user = Elaboration.objects.get(pk=request.session.get('elaboration_id', '')).user
+    return render_to_response('user.html', {'user': user}, RequestContext(request))
 
 @csrf_exempt
 @staff_member_required
@@ -1001,4 +1006,3 @@ def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=No
     SuspectFilter.update_filter(suspect)
 
     return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
-

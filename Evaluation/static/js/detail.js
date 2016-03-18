@@ -73,6 +73,16 @@ $(function() {
 });
 
 $(function() {
+   $(".user-detail").click(function(event) {
+     console.log("user clicked");
+       var url = './user-detail';
+        $.get(url, function (data) {
+            $('#info_area').html(data);
+        });
+   });
+});
+
+$(function() {
     $(".paginator").click(function(event) {
         var url = './detail?elaboration_id=' + $(event.target).attr('id');
         $.get(url, function (data) {
