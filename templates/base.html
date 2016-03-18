@@ -5,6 +5,7 @@
   <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.3.custom.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -14,7 +15,11 @@
 
 </head>
 <body>
-	
+
+<script>
+	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true}); 
+	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+</script>
 
 {% block navigation %}
   {% include "navigation.html" %}
