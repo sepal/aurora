@@ -74,7 +74,6 @@ $(function() {
 
 $(function() {
    $(".user-detail").click(function(event) {
-     console.log("user clicked");
        var url = './user-detail';
         $.get(url, function (data) {
             $('#info_area').html(data);
