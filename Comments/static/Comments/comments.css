@@ -404,3 +404,11 @@
 	text-align:center;
 	font-size:90%;
 }
+
+.fa-arrow-up {
+	cursor:url(/static/img/cursor_upvote.png) 6 6,auto;
+}
+
+.fa-arrow-down {
+	cursor:url(/static/img/cursor_downvote.png) 6 6,auto;
+}
