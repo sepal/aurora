@@ -888,6 +888,10 @@ td.diff_header {
     padding:3px 3px 0 4px;
 }
 
+.tag-load-reviews {
+	cursor: pointer;
+}
+
 .tag_remove {
 	cursor:not-allowed;
 }
