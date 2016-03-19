@@ -22,7 +22,7 @@
   <h1>Elaboration Tags</h1>
   {% for elaboration in user.get_elaborations %}
     {% for tag in elaboration.tags.names %}
-      <div class="tag"><a href="/{{course_short_title}}/evaluation/detail?elaboration_id={{elaboration.id}}">{{tag}}</a></div>
+      <div class="tag tag-load-reviews" onclick="load_reviews({{ elaboration.id }})">{{tag}}</div>
     {% endfor %}
   {% endfor %}
 
@@ -33,7 +33,7 @@
   <h1>Review Tags</h1>
   {% for review in user.get_reviews %}
     {% for tag in review.tags.names %}
-      <div class="tag"><a href="/{{course_short_title}}/evaluation/detail?elaboration_id={{review.elaboration.id}}">{{tag}}</a></div>
+      <div class="tag tag-load-reviews" onclick="load_reviews({{ review.elaboration.id }})">{{tag}}</div>
     {% endfor %}
   {% endfor %}
 
