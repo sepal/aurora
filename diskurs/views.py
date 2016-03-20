@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 
-from .models import Thread, Post, PostVote, Group, UserGroup
+from .models import Thread, Post, PostVote, Group, UserGroup, UserHistory, UserHistoryPost
 
 
 @login_required
@@ -26,7 +26,25 @@ def thread(request, thread_id):
         else:
             return redirect('diskurs:choose_group', thread_id=thread_id)
 
-    return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': []})
+    user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+
+    if not user_history:
+        user_history = UserHistory()
+        user_history.thread = thread_object
+        user_history.user = request.user
+        user_history.save()
+
+        user_history.add_post_to_history(thread_object.filtered_first_post)
+
+        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+    else:
+        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+
+        for post in thread_object.filtered_first_post.post_set.all():
+            if post.id not in viewed_posts:
+                user_history.add_post_id_to_history(post.id)
+
+    return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': [], 'viewed_posts': viewed_posts})
 
 
 @login_required
@@ -44,14 +62,35 @@ def thread_post(request, thread_id, post_id):
     post = Post.objects.get(id=post_id)
     last_post_id = post.id
     expanded_posts = list()
+    rendered_posts = list()
     expanded_posts.append(post.id)
+    rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
 
     while post.parent_post is not None:
         post = post.parent_post
         expanded_posts.append(post.id)
+        rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
+
+    user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+
+    if not user_history:
+        user_history = UserHistory()
+        user_history.thread = thread_object
+        user_history.user = request.user
+        user_history.save()
+
+        user_history.add_post_to_history(thread_object.filtered_first_post, True)
+
+        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+    else:
+        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+
+        for rendered_post_id in rendered_posts:
+            if rendered_post_id not in viewed_posts:
+                user_history.add_post_id_to_history(rendered_post_id)
 
     return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': expanded_posts,
-                                                   'last_post_id': last_post_id})
+                                                   'last_post_id': last_post_id, 'viewed_posts': viewed_posts})
 
 
 @login_required
@@ -64,7 +103,9 @@ def post_list(request, thread_id, post_id):
         if thread_object.use_group_logic and not request.user.has_perm('view_post'):
             user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
 
-            if user_group and (user_group == post.group_id or not post.group_id):
+            if user_group and (user_group.group_id == post.group_id or not post.group_id):
+                rendered_posts = Post.objects.filter(parent_post_id=post_id, group_id=user_group.group_id)\
+                    .order_by('id')
                 posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id, group_id=user_group.group_id)\
                     .order_by('id')
             else:
@@ -75,8 +116,26 @@ def post_list(request, thread_id, post_id):
 
         else:
             posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id).order_by('id')
+            rendered_posts = Post.objects.filter(parent_post_id=post_id).order_by('id')
+
+        user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+
+        if user_history:
+            viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+            rendered_post_ids = rendered_posts.values_list('id', flat=True)
+
+            for rendered_post_id in rendered_post_ids:
+                if rendered_post_id not in viewed_posts:
+                    user_history.add_post_id_to_history(rendered_post_id)
+        else:
+            viewed_posts = list()
+
+        # post_statistics = {}
+        # for rendered_post in rendered_posts:
+        #    post_statistics.update({rendered_post.id : rendered_post.post_set.count()})
 
         if posts.count() > 0:
+
             depth = 1
             while post.parent_post is not None:
                 post = post.parent_post
@@ -87,17 +146,20 @@ def post_list(request, thread_id, post_id):
                 'posts': posts,
                 'depth': depth,
                 'thread': thread_object,
+                'viewed_posts': viewed_posts,
             })
 
             return JsonResponse({
                 'success': True,
                 'posts': template.render(context),
                 'new_last_id': posts.last().id,
+                # 'post_statistics': post_statistics,
             })
         else:
             return JsonResponse({
                 'success': True,
                 'posts': '',
+                # 'post_statistics': post_statistics,
             })
 
     except ValueError:
@@ -150,11 +212,27 @@ def new_post(request, thread_id):
                         posts = Post.objects.filter(parent_post_id=parent_post_id, id__gt=last_id)\
                                         .order_by('id')
 
+                    user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+
+                    if user_history:
+                        viewed_posts = list(user_history.userhistorypost_set.values_list('post_id', flat=True))
+
+                        if post.id not in viewed_posts:
+                            user_history.add_post_id_to_history(post.id)
+                            viewed_posts.append(post.id)
+
+                        for new_post_object in posts:
+                            if new_post_object.id not in viewed_posts:
+                                user_history.add_post_id_to_history(new_post_object.id)
+
+                        user_history.add_post_id_to_history(post.id)
+
                     template = loader.get_template('diskurs/post_list.html')
                     context = RequestContext(request, {
                         'posts': posts,
                         'depth': depth,
                         'thread': thread_object,
+                        'viewed_posts': viewed_posts,
                     })
 
                     return JsonResponse({

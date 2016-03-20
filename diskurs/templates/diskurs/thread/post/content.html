@@ -1,7 +1,7 @@
 {% load tags %}
 {% load markup_tags %}
 
-<div class="container{%  if post.user == request.user %} my_post{% endif %}{%  if post.user == thread.user %} op_post{% endif %}">
+<div class="container{%  if post.user == request.user %} my_post{% endif %}{%  if post.user == thread.user %} op_post{% endif %}{%  if post.id not in viewed_posts %} new_post{% endif %}">
     {%  if post.user_avatar %}
         <div class="post_avatar">
             <img src="{{ post.user_avatar.url }}" />

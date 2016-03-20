@@ -91,6 +91,10 @@
       background-color: $op_post_background;
     }
 
+    .container.new_post {
+      background-color: $new_post_background;
+    }
+
     p {
       margin: 8px 0 5px 0;
       font-size: 16px;
@@ -115,12 +119,37 @@
       position: absolute;
       top: 3px;
       left: $post_width;
-      display: none;
       cursor: pointer;
+
+      .arrow {
+        display: none;
+      }
+
+      .refresh {
+        display: none;
+        margin-top: -$arrow_height/2;
+        margin-left: 2px;
+        font-size: 18px;
+        color: $arrow_color;
+      }
     }
 
     &.has_children > .arrow_wrapper {
-      display: block;
+      > .arrow {
+        display: block;
+      }
+      > .refresh {
+        display: none;
+      }
+    }
+
+    &.show_reply > .arrow_wrapper {
+      > .arrow {
+        display: block;
+      }
+      > .refresh {
+        display: none;
+      }
     }
 
     .post_content {
@@ -156,6 +185,27 @@
 
       img {
         max-width: $post_width - 10px;
+      }
+    }
+  }
+  .post:hover {
+    > .arrow_wrapper {
+      .refresh {
+        display: block;
+      }
+    }
+    &.has_children {
+        > .arrow_wrapper {
+        .refresh {
+          display: none;
+        }
+      }
+    }
+    &.show_reply {
+        > .arrow_wrapper {
+        .refresh {
+          display: none;
+        }
       }
     }
   }

@@ -3,17 +3,16 @@ var quotePostMarkdown = "";
 
 function diskursReply() {
     var parent = $(this).parent().parent().parent();
-    parent.siblings().each(function () {
-        if (!$(this).is(parent)) {
-            $(this).removeClass('show_child');
-        };
-    });
-    $('.show_reply').removeClass('show_reply');
-    parent.addClass('show_child show_reply');
-    parent.parent().addClass('show_child');
-
     var arrow = parent.children('.arrow_wrapper').first();
-    history.pushState({post: '#'+$(arrow).attr('id')}, '', $(arrow).attr('href'));
+
+    if (parent.hasClass('show_child')) {
+        history.pushState({post: '#'+$(arrow).attr('id')}, '', $(arrow).attr('href'));
+    } else {
+        diskursShowPost(arrow);
+    }
+
+    $('.show_reply').removeClass('show_reply');
+    parent.addClass('show_reply');
 
     parent.find('textarea').focus();
 }
@@ -64,6 +63,7 @@ function diskursShowPost(element) {
     });
     parent.parent().addClass('show_child');
     parent.find('.show_child').removeClass('show_child');
+    parent.addClass('in_progress');
 
     url = element.attr('href');
 
@@ -80,12 +80,14 @@ function diskursShowPost(element) {
                         parent.children('.container').children('.post_header').children('.count').html(count);
 
                         $(element).data('last_id', data.new_last_id);
+                        parent.addClass('has_children');
 
                         Gifffer();
                     }
                 } else {
                     alert(data.message);
                 }
+                parent.removeClass('in_progress');
             },
     });
 }
@@ -93,18 +95,6 @@ function diskursShowPost(element) {
 function diskursHidePost(element) {
     element.parent().removeClass('show_child');
     element.parent().parent().removeClass('show_child');
-}
-
-function diskursShowPostClick() {
-    if ($(this).parent().hasClass('show_child')) {
-        diskursHidePost($(this));
-        var prev = $(this).parent().parent().prev('.arrow_wrapper')
-        history.pushState({post: '#'+prev.attr('id')}, '', prev.attr('href'));
-    } else {
-        diskursShowPost($(this));
-        history.pushState({post: '#'+$(this).attr('id')}, '', $(this).attr('href'));
-    }
-    return false;
 }
 
 function isPicURL(url) {
@@ -116,8 +106,20 @@ function isURL(url) {
 }
 
 $(document).ready(function() {
-    $('.level1').on('click', 'a.arrow_wrapper', diskursShowPostClick);
-    $('.level0 > a.arrow_wrapper').click(function() { return false; });
+    $('#diskurs').on('click', 'a.arrow_wrapper', function() {
+        if ($(this).parent().hasClass('show_child') && $(this).parent().hasClass('has_children') &&
+            !$(this).parent().hasClass('level0')) {
+            diskursHidePost($(this));
+            var prev = $(this).parent().parent().prev('.arrow_wrapper')
+            history.pushState({post: '#'+prev.attr('id')}, '', prev.attr('href'));
+        } else {
+            diskursShowPost($(this));
+            if (history.state.post != '#'+$(this).attr('id')) {
+                history.pushState({post: '#'+$(this).attr('id')}, '', $(this).attr('href'));
+            }
+        }
+        return false;
+    });
     $('#diskurs').on('click', '.reply', diskursReply);
     $('#diskurs').on('submit', 'form', diskursNewPost);
     $('.post_content').readmore({

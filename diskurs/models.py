@@ -98,3 +98,30 @@ class UserGroup(models.Model):
     group = models.ForeignKey(Group)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class UserHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def add_post_to_history(self, post):
+        hp = UserHistoryPost()
+        hp.user_history = self
+        hp.post = post
+        hp.save()
+
+        for post in post.filtered_post_set:
+            self.add_post_to_history(post)
+
+    def add_post_id_to_history(self, post_id):
+        hp = UserHistoryPost()
+        hp.user_history = self
+        hp.post_id = post_id
+        hp.save()
+
+
+class UserHistoryPost(models.Model):
+    user_history = models.ForeignKey(UserHistory, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
