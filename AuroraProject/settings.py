@@ -34,6 +34,9 @@ MARKUP_FILTER = {
 MARKUP_SETTINGS = {
     'markdown': {
         'safe_mode': True
+    },
+    'markdown_giffer': {
+        'safe_mode': True
     }
 }
 
