@@ -680,6 +680,20 @@ def load_reviews(request, course_short_title=None):
     return render_to_response('task.html', {'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course':course},
                               RequestContext(request))
 
+@aurora_login_required()
+@staff_member_required
+def load_task(request, course_short_title=None):
+    print('here')
+    course = Course.get_or_raise_404(short_title=course_short_title)
+    if not 'elaboration_id' in request.GET:
+        return False;
+
+    elaboration = Elaboration.objects.get(pk=request.GET.get('elaboration_id', ''))
+    stack_elaborations = elaboration.user.get_stack_elaborations(elaboration.challenge.get_stack())
+    reviews = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False)
+
+    return render_to_response('task_s.html', {'stack_elaborations':stack_elaborations, 'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course':course},
+                              RequestContext(request))
 
 @require_POST
 @csrf_exempt

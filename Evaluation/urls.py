@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^set_appraisal/$', Evaluation.views.set_appraisal),
     url(r'^review_answer/$', Evaluation.views.review_answer),
     url(r'^load_reviews/$', Evaluation.views.load_reviews),
+    url(r'^load_task/$', Evaluation.views.load_task),
 
     url(r'^start_evaluation$', Evaluation.views.start_evaluation),
     url(r'^save_evaluation/$', Evaluation.views.save_evaluation),

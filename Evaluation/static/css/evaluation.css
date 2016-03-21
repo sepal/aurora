@@ -126,6 +126,12 @@ input[type=submit] {
 	cursor:pointer;
 }
 
+.selectedRow {
+	background-color:#264923;
+	color:white;
+}
+
+
 .overview_table td {
 	padding:1px;
 }
@@ -490,6 +496,7 @@ th {
 .success_reviews {
 	background-color:#C5FFB6;
 	border:1px solid #359440;
+	color:black;
 }
 
 .fail_reviews {
