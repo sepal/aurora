@@ -204,6 +204,14 @@ function load_reviews(elaboration_id) {
    });
 }
 
+
+function load_task(elaboration_id) {
+   var url = './load_task?elaboration_id=' + elaboration_id;
+   $.get(url, function (data) {
+       $('#info_area').html(data);
+   });
+}
+
 $(function() {
    $(".review_submit").click(function(event) {
     event.preventDefault();
