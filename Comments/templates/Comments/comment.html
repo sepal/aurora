@@ -44,7 +44,7 @@
 		 <div style="width:77%">&quot;{{comment.author.statement|urlizetrunc:50}}&quot;</div>
 		 {% if requester.is_staff %}
        {{comment.author.matriculation_number}} - {{comment.author.first_name}} {{comment.author.last_name}}<br>
-		   <a href="mailto:{{comment.author.email}}">{{comment.author.email}}</a> &mdash; 
+		   <a href="mailto:{{comment.author.email}}">email</a> &mdash; 
        {% send_notification_button course.short_title comment.author.id%}
        {% if not comment.author.is_staff %}
          {% if course %}
