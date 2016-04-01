@@ -200,7 +200,7 @@
             var $image = this.$lightbox.find('.lb-image');
             var $download = this.$lightbox.find('.lb-download');
             $download.attr({target: '_blank', 'href': self.album[imageNumber].link});
-            $download.click(download_clicked);
+            //$download.click(download_clicked);
 
             this.$overlay.fadeIn(this.options.fadeDuration);
 
