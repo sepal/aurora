@@ -63,7 +63,16 @@ function diskursShowPost(element) {
             $(this).removeClass('show_child');
         };
     });
-    parent.parent().addClass('show_child');
+    parent.parents('.post, .child_post').each(function() {
+        current = $(this);
+        current.addClass('show_child');
+
+        current.siblings().each(function () {
+            if (!$(this).is(current)) {
+                $(this).removeClass('show_child');
+            };
+        })
+    });
     parent.find('.show_child').removeClass('show_child');
     parent.addClass('in_progress');
 
@@ -118,7 +127,7 @@ $(document).ready(function() {
             history.pushState({post: '#'+prev.attr('id')}, '', prev.attr('href'));
         } else {
             diskursShowPost($(this));
-            if (history.state.post != '#'+$(this).attr('id')) {
+            if (history.state == null || history.state.post != '#'+$(this).attr('id')) {
                 history.pushState({post: '#'+$(this).attr('id')}, '', $(this).attr('href'));
             }
         }
