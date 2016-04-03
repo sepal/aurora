@@ -1,6 +1,6 @@
 <div class="post level{{ depth }} {% if post.filtered_post_set.count > 0 %}has_children{% endif %} {% if post.id in expanded_posts %}show_child{% endif %}">
 
-    <a class="arrow_wrapper" href="{% url 'diskurs:thread_post' thread.id post.id %}" id="show-{{ post.id }}" data-last_id="{% if post.filtered_post_set.all.last.id %}{{ post.filtered_post_set.all.last.id }}{% else %}0{% endif %}">
+    <a class="arrow_wrapper" href="{% url 'diskurs:thread_post' course.short_title thread.id post.id %}" id="show-{{ post.id }}" data-last_id="{% if post.filtered_post_set.all.last.id %}{{ post.filtered_post_set.all.last.id }}{% else %}0{% endif %}">
         <span class="arrow nicetip right"><span class="tip"></span></span>
         <span class="refresh"><i class="fa fa-refresh"></i></span>
     </a>
@@ -10,7 +10,7 @@
             {% include "diskurs/thread/post.html" with post=post depth=depth|add:"1" thread=thread last_post_id=last_post_id %}
         {% endfor %}
         <div class="post_reply">
-            <form method="post" action="{% url 'diskurs:new_post' thread.id %}">
+            <form method="post" action="{% url 'diskurs:new_post' course.short_title thread.id %}">
                 <input type="hidden" name="parent_post_id" value="{{ post.id }}" />
                 {% csrf_token %}
                 <textarea class="reply_area" name="content"></textarea><br/>

@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.aggregates import Sum
 from django.contrib.auth.models import User
 from AuroraUser.models import AuroraUser
+from Course.models import Course
 
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -46,12 +47,13 @@ class Post(models.Model):
 
 
 class Thread(models.Model):
+    course = models.ForeignKey(Course)
     title = models.TextField(max_length=512)
     first_post = models.ForeignKey(Post)
     user = models.ForeignKey(AUTH_USER_MODEL)
     created_at = models.DateTimeField(auto_now_add=True)
-    use_group_logic = models.BooleanField(default=False)
-    members_in_group = models.IntegerField(default=10)
+    use_group_logic = models.BooleanField(default=True)
+    members_in_group = models.IntegerField(default=20)
     filter_group_id = False
 
     def __unicode__(self):

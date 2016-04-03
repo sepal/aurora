@@ -3,20 +3,26 @@ from django.template import RequestContext, loader
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-
+from django.http import Http404
 from .models import Thread, Post, PostVote, Group, UserGroup, UserHistory, UserHistoryPost
+from Course.models import Course
 
 
 @login_required
-def index(request):
-    threads = Thread.objects.filter(group__usergroup__user=request.user)
+def index(request, course_short_title):
+    course = Course.get_or_raise_404(course_short_title)
+    threads = Thread.objects.filter(group__usergroup__user=request.user, course=course)
 
-    return render(request, 'diskurs/index.html', {'threads': threads})
+    return render(request, 'diskurs/index.html', {'threads': threads, 'course': course})
 
 
 @login_required
-def thread(request, thread_id):
+def thread(request, course_short_title, thread_id):
+    course = Course.get_or_raise_404(course_short_title)
     thread_object = get_object_or_404(Thread, pk=thread_id)
+
+    if thread_object.course != course:
+        raise Http404("Thread does not exist")
 
     if thread_object.use_group_logic and not request.user.has_perm('view_post'):
         user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
@@ -24,7 +30,7 @@ def thread(request, thread_id):
         if user_group:
             thread_object.filter_group_id = user_group.group_id
         else:
-            return redirect('diskurs:choose_group', thread_id=thread_id)
+            return redirect('diskurs:choose_group', course_short_title=course_short_title, thread_id=thread_id)
 
     user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
 
@@ -44,12 +50,17 @@ def thread(request, thread_id):
             if post.id not in viewed_posts:
                 user_history.add_post_id_to_history(post.id)
 
-    return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': [], 'viewed_posts': viewed_posts})
+    return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': [],
+                                                   'viewed_posts': viewed_posts, 'course': course})
 
 
 @login_required
-def thread_post(request, thread_id, post_id):
+def thread_post(request, course_short_title, thread_id, post_id):
+    course = Course.get_or_raise_404(course_short_title)
     thread_object = get_object_or_404(Thread, pk=thread_id)
+
+    if thread_object.course != course:
+        raise Http404("Thread does not exist")
 
     if thread_object.use_group_logic and not request.user.has_perm('view_post'):
         user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
@@ -57,7 +68,7 @@ def thread_post(request, thread_id, post_id):
         if user_group:
             thread_object.filter_group_id = user_group.group_id
         else:
-            return redirect('diskurs:choose_group', thread_id=thread_id)
+            return redirect('diskurs:choose_group', course_short_title=course_short_title, thread_id=thread_id)
 
     post = Post.objects.get(id=post_id)
     last_post_id = post.id
@@ -90,13 +101,22 @@ def thread_post(request, thread_id, post_id):
                 user_history.add_post_id_to_history(rendered_post_id)
 
     return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': expanded_posts,
-                                                   'last_post_id': last_post_id, 'viewed_posts': viewed_posts})
+                                                   'last_post_id': last_post_id, 'viewed_posts': viewed_posts,
+                                                   'course': course})
 
 
 @login_required
-def post_list(request, thread_id, post_id):
+def post_list(request, course_short_title, thread_id, post_id):
     try:
+        course = Course.objects.get(short_title=course_short_title)
         thread_object = Thread.objects.get(pk=thread_id)
+
+        if thread_object.course != course:
+            return JsonResponse({
+                'error': True,
+                'message': 'Invalid ID provided!'
+            })
+
         post = Post.objects.get(pk=post_id)
         last_id = int(request.GET.get('last_id', 0))
 
@@ -147,6 +167,7 @@ def post_list(request, thread_id, post_id):
                 'depth': depth,
                 'thread': thread_object,
                 'viewed_posts': viewed_posts,
+                'course': course,
             })
 
             return JsonResponse({
@@ -170,8 +191,17 @@ def post_list(request, thread_id, post_id):
 
 
 @login_required
-def new_post(request, thread_id):
+def new_post(request, course_short_title, thread_id):
     try:
+        course = Course.objects.get(short_title=course_short_title)
+        thread_object = Thread.objects.get(id=thread_id)
+
+        if thread_object.course != course:
+            return JsonResponse({
+                'error': True,
+                'message': 'Invalid ID provided!'
+            })
+
         parent_post_id = int(request.POST.get('parent_post_id', 0))
         last_id = int(request.POST.get('last_id', 0))
         content = request.POST.get('content', '')
@@ -183,8 +213,6 @@ def new_post(request, thread_id):
                 post.content = request.POST.get('content', '')
                 post.parent_post = parent_post
                 post.user = request.user
-
-                thread_object = Thread.objects.get(id=thread_id)
 
                 if parent_post.group_id:
                     post.group_id = parent_post.group_id
@@ -233,6 +261,7 @@ def new_post(request, thread_id):
                         'depth': depth,
                         'thread': thread_object,
                         'viewed_posts': viewed_posts,
+                        'course': course,
                     })
 
                     return JsonResponse({
@@ -264,9 +293,8 @@ def new_post(request, thread_id):
 
 
 @login_required
-def upvote_post(request, thread_id, post_id):
+def upvote_post(request, course_short_title, thread_id, post_id):
     try:
-
         if int(post_id) > 0:
             post = Post.objects.get(id=post_id)
 
@@ -316,7 +344,7 @@ def upvote_post(request, thread_id, post_id):
 
 
 @login_required
-def downvote_post(request, thread_id, post_id):
+def downvote_post(request, course_short_title, thread_id, post_id):
     try:
         if int(post_id) > 0:
             post = Post.objects.get(id=post_id)
@@ -367,7 +395,7 @@ def downvote_post(request, thread_id, post_id):
 
 
 @login_required
-def delete_post(request, thread_id, post_id):
+def delete_post(request, course_short_title, thread_id, post_id):
     try:
         if int(post_id) > 0:
             post = Post.objects.get(id=post_id)
@@ -411,8 +439,12 @@ def delete_post(request, thread_id, post_id):
 
 @login_required
 @transaction.atomic
-def choose_group(request, thread_id):
+def choose_group(request, course_short_title, thread_id):
+    course = Course.get_or_raise_404(course_short_title)
     thread_object = get_object_or_404(Thread, pk=thread_id)
+
+    if thread_object.course != course:
+        raise Http404("Thread does not exist")
 
     if thread_object.use_group_logic:
 
@@ -428,18 +460,23 @@ def choose_group(request, thread_id):
 
                 groups = Group.objects.filter(thread_id=thread_id).order_by('id')
 
-            return render(request, 'diskurs/thread/choose_group.html', {'groups': groups, 'thread': thread_object})
+            return render(request, 'diskurs/thread/choose_group.html', {'groups': groups, 'thread': thread_object,
+                                                                        'course': course})
 
-        return redirect('diskurs:thread', thread_id=thread_id)
+        return redirect('diskurs:thread', course_short_title=course_short_title, thread_id=thread_id)
 
     else:
-        return redirect('diskurs:thread', thread_id=thread_id)
+        return redirect('diskurs:thread', course_short_title=course_short_title, thread_id=thread_id)
 
 
 @login_required
 @transaction.atomic
-def choose_group_set(request, thread_id, group_id):
+def choose_group_set(request, course_short_title, thread_id, group_id):
+    course = Course.get_or_raise_404(course_short_title)
     group_object = get_object_or_404(Group, pk=group_id)
+
+    if group_object.thread.course != course:
+        raise Http404("Thread does not exist")
 
     if group_object.thread.use_group_logic and group_object.thread_id == int(thread_id):
 
@@ -451,8 +488,8 @@ def choose_group_set(request, thread_id, group_id):
                 user_group.user_id = request.user.id
                 user_group.save()
 
-            return redirect('diskurs:thread', thread_id=thread_id)
+            return redirect('diskurs:thread', course_short_title=course_short_title, thread_id=thread_id)
 
-        return redirect('diskurs:choose_group', thread_id=thread_id)
+        return redirect('diskurs:choose_group', course_short_title=course_short_title, thread_id=thread_id)
 
-    return redirect('diskurs:thread', thread_id=thread_id)
+    return redirect('diskurs:thread', course_short_title=course_short_title, thread_id=thread_id)

@@ -4,7 +4,7 @@
     <h1>Choose group</h1>
     <ul>
         {% for group in groups %}
-            <li><a href="{% url 'diskurs:choose_group_set' thread.id group.id %}">Group {{ forloop.counter }} ({{ group.size }}/{{ thread.members_in_group }})</a></li>
+            <li><a href="{% url 'diskurs:choose_group_set' course.short_title thread.id group.id %}">Group {{ forloop.counter }} ({{ group.size }}/{{ thread.members_in_group }})</a></li>
         {% endfor %}
     </ul>
 {%  endblock %}
