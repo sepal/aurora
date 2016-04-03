@@ -152,6 +152,13 @@
       }
     }
 
+    .new_count {
+      position: absolute;
+      top: 25px;
+      left: $post_width + 2px;
+      text-align: center;
+    }
+
     .post_content {
       max-height: 240px;
       overflow: hidden;

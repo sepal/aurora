@@ -20,8 +20,8 @@ function diskursReply() {
 function diskursNewPost(e) {
     var form = $(this);
     var postData = form.serializeArray();
-    if (form.parent().parent().prev('.arrow_wrapper').data('last_id')) {
-        postData[postData.length] = { name: "last_id", value: form.parent().parent().prev('.arrow_wrapper').data('last_id') };
+    if (form.parent().parent().prev().prev('.arrow_wrapper').data('last_id')) {
+        postData[postData.length] = { name: "last_id", value: form.parent().parent().prev().prev('.arrow_wrapper').data('last_id') };
     }
     var formURL = form.attr('action');
     $.ajax({
@@ -40,11 +40,13 @@ function diskursNewPost(e) {
                     lessLink: '<a class="read_less" href="#">Read less</a>',
                     moreLink: '<a class="read_more" href="#">Read more</a>'
                 });
-                form.parent().parent().prev('.arrow_wrapper').data('last_id', data.new_last_id);
+                form.parent().parent().prev().prev('.arrow_wrapper').data('last_id', data.new_last_id);
                 form.find('textarea').val('');
                 form.parent().parent().parent().removeClass('show_reply');
 
                 Gifffer();
+
+                refreshNew();
             } else {
                 alert(data.message);
             }
@@ -74,15 +76,17 @@ function diskursShowPost(element) {
             {
                 if (data.success) {
                     if (data.new_last_id) {
-                        $(element).next('.child_post').children('.post_reply').before(data.posts);
+                        $(element).next().next('.child_post').children('.post_reply').before(data.posts);
 
-                        var count = parseInt($(element).next('.child_post').children('.post').length);
+                        var count = parseInt($(element).next().next('.child_post').children('.post').length);
                         parent.children('.container').children('.post_header').children('.count').html(count);
 
                         $(element).data('last_id', data.new_last_id);
                         parent.addClass('has_children');
 
                         Gifffer();
+
+                        refreshNew();
                     }
                 } else {
                     alert(data.message);
@@ -234,6 +238,8 @@ $(document).ready(function() {
             e.preventDefault();
         }
     })
+
+    refreshNew();
 });
 
 window.onpopstate = function(event) {
@@ -246,4 +252,16 @@ window.onpopstate = function(event) {
 
 window.onload = function() {
   Gifffer();
+}
+
+function refreshNew() {
+    $('div.post').each(function () {
+        var newCount = $(this).find('.child_post .new_post').length;
+
+        if (newCount > 0) {
+            $(this).children('.new_count').html(newCount + ' new');
+        } else {
+            $(this).children('.new_count').html('');
+        }
+    });
 }

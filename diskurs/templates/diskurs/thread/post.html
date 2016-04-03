@@ -4,6 +4,7 @@
         <span class="arrow nicetip right"><span class="tip"></span></span>
         <span class="refresh"><i class="fa fa-refresh"></i></span>
     </a>
+    <span class="new_count"></span>
     <div class="child_post {% if post.id in expanded_posts and post.id != last_post_id %}show_child{% endif %}">
         {% for post in post.filtered_post_set.all %}
             {% include "diskurs/thread/post.html" with post=post depth=depth|add:"1" thread=thread last_post_id=last_post_id %}
