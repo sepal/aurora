@@ -10,6 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from AuroraProject.settings import STATIC_ROOT, MEDIA_ROOT
 from Elaboration.models import Elaboration
 from django.core.files import File
+from Review.models import Review
 
 def avatar_path(instance, filename):
     name = 'avatar_%s' % instance.id
@@ -37,6 +38,9 @@ class AuroraUser(User):
         for elaboration in Elaboration.objects.filter(user=self, submission_time__isnull=False):
             elaborations.append(elaboration)
         return elaborations
+
+    def get_reviews(self):
+        return Review.objects.filter(reviewer=self)
 
     def get_course_elaborations(self, course):
         elaborations = []

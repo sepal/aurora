@@ -9,20 +9,22 @@
 {% block content %}
 
     <table>
-        <tr class="{% cycle 'darkTableRow' 'lightTableRow' %}">
-            <td><img src="{{ elaboration.challenge.image.url }}" class="mini_task_img"></td>
-            <td>{{ elaboration.challenge.title|safe }}</td>
-            <td class="timestamp" title="{{ elaboration.submission_time }}">{{ elaboration.submission_time|naturaltime }}</td>
+    {% for elab in stack_elaborations %}
+        <tr onclick="load_task({{ elab.id }})" class="{% cycle 'darkTableRow' 'lightTableRow' %} {% if elab.challenge.title == elaboration.challenge.title %}selectedRow{% endif %}">
+            <td><img src="{{ elab.challenge.image.url }}" class="mini_task_img"></td>
+            <td>{{ elab.challenge.title|safe }}</td>
+            <td class="timestamp" title="{{ elab.submission_time }}">{{ elab.submission_time|naturaltime }}</td>
             <td class="indicator_field">
-				<div title="Exceptional" class="awesome_reviews indicator">{{ elaboration.get_awesome_reviews|length }}</div>
-                <div title="All requirements met" class="success_reviews indicator">{{ elaboration.get_success_reviews|length }}</div>
-                <div title="Requirements missed" class="fail_reviews indicator">{{ elaboration.get_fail_reviews|length }}</div>
-                <div title="Plagiarism/cheated" class="notry_reviews indicator">{{ elaboration.get_nothing_reviews|length }}</div>
-                <div title="Public comments" class="visible_comments indicator">{{ elaboration.get_visible_comments_count }}</div>
-                <div title="Private comments" class="invisible_comments indicator">{{ elaboration.get_invisible_comments_count }}</div>
-                {% if elaboration.get_lva_team_notes %}<div title="LVA team notes" class="lva_team_notes indicator">A</div>{% endif %}
+				<div title="Exceptional" class="awesome_reviews indicator">{{ elab.get_awesome_reviews|length }}</div>
+                <div title="All requirements met" class="success_reviews indicator">{{ elab.get_success_reviews|length }}</div>
+                <div title="Requirements missed" class="fail_reviews indicator">{{ elab.get_fail_reviews|length }}</div>
+                <div title="Plagiarism/cheated" class="notry_reviews indicator">{{ elab.get_nothing_reviews|length }}</div>
+                <div title="Public comments" class="visible_comments indicator">{{ elab.get_visible_comments_count }}</div>
+                <div title="Private comments" class="invisible_comments indicator">{{ elab.get_invisible_comments_count }}</div>
+                {% if elab.get_lva_team_notes %}<div title="LVA team notes" class="lva_team_notes indicator">A</div>{% endif %}
             </td>
         </tr>
+    {% endfor %}
     </table>
 	
 	<script>
@@ -40,10 +42,9 @@
 		<br>
 
 	<div class="elab_in_detail minElab" id="EiD"><i class="fa fa-toggle-down fa-2x klapp" onClick="if ($('#EiD').hasClass('minElab')) {$('#EiD').removeClass('minElab')} else {$('#EiD').addClass('minElab')}"></i> {{ elaboration.challenge.description|safe|urlizetrunc:30 }}</div>
+	
 	<br>
-        <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle" onclick="$('.author_detail').addClass('hidden_detail');$('#top_detail').toggleClass('hidden_detail')">
-        {{ elaboration.user.nickname }} ({{ elaboration.user.first_name }} {{ elaboration.user.last_name }}/{{ elaboration.user.username }}) @ <span title="{{elaboration.submission_time}}">{{elaboration.submission_time|naturaltime}}</span>:<br><br>
-	<div style="width:100%;border-bottom:1px solid silver;font-weight:bold">Original Work</div>
+	<div style="width:100%;border-bottom:1px solid silver;font-weight:bold;">Original Work</div>
     {% render_original_uploads elaboration %}
 
     {% if elaboration.elaboration_text|length != 0 %}

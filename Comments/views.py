@@ -122,14 +122,14 @@ def lecturer_post(request):
     user = AuroraUser.objects.get(username=LECTURER_USERNAME)
     ref_obj = Slide.objects.get(filename=data['filename'])
 
-    Comment.objects.create(text=data['text'],
+    rtrn = Comment.objects.create(text=data['text'],
                            author=user,
                            content_object=ref_obj,
                            parent=None,
                            post_date=timezone.now(),
                            visibility=Comment.PUBLIC)
 
-    return HttpResponse('')
+    return HttpResponse('comment posted to slide ' + ref_obj.title + '<br>text was ' + rtrn.text)
 
 
 def create_comment(form, request):

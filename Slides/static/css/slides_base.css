@@ -56,6 +56,14 @@ input:-moz-placeholder { color:gray; }
 	border-radius:0 0 4px 4px;
 }
 
+.prepSlide {
+	opacity:0.7;
+}
+
+.futureSlide {
+	opacity:0.4;
+}
+
 .confused_bookmark {
 	background-image: url('../img/confused_bookmark.png');
 	background-size:160px 90px;
@@ -279,6 +287,8 @@ ul.content_navigation_list li {
 	background-image:url('../img/search.png');
 	background-repeat:no-repeat;
 	background-position: 3px 3px;
+	position:relative;
+	top:-4px;
 }
 
 .b_play {
@@ -577,5 +587,13 @@ ul.content_navigation_list li {
 
 
 .mark_seen_link {
-	visibility:none;
+	visibility:hidden;
 } 
+
+
+.noslideshere {
+	padding:2em;
+	color:darkgray;
+	font-size:120%;
+	width:50%;
+}

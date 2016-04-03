@@ -73,6 +73,15 @@ $(function() {
 });
 
 $(function() {
+   $(".user-detail").click(function(event) {
+       var url = './user-detail';
+        $.get(url, function (data) {
+            $('#info_area').html(data);
+        });
+   });
+});
+
+$(function() {
     $(".paginator").click(function(event) {
         var url = './detail?elaboration_id=' + $(event.target).attr('id');
         $.get(url, function (data) {
@@ -190,6 +199,14 @@ function AutoSave(elaboration_id) {
 
 function load_reviews(elaboration_id) {
    var url = './load_reviews?elaboration_id=' + elaboration_id;
+   $.get(url, function (data) {
+       $('#info_area').html(data);
+   });
+}
+
+
+function load_task(elaboration_id) {
+   var url = './load_task?elaboration_id=' + elaboration_id;
    $.get(url, function (data) {
        $('#info_area').html(data);
    });

@@ -4,7 +4,6 @@
 
 {% block additional_headers %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.ba-throttle-debounce.min.js"></script>
-<script type='text/javascript' src='{{ STATIC_URL }}js/jquery.mousewheel.min.js'></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/shared.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/studio.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/videoplayer.js"></script>
@@ -15,15 +14,11 @@
 <script type="text/javascript" src="{{ STATIC_URL }}Comments/simple_functions.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}Comments/comments.js"></script>
 
-<script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
-<link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
 
 
 <link rel="stylesheet" href="{{ STATIC_URL }}Comments/comments.css" type="text/css" media="screen"/>
-
-<style>
-
-</style>
 {% endblock %}
 
 {% block content %}
@@ -43,27 +38,15 @@
         $(window).resize(checkSlidesInView);
 		videoplayer = new Videoplayer("{{STATIC_URL}}flowplayer/", "{{videoclip_url}}", "{{videoclip_name}}", {{videoclip_chapters}})
 		/* added by purg to give better scrolling experience */
-	   	$("#contentblock").mousewheel(function(event, delta) {
-			if (event.altKey) {
-				this.scrollLeft += (delta * 20);
-				event.preventDefault();
-			}
-		});
-
 	});
 	</script>	
 
 	<br />
 	<div id="flowplayer_invisible"></div>
 	 {% if slidecasting_mode == 'search_results'%}
-		&nbsp;&nbsp;&nbsp;Your search for {{search_text}} found {{slides.count}} results. <br />
 		<br />
-	{% elif slidecasting_mode == 'marked_slides' %}
-		&nbsp;&nbsp;&nbsp;{{slides.count}} slides marked as &raquo;{{marker}}&laquo;. <br />
-		<br />
-	 {% elif not slides %}
-		<div class="noslideshere">this lecture will take place on {{lecture.start.day}}.{{lecture.start.month}}.,  {{lecture.start.hour}}:{{lecture.start.minute|stringformat:"02d"}}. slides and comments will be available shortly after the lecture is over.</div>
-	 {% endif %}
+		Your search for {{search_text}} found {{slides.count}} results. <br />
+	 {% endif %} 
 	<table id="slides_table">
 	 <tr>
 		 {% with user.customuser as customuser %}
