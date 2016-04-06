@@ -167,7 +167,7 @@ body {
 #diskurs .post p {
   margin: 8px 0 5px 0;
   font-size: 16px;
-  word-break: break-all;
+  word-wrap: break-word;
 }
 /* line 103, ../sass/layout/_post.scss */
 #diskurs .post .post_footer {
