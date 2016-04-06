@@ -73,7 +73,11 @@
         <div class="spacer"></div>
 
         {% if evaluation %}
+		{% if user.is_superuser %}
+		{% if evaluation.tutor.username %} Feedback written by <b>{{ evaluation.tutor.username }}</b> {% endif %}
+		{% else %}
 		Written feedback<div class="error"></div>
+		{% endif %}
             <form method="post">
                 {% csrf_token %}
                 {% if evaluation.submission_time %}
