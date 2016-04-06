@@ -2,11 +2,6 @@
 {% load markup_tags %}
 
 <div class="container{%  if post.user == request.user %} my_post{% endif %}{%  if post.user == thread.user %} op_post{% endif %}{%  if post.id not in viewed_posts %} new_post{% endif %}">
-    {%  if post.user_avatar %}
-        <div class="post_avatar">
-            <img src="{{ post.user_avatar.url }}" />
-        </div>
-    {% endif %}
     <div class="post_header{%  if post.user_avatar %} has_avatar{% endif %}">
         <span class="user">{{ post.user.username }}</span>
         <span class="votes">{{ post.sum_votes }}</span>
@@ -22,6 +17,9 @@
         <span class="count">{{ post.post_set.count }}</span>
     </div>
     <div class="post_content">
+    {%  if post.user_avatar %}
+            <img src="{{ post.user_avatar.url }}" />
+    {% endif %}
         {{ post.content|apply_markup:'markdown_giffer'}}
     </div>
     <div class="post_footer">

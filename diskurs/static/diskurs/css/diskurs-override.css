@@ -1,0 +1,44 @@
+#diskurs .post .container {
+	padding:8px;
+	border:0;
+	margin:4px;
+	margin-bottom:24px;
+}
+
+#diskurs .post_reply button {
+	border:0;
+	background-color:white;
+	color:rgb(58, 201, 88);
+	padding:0;
+	margin-left:10px;
+	font-size:12px;
+}
+
+#diskurs .post .post_content img {
+	float:left;
+	padding-top:4px;
+	padding-right:5px;
+	width:32px;
+	height:32px;
+}
+
+#diskurs .post .post_header.has_avatar {
+	margin-left:0;
+}
+
+#diskurs .post p {
+	margin-top:4px;
+}
+
+#diskurs .post .container.my_post {
+	background:none;
+}
+
+
+#diskurs .post .container.my_post .post_header  {
+	background-color: rgb(251, 249, 149);
+}
+
+#diskurs .post .post_footer .reply {
+	color: rgb(58, 201, 88);
+}
