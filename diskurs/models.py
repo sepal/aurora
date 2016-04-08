@@ -52,7 +52,6 @@ class Thread(models.Model):
     first_post = models.ForeignKey(Post)
     user = models.ForeignKey(AUTH_USER_MODEL)
     created_at = models.DateTimeField(auto_now_add=True)
-    use_group_logic = models.BooleanField(default=True)
     members_in_group = models.IntegerField(default=20)
     filter_group_id = False
 
