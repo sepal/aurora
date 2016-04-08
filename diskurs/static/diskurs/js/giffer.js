@@ -81,7 +81,10 @@ function process(el) {
     w = w || el.width;
     h = h || el.height;
 
-    if (w < el.width) {
+    if (w > el.width) {
+      w = el.width;
+    }
+    if (w != el.width) {
       h = w / el.width * el.height;
     }
 

@@ -29,6 +29,7 @@ class GifferImagePattern(ImagePattern):
         if src.endswith('.gif'):
             node.attrib.pop('src')
             node.set('data-gifffer', src)
+            node.set('data-gifffer-width', '240')
 
         return node
 
