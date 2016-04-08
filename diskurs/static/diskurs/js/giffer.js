@@ -134,7 +134,7 @@ function process(el) {
     play.style.left = ((dims.w / 2) - (playSize / 2)) + 'px';
 
     // setting the actual image size
-    con.setAttribute('style', 'position:relative;cursor:pointer;width:' + dims.w + 'px;height:' + dims.h + 'px;');
+    con.setAttribute('style', 'position:relative;margin: 0 auto;cursor:pointer;width:' + dims.w + 'px;height:' + dims.h + 'px;');
 
   }
   el.src = url;
