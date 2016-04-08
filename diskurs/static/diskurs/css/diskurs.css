@@ -143,7 +143,7 @@ body {
 }
 /* line 75, ../sass/layout/_post.scss */
 #diskurs .post > .container:hover .delete, #diskurs .post > .container:hover .vote {
-  display: block;
+  display: inline-block;
 }
 /* line 80, ../sass/layout/_post.scss */
 #diskurs .post .container {

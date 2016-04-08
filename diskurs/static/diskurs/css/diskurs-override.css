@@ -10,20 +10,35 @@
 	background-color:white;
 	color:rgb(58, 201, 88);
 	padding:0;
-	margin-left:10px;
-	font-size:12px;
+	margin:0;
+	font-size:14px;
+	font-family: "Helvetica";
 }
 
-#diskurs .post .post_content img {
+#diskurs .post_reply button.toggle_emojipicker {
 	float:left;
+}
+#diskurs .post .avatar img {
+/*	float:left;
 	padding-top:4px;
 	padding-right:5px;
 	width:32px;
 	height:32px;
+	*/
+	width:32px;
+	height:32px;
+	position:absolute;
+	left:-24px;
+	top:40px;
+	
 }
 
 #diskurs .post .post_header.has_avatar {
 	margin-left:0;
+}
+
+#diskurs .post .post_header {
+	padding:3px 0 2px 0;
 }
 
 #diskurs .post p {
@@ -35,10 +50,134 @@
 }
 
 
-#diskurs .post .container.my_post .post_header  {
+#diskurs .post .my_post .post_header, #diskurs .post .container.my_post .post_header {
 	background-color: rgb(251, 249, 149);
 }
 
+
+
 #diskurs .post .post_footer .reply {
 	color: rgb(58, 201, 88);
+	right: 12px;
+}
+
+#diskurs .post, #diskurs .post p {
+	font-size:14px;
+}
+
+#diskurs .post .container.op_post {
+	background-color:white;
+}
+
+#diskurs .post .post_content {
+	position:relative;
+	margin:4px 0 4px 0;
+}
+
+.fadeout {
+    position: absolute; 
+    bottom: 0;
+    width:100%;
+    height:10px;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+} 
+
+#diskurs .post .post_header .vote {
+	position:relative;
+	left:8px;
+	display:none;
+}
+
+#diskurs .post .post_footer {
+	border-top:1px solid #eee;
+	padding:3px 0 0 0;
+}
+
+#diskurs .post .post_header {
+	border-bottom: 1px solid #eee;
+}
+
+.arrow_wrapper .arrow {
+	background:rgb(58, 201, 88);
+}
+
+.arrow_wrapper .arrow.right.nicetip:before, .arrow_wrapper .arrow.right.nicetip .tip {
+	background:rgb(58, 201, 88);
+}
+
+#diskurs .post .arrow_wrapper {
+	top:9px;
+	left:300px;
+}
+
+#diskurs .post_reply, #diskurs .post {
+	width: 300px;
+}
+
+
+#diskurs .post .child_post {
+	left:350px;
+}
+
+.post.has_children.show_child {
+}
+
+
+a.read_more, a.read_less {
+	margin:0;
+}
+
+#diskurs .post .post_footer .delete a {
+	color:rgb(58, 201, 88);
+	text-decoration:none;
+	display:none;
+	position:absolute;
+	right:65px;
+}
+
+#diskurs .post .post_header {
+	font-weight:normal;
+}
+
+#diskurs .post > .container:hover .delete {
+	display:inline;
+}
+
+#diskurs .post .post_header .count {
+	right:0px;
+	font-weight:bold;
+}
+
+#diskurs .post .post_header .user {
+	font-weight:bold;
+}
+
+#diskurs .post_reply {
+	box-sizing: border-box;
+	padding-left:12px;
+	padding-right:12px;
+}
+
+#diskurs .post_reply textarea {
+	border:none;
+	border-bottom:1px solid #eee;
+	font-size:14px;
+	background-color:#F6F8CE;
+	margin-top:0;
+	margin-bottom:0;
+	width:272px;
+	font-family:"helvetica neue", helvetica, arial;
+}
+
+textarea:focus {
+   outline: none;
+}
+
+.info-button {
+	position: relative;
+	left:80px;
+	color:rgb(58, 201, 88);
 }

@@ -36,9 +36,11 @@ function diskursNewPost(e) {
                 var count = parseInt(form.parent().parent().children('.post').length);
                 form.parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
                 form.parent().prev().children('.container').children('.post_content').readmore({
-                    speed: 75,
-                    lessLink: '<a class="read_less" href="#">Read less</a>',
-                    moreLink: '<a class="read_more" href="#">Read more</a>'
+					speed: 75,
+					collapsedHeight: 200,
+					heightMargin: 32,
+                    lessLink: '<a class="read_less" href="#">Shrink</a>',
+                    moreLink: '<a class="read_more" href="#">Show all</a>'
                 });
                 form.parent().parent().prev().prev('.arrow_wrapper').data('last_id', data.new_last_id);
                 form.find('textarea').val('');
@@ -137,8 +139,10 @@ $(document).ready(function() {
     $('#diskurs').on('submit', 'form', diskursNewPost);
     $('.post_content').readmore({
         speed: 75,
-        lessLink: '<a class="read_less" href="#">Read less</a>',
-        moreLink: '<a class="read_more" href="#">Read more</a>'
+		collapsedHeight: 200,
+		heightMargin: 32,
+		lessLink: '<a class="read_less" href="#"><i class="fa fa fa-angle-double-up"></i></a>',
+        moreLink: '<a class="read_more" href="#"><i class="fa fa-angle-double-down"></i></a>'
     });
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
