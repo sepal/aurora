@@ -14,7 +14,6 @@
 <script type="text/javascript" src="{{ STATIC_URL }}Comments/simple_functions.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}Comments/comments.js"></script>
 
-	<script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
 	<link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
 
 
@@ -39,14 +38,14 @@
 		videoplayer = new Videoplayer("{{STATIC_URL}}flowplayer/", "{{videoclip_url}}", "{{videoclip_name}}", {{videoclip_chapters}})
 		/* added by purg to give better scrolling experience */
 	});
-	</script>	
+	</script>
 
 	<br />
 	<div id="flowplayer_invisible"></div>
 	 {% if slidecasting_mode == 'search_results'%}
 		<br />
 		Your search for {{search_text}} found {{slides.count}} results. <br />
-	 {% endif %} 
+	 {% endif %}
 	<table id="slides_table">
 	 <tr>
 		 {% with user.customuser as customuser %}
@@ -58,17 +57,17 @@
 	                <div>
 						{% with marker='liked' count=slide.count_liked %}
 						<div class="oneBB leftBB {% if slide.count_liked > 0 %}somebody{% else %}nobody{% endif %}" title="{% include 'marker_title.html' %}" onClick="markSlide(this, '{% url 'Slides:mark_slide' course.short_title slide.id 'liked' 'xxx' %}')">
-							<img src="{{ STATIC_URL }}img/liked{% if slide.count_liked > 0 and user in slide.liked.all %}_slide_marked{%endif%}.png" > 
+							<img src="{{ STATIC_URL }}img/liked{% if slide.count_liked > 0 and user in slide.liked.all %}_slide_marked{%endif%}.png" >
 						</div>
 						{% endwith %}
 						{% with marker='important' count=slide.count_important %}
 						<div class="oneBB middleBB {% if slide.count_important > 0 %}somebody{% else %}nobody{% endif %}" title="{% include 'marker_title.html' %}" onClick="markSlide(this, '{% url 'Slides:mark_slide' course.short_title slide.id 'important' 'xxx' %}')">
-							<img src="{{ STATIC_URL }}img/important{% if slide.count_important > 0 and user in slide.important.all %}_slide_marked{%endif%}.png" > 
+							<img src="{{ STATIC_URL }}img/important{% if slide.count_important > 0 and user in slide.important.all %}_slide_marked{%endif%}.png" >
 						</div>
 						{% endwith %}
 						{% with marker='confusing' count=slide.count_confusing %}
 						<div class="oneBB rightBB {% if slide.count_confusing > 0 %}somebody{% else %}nobody{% endif %}" title="{% include 'marker_title.html' %}" onClick="markSlide(this, '{% url 'Slides:mark_slide' course.short_title slide.id 'confusing' 'xxx' %}')">
-							<img src="{{ STATIC_URL }}img/confusing{% if slide.count_confusing > 0 and user in slide.confusing.all %}_slide_marked{%endif%}.png" > 
+							<img src="{{ STATIC_URL }}img/confusing{% if slide.count_confusing > 0 and user in slide.confusing.all %}_slide_marked{%endif%}.png" >
 						</div>
 						{% endwith %}
 					</div>
