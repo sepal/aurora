@@ -108,7 +108,7 @@ function diskursShowPost(element) {
 }
 
 function diskursHidePost(element) {
-    element.parent().removeClass('show_child');
+	element.parent().removeClass('show_child');
     element.parent().parent().removeClass('show_child');
 }
 
@@ -122,8 +122,7 @@ function isURL(url) {
 
 $(document).ready(function() {
     $('#diskurs').on('click', 'a.arrow_wrapper', function() {
-        if ($(this).parent().hasClass('show_child') && $(this).parent().hasClass('has_children') &&
-            !$(this).parent().hasClass('level0')) {
+        if ($(this).parent().hasClass('show_child') && $(this).parent().hasClass('has_children') && !$(this).parent().hasClass('level0')) {
             diskursHidePost($(this));
             var prev = $(this).parent().parent().prev('.arrow_wrapper')
             history.pushState({post: '#'+prev.attr('id')}, '', prev.attr('href'));
@@ -132,6 +131,10 @@ $(document).ready(function() {
             if (history.state == null || history.state.post != '#'+$(this).attr('id')) {
                 history.pushState({post: '#'+$(this).attr('id')}, '', $(this).attr('href'));
             }
+			var scrolVal = $(this).offset().left + $( document ).scrollLeft() + 400 - $( window ).width();
+			$('body').animate({scrollLeft:scrolVal},500);
+			$(this).next().hide();
+			
         }
         return false;
     });
@@ -272,9 +275,11 @@ function refreshNew() {
         var newCount = $(this).find('.child_post .new_post').length;
 
         if (newCount > 0) {
-            $(this).children('.new_count').html(newCount + ' new');
+            $(this).children('.new_count').html(newCount);
+			$(this).children('.new_count').show();
         } else {
             $(this).children('.new_count').html('');
+			$(this).children('.new_count').hide();
         }
     });
 }

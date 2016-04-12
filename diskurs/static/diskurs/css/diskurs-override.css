@@ -63,6 +63,7 @@
 
 #diskurs .post, #diskurs .post p {
 	font-size:14px;
+	line-height:18px;
 }
 
 #diskurs .post .container.op_post {
@@ -74,6 +75,9 @@
 	margin:4px 0 4px 0;
 }
 
+#diskurs .post .post_header .vote {
+	font-size:12px;
+}
 .fadeout {
     position: absolute; 
     bottom: 0;
@@ -180,4 +184,36 @@ textarea:focus {
 	position: relative;
 	left:80px;
 	color:rgb(58, 201, 88);
+}
+
+#diskurs .post .container.new_post {
+	background: none;
+}
+
+
+#diskurs .post .container.new_post .user:before {
+	content:"\a0";
+	font-size:5px;
+	width:14px;
+	height:14px;
+	background-color:rgb(58, 201, 88);
+	border-radius:7px;
+	pointer-events: none;
+    display: inline-block;
+	margin-right:4px;
+	position:relative;
+	bottom:1px;
+}
+
+#diskurs .post .new_count {
+	pointer-events: none;
+	position: absolute;
+	top: 9px;
+	left: 316px;
+	min-width:20px;
+	max-height:20px;
+	background-color:rgb(58, 201, 88);
+	border-radius:10px;
+	color:white;
+	padding-top:1px;
 }
