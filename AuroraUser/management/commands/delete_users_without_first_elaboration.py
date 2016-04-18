@@ -31,4 +31,4 @@ def delete_users_without_first_elaboration():
                 # User has submitted an elaboation for this challenge, dont't delete
                 continue
             # User has not submitted an elaboration -> delete him from this course
-            #CourseUserRelation.objects.filter(course=course, user=user).delete()
+            CourseUserRelation.objects.filter(course=course, user=user).delete()
