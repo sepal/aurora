@@ -29,10 +29,11 @@ class CourseUserRelationAdmin(admin.ModelAdmin):
                 'fields': [
                     'user',
                     'course',
+                    'active',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'user', 'course', )
+    list_display = ('id', 'user', 'course', 'active', )
 
 admin.site.register(CourseUserRelation, CourseUserRelationAdmin)
