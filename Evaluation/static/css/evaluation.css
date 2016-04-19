@@ -902,3 +902,7 @@ td.diff_header {
 .tag_remove {
 	cursor:not-allowed;
 }
+
+.lb-download {
+	color:white;
+}

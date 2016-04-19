@@ -482,6 +482,7 @@ def similarities(request, course_short_title=None):
 @staff_member_required
 def user_detail(request, course_short_title=None):
     user = Elaboration.objects.get(pk=request.session.get('elaboration_id', '')).user
+    display_points = request.session.get('display_points', 'error')
     return render_to_response('user.html', {'user': user, 'course_short_title': course_short_title}, RequestContext(request))
 
 @csrf_exempt
