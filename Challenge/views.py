@@ -112,6 +112,8 @@ def create_context_stack(request, course_short_title):
     data['challenges_active'] = challenges_active
     data['challenges_inactive'] = challenges_inactive
     data['course'] = Course.get_or_raise_404(course_short_title)
+    course = data['course']
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
     data['len'] = len(challenges_active) + len(challenges_inactive)
     return data
 
@@ -122,8 +124,9 @@ def challenges(request, course_short_title=None):
 
     course = Course.get_or_raise_404(short_title=course_short_title)
     data['course'] = course
-
     user = RequestContext(request)['user']
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
+
     course_stacks = Stack.objects.all().filter(course=course)
     # raise Exception(course_stacks)
     data['course_stacks'] = []
@@ -190,6 +193,8 @@ def create_context_challenge(request, course_short_title):
 def challenge(request, course_short_title=None):
     data = create_context_challenge(request, course_short_title)
     user = RequestContext(request)['user']
+    course = data['course']
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
     challenge = data['challenge']
 
     # conditions for an inactive challenge

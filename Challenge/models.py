@@ -9,8 +9,7 @@ from Comments.models import Comment
 from Stack.models import StackChallengeRelation
 from Review.models import Review
 from Elaboration.models import Elaboration
-from Course.models import Course
-
+from Course.models import Course, CourseUserRelation
 
 def challenge_image_path(instance, filename):
     name = 'challenge_%s' % instance.id

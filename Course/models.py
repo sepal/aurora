@@ -2,9 +2,8 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from datetime import datetime, date
-import Challenge.models
+# from Challenge.models import Challenge
 import logging
-
 
 class Course(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -27,6 +26,13 @@ class Course(models.Model):
     def user_is_enlisted(self, user):
         try:
             CourseUserRelation.objects.get(user=user, course=self)
+            return True
+        except CourseUserRelation.DoesNotExist:
+            return False
+
+    def user_is_enlisted_and_active(self, user):
+        try:
+            CourseUserRelation.objects.get(user=user, course=self, active=True)
             return True
         except CourseUserRelation.DoesNotExist:
             return False
