@@ -48,3 +48,4 @@ class Course(models.Model):
 class CourseUserRelation(models.Model):
     user = models.ForeignKey('AuroraUser.AuroraUser')
     course = models.ForeignKey(Course)
+    active = models.BooleanField(default=True)
