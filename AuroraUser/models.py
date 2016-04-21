@@ -11,6 +11,8 @@ from AuroraProject.settings import STATIC_ROOT, MEDIA_ROOT
 from Elaboration.models import Elaboration
 from django.core.files import File
 from Review.models import Review
+from Course.models import Course, CourseUserRelation
+from Challenge.models import Challenge
 
 def avatar_path(instance, filename):
     name = 'avatar_%s' % instance.id
@@ -32,6 +34,13 @@ class AuroraUser(User):
 
     # Use UserManager to get the create_user method, etc.
     objects = UserManager()
+
+    def enlisted_and_active_for_course(self, course):
+        try:
+            CourseUserRelation.objects.get(user=self, course=course, active=True)
+            return True
+        except CourseUserRelation.DoesNotExist:
+            return False
 
     def get_elaborations(self):
         elaborations = []
