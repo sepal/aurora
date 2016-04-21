@@ -20,6 +20,7 @@
 {% endblock %}
 
 {% block content %}
+{% if user_enlisted_and_active %}
 {% comments_boilerplate %}
 
 <script type="text/javascript">
@@ -267,4 +268,9 @@ User active for this course: {{ user_enlisted_and_active }}
 {% endif %}
   </div>
 </div>
+{% else %}
+
+<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;"> Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr möglich.
+
+{% endif %}
 {% endblock %}
