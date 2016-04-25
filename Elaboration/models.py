@@ -3,10 +3,11 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.db.models import Count, Min
 from django.contrib.contenttypes.models import ContentType
+from random import randint
 
 from Comments.models import Comment
 from Evaluation.models import Evaluation
-from Review.models import Review
+from Review.models import Review, ReviewConfig
 from FileUpload.models import UploadFile
 from ReviewAnswer.models import ReviewAnswer
 from collections import Counter
@@ -277,37 +278,56 @@ class Elaboration(models.Model):
             )
         return Elaboration.objects.filter(id__in=include_elaboration_ids).filter(id__in=non_adequate_elaborations)
 
-    # offset is the number of hours needed to pass until elaboration is applicable as candidate
+
+
     @staticmethod
-    def get_review_candidate(challenge, user, offset=0):
+    def get_review_candidate(challenge, user):
+        if user.review_group == 1:
+            return Elaboration.get_random_review_candidate(challenge, user)
+        elif user.review_group == 2:
+            return Elaboration.get_special_review_candidate(challenge, user)
+
+    @staticmethod
+    def get_random_review_candidate(challenge, user):
+        # Wait x hours before making elaborations available for review
+        offset = randint(ReviewConfig.get_candidate_offset_min(), ReviewConfig.get_candidate_offset_max())
+        threshold = datetime.now() - timedelta(hours=offset)
+
+        # Exclude elaborations the user has already submitted a review for
         already_submitted_reviews_ids = (
             Review.objects
             .filter(reviewer=user, elaboration__challenge=challenge)
             .values_list('elaboration__id', flat=True)
         )
-        threshold = datetime.now() - timedelta(hours=offset)
-        candidates = (
-            Elaboration.objects
-            .filter(challenge=challenge, submission_time__lt=threshold, user__is_staff=False)
-            .exclude(user=user)
-            .annotate(num_reviews=Count('review'))
-            .exclude(id__in=already_submitted_reviews_ids)
-        ).order_by('num_reviews')
 
-        if candidates.exists():
-            return candidates[0]
-
+        # Get all possible candidates, ignore treshold for now because we need
+        # to fall back to a random elaboration if no elaboration is old enough
         candidates = (
             Elaboration.objects
             .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=True)
             .annotate(num_reviews=Count('review'))
+            .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
         ).order_by('num_reviews')
 
-        if candidates.exists():
-            return candidates[0]
-        print("Error! No dummy elaborations created.")
-        return None
+        # Separate candidates
+        old_enough_candidates, newer_candidates = [], []
+        for candidate in candidates:
+            old_enough_candidates.append(candidate) if candidate.submission_time < threshold else newer_candidates.append(candidate)
+
+        if len(old_enough_candidates) > 0:
+            chosen_candidate = old_enough_candidates[0]
+        elif len(newer_candidates) > 0:
+            chosen_candidate = newer_candidates[0]
+        else:
+            chosen_candidate = None
+
+        return { 'chosen_by': 'random', 'candidate': chosen_candidate }
+
+    @staticmethod
+    def get_special_review_candidate(challenge, user):
+        # Fall back to random review for now
+        return Elaboration.get_random_review_candidate(challenge, user)
 
     def get_success_reviews(self):
         return Review.objects.filter(elaboration=self, submission_time__isnull=False, appraisal=Review.SUCCESS)

@@ -30,6 +30,7 @@ class AuroraUser(User):
     matriculation_number = models.CharField(max_length=100, null=True, unique=True, blank=True)
     study_code = models.CharField(max_length=100, null=True, blank=True, default="")
     oid = models.CharField(max_length=30, null=True, unique=True, blank=True)
+    review_group = models.PositiveSmallIntegerField(default=1)
     tags = TaggableManager()
 
     # Use UserManager to get the create_user method, etc.
@@ -41,6 +42,15 @@ class AuroraUser(User):
             return True
         except CourseUserRelation.DoesNotExist:
             return False
+
+    def calculate_review_karma(self):
+        for relation in CourseUserRelation.objects.get(user=self, active=True):
+            # Simple set a fake review karma for now
+            random_karma = decimal.Decimal('%d.%d' % (random.randint(0,999),random.randint(0,99)))
+            relation.upate(review_karma=random_karma)
+
+    def review_karma(self, course):
+        return CourseUserRelation.objects.get(user=self, course=course).review_karma
 
     def get_elaborations(self):
         elaborations = []
