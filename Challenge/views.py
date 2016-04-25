@@ -143,7 +143,8 @@ def challenges(request, course_short_title=None):
             'submission_time': submission_time,
             'currently_active': currently_active,
             'status': stack.get_status_text(user),
-            'points': stack.get_points_earned(user)
+            'points': stack.get_points_earned(user),
+            'is_started': stack.is_started(user),
         })
     return render_to_response('challenges.html', data, context_instance=RequestContext(request))
 

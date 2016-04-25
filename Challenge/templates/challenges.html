@@ -43,7 +43,7 @@
         {% else %}
           <a href="#" class="stack_action button XL" onclick="event.stopPropagation();">{{ stack.stack.active_status_text }} {{ stack.stack.active_status_date|naturaltime }}</a>
         {% endif %}
-			 <div class="stack_next">Status: <b>{% if not stack.currently_active %} Inactive {% else %}{{ stack.status.next }}{% endif %}
+			 <div class="stack_next">Status: <b>{% if not stack.currently_active %} Inactive {% else %}{% if stack.is_started %}{{ stack.status.next }}{% else %}Not started{% endif %}{% endif %}
 				 {% if stack.points != 0 %}{{ stack.points }} {% else %} {% if stack.status.status == 7 %} 0{% endif %}
 				 {% endif %}</b>
     			 {% if stack.submitted %}<div class="submission_time" style="display:inline"> (Handed in {{ stack.submission_time|naturaltime }})</div>{% endif %}
@@ -59,7 +59,9 @@
 
 {% else %}
 
-<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;"> Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr möglich.
+	<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;"> 
+		Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr möglich.
+	</div>
 
 {% endif %}
 {% endblock %}
