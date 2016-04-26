@@ -23,25 +23,25 @@
 	  <div id="detail_area" class="grid" >
 
     {% for stack in course_stacks|dictsort:"stack.title" %}
-      <div class="stack {% cycle 'lineD' 'lineL' %}  {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
+      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %} C{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
+		<div class="stack_icon" style="float:right">
+		   	{% if stack.submitted %}
+		   		{% if stack.status.status == 7 %}
+					<i class="fa fa-check fa-2x" style="color:green"></i>
+				{% else %}
+					<i class="fa fa-spinner fa-2x"></i>
+				{% endif %}
+			{% endif %}
+		   	{% if not stack.currently_active %}<i class="fa fa-lock fa-2x"></i>{% endif %}
+		   	{% if stack.is_started %}
+				{% if not stack.submitted%}<i class="fa fa-pencil fa-2x"></i>{% endif %}
+			{% else %}
+				{% if stack.currently_active %}<i class="fa fa-unlock-alt fa-2x"></i>{% endif %}
+			{% endif %}
+		</div>
 		<div class="chapter">Chapter &raquo;{{ stack.stack.chapter.name }}&laquo;</div>
 		<div class="title">
 			<b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks
-			<div class="stack_icon">
-     		   	{% if stack.submitted %}
-			   		{% if stack.status.status == 7 %}
-						<i class="fa fa-check fa-2x" style="color:green"></i>
-					{% else %}
-						<i class="fa fa-spinner fa-2x"></i>
-					{% endif %}
-				{% endif %}
-			   	{% if not stack.currently_active %}<i class="fa fa-lock fa-2x"></i>{% endif %}
-			   	{% if stack.is_started %}
-					{% if not stack.submitted%}<i class="fa fa-pencil fa-2x"></i>{% endif %}
-				{% else %}
-					{% if stack.currently_active %}<i class="fa fa-unlock-alt fa-2x"></i>{% endif %}
-				{% endif %}
-       	 	</div>
 		</div>
         <div class="description  {% if stack.submitted %}finished_challenge{% endif %}">{{ stack.stack.description|safe|urlize }}</div>
 
