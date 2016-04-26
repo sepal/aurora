@@ -221,6 +221,11 @@ h1 {
 	z-index:3000;
 }
 
+.forbiddenfruit .stack_action {
+	color:gray!important;
+	cursor:default;
+}
+
 .stack_next {
 	z-index:192;
 	position:relative;
@@ -281,6 +286,11 @@ h1 {
 
 .forbiddenfruit div {
 	opacity:0.4;
+	cursor:default;
+}
+
+.forbiddenfruit {
+	cursor:default;
 }
 
 .finished {
