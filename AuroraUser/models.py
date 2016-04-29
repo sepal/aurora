@@ -10,7 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from AuroraProject.settings import STATIC_ROOT, MEDIA_ROOT
 from Elaboration.models import Elaboration
 from django.core.files import File
-from Review.models import Review
+from Review.models import Review, ReviewEvaluation
 from Course.models import Course, CourseUserRelation
 from Challenge.models import Challenge
 
@@ -43,13 +43,61 @@ class AuroraUser(User):
             return False
 
     def calculate_review_karma(self):
-        for relation in CourseUserRelation.objects.get(user=self, active=True):
-            # Simple set a fake review karma for now
-            random_karma = decimal.Decimal('%d.%d' % (random.randint(0,999),random.randint(0,99)))
-            relation.upate(review_karma=random_karma)
+        print('Doo stuff')
+        for relation in CourseUserRelation.objects.filter(user=self):
+            positive_tags = ["exceptional", "helpful", "good", ]
+            questionable_tags = ["enthusiastic", ]
+            negative_tags= ["min", "empty", "bad", "wrong", "leer", "offensive", "meaningless", ]
+
+            positive_review_scale_factor =  3
+            neutral_review_scale_factor  =  1
+            negative_review_scale_factor = -3
+            helpful_review_scale_factor  =  2
+
+            positive_tag_scale_factor     =  2
+            questionable_tag_scale_factor = -1
+            negative_tag_scale_factor     = -3
+
+            course = relation.course
+
+            number_of_neutral_reviews  = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, appraisal='D').count()
+            number_of_positive_reviews = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, appraisal='P').count()
+            number_of_negative_reviews = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, appraisal='N').count()
+            number_of_helpful_reviews  = Elaboration.objects.filter(most_helpful_other_user=self.id).count()
+
+            number_of_positive_tags, number_of_questionable_tags, number_of_negative_tags = 0, 0, 0
+            student_reviews = Review.objects.filter(reviewer_id=self.id, elaboration_id__challenge_id__course_id=course.id)
+            total_reviews = Review.objects.count()
+
+            number_of_positive_tags     = student_reviews.filter(tags__name__regex=r'(' + '|'.join(positive_tags) + ')').count()
+            number_of_questionable_tags = student_reviews.filter(tags__name__regex=r'(' + '|'.join(questionable_tags) + ')').count()
+            number_of_negative_tags     = student_reviews.filter(tags__name__regex=r'(' + '|'.join(negative_tags) + ')').count()
+
+            quality_factor_numerator = number_of_positive_reviews * positive_review_scale_factor + \
+                                       number_of_neutral_reviews  * neutral_review_scale_factor  + \
+                                       number_of_helpful_reviews  * helpful_review_scale_factor  + \
+                                       number_of_positive_tags    * positive_tag_scale_factor
+
+            quality_factor_denominator = quality_factor_numerator + \
+                                         number_of_negative_reviews  * negative_review_scale_factor  + \
+                                         number_of_negative_tags     * negative_tag_scale_factor     + \
+                                         number_of_questionable_tags * questionable_tag_scale_factor
+
+
+            if (quality_factor_denominator == 0 || total_reviews == 0):
+                review_karma = 0.0
+            else:
+                quality_factor = quality_factor_numerator / quality_factor_denominator
+                quantity_factor = student_reviews.count() / total_reviews
+                review_karma = quantity_factor * quality_factor
+                
+            print(review_karma)
 
     def review_karma(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).review_karma
+
+    def review_group(self, course):
+        return CourseUserRelation.objects.get(user=self, course=course).review_group
 
     def get_elaborations(self):
         elaborations = []

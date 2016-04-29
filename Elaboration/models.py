@@ -282,9 +282,12 @@ class Elaboration(models.Model):
 
     @staticmethod
     def get_review_candidate(challenge, user):
-        if user.review_group == 1:
+        review_group = ser.review_group(course)
+        if review_group == 1:
             return Elaboration.get_random_review_candidate(challenge, user)
-        elif user.review_group == 2:
+        elif review_group == 2:
+            return Elaboration.get_special_review_candidate(challenge, user)
+        elif review_group == 3:
             return Elaboration.get_special_review_candidate(challenge, user)
 
     @staticmethod
