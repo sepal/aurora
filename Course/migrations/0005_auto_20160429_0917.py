@@ -13,8 +13,14 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='courseuserrelation',
+            name='review_group',
+            field=models.PositiveSmallIntegerField(default=1),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='courseuserrelation',
             name='review_karma',
-            field=models.DecimalField(decimal_places=2, max_digits=5, default=50.0),
+            field=models.DecimalField(max_digits=10, decimal_places=8, default=0.0),
             preserve_default=True,
         ),
     ]
