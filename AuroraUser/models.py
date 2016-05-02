@@ -65,7 +65,7 @@ class AuroraUser(User):
             number_of_helpful_reviews  = Elaboration.objects.filter(most_helpful_other_user=self.id).count()
 
             student_reviews = Review.objects.filter(reviewer_id=self.id, elaboration_id__challenge_id__course_id=course.id)
-            total_reviews = Review.objects.filter(elaboration_id__challenge_id__course_id=course.id).count()
+            total_reviews = Review.objects.filter(elaboration_id__challenge_id__course_id=course.id, reviewer_id__is_staff=False).count()
 
             number_of_positive_tags     = student_reviews.filter(tags__name__regex=r'(' + '|'.join(positive_tags) + ')').values('tagged_items__tag_id', 'tagged_items__object_id').distinct().count()
             number_of_questionable_tags = student_reviews.filter(tags__name__regex=r'(' + '|'.join(questionable_tags) + ')').values('tagged_items__tag_id', 'tagged_items__object_id').distinct().count()
@@ -89,15 +89,17 @@ class AuroraUser(User):
                 quantity_factor = student_reviews.count() / total_reviews
                 review_karma = quantity_factor * quality_factor
 
-            # if course.short_title == 'hci' and (self.id == 73 or self.id == 678 or self.id == 280):
-            #     print(str(self.id) + ' - '+ str(review_karma))
+            relation.review_karma = review_karma
+            relation.save()
 
-            if course.short_title == 'gsi' and (self.id == 0 or self.id == 151 or self.id == 0):
-                print(str(self.id) + ' - '+ str(review_karma))
-                # print(student_reviews.query)
-                for var in dir()[4:]:
-                    value_of_var = eval(var)
-                    print(str(var)+ '=' + str(value_of_var))
+            # if course.short_title == 'gsi' and (self.id == 0 or self.id == 151 or self.id == 0):
+            #     print(str(self.id) + ' - '+ str(review_karma))
+            #     # print(student_reviews.query)
+            #     for var in dir()[4:]:
+            #         value_of_var = eval(var)
+            #         print(str(var)+ '=' + str(value_of_var))
+
+
 
     def review_karma(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).review_karma
