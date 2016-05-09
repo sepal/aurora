@@ -180,6 +180,9 @@ LOGGING = {
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
+        'review': {
+            'format': '%(asctime)s - %(levelname)s %(message)s'
+        },
     },
     'handlers': {
         'mail_admins': {
@@ -194,6 +197,14 @@ LOGGING = {
             'backupCount': 1,
             'filename': '/tmp/aurora.log',
             'formatter': 'timed',
+        },
+        'review_candidate': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024*1024*10,
+            'backupCount': 1,
+            'filename': os.path.dirname(PROJECT_ROOT) + '/AuroraUser/log/review_candidate.log',
+            'formatter': 'review',
         },
     },
     'loggers': {} # loggers are set below
@@ -212,6 +223,12 @@ if not DEBUG:
             'handlers': ['file', 'mail_admins'],
             'level': 'ERROR',
             'propagate': True,
+        },
+        # Review logs
+        'review': {
+            'handlers': ['review_candidate'],
+            'level': 'INFO',
+            'propagate': False,
         },
         # python logs
         '': {
@@ -233,6 +250,12 @@ else:
             'handlers': ['file'],
             'level': 'ERROR',
             'propagate': True,
+        },
+        # Review logs
+        'review': {
+            'handlers': ['review_candidate'],
+            'level': 'INFO',
+            'propagate': False,
         },
         # python logs
         '': {

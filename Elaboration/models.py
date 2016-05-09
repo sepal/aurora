@@ -13,7 +13,11 @@ from ReviewAnswer.models import ReviewAnswer
 from collections import Counter
 from taggit.managers import TaggableManager
 from pprint import pprint
+from Course.models import *
+import logging
 
+
+logger = logging.getLogger('review')
 
 class Elaboration(models.Model):
     challenge = models.ForeignKey('Challenge.Challenge')
@@ -282,13 +286,13 @@ class Elaboration(models.Model):
 
     @staticmethod
     def get_review_candidate(challenge, user):
-        review_group = ser.review_group(course)
+        review_group = user.review_group(course)
         if review_group == 1:
             return Elaboration.get_random_review_candidate(challenge, user)
         elif review_group == 2:
-            return Elaboration.get_special_review_candidate(challenge, user)
+            return Elaboration.get_lower_karma_review_candidate(challenge, user)
         elif review_group == 3:
-            return Elaboration.get_special_review_candidate(challenge, user)
+            return Elaboration.get_lower_karma_review_candidate(challenge, user)
 
     @staticmethod
     def get_random_review_candidate(challenge, user):
@@ -328,9 +332,79 @@ class Elaboration(models.Model):
         return { 'chosen_by': 'random', 'candidate': chosen_candidate }
 
     @staticmethod
-    def get_special_review_candidate(challenge, user):
-        # Fall back to random review for now
-        return Elaboration.get_random_review_candidate(challenge, user)
+    def get_lower_karma_review_candidate(challenge, user):
+        karma_min_distance = 40
+        karma_max_distance = 100
+
+        # Exclude elaborations the user has already submitted a review for
+        already_submitted_reviews_ids = (
+            Review.objects
+            .filter(reviewer=user, elaboration__challenge=challenge)
+            .values_list('elaboration__id', flat=True)
+        )
+
+        # Find users within karma distances
+        current_user       = CourseUserRelation.objects.get(course=challenge.course, active=True, user=user)
+        all_possible_users = CourseUserRelation.objects.filter(course=challenge.course, active=True).order_by('review_karma')
+
+        current_user_index = list(all_possible_users).index(current_user)
+        lower_index = max(0, current_user_index - karma_max_distance)
+        upper_index = max(0, current_user_index - karma_min_distance)
+
+        possible_users = all_possible_users[lower_index:upper_index]
+        possible_user_ids = [rel.user_id for rel in possible_users]
+
+        candidates = (
+            Elaboration.objects
+            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=True, user_id__in=possible_user_ids)
+            .annotate(num_reviews=Count('review'))
+            .exclude(user=user)
+            .exclude(id__in=already_submitted_reviews_ids)
+        ).order_by('num_reviews')
+
+        if candidates.count() == 0:
+            logger.info('No lower karma candidate found for "' + user.nickname + '/' + challenge.title + '". Falling back to random algorithm.')
+            return Elaboration.get_random_review_candidate(challenge, user)
+
+        return { 'chosen_by': 'lower-karma', 'candidate': candidates[0] }
+
+
+    @staticmethod
+    def get_similar_karma_review_candidate(challenge, user):
+        karma_lower_distance = 50
+        karma_upper_distance = 50
+
+        # Exclude elaborations the user has already submitted a review for
+        already_submitted_reviews_ids = (
+            Review.objects
+            .filter(reviewer=user, elaboration__challenge=challenge)
+            .values_list('elaboration__id', flat=True)
+        )
+
+        # Find users within karma distances
+        current_user       = CourseUserRelation.objects.get(course=challenge.course, active=True, user=user)
+        all_possible_users = CourseUserRelation.objects.filter(course=challenge.course, active=True).order_by('review_karma')
+
+        current_user_index = list(all_possible_users).index(current_user)
+        lower_index = max(0, current_user_index - karma_lower_distance)
+        upper_index = min(all_possible_users.count(), current_user_index + karma_upper_distance)
+
+        possible_users = all_possible_users[lower_index:upper_index]
+        possible_user_ids = [rel.user_id for rel in possible_users]
+
+        candidates = (
+            Elaboration.objects
+            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=True, user_id__in=possible_user_ids)
+            .annotate(num_reviews=Count('review'))
+            .exclude(user=user)
+            .exclude(id__in=already_submitted_reviews_ids)
+        ).order_by('num_reviews')
+
+        if candidates.count() == 0:
+            logger.info('No similar karma candidate found for "' + user.nickname + '/' + challenge.title + '". Falling back to random algorithm.')
+            return Elaboration.get_random_review_candidate(challenge, user)
+
+        return { 'chosen_by': 'similar-karma', 'candidate': candidates[0] }
 
     def get_success_reviews(self):
         return Review.objects.filter(elaboration=self, submission_time__isnull=False, appraisal=Review.SUCCESS)
