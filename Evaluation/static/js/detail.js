@@ -216,6 +216,7 @@ $(function() {
    $(".review_submit").click(function(event) {
     event.preventDefault();
     var data = {};
+	data['elab']=$('.button_add_comment_form').data('ref_id');
     data['answers'] = [];
     var missing_answer = false;
     $(".question_container").each(function (index) {
