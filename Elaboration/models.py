@@ -292,7 +292,7 @@ class Elaboration(models.Model):
         elif review_group == 2:
             return Elaboration.get_lower_karma_review_candidate(challenge, user)
         elif review_group == 3:
-            return Elaboration.get_lower_karma_review_candidate(challenge, user)
+            return Elaboration.get_similar_karma_review_candidate(challenge, user)
 
     @staticmethod
     def get_random_review_candidate(challenge, user):
@@ -333,8 +333,8 @@ class Elaboration(models.Model):
 
     @staticmethod
     def get_lower_karma_review_candidate(challenge, user):
-        karma_min_distance = 40
-        karma_max_distance = 100
+        karma_min_distance = 100
+        karma_max_distance = 200
 
         # Exclude elaborations the user has already submitted a review for
         already_submitted_reviews_ids = (
@@ -363,7 +363,7 @@ class Elaboration(models.Model):
         ).order_by('num_reviews')
 
         if candidates.count() == 0:
-            logger.info('No lower karma candidate found for "' + user.nickname + '/' + challenge.title + '". Falling back to random algorithm.')
+            logger.info('No lower karma candidate found for "' + user.id + '/' + challenge.title + '". Falling back to random algorithm.')
             return Elaboration.get_random_review_candidate(challenge, user)
 
         return { 'chosen_by': 'lower-karma', 'candidate': candidates[0] }
@@ -401,7 +401,7 @@ class Elaboration(models.Model):
         ).order_by('num_reviews')
 
         if candidates.count() == 0:
-            logger.info('No similar karma candidate found for "' + user.nickname + '/' + challenge.title + '". Falling back to random algorithm.')
+            logger.info('No similar karma candidate found for "' + user.id + '/' + challenge.title + '". Falling back to random algorithm.')
             return Elaboration.get_random_review_candidate(challenge, user)
 
         return { 'chosen_by': 'similar-karma', 'candidate': candidates[0] }
