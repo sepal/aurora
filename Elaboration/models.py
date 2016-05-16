@@ -311,7 +311,7 @@ class Elaboration(models.Model):
         # to fall back to a random elaboration if no elaboration is old enough
         candidates = (
             Elaboration.objects
-            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=True)
+            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False)
             .annotate(num_reviews=Count('review'))
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
@@ -348,22 +348,22 @@ class Elaboration(models.Model):
         all_possible_users = CourseUserRelation.objects.filter(course=challenge.course, active=True).order_by('review_karma')
 
         current_user_index = list(all_possible_users).index(current_user)
-        lower_index = max(0, current_user_index - karma_max_distance)
         upper_index = max(0, current_user_index - karma_min_distance)
+        lower_index = max(0, current_user_index - karma_max_distance)
 
         possible_users = all_possible_users[lower_index:upper_index]
         possible_user_ids = [rel.user_id for rel in possible_users]
 
         candidates = (
             Elaboration.objects
-            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=True, user_id__in=possible_user_ids)
+            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids)
             .annotate(num_reviews=Count('review'))
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
         ).order_by('num_reviews')
 
         if candidates.count() == 0:
-            logger.info('No lower karma candidate found for "' + user.id + '/' + challenge.title + '". Falling back to random algorithm.')
+            logger.info('No lower karma candidate found for "' + str(user.id) + '/' + challenge.title + '". Falling back to random algorithm.')
             return Elaboration.get_random_review_candidate(challenge, user)
 
         return { 'chosen_by': 'lower-karma', 'candidate': candidates[0] }
@@ -394,14 +394,14 @@ class Elaboration(models.Model):
 
         candidates = (
             Elaboration.objects
-            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=True, user_id__in=possible_user_ids)
+            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids)
             .annotate(num_reviews=Count('review'))
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
         ).order_by('num_reviews')
 
         if candidates.count() == 0:
-            logger.info('No similar karma candidate found for "' + user.id + '/' + challenge.title + '". Falling back to random algorithm.')
+            logger.info('No similar karma candidate found for "' + str(user.id) + '/' + challenge.title + '". Falling back to random algorithm.')
             return Elaboration.get_random_review_candidate(challenge, user)
 
         return { 'chosen_by': 'similar-karma', 'candidate': candidates[0] }
