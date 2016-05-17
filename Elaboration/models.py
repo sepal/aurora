@@ -14,6 +14,7 @@ from collections import Counter
 from taggit.managers import TaggableManager
 from pprint import pprint
 from Course.models import *
+from random import randint
 import logging
 
 
@@ -348,8 +349,13 @@ class Elaboration(models.Model):
         all_possible_users = CourseUserRelation.objects.filter(course=challenge.course, active=True).order_by('review_karma')
 
         current_user_index = list(all_possible_users).index(current_user)
-        upper_index = max(0, current_user_index - karma_min_distance)
-        lower_index = max(0, current_user_index - karma_max_distance)
+
+        if current_user_index < karma_max_distance:
+            upper_index = 100
+            lower_index = 0
+        else:
+            upper_index = current_user_index - karma_min_distance
+            lower_index = current_user_index - karma_max_distance
 
         possible_users = all_possible_users[lower_index:upper_index]
         possible_user_ids = [rel.user_id for rel in possible_users]
@@ -363,8 +369,22 @@ class Elaboration(models.Model):
         ).order_by('num_reviews')
 
         if candidates.count() == 0:
-            logger.info('No lower karma candidate found for "' + str(user.id) + '/' + challenge.title + '". Falling back to random algorithm.')
+            logger.error('[FALLBACK] No lower-karma candidates for ' + str(user.id) + ' / ' + challenge.title)
             return Elaboration.get_random_review_candidate(challenge, user)
+
+        if user.has_enough_special_reviews(challenge):
+            logger.info('[ENOUGH REVIEWS] User ' + str(user.id) + ' has already written 2 lower-karma reviews for ' + challenge.title)
+            return Elaboration.get_random_review_candidate(challenge, user)
+
+        candidate       = candidates[0]
+        user_karma      = user.review_karma(challenge.course)
+        candidate_karma = candidate.user.review_karma(challenge.course)
+
+        logger.info('[LOWER] number of lower-karma candidates: ' + str(candidates.count()) +
+                    ', user/karma ' + str(user.id) + '/' + str(user_karma) +
+                    ', candidate_user/candidate_karma: ' + str(candidate.user.id) + '/'  + str(candidate_karma) +
+                    ', challenge: ' + challenge.title
+                    )
 
         return { 'chosen_by': 'lower-karma', 'candidate': candidates[0] }
 
@@ -386,6 +406,7 @@ class Elaboration(models.Model):
         all_possible_users = CourseUserRelation.objects.filter(course=challenge.course, active=True).order_by('review_karma')
 
         current_user_index = list(all_possible_users).index(current_user)
+
         lower_index = max(0, current_user_index - karma_lower_distance)
         upper_index = min(all_possible_users.count(), current_user_index + karma_upper_distance)
 
@@ -395,14 +416,48 @@ class Elaboration(models.Model):
         candidates = (
             Elaboration.objects
             .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids)
-            .annotate(num_reviews=Count('review'))
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
-        ).order_by('num_reviews')
+        )
 
         if candidates.count() == 0:
-            logger.info('No similar karma candidate found for "' + str(user.id) + '/' + challenge.title + '". Falling back to random algorithm.')
+            logger.error('[FALLBACK] No similar-karma candidates for ' + str(user.id) + ' / ' + challenge.title)
             return Elaboration.get_random_review_candidate(challenge, user)
+
+        if user.has_enough_special_reviews(challenge):
+            logger.info('[ENOUGH REVIEWS] User ' + str(user.id) + ' has already written 2 similar-karma reviews for ' + challenge.title)
+            return Elaboration.get_random_review_candidate(challenge, user)
+
+        # Sort candidates based on review karma
+        candidates = list(candidates)
+        candidates.sort(key=lambda elaboration: elaboration.user.review_karma(challenge.course))
+
+        # Separate them into users with lower and higher karma than the current user
+        # The separated list are already sorted by karma
+        user_karma = user.review_karma(challenge.course)
+        lower_candidates, higher_candidates = [], []
+        for candidate in candidates:
+            lower_candidates.append(candidate) if candidate.user.review_karma(challenge.course) <= user_karma else higher_candidates.append(candidate)
+
+        # Zip them together and flatten them
+        zipped_candidates = zip(lower_candidates, higher_candidates)
+        flat_candidates = [item for sublist in zipped_candidates for item in sublist] # This is some serious wtf
+
+        if len(flat_candidates) > 1:
+            # Choose one of the first 2 candidates at random
+            # Candidate at [0] is the closest avaiable candidate with lower karma while candidate at [1] is the closest with higher karma
+            candidate = candidates[randint(0,1)]
+        else:
+            candidate = candidates[0]
+
+        user_karma      = user.review_karma(challenge.course)
+        candidate_karma = candidate.user.review_karma(challenge.course)
+
+        logger.info('[SIMILAR] number of similar candidates: ' + str(len(candidates)) +
+                    ', user/karma ' + str(user.id) + '/' + str(user_karma) +
+                    ', candidate_user/candidate_karma: ' + str(candidate.user.id) + '/'  + str(candidate_karma) +
+                    ', challenge: ' + challenge.title
+                    )
 
         return { 'chosen_by': 'similar-karma', 'candidate': candidates[0] }
 

@@ -25,31 +25,31 @@ def test_review_candidate():
     found_random  = 0
     test_cases = 0
     for course in Course.objects.all():
-        print('Checking Course: ' + course.short_title)
-        print ('Missing reviews: ' + str(Elaboration.get_missing_reviews(course).count()))
+        # print('Checking Course: ' + course.short_title)
+        # print ('Missing reviews: ' + str(Elaboration.get_missing_reviews(course).count()))
 
         for elaboration in Elaboration.get_missing_reviews(course):
             test_cases += 2
             challenge = elaboration.challenge
             user = elaboration.user
 
-            lower_review   = Elaboration.get_lower_karma_review_candidate(challenge, user)
+            # lower_review   = Elaboration.get_lower_karma_review_candidate(challenge, user)
             similar_review = Elaboration.get_similar_karma_review_candidate(challenge, user)
 
-            if lower_review['chosen_by'] != 'random':
-                found_lower += 1
-            else:
-                found_random += 1
+            # if lower_review['chosen_by'] != 'random':
+            #     found_lower += 1
+            # else:
+            #     found_random += 1
+            #
+            # if similar_review['chosen_by'] != 'random':
+            #     found_similar += 1
+            # else:
+            #     found_random +=1
 
-            if similar_review['chosen_by'] != 'random':
-                found_similar += 1
-            else:
-                found_random +=1
-
-    print('Test cases: ' + str(test_cases))
-    print('Found lower karma: ' + str(found_lower))
-    print('Found similar karma: ' + str(found_similar))
-    print('Fallback to random karma: ' + str(found_random))
+    # print('Test cases: ' + str(test_cases))
+    # print('Found lower karma: ' + str(found_lower))
+    # print('Found similar karma: ' + str(found_similar))
+    # print('Fallback to random karma: ' + str(found_random))
 
 
     # challenge = Challenge.objects.all()[0]

@@ -100,9 +100,11 @@ class AuroraUser(User):
             #         print(str(var)+ '=' + str(value_of_var))
 
 
-
     def review_karma(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).review_karma
+
+    def has_enough_special_reviews(self, challenge):
+        return Review.objects.filter(elaboration__challenge=challenge).exclude(chosen_by='random').count() == 2
 
     def review_group(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).review_group
