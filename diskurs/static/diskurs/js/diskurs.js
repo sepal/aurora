@@ -60,22 +60,32 @@ function diskursNewPost(e) {
 function diskursShowPost(element) {
     var parent = element.parent();
     parent.addClass('show_child');
+    parent.children('.child_post').fadeIn('slow');
     parent.siblings().each(function () {
         if (!$(this).is(parent)) {
-            $(this).removeClass('show_child');
+            var el = $(this);
+            $(this).children('.child_post').fadeOut('slow', function() {
+               el.removeClass('show_child');
+            });
         };
     });
     parent.parents('.post, .child_post').each(function() {
-        current = $(this);
+        var current = $(this);
         current.addClass('show_child');
+        current.children('.child_post').fadeIn('slow');
 
         current.siblings().each(function () {
             if (!$(this).is(current)) {
-                $(this).removeClass('show_child');
+                var el = $(this);
+                $(this).children('.child_post').fadeOut('slow', function() {
+                   el.removeClass('show_child');
+                });
             };
         })
     });
-    parent.find('.show_child').removeClass('show_child');
+    parent.find('.show_child').children('.child_post').fadeOut('slow', function() {
+        $(this).parent().removeClass('show_child');
+    })
     parent.addClass('in_progress');
 
     url = element.attr('href');
@@ -105,11 +115,26 @@ function diskursShowPost(element) {
                 parent.removeClass('in_progress');
             },
     });
+
+    var scrollLeft = 0;
+    $('.show_child > .post').each(function() {
+        if (scrollLeft < $(this).offset().left) {
+            scrollLeft = $(this).offset().left;
+        }
+    });
+
+
+    $('html, body').delay(500).animate({scrollLeft: scrollLeft});
 }
 
 function diskursHidePost(element) {
-	element.parent().removeClass('show_child');
-    element.parent().parent().removeClass('show_child');
+
+    element.parent().children('.child_post').fadeOut('slow', function() {
+       element.parent().removeClass('show_child');
+    });
+    element.parent().parent().children('.child_post').fadeOut('slow', function() {
+       element.parent().parent().removeClass('show_child');
+    });
 }
 
 function isPicURL(url) {
@@ -150,13 +175,13 @@ $(document).ready(function() {
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
 
-        $(this).prev().prev().prev().emojiPicker({
+        $(this).prev().prev().prev().prev().emojiPicker({
             width: '300px',
             height: '200px',
             button: false
         });
 
-        $(this).prev().prev().prev().emojiPicker('toggle');
+        $(this).prev().prev().prev().prev().emojiPicker('toggle');
     });
 
     $('#diskurs').on('click', 'a.upvote', function(e) {
@@ -262,7 +287,12 @@ window.onpopstate = function(event) {
     if (event.state != null) {
         diskursShowPost($(event.state.post));
     } else {
-        $('#diskurs').find('.show_child').removeClass('show_child');
+        $('#diskurs').find('.show_child').each(function() {
+            var el = $(this);
+            $(this).children('.child_post').fadeOut('slow', function() {
+               el.removeClass('show_child');
+            });
+        })
     }
 };
 

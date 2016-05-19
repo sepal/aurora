@@ -43,8 +43,6 @@ def thread(request, course_short_title, thread_id):
         user_history.user = request.user
         user_history.save()
 
-        user_history.add_post_to_history(thread_object.filtered_first_post)
-
         viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
     else:
         viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
@@ -88,8 +86,6 @@ def thread_group(request, course_short_title, thread_id, group_id):
         user_history.thread = thread_object
         user_history.user = request.user
         user_history.save()
-
-        user_history.add_post_to_history(thread_object.filtered_first_post)
 
         viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
     else:

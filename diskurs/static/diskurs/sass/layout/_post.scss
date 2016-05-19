@@ -3,6 +3,7 @@
     width: $post_width;
     font-size: 13px;
     position: relative;
+    margin-right: $document_padding_right;
 
     &.level0 > .child_post {
       display: block;
@@ -73,7 +74,7 @@
 
     > .container:hover {
       .delete, .vote {
-        display: block;
+        display: inline-block;
       }
     }
 
@@ -115,6 +116,7 @@
       position: absolute;
       left: $post_width + 50px;
       display: none;
+      padding-bottom: $document_padding_bottom;
     }
     .arrow_wrapper {
       position: absolute;
@@ -233,6 +235,7 @@
   .post_reply {
     display: none;
     width: $post_width;
+    margin-right: $document_padding_right;
 
     textarea {
       width: 100%;
