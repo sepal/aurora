@@ -51,7 +51,9 @@ def thread(request, course_short_title, thread_id):
             if post.id not in viewed_posts:
                 user_history.add_post_id_to_history(post.id)
 
-    return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': [],
+    return render(request, 'diskurs/thread.html', {'thread': thread_object,
+                                                   'expanded_posts': [thread_object.filtered_first_post.id],
+                                                   'last_post_id': thread_object.filtered_first_post.id,
                                                    'viewed_posts': viewed_posts, 'course': course})
 
 
@@ -95,7 +97,9 @@ def thread_group(request, course_short_title, thread_id, group_id):
             if post.id not in viewed_posts:
                 user_history.add_post_id_to_history(post.id)
 
-    return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': [],
+    return render(request, 'diskurs/thread.html', {'thread': thread_object,
+                                                   'expanded_posts': [thread_object.filtered_first_post.id],
+                                                   'last_post_id': thread_object.filtered_first_post.id,
                                                    'viewed_posts': viewed_posts, 'course': course})
 
 

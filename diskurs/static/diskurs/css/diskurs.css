@@ -68,139 +68,143 @@ body {
   color: #222222;
 }
 
-/* line 2, ../sass/layout/_post.scss */
+/* line 1, ../sass/layout/_post.scss */
+#diskurs {
+  overflow: visible;
+}
+/* line 4, ../sass/layout/_post.scss */
 #diskurs .post {
   width: 250px;
   font-size: 13px;
   position: relative;
   margin-right: 50px;
 }
-/* line 8, ../sass/layout/_post.scss */
+/* line 10, ../sass/layout/_post.scss */
 #diskurs .post.level0 > .child_post {
   display: block;
 }
-/* line 12, ../sass/layout/_post.scss */
+/* line 14, ../sass/layout/_post.scss */
 #diskurs .post.show_child > .child_post {
   display: block;
 }
-/* line 16, ../sass/layout/_post.scss */
+/* line 18, ../sass/layout/_post.scss */
 #diskurs .post.show_reply > .child_post > .post_reply {
   display: block;
 }
-/* line 20, ../sass/layout/_post.scss */
+/* line 22, ../sass/layout/_post.scss */
 #diskurs .post .post_avatar {
   position: absolute;
 }
-/* line 23, ../sass/layout/_post.scss */
+/* line 25, ../sass/layout/_post.scss */
 #diskurs .post .post_avatar img {
   max-height: 25px;
   max-width: 25px;
 }
-/* line 29, ../sass/layout/_post.scss */
+/* line 31, ../sass/layout/_post.scss */
 #diskurs .post .post_header {
   border-bottom: 1px #cbcbcb solid;
   font-weight: bold;
   padding: 3px 0 0 3px;
   position: relative;
 }
-/* line 35, ../sass/layout/_post.scss */
+/* line 37, ../sass/layout/_post.scss */
 #diskurs .post .post_header.has_avatar {
   margin-left: 30px;
 }
-/* line 39, ../sass/layout/_post.scss */
+/* line 41, ../sass/layout/_post.scss */
 #diskurs .post .post_header .count {
   position: absolute;
   right: 20px;
 }
-/* line 44, ../sass/layout/_post.scss */
+/* line 46, ../sass/layout/_post.scss */
 #diskurs .post .post_header .delete {
   display: none;
   position: absolute;
   right: 40px;
   top: 1px;
 }
-/* line 50, ../sass/layout/_post.scss */
+/* line 52, ../sass/layout/_post.scss */
 #diskurs .post .post_header .delete a {
   color: #cb1a27;
 }
-/* line 55, ../sass/layout/_post.scss */
+/* line 57, ../sass/layout/_post.scss */
 #diskurs .post .post_header .vote {
   display: none;
   position: absolute;
   right: 40px;
   top: 1px;
 }
-/* line 61, ../sass/layout/_post.scss */
+/* line 63, ../sass/layout/_post.scss */
 #diskurs .post .post_header .vote a {
   color: #cbcbcb;
 }
-/* line 64, ../sass/layout/_post.scss */
+/* line 66, ../sass/layout/_post.scss */
 #diskurs .post .post_header .vote a.marked {
   color: #222222;
 }
-/* line 70, ../sass/layout/_post.scss */
+/* line 72, ../sass/layout/_post.scss */
 #diskurs .post .post_header .votes {
   margin-left: 5px;
 }
-/* line 76, ../sass/layout/_post.scss */
+/* line 78, ../sass/layout/_post.scss */
 #diskurs .post > .container:hover .delete, #diskurs .post > .container:hover .vote {
   display: inline-block;
 }
-/* line 81, ../sass/layout/_post.scss */
+/* line 83, ../sass/layout/_post.scss */
 #diskurs .post .container {
   margin-bottom: 10px;
   padding: 5px;
   border: 1px solid #cbcbcb;
 }
-/* line 87, ../sass/layout/_post.scss */
+/* line 89, ../sass/layout/_post.scss */
 #diskurs .post .container.my_post {
   background-color: #fffbe6;
 }
-/* line 91, ../sass/layout/_post.scss */
+/* line 93, ../sass/layout/_post.scss */
 #diskurs .post .container.op_post {
   background-color: #ffe8eb;
 }
-/* line 95, ../sass/layout/_post.scss */
+/* line 97, ../sass/layout/_post.scss */
 #diskurs .post .container.new_post {
   background-color: #30bb90;
 }
-/* line 99, ../sass/layout/_post.scss */
+/* line 101, ../sass/layout/_post.scss */
 #diskurs .post p {
   margin: 8px 0 5px 0;
   font-size: 16px;
   word-wrap: break-word;
 }
-/* line 104, ../sass/layout/_post.scss */
+/* line 106, ../sass/layout/_post.scss */
 #diskurs .post .post_footer {
   border-top: 1px #cbcbcb solid;
   color: #cbcbcb;
   padding: 3px 0 0 3px;
 }
-/* line 109, ../sass/layout/_post.scss */
+/* line 111, ../sass/layout/_post.scss */
 #diskurs .post .post_footer .reply {
   position: absolute;
   right: 5px;
   cursor: pointer;
 }
-/* line 115, ../sass/layout/_post.scss */
+/* line 117, ../sass/layout/_post.scss */
 #diskurs .post .child_post {
   position: absolute;
   left: 300px;
   display: none;
-  padding-bottom: 150px;
+  padding-bottom: 50px;
 }
-/* line 121, ../sass/layout/_post.scss */
+/* line 123, ../sass/layout/_post.scss */
 #diskurs .post .arrow_wrapper {
   position: absolute;
   top: 3px;
   left: 250px;
   cursor: pointer;
 }
-/* line 127, ../sass/layout/_post.scss */
+/* line 129, ../sass/layout/_post.scss */
 #diskurs .post .arrow_wrapper .arrow {
   display: none;
 }
-/* line 131, ../sass/layout/_post.scss */
+/* line 133, ../sass/layout/_post.scss */
 #diskurs .post .arrow_wrapper .refresh {
   display: none;
   margin-top: -7.5px;
@@ -208,35 +212,35 @@ body {
   font-size: 18px;
   color: #cbcbcb;
 }
-/* line 141, ../sass/layout/_post.scss */
+/* line 143, ../sass/layout/_post.scss */
 #diskurs .post.has_children > .arrow_wrapper > .arrow {
   display: block;
 }
-/* line 144, ../sass/layout/_post.scss */
+/* line 146, ../sass/layout/_post.scss */
 #diskurs .post.has_children > .arrow_wrapper > .refresh {
   display: none;
 }
-/* line 150, ../sass/layout/_post.scss */
+/* line 152, ../sass/layout/_post.scss */
 #diskurs .post.show_reply > .arrow_wrapper > .arrow {
   display: block;
 }
-/* line 153, ../sass/layout/_post.scss */
+/* line 155, ../sass/layout/_post.scss */
 #diskurs .post.show_reply > .arrow_wrapper > .refresh {
   display: none;
 }
-/* line 158, ../sass/layout/_post.scss */
+/* line 160, ../sass/layout/_post.scss */
 #diskurs .post .new_count {
   position: absolute;
   top: 25px;
   left: 252px;
   text-align: center;
 }
-/* line 165, ../sass/layout/_post.scss */
+/* line 167, ../sass/layout/_post.scss */
 #diskurs .post .post_content {
   max-height: 240px;
   overflow: hidden;
 }
-/* line 169, ../sass/layout/_post.scss */
+/* line 171, ../sass/layout/_post.scss */
 #diskurs .post .post_content blockquote {
   display: block;
   background: #fff;
@@ -246,7 +250,7 @@ body {
   border-left: 4px solid #cbcbcb;
   color: #cbcbcb;
 }
-/* line 178, ../sass/layout/_post.scss */
+/* line 180, ../sass/layout/_post.scss */
 #diskurs .post .post_content blockquote::before {
   content: "\201C";
   /*Unicode for Left Double Quote*/
@@ -258,49 +262,49 @@ body {
   left: 5px;
   top: 2px;
 }
-/* line 191, ../sass/layout/_post.scss */
+/* line 193, ../sass/layout/_post.scss */
 #diskurs .post .post_content blockquote::after {
   /*Reset to make sure*/
   content: "";
 }
-/* line 196, ../sass/layout/_post.scss */
+/* line 198, ../sass/layout/_post.scss */
 #diskurs .post .post_content img {
   max-width: 240px;
 }
-/* line 203, ../sass/layout/_post.scss */
+/* line 205, ../sass/layout/_post.scss */
 #diskurs .post:hover > .arrow_wrapper .refresh {
   display: block;
 }
-/* line 209, ../sass/layout/_post.scss */
+/* line 211, ../sass/layout/_post.scss */
 #diskurs .post:hover.has_children > .arrow_wrapper .refresh {
   display: none;
 }
-/* line 216, ../sass/layout/_post.scss */
+/* line 218, ../sass/layout/_post.scss */
 #diskurs .post:hover.show_reply > .arrow_wrapper .refresh {
   display: none;
 }
-/* line 225, ../sass/layout/_post.scss */
+/* line 227, ../sass/layout/_post.scss */
 #diskurs .show_child > .post > .post_content, #diskurs .show_child > .post > .post_header, #diskurs .show_child > .post > .post-footer {
   opacity: 0.5;
 }
-/* line 229, ../sass/layout/_post.scss */
+/* line 231, ../sass/layout/_post.scss */
 #diskurs .show_child > .post.show_child > .post_content, #diskurs .show_child > .post.show_child > .post_header, #diskurs .show_child > .post.show_child > .post-footer {
   opacity: 1;
 }
-/* line 235, ../sass/layout/_post.scss */
+/* line 237, ../sass/layout/_post.scss */
 #diskurs .post_reply {
   display: none;
   width: 250px;
   margin-right: 50px;
 }
-/* line 240, ../sass/layout/_post.scss */
+/* line 242, ../sass/layout/_post.scss */
 #diskurs .post_reply textarea {
   width: 100%;
   height: 100px;
   margin: 10px 0;
   font-size: 16px;
 }
-/* line 247, ../sass/layout/_post.scss */
+/* line 249, ../sass/layout/_post.scss */
 #diskurs .post_reply button {
   float: right;
 }
