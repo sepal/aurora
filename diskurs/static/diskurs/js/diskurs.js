@@ -362,6 +362,7 @@ function resizeCanvas(scroll) {
 
     var scrollMaxLeft = maxWidth - width;
     var scrollMaxTop = maxHeight - height;
+    var scrollMinTop = minHeight + 100 - height;
     var currentScrollLeft = $('html, body').scrollLeft();
 
     if (currentScrollLeft < scrollMaxLeft || currentScrollLeft > scrollMaxLeft) {
@@ -369,6 +370,8 @@ function resizeCanvas(scroll) {
 
         if (scrollTop > scrollMaxTop) {
             scrollTop = scrollMaxTop;
+        } else if (scrollTop < scrollMinTop) {
+            scrollTop = scrollMinTop;
         }
 
         $('html, body').animate({scrollLeft: scrollMaxLeft, scrollTop: scrollTop}, 'slow', 'swing', function() {
