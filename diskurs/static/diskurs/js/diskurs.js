@@ -173,8 +173,8 @@ $(document).ready(function() {
             /*
 			var scrolVal = $(this).offset().left + $( document ).scrollLeft() + 400 - $( window ).width();
 			$('body').animate({scrollLeft:scrolVal},500);
-			$(this).next().hide();
 			*/
+            $(this).next().hide();
         }
         return false;
     });
