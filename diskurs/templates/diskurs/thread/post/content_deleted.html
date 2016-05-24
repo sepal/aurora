@@ -7,6 +7,6 @@
         <p>[deleted]</p>
     </div>
     <div class="post_footer">
-        <span class="timestamp">{{ post.created_at|timesince }}</span>
+        <span class="timestamp" title="{{ post.created_at}} ">{{ post.created_at|timesince }} ago</span>
     </div>
 </div>

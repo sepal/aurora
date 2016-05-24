@@ -17,6 +17,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'diskurs/css/diskurs-override.css' %}" />
 </head>
 <body>
+<div class="diskurs_head">Aurora Discussions{% if thread.title %}: <b>{{thread.title}}</b>{% endif %}
+	<span class="back_link"><a href="/{{course.short_title}}">Go home</a></span>
+	{% if thread.title %}<span class="back_link"><a href="/{{course.short_title}}/diskurs" style="margin-right:1em;">discussion index</a></span>{% endif %}
+</div>
 {% block content %}{% endblock content %}
 </body>
 </html>

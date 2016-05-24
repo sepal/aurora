@@ -24,7 +24,7 @@
 		<div class="fadeout"></div>
     </div>
     <div class="post_footer">
-        <span class="timestamp">{{ post.created_at|timesince }} ago</span>
+        <span class="timestamp" title="{{ post.created_at}} ">{{ post.created_at|timesince }} ago</span>
  	    <span class="delete">
  			  <a href="{% url 'diskurs:delete_post' course.short_title thread.id post.id %}" class="delete">DELETE</i></a>
  	 	</span>
