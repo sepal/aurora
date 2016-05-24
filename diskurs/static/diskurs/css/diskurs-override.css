@@ -1,3 +1,55 @@
+.infoText {
+	margin-top:15px;
+	width:100%;
+	padding:3px;
+	color:gray;
+	font-size:80%;
+	box-sizing: border-box;
+}
+
+.
+
+#diskurs .post .post_header .vote {
+  display:inline-block!important;
+}
+
+#diskurs .post .post_header .cmtsFA {
+	visibility:hidden;
+    display: inline-block;
+	color:gray;
+}
+
+#diskurs .post .post_header .vote .upvote, #diskurs .post .post_header .vote .downvote {
+    visibility: hidden;
+}
+
+#diskurs .post  .delete {
+  visibility: hidden;
+}
+
+#diskurs .post  .reply {
+  visibility: hidden;
+}
+
+
+#diskurs .post > .container:hover .delete, 
+#diskurs .post > .container:hover .reply, 
+#diskurs .post > .container:hover .vote .upvote,  
+#diskurs .post > .container:hover .vote .downvote,  
+#diskurs .post > .container:hover .cmtsFA {
+    visibility: visible;
+    display: inline-block;
+}
+
+#diskurs .post > .container .vote a.marked {
+	visibility:visible!important;
+}
+
+
+#diskurs .votes {
+	color:gray;
+}
+
 #diskurs .post .container {
 	padding:8px;
 	border:0;
@@ -25,11 +77,11 @@
 	width:32px;
 	height:32px;
 	*/
-	width:32px;
-	height:32px;
+	width:36px;
+	height:36px;
 	position:absolute;
-	left:-24px;
-	top:40px;
+	left:-26px;
+	top:8px;
 	
 }
 
@@ -82,7 +134,7 @@
     position: absolute; 
     bottom: 0;
     width:100%;
-    height:10px;
+    height:12px;
     background-image: linear-gradient(
         rgba(255, 255, 255, 0) 0%,
         rgba(255, 255, 255, 1) 100%
@@ -119,6 +171,7 @@
 
 #diskurs .post_reply, #diskurs .post {
 	width: 300px;
+	margin-left: 35px;
 }
 
 
@@ -184,6 +237,10 @@ textarea:focus {
 	position: relative;
 	left:80px;
 	color:rgb(58, 201, 88);
+}
+
+.info-button:hover + .infoText{
+	visibility:visible;
 }
 
 #diskurs .post .container.new_post {

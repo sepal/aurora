@@ -1,6 +1,7 @@
 var quotePost = "";
 var quotePostMarkdown = "";
 
+
 function diskursReply() {
     var parent = $(this).parent().parent().parent();
     var arrow = parent.children('.arrow_wrapper').first();

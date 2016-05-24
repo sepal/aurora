@@ -18,11 +18,15 @@
                 <input type="hidden" name="parent_post_id" value="{{ post.id }}" />
                 {% csrf_token %}
                 <textarea class="reply_area" name="content"></textarea><br/>
-                <button type="submit">REPLY</button>
-				<span class="info-button"><i class="fa fa-info"></i></span>
+				<button type="submit">REPLY</button>
+				
                 <button type="button" class="toggle_emojipicker">EMOJIS</button>
             </form>
+		<div class="infoText">
+			To use images in your comment, paste an image URL into the text field!
+		</div>
         </div>
+		
     </div>
     {% if post.deleted %}
         {% include "diskurs/thread/post/content_deleted.html" with post=post thread=thread %}

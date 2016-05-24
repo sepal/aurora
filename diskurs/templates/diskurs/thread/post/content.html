@@ -4,14 +4,17 @@
 <div class="container{%  if post.user == request.user %} my_post{% endif %}{%  if post.user == thread.user %} op_post{% endif %}{%  if post.id not in viewed_posts %} new_post{% endif %}">
     <div class="post_header{%  if post.user_avatar %} has_avatar{% endif %}">
         <span class="user">{{ post.user.username }}</span>
-        <span class="votes">{{ post.sum_votes }}</span>
         {% if post.parent_post_id and post.user == request.user or post.parent_post_id and perms.delete_post %}
         {% endif %}
+        <span class="votes">[ {% if post.sum_votes == 0 %}&pm;{% elif post.sum_votes > 0 %}+{% endif %}{{ post.sum_votes }} ]</span>
         <span class="vote">
             <a href="{% url 'diskurs:upvote_post' course.short_title thread.id post.id %}" class="upvote {% is_upvoted_post post request.user %}"><i class="fa fa-arrow-up"></i></a>
             <a href="{% url 'diskurs:downvote_post' course.short_title thread.id post.id %}" class="downvote {% is_downvoted_post post request.user %}"><i class="fa fa-arrow-down"></i></a>
         </span>
-        <span class="count">{{ post.post_set.count }}</span>
+		
+        {% if post.post_set.count > 0 %}
+			<span class="count"><i class="fa fa-comments-o cmtsFA"></i> {{ post.post_set.count }}</span>
+		{% endif %}
     </div>
     {%  if post.user_avatar %}
             <div class="avatar"><img src="{{ post.user_avatar.url }}" /></div>
@@ -25,6 +28,6 @@
  	    <span class="delete">
  			  <a href="{% url 'diskurs:delete_post' course.short_title thread.id post.id %}" class="delete">DELETE</i></a>
  	 	</span>
-        <span class="reply">REPLY</span>
+		<span class="reply">REPLY</span>
     </div>
 </div>
