@@ -708,8 +708,9 @@ def review_answer(request, course_short_title=None):
 
     user = RequestContext(request)['user']
     answers = data['answers']
-
-    review = Review.objects.create(elaboration_id=request.session.get('elaboration_id', ''), reviewer_id=user.id)
+    elab_id_from_client = data['elab']
+    
+    review = Review.objects.create(elaboration_id=elab_id_from_client, reviewer_id=user.id)
 
     review.appraisal = data['appraisal']
     review.submission_time = datetime.now()
