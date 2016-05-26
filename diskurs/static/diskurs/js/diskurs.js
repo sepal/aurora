@@ -6,16 +6,18 @@ function diskursReply() {
     var parent = $(this).parent().parent().parent();
     var arrow = parent.children('.arrow_wrapper').first();
 
-    if (parent.hasClass('show_child')) {
+    if (history.state == null || history.state.post != '#'+$(arrow).attr('id')) {
         history.pushState({post: '#'+$(arrow).attr('id')}, '', $(arrow).attr('href'));
-    } else {
-        diskursShowPost(arrow);
     }
 
     $('.show_reply').removeClass('show_reply');
     parent.addClass('show_reply');
 
-    parent.find('textarea').focus();
+    if (!parent.hasClass('show_child')) {
+        diskursShowPost(arrow);
+    } else {
+        resizeCanvas(true);
+    }
 }
 
 function diskursNewPost(e) {
@@ -69,7 +71,7 @@ function diskursShowPost(element) {
             elementToFadeOut.children('.child_post').fadeOut('fast', function() {
                 elementToFadeOut.removeClass('show_child');
                 $(this).css('display', '');
-                resizeCanvas(true);
+                resizeCanvas(parent.hasClass('show_reply'));
             });
         }
 
@@ -99,14 +101,14 @@ function diskursShowPost(element) {
                 elementToFadeIn.addClass('show_child');
                 elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                     $(this).css('display', '');
-                    resizeCanvas(true);
+                    resizeCanvas(parent.hasClass('show_reply'));
                 });
             });
         } else {
             elementToFadeIn.addClass('show_child');
             elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                 $(this).css('display', '');
-                resizeCanvas(true);
+                resizeCanvas(parent.hasClass('show_reply'));
             });
         }
     }
@@ -148,7 +150,7 @@ function diskursHidePost(element) {
         element.parent().find('.show_child').removeClass('show_child');
         $(this).css('display', '');
 
-        resizeCanvas(true);
+        resizeCanvas(false);
     });
 }
 
@@ -162,7 +164,7 @@ function isURL(url) {
 
 $(document).ready(function() {
     $('#diskurs').on('click', 'a.arrow_wrapper', function() {
-        if ($(this).parent().hasClass('show_child') && $(this).parent().hasClass('has_children') && !$(this).parent().hasClass('level0')) {
+        if ($(this).parent().hasClass('show_child') && !$(this).parent().hasClass('level0')) {
             diskursHidePost($(this));
             var prev = $(this).parent().parent().prev().prev();
             history.pushState({post: '#'+prev.attr('id')}, '', prev.attr('href'));
@@ -323,7 +325,7 @@ function refreshNew() {
     });
 }
 
-function resizeCanvas(scroll) {
+function resizeCanvas(scrollToReply) {
     var width = $(window).width();
     var height = $(window).height();
     var maxLeft = 0;
@@ -354,18 +356,35 @@ function resizeCanvas(scroll) {
         }
     });
 
+    var scrollMinTopCorrection = 100;
     var scrollMaxLeft = maxWidth - width;
     var scrollMaxTop = maxHeight - height;
-    var scrollMinTop = minHeight + 100 - height;
+    var scrollMinTop = minHeight + scrollMinTopCorrection - height;
     var currentScrollLeft = $(document).scrollLeft();
 
     var currentScrollTop = $(document).scrollTop();
     var scrollTop = currentScrollTop;
 
-    if (scrollTop > scrollMaxTop) {
-        scrollTop = scrollMaxTop;
+    var postReplyElement = false;
+    if (scrollToReply) {
+        var $postReplyElement = $('.post_reply:visible');
+
+        var scrollMinReply = $postReplyElement.offset().top + $postReplyElement.height() - height;
+        var scrollMaxReply = $postReplyElement.parent().offset().top;
+
+        if (scrollMaxReply < scrollTop) {
+            scrollTop = scrollMaxReply
+        } else if (scrollMinReply > scrollTop) {
+            scrollTop = scrollMinReply;
+        }
+
+
     } else if (scrollTop < scrollMinTop) {
         scrollTop = scrollMinTop;
+    }
+
+    if (scrollTop > scrollMaxTop) {
+        scrollTop = scrollMaxTop;
     }
 
     if (currentScrollLeft < scrollMaxLeft || currentScrollLeft > scrollMaxLeft) {
@@ -373,6 +392,10 @@ function resizeCanvas(scroll) {
         $('html, body').animate({scrollLeft: scrollMaxLeft, scrollTop: scrollTop}, 'slow', 'swing', function() {
             $('#diskurs').width(maxWidth);
             $('#diskurs').height(maxHeight);
+
+            if (scrollToReply) {
+                $postReplyElement.find('textarea').focus();
+            }
         });
 
     } else if (currentScrollTop != scrollTop) {
@@ -380,10 +403,18 @@ function resizeCanvas(scroll) {
         $('html, body').animate({scrollTop: scrollTop}, 'slow', 'swing', function() {
             $('#diskurs').width(maxWidth);
             $('#diskurs').height(maxHeight);
+
+            if (scrollToReply) {
+                $postReplyElement.find('textarea').focus();
+            }
         });
 
     } else {
         $('#diskurs').width(maxWidth);
         $('#diskurs').height(maxHeight);
+
+        if (scrollToReply) {
+            $postReplyElement.find('textarea').focus();
+        }
     }
 }
