@@ -6,6 +6,7 @@ from django.db import transaction
 from django.http import Http404
 from .models import Thread, Post, PostVote, Group, UserGroup, UserHistory, UserHistoryPost
 from Course.models import Course
+from .utils import get_rendered_votes_sum
 
 
 @login_required
@@ -609,7 +610,7 @@ def upvote_post(request, course_short_title, thread_id, post_id):
 
                         return JsonResponse({
                             'removed': True,
-                            'sum': Post.objects.get(id=post_id).sum_votes
+                            'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
                         })
 
                 except PostVote.DoesNotExist:
@@ -622,7 +623,7 @@ def upvote_post(request, course_short_title, thread_id, post_id):
 
                 return JsonResponse({
                     'success': True,
-                    'sum': Post.objects.get(id=post_id).sum_votes
+                    'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
                 })
 
             else:
@@ -660,7 +661,7 @@ def downvote_post(request, course_short_title, thread_id, post_id):
 
                         return JsonResponse({
                             'removed': True,
-                            'sum': Post.objects.get(id=post_id).sum_votes
+                            'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
                         })
 
                 except PostVote.DoesNotExist:
@@ -673,7 +674,7 @@ def downvote_post(request, course_short_title, thread_id, post_id):
 
                 return JsonResponse({
                     'success': True,
-                    'sum': Post.objects.get(id=post_id).sum_votes
+                    'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
                 })
 
             else:

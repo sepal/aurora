@@ -1,3 +1,5 @@
+{% load tags %}
+
 <div class="post level{{ depth }} {% if post.filtered_post_set.count > 0 %}has_children{% endif %} {% if post.id in expanded_posts %}show_child{% endif %}">
 
     <a class="arrow_wrapper" href="{% if request.user.is_superuser %}{% url 'diskurs:thread_group_post' course.short_title thread.id thread.filter_group_id post.id %}{% else %}{% url 'diskurs:thread_post' course.short_title thread.id post.id %}{% endif %}" id="show-{{ post.id }}" data-last_id="{% if post.filtered_post_set.all.last.id %}{{ post.filtered_post_set.all.last.id }}{% else %}0{% endif %}">
@@ -12,7 +14,7 @@
         <div class="post_reply my_post">
  		   <div class="post_header{%  if post.user_avatar %} has_avatar{% endif %}">
 			   <span class="user">{{ user.username }}</span>
-			   <span class="votes">0</span>
+			   <span class="votes">{% render_votes_sum 0 %}</span>
 		   </div>
             <form method="post" action="{% if request.user.is_superuser %}{% url 'diskurs:new_group_post' course.short_title thread.id thread.filter_group_id %}{% else %}{% url 'diskurs:new_post' course.short_title thread.id %}{% endif %}">
                 <input type="hidden" name="parent_post_id" value="{{ post.id }}" />

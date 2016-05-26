@@ -2,6 +2,8 @@ from django import template
 
 from diskurs.models import PostVote
 
+from diskurs.utils import get_rendered_votes_sum
+
 
 register = template.Library()
 
@@ -30,3 +32,8 @@ def is_downvoted_post(post, user):
             return ""
     except PostVote.DoesNotExist:
         return ""
+
+
+@register.simple_tag
+def render_votes_sum(sum):
+    return get_rendered_votes_sum(sum)

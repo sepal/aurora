@@ -6,7 +6,7 @@
         <span class="user">{{ post.user.username }}</span>
         {% if post.parent_post_id and post.user == request.user or post.parent_post_id and perms.delete_post %}
         {% endif %}
-        <span class="votes">[ {% if post.sum_votes == 0 %}&pm;{% elif post.sum_votes > 0 %}+{% endif %}{{ post.sum_votes }} ]</span>
+        <span class="votes">{% render_votes_sum post.sum_votes %}</span>
         <span class="vote">
             <a href="{% url 'diskurs:upvote_post' course.short_title thread.id post.id %}" class="upvote {% is_upvoted_post post request.user %}"><i class="fa fa-arrow-up"></i></a>
             <a href="{% url 'diskurs:downvote_post' course.short_title thread.id post.id %}" class="downvote {% is_downvoted_post post request.user %}"><i class="fa fa-arrow-down"></i></a>
