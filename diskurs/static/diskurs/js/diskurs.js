@@ -193,13 +193,13 @@ $(document).ready(function() {
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
 
-        $(this).prev().prev().prev().prev().emojiPicker({
+        $(this).prev().prev().prev().emojiPicker({
             width: '300px',
             height: '200px',
             button: false
         });
 
-        $(this).prev().prev().prev().prev().emojiPicker('toggle');
+        $(this).prev().prev().prev().emojiPicker('toggle');
     });
 
     $('#diskurs').on('click', 'a.upvote', function(e) {
