@@ -357,8 +357,8 @@ function resizeCanvas(scrollToReply) {
     });
 
     var scrollMinTopCorrection = 100;
-    var scrollMaxLeft = maxWidth - width;
-    var scrollMaxTop = maxHeight - height;
+    var scrollMaxLeft = maxWidth - width + 50; //50 px padding
+    var scrollMaxTop = maxHeight - height + 150; //150 px padding
     var scrollMinTop = minHeight + scrollMinTopCorrection - height;
     var currentScrollLeft = $(document).scrollLeft();
 
@@ -369,7 +369,10 @@ function resizeCanvas(scrollToReply) {
     if (scrollToReply) {
         var $postReplyElement = $('.post_reply:visible');
 
-        var scrollMinReply = $postReplyElement.offset().top + $postReplyElement.height() - height;
+        //scroll 150 px more so that the emojis widget is completely visible
+        var scrollMinReplyCorrection = 150;
+
+        var scrollMinReply = $postReplyElement.offset().top + $postReplyElement.height() + scrollMinReplyCorrection - height;
         var scrollMaxReply = $postReplyElement.parent().offset().top;
 
         if (scrollMaxReply < scrollTop) {
