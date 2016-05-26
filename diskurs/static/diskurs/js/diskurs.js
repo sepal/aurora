@@ -67,6 +67,8 @@ function diskursNewPost(e) {
 
 function diskursShowPost(element) {
     var parent = element.parent();
+    var fadeOutDone = false;
+    var ajaxRefreshDone = false;
 
     //if the element is already visible, we just have to hide the child postings if neccessary
     if (parent.hasClass('show_child')) {
@@ -77,6 +79,11 @@ function diskursShowPost(element) {
                 elementToFadeOut.removeClass('show_child');
                 $(this).css('display', '');
                 resizeCanvas(parent.hasClass('show_reply'));
+
+                fadeOutDone = true;
+                if (fadeOutDone && ajaxRefreshDone) {
+                    markPostingsAsSeen();
+                }
             });
         }
 
@@ -107,6 +114,11 @@ function diskursShowPost(element) {
                 elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                     $(this).css('display', '');
                     resizeCanvas(parent.hasClass('show_reply'));
+
+                    fadeOutDone = true;
+                    if (fadeOutDone && ajaxRefreshDone) {
+                        markPostingsAsSeen();
+                    }
                 });
             });
         } else {
@@ -114,6 +126,11 @@ function diskursShowPost(element) {
             elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                 $(this).css('display', '');
                 resizeCanvas(parent.hasClass('show_reply'));
+
+                fadeOutDone = true;
+                if (fadeOutDone && ajaxRefreshDone) {
+                    markPostingsAsSeen();
+                }
             });
         }
     }
@@ -145,7 +162,10 @@ function diskursShowPost(element) {
                         Gifffer();
                     }
 
-                    markPostingsAsSeen();
+                    ajaxRefreshDone = true;
+                    if (fadeOutDone && ajaxRefreshDone) {
+                        markPostingsAsSeen();
+                    }
                 } else {
                     alert(data.message);
                 }
