@@ -4,8 +4,6 @@
 <div class="container{%  if post.user == request.user %} my_post{% endif %}{%  if post.user == thread.user %} op_post{% endif %}{%  if post.id not in viewed_posts %} new_post{% endif %}">
     <div class="post_header{%  if post.user_avatar %} has_avatar{% endif %}">
         <span class="user">{{ post.user.username }}</span>
-        {% if post.parent_post_id and post.user == request.user or post.parent_post_id and perms.delete_post %}
-        {% endif %}
         <span class="votes">{% render_votes_sum post.sum_votes %}</span>
         <span class="vote">
             <a href="{% url 'diskurs:upvote_post' course.short_title thread.id post.id %}" class="upvote {% is_upvoted_post post request.user %}"><i class="fa fa-arrow-up"></i></a>
@@ -25,9 +23,11 @@
     </div>
     <div class="post_footer">
         <span class="timestamp" title="{{ post.created_at}} ">{{ post.created_at|timesince }} ago</span>
- 	    <span class="delete">
- 			  <a href="{% url 'diskurs:delete_post' course.short_title thread.id post.id %}" class="delete">DELETE</i></a>
- 	 	</span>
+        {% if post.parent_post_id and post.user == request.user or post.parent_post_id and perms.delete_post %}
+            <span class="delete">
+ 			  <a href="{% url 'diskurs:delete_post' course.short_title thread.id post.id %}" class="delete">DELETE</a>
+ 	 	    </span>
+        {% endif %}
 		<span class="reply">REPLY</span>
     </div>
 </div>
