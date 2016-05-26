@@ -1,7 +1,7 @@
 <div class="container">
     <div class="post_header">
         <span class="user">[deleted]</span>
-        <span class="count">{{ post.post_set.count }}</span>
+        <span class="count">{% if post.post_set.count > 0 %}<i class="fa fa-comments-o cmtsFA"></i> {{ post.post_set.count }}{% endif %}</span>
     </div>
     <div class="post_content">
         <p>[deleted]</p>

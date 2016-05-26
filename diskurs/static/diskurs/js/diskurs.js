@@ -36,7 +36,12 @@ function diskursNewPost(e) {
             if (data.success) {
                 form.parent().parent().before(data.posts);
                 form.parent().parent().parent().parent().addClass('has_children');
-                var count = parseInt(form.parent().parent().children('.post').length);
+                var count = parseInt(form.parent().parent().parent().children('.post').length);
+                if (count > 0) {
+                    count = '<i class="fa fa-comments-o cmtsFA"></i> ' + count;
+                } else {
+                    count = '';
+                }
                 form.parent().parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
                 form.parent().parent().prev().children('.container').children('.post_content').readmore({
 					speed: 75,
@@ -51,7 +56,7 @@ function diskursNewPost(e) {
 
                 Gifffer();
 
-                refreshNew();
+                markPostingsAsSeen();
             } else {
                 alert(data.message);
             }
@@ -127,15 +132,20 @@ function diskursShowPost(element) {
                         $(element).next().next('.child_post').children('.post_reply').before(data.posts);
 
                         var count = parseInt($(element).next().next('.child_post').children('.post').length);
+                        if (count > 0) {
+                            count = '<i class="fa fa-comments-o cmtsFA"></i> ' + count;
+                        } else {
+                            count = '';
+                        }
                         parent.children('.container').children('.post_header').children('.count').html(count);
 
                         $(element).data('last_id', data.new_last_id);
                         parent.addClass('has_children');
 
                         Gifffer();
-
-                        refreshNew();
                     }
+
+                    markPostingsAsSeen();
                 } else {
                     alert(data.message);
                 }
@@ -173,11 +183,6 @@ $(document).ready(function() {
             if (history.state == null || history.state.post != '#'+$(this).attr('id')) {
                 history.pushState({post: '#'+$(this).attr('id')}, '', $(this).attr('href'));
             }
-            /*
-			var scrolVal = $(this).offset().left + $( document ).scrollLeft() + 400 - $( window ).width();
-			$('body').animate({scrollLeft:scrolVal},500);
-			*/
-            $(this).next().hide();
         }
         return false;
     });
@@ -298,7 +303,7 @@ $(document).ready(function() {
         }
     })
 
-    refreshNew();
+    markPostingsAsSeen();
 });
 
 window.onpopstate = function(event) {
@@ -420,4 +425,11 @@ function resizeCanvas(scrollToReply) {
             $postReplyElement.find('textarea').focus();
         }
     }
+}
+
+function markPostingsAsSeen() {
+    $('#diskurs').find('.new_post').filter(":visible").each(function() {
+        $(this).addClass('seen_post').removeClass('new_post');
+    });
+    refreshNew();
 }

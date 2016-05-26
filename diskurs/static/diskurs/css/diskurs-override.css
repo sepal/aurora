@@ -340,7 +340,8 @@ textarea:focus {
 }
 
 
-#diskurs .post .container.new_post .user:before {
+#diskurs .post .container.new_post .user:before,
+#diskurs .post .container.seen_post .user:before {
 	content:"\a0";
 	font-size:5px;
 	width:14px;
@@ -364,5 +365,5 @@ textarea:focus {
 	background-color:rgb(58, 201, 88);
 	border-radius:10px;
 	color:white;
-	padding-top:1px;
+	/* padding-top:1px; */
 }

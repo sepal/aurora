@@ -11,7 +11,7 @@
         {% for post in post.filtered_post_set.all %}
             {% include "diskurs/thread/post.html" with post=post depth=depth|add:"1" thread=thread last_post_id=last_post_id %}
         {% endfor %}
-        <div class="post post_reply my_post">
+        <div class="post_reply my_post">
             <div class="container">
                 <div class="post_header{%  if user.avatar %} has_avatar{% endif %}">
                     <span class="user">{{ user.username }}</span>

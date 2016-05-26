@@ -237,6 +237,7 @@
     display: none;
     width: $post_width;
     margin-right: $document_padding_right;
+    position: relative;
 
     textarea {
       width: 100%;
