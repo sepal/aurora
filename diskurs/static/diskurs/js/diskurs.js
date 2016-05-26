@@ -302,13 +302,6 @@ $(document).ready(function() {
 window.onpopstate = function(event) {
     if (event.state != null) {
         diskursShowPost($(event.state.post));
-    } else {
-        $('#diskurs').find('.show_child').each(function() {
-            var el = $(this);
-            $(this).children('.child_post').fadeOut('fast', function() {
-               el.removeClass('show_child');
-            });
-        })
     }
 };
 

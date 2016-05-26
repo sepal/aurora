@@ -20,10 +20,11 @@
   height: 3px;
   position: absolute;
   transform: translate(0, -4.5px) rotate(45deg);
+  -webkit-transform: translate(0, -4.5px) rotate(45deg);
   border-radius: 4.875px;
   background: #cbcbcb;
 }
-/* line 26, ../sass/layout/_arrow.scss */
+/* line 27, ../sass/layout/_arrow.scss */
 .arrow_wrapper .arrow.right.nicetip:before {
   content: ' ';
   display: block;
@@ -31,33 +32,36 @@
   width: 15px;
   height: 3px;
   transform: translate(0, 4.5px) rotate(-45deg);
+  -webkit-transform: translate(0, 4.5px) rotate(-45deg);
   border-radius: 4.875px;
   background: #cbcbcb;
   border: 0px;
 }
-/* line 40, ../sass/layout/_arrow.scss */
+/* line 42, ../sass/layout/_arrow.scss */
 .arrow_wrapper .arrow.nicetip {
   border-radius: 4.875px;
 }
 
-/* line 48, ../sass/layout/_arrow.scss */
+/* line 50, ../sass/layout/_arrow.scss */
 #diskurs .post.show_child > .arrow_wrapper, #diskurs .post.level0 > .arrow_wrapper {
   display: block;
 }
-/* line 51, ../sass/layout/_arrow.scss */
+/* line 53, ../sass/layout/_arrow.scss */
 #diskurs .post.show_child > .arrow_wrapper > .arrow, #diskurs .post.level0 > .arrow_wrapper > .arrow {
   width: 48px;
 }
-/* line 56, ../sass/layout/_arrow.scss */
+/* line 58, ../sass/layout/_arrow.scss */
 #diskurs .post.show_child > .arrow_wrapper > .arrow.right.nicetip .tip, #diskurs .post.level0 > .arrow_wrapper > .arrow.right.nicetip .tip {
   transform: translate(36px, -4.5px) rotate(45deg);
+  -webkit-transform: translate(36px, -4.5px) rotate(45deg);
 }
-/* line 60, ../sass/layout/_arrow.scss */
+/* line 63, ../sass/layout/_arrow.scss */
 #diskurs .post.show_child > .arrow_wrapper > .arrow.right.nicetip:before, #diskurs .post.level0 > .arrow_wrapper > .arrow.right.nicetip:before {
   transform: translate(36px, 4.5px) rotate(-45deg);
+  -webkit-transform: translate(36px, 4.5px) rotate(-45deg);
 }
 
-/* line 70, ../sass/layout/_arrow.scss */
+/* line 74, ../sass/layout/_arrow.scss */
 .level0 > .arrow_wrapper {
   display: none;
 }
