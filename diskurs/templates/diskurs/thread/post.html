@@ -11,22 +11,27 @@
         {% for post in post.filtered_post_set.all %}
             {% include "diskurs/thread/post.html" with post=post depth=depth|add:"1" thread=thread last_post_id=last_post_id %}
         {% endfor %}
-        <div class="post_reply my_post">
- 		   <div class="post_header{%  if post.user_avatar %} has_avatar{% endif %}">
-			   <span class="user">{{ user.username }}</span>
-			   <span class="votes">{% render_votes_sum 0 %}</span>
-		   </div>
-            <form method="post" action="{% if request.user.is_superuser %}{% url 'diskurs:new_group_post' course.short_title thread.id thread.filter_group_id %}{% else %}{% url 'diskurs:new_post' course.short_title thread.id %}{% endif %}">
-                <input type="hidden" name="parent_post_id" value="{{ post.id }}" />
-                {% csrf_token %}
-                <textarea class="reply_area" name="content"></textarea><br/>
-				<button type="submit">REPLY</button>
-				
-                <button type="button" class="toggle_emojipicker">EMOJIS</button>
-            </form>
-		<div class="infoText">
-			To use images in your comment, paste an image URL into the text field!
-		</div>
+        <div class="post post_reply my_post">
+            <div class="container">
+                <div class="post_header{%  if user.avatar %} has_avatar{% endif %}">
+                    <span class="user">{{ user.username }}</span>
+                    <span class="votes">{% render_votes_sum 0 %}</span>
+                </div>
+                {%  if user.avatar %}
+                    <div class="avatar"><img src="{{ user.avatar.url }}" /></div>
+                {% endif %}
+                <form method="post" action="{% if request.user.is_superuser %}{% url 'diskurs:new_group_post' course.short_title thread.id thread.filter_group_id %}{% else %}{% url 'diskurs:new_post' course.short_title thread.id %}{% endif %}">
+                    <input type="hidden" name="parent_post_id" value="{{ post.id }}" />
+                    {% csrf_token %}
+                    <textarea class="reply_area" name="content"></textarea><br/>
+                    <button type="submit">REPLY</button>
+
+                    <button type="button" class="toggle_emojipicker">EMOJIS</button>
+                </form>
+                <div class="infoText">
+                    To use images in your comment, paste an image URL into the text field!
+                </div>
+            </div>
         </div>
 		
     </div>

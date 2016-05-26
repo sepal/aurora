@@ -23,8 +23,8 @@ function diskursReply() {
 function diskursNewPost(e) {
     var form = $(this);
     var postData = form.serializeArray();
-    if (form.parent().parent().prev().prev('.arrow_wrapper').data('last_id')) {
-        postData[postData.length] = { name: "last_id", value: form.parent().parent().prev().prev('.arrow_wrapper').data('last_id') };
+    if (form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id')) {
+        postData[postData.length] = { name: "last_id", value: form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id') };
     }
     var formURL = form.attr('action');
     $.ajax({
@@ -34,20 +34,20 @@ function diskursNewPost(e) {
         success:function(data, textStatus, jqXHR)
         {
             if (data.success) {
-                form.parent().before(data.posts);
-                form.parent().parent().parent().addClass('has_children');
+                form.parent().parent().before(data.posts);
+                form.parent().parent().parent().parent().addClass('has_children');
                 var count = parseInt(form.parent().parent().children('.post').length);
-                form.parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
-                form.parent().prev().children('.container').children('.post_content').readmore({
+                form.parent().parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
+                form.parent().parent().prev().children('.container').children('.post_content').readmore({
 					speed: 75,
 					collapsedHeight: 200,
 					heightMargin: 32,
                     lessLink: '<a class="read_less" href="#">Shrink</a>',
                     moreLink: '<a class="read_more" href="#">Show all</a>'
                 });
-                form.parent().parent().prev().prev('.arrow_wrapper').data('last_id', data.new_last_id);
+                form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id', data.new_last_id);
                 form.find('textarea').val('');
-                form.parent().parent().parent().removeClass('show_reply');
+                form.parent().parent().parent().parent().removeClass('show_reply');
 
                 Gifffer();
 

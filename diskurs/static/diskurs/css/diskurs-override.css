@@ -155,13 +155,6 @@ body {margin:0;padding:0;}
 	color:gray;
 }
 
-#diskurs .post .container {
-	padding:8px;
-	border:0;
-	margin:4px;
-	margin-bottom:24px;
-}
-
 #diskurs .post_reply button {
 	border:0;
 	background-color:white;
@@ -315,12 +308,6 @@ a.read_more, a.read_less {
 
 #diskurs .post .post_header .user {
 	font-weight:bold;
-}
-
-#diskurs .post_reply {
-	box-sizing: border-box;
-	padding-left:12px;
-	padding-right:12px;
 }
 
 #diskurs .post_reply textarea {
