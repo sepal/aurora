@@ -1,5 +1,6 @@
 import markdown
-from markdown.inlinepatterns import LinkPattern, ImagePattern, IMAGE_LINK_RE, LINK_RE
+import uuid
+from markdown.inlinepatterns import LinkPattern, ImagePattern, IMAGE_LINK_RE, LINK_RE, util
 
 from django_markup.filter import MarkupFilter
 
@@ -30,8 +31,13 @@ class GifferImagePattern(ImagePattern):
             node.attrib.pop('src')
             node.set('data-gifffer', src)
             node.set('data-gifffer-width', '240')
-
-        return node
+            return node
+        else:
+            anode = util.etree.Element("a")
+            anode.set('data-lightbox', str(uuid.uuid4()))
+            anode.set('href', src)
+            anode.append(node)
+            return anode
 
 
 class OverrideLinkPattern(LinkPattern):

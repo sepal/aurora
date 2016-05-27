@@ -3679,4 +3679,9 @@ a.read_more, a.read_less {
   margin: 5px 0;
 }
 
+/* line 2, ../sass/lightbox/lightbox.scss */
+#lightbox a.lb-download {
+  color: #fff;
+}
+
 /*# sourceMappingURL=diskurs.css.map */
