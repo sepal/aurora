@@ -20,17 +20,20 @@
          <li id="feed-li">
             <a href="{% url 'home' course.short_title %}">Newsfeed</a></li>
 
+		{% if "1" %}
         <li id="challenges-li">
           <a href="{% url 'Challenge:home' course.short_title %}">Challenges</a></li>
+		{% else %}
+        <li id="challenges-li" style="color:#666" title="Der Zugang zu Challenges ist mehr möglich, weil die Einführungs-Challenge nicht abgegeben wurde.">
+          <s>Challenges</s></li>
+		{% endif %}
 
         <li id="slides-li">
           <a href="{% url 'Slides:start' course.short_title %}">Slides</a></li>
 			
 		{% if course.short_title == "gsi" %}
-	        {% if user.is_superuser %}
 	        <li id="slides-li">
 	          <a href="{% url 'diskurs:index' course.short_title %}">Discourse</a></li>
-	        {% endif %}
 		{% endif %}
 
         <li id="bugs-li">

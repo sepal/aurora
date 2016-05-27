@@ -482,6 +482,7 @@ def similarities(request, course_short_title=None):
 @staff_member_required
 def user_detail(request, course_short_title=None):
     user = Elaboration.objects.get(pk=request.session.get('elaboration_id', '')).user
+    display_points = request.session.get('display_points', 'error')
     return render_to_response('user.html', {'user': user, 'course_short_title': course_short_title}, RequestContext(request))
 
 @csrf_exempt
@@ -707,8 +708,9 @@ def review_answer(request, course_short_title=None):
 
     user = RequestContext(request)['user']
     answers = data['answers']
-
-    review = Review.objects.create(elaboration_id=request.session.get('elaboration_id', ''), reviewer_id=user.id)
+    elab_id_from_client = data['elab']
+    
+    review = Review.objects.create(elaboration_id=elab_id_from_client, reviewer_id=user.id)
 
     review.appraisal = data['appraisal']
     review.submission_time = datetime.now()

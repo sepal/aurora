@@ -198,17 +198,16 @@ h1 {
 }
 
 
-.stack_icons {
+.stack_icon {
 	display:inline;
+	float:right;
+	position:relative;
+	top:7px;
+	right:4px;
 }
 
-.stack_icon {
-	height:24px;
-	width:24px;
-	border:1px solid gray;
-	border-radius:3px;
-	position:relative;
-	top:4px;
+.stack_icon i {
+	color:gray;
 }
 
 .stack_status {
@@ -222,6 +221,11 @@ h1 {
 	z-index:3000;
 }
 
+.forbiddenfruit .stack_action {
+	color:gray!important;
+	cursor:default;
+}
+
 .stack_next {
 	z-index:192;
 	position:relative;
@@ -231,6 +235,7 @@ h1 {
     font-size: 1.4em;
 	z-index:210;
 	position:relative;
+	width:410px;
 }
 
 .stack_done {
@@ -281,6 +286,11 @@ h1 {
 
 .forbiddenfruit div {
 	opacity:0.4;
+	cursor:default;
+}
+
+.forbiddenfruit {
+	cursor:default;
 }
 
 .finished {
@@ -419,4 +429,15 @@ h1 {
 .changelog input[type=text] {
 	width:100%;
 	text-align:top;
+}
+
+.lb-download {
+	color:white;
+}
+
+.chapter {
+	border-bottom:1px 
+	solid silver;
+	margin-bottom:3px;
+	width:410px;
 }

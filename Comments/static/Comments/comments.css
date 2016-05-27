@@ -131,6 +131,7 @@
 	line-height:17px;
 	padding-top:4px;
 	min-height:40px;
+	word-break: break-word;
 }
 
 .response_body > img, .comment_body > img {

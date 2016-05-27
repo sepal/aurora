@@ -59,14 +59,15 @@
         {% if elaboration.elaboration_text  %}
             <textarea id="editor_detail">{{ elaboration.elaboration_text}}</textarea>
 		{% endif %}<br>
-          <br /><h1>Revised Work</h1>
+         <br /><h1>Revised Work</h1>
+  	   	{% if elaboration.revised_elaboration_changelog %}
+		<br><B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
+		most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
+		{% endif %}
          {% render_revised_uploads elaboration %}
 		 {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
         	 <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
 		 {% endif %}
-  	   	{% if elaboration.revised_elaboration_changelog %}
-		<B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}
-		{% endif %}
         <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
           {% include 'tags.html' with tagged_object=elaboration %}
         </div><br><br><br><br>

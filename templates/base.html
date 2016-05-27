@@ -17,7 +17,7 @@
 <body>
 
 <script>
-	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true}); 
+	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
 	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
 </script>
 
@@ -30,6 +30,7 @@
 
   <div class="nothing_to_see_move_on" data-username="{{ user.username }}" id="the_username"></div>
   <div class="nothing_to_see_move_on" data-points="{{ sum }}" id="the_points"></div>
+  <script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
 
 </body>
 </html>

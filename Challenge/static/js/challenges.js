@@ -72,7 +72,7 @@ $(function() {
 $(challenges_loaded);
 
 function challenges_loaded() {
-    $(".stack").click(stack_clicked);
+    $(".stack:not(.forbiddenfruit)").click(stack_clicked);
 }
 
 function stack_clicked(event) {

@@ -168,7 +168,8 @@ function revised_elaboration_save(challenge_id, submit) {
     var elaboration_text = tinyMCE.get('editor').getContent().toString();
     var changelog = $('#changelog').prop('value')
     var review_id = $("#most_helpful_other_user").val()
-	if(isNaN(review_id)){alert("select something from the »most helpful« menu!");return false}
+	if(isNaN(review_id)){alert("please select something from the »most helpful« menu, thank you!");return false}
+	if(changelog.length < 15){alert("please write a meaningful changelog, thank you!");return false}
     var data = {
         challenge_id: challenge_id,
         revised_elaboration_text: elaboration_text,

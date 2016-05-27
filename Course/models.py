@@ -2,9 +2,8 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from datetime import datetime, date
-import Challenge.models
+# from Challenge.models import Challenge
 import logging
-
 
 class Course(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -31,6 +30,13 @@ class Course(models.Model):
         except CourseUserRelation.DoesNotExist:
             return False
 
+    def user_is_enlisted_and_active(self, user):
+        try:
+            CourseUserRelation.objects.get(user=user, course=self, active=True)
+            return True
+        except CourseUserRelation.DoesNotExist:
+            return False
+
     def currently_active(self):
         today = date.today()
         if(today >= self.start_date and today <= self.end_date):
@@ -48,3 +54,4 @@ class Course(models.Model):
 class CourseUserRelation(models.Model):
     user = models.ForeignKey('AuroraUser.AuroraUser')
     course = models.ForeignKey(Course)
+    active = models.BooleanField(default=True)

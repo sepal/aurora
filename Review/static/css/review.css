@@ -295,3 +295,7 @@ input[type=submit] {
 	cursor:pointer;
 	padding:1px 1em 1px 1em;
 }
+
+.lb-download {
+	color:white;
+}
