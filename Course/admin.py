@@ -21,7 +21,6 @@ class CourseAdmin(admin.ModelAdmin):
 
 admin.site.register(Course, CourseAdmin)
 
-
 class CourseUserRelationAdmin(admin.ModelAdmin):
     fieldsets = [
         (
@@ -29,10 +28,13 @@ class CourseUserRelationAdmin(admin.ModelAdmin):
                 'fields': [
                     'user',
                     'course',
+                    'active',
+                    'review_group',
+                    'review_karma',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'user', 'course', )
+    list_display = ('id', 'user', 'course', 'active', 'review_group', 'review_karma')
 
 admin.site.register(CourseUserRelation, CourseUserRelationAdmin)
