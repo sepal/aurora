@@ -30,12 +30,10 @@ class CourseUserRelationAdmin(admin.ModelAdmin):
                     'user',
                     'course',
                     'active',
-                    'review_group',
-                    'review_karma',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'user', 'course', 'active', 'review_group', 'review_karma')
+    list_display = ('id', 'user', 'course', 'active', )
 
 admin.site.register(CourseUserRelation, CourseUserRelationAdmin)
