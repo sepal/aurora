@@ -12,5 +12,5 @@ django-suit==0.2.15
 django-celery==3.1.17
 
 #diskurs
-django-markup=1.0
-markdown=2.6.5
+django-markup==1.0
+markdown==2.6.5
