@@ -43,13 +43,6 @@ function diskursNewPost(e) {
                     count = '';
                 }
                 form.parent().parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
-                form.parent().parent().prev().children('.container').children('.post_content').readmore({
-					speed: 75,
-					collapsedHeight: 200,
-					heightMargin: 32,
-                    lessLink: '<a class="read_less" href="#">Shrink</a>',
-                    moreLink: '<a class="read_more" href="#">Show all</a>'
-                });
                 form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id', data.new_last_id);
                 form.find('textarea').val('');
                 form.parent().parent().parent().parent().removeClass('show_reply');
@@ -78,11 +71,11 @@ function diskursShowPost(element) {
             elementToFadeOut.children('.child_post').fadeOut('fast', function() {
                 elementToFadeOut.removeClass('show_child');
                 $(this).css('display', '');
-                resizeCanvas(parent.hasClass('show_reply'));
 
                 fadeOutDone = true;
                 if (fadeOutDone && ajaxRefreshDone) {
                     markPostingsAsSeen();
+                    resizeCanvas(parent.hasClass('show_reply'));
                 }
             });
         }
@@ -113,11 +106,11 @@ function diskursShowPost(element) {
                 elementToFadeIn.addClass('show_child');
                 elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                     $(this).css('display', '');
-                    resizeCanvas(parent.hasClass('show_reply'));
 
                     fadeOutDone = true;
                     if (fadeOutDone && ajaxRefreshDone) {
                         markPostingsAsSeen();
+                        resizeCanvas(parent.hasClass('show_reply'));
                     }
                 });
             });
@@ -125,11 +118,11 @@ function diskursShowPost(element) {
             elementToFadeIn.addClass('show_child');
             elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                 $(this).css('display', '');
-                resizeCanvas(parent.hasClass('show_reply'));
 
                 fadeOutDone = true;
                 if (fadeOutDone && ajaxRefreshDone) {
                     markPostingsAsSeen();
+                    resizeCanvas(parent.hasClass('show_reply'));
                 }
             });
         }
@@ -165,6 +158,7 @@ function diskursShowPost(element) {
                     ajaxRefreshDone = true;
                     if (fadeOutDone && ajaxRefreshDone) {
                         markPostingsAsSeen();
+                        resizeCanvas(parent.hasClass('show_reply'));
                     }
                 } else {
                     alert(data.message);
@@ -208,13 +202,6 @@ $(document).ready(function() {
     });
     $('#diskurs').on('click', '.reply', diskursReply);
     $('#diskurs').on('submit', 'form', diskursNewPost);
-    $('.post_content').readmore({
-        speed: 75,
-		collapsedHeight: 200,
-		heightMargin: 32,
-		lessLink: '<a class="read_less" href="#"><i class="fa fa fa-angle-double-up"></i></a>',
-        moreLink: '<a class="read_more" href="#"><i class="fa fa-angle-double-down"></i></a>'
-    });
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
 
@@ -450,6 +437,13 @@ function resizeCanvas(scrollToReply) {
 function markPostingsAsSeen() {
     $('#diskurs').find('.new_post').filter(":visible").each(function() {
         $(this).addClass('seen_post').removeClass('new_post');
+    });
+    $('.level1 .post_content:not([aria-expanded])').readmore({
+        speed: 75,
+		collapsedHeight: 200,
+		heightMargin: 32,
+		lessLink: '<a class="read_less" href="#"><i class="fa fa fa-angle-double-up"></i></a>',
+        moreLink: '<a class="read_more" href="#"><i class="fa fa-angle-double-down"></i></a>'
     });
     refreshNew();
 }

@@ -164,7 +164,6 @@
     }
 
     .post_content {
-      max-height: 240px;
       overflow: hidden;
 
       blockquote {
@@ -249,5 +248,9 @@
     button {
       float: right;
     }
+  }
+
+  .level1 .post_content {
+    max-height: 240px;
   }
 }
