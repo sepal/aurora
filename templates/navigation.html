@@ -26,10 +26,12 @@
         <li id="slides-li">
           <a href="{% url 'Slides:start' course.short_title %}">Slides</a></li>
 			
-{% comment %}
-        <li id="slides-li">
-          <a href="{% url 'diskurs:index' course.short_title %}">Discourse</a></li>
-{% endcomment %}
+		{% if course.short_title == "gsi" %}
+	        {% if user.is_superuser %}
+	        <li id="slides-li">
+	          <a href="{% url 'diskurs:index' course.short_title %}">Discourse</a></li>
+	        {% endif %}
+		{% endif %}
 
         <li id="bugs-li">
           <a href="https://titanpad.com/EU1ZC3KTzf" target="_blank">Bugs &amp; Feedback</a>
