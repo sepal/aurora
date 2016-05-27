@@ -302,7 +302,7 @@ $(document).ready(function() {
 
     $('#diskurs').on('copy', '.post_content', function(e) {
         quotePost = String(window.getSelection()).trim();
-        quotePostMarkdown = $(this).prev().find('.user').text() + ' wrote:\n' + '> ' + quotePost.replace('\n', '\n> ') + '\n\n';
+        quotePostMarkdown = $(this).parent().find('.user').text() + ' wrote:\n' + '> ' + quotePost.replace('\n', '\n> ') + '\n\n';
     })
 
     $('#diskurs').on('paste', 'textarea.reply_area', function(e) {
