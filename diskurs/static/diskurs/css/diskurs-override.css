@@ -56,6 +56,10 @@ body {margin:0;padding:0;}
 
 	    font-family: 'yanone_kaffeesatzthin';
 		margin-bottom:12px;
+		position:fixed;
+		top:0;
+		left:0;
+		z-index:100;
 }
 
 .back_link a {
@@ -107,10 +111,15 @@ body {margin:0;padding:0;}
 .infoText {
 	margin-top:15px;
 	width:100%;
-	padding:3px;
+	padding:3px 0;
 	color:gray;
 	font-size:80%;
 	box-sizing: border-box;
+}
+
+#diskurs {
+	margin-top:40px;
+	z-index:0;
 }
 
 
