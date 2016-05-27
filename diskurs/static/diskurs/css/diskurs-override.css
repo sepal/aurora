@@ -66,11 +66,10 @@ body {margin:0;padding:0;}
 	display:inline-block;
 	float:right;
 	margin-right:0.5em;
-	margin-left:2em;
+	margin-left:1em;
 	color:white;
 	text-decoration:none;
 	text-transform:uppercase;
-	margin-left:6px;
 	font-size:14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-appearance:none;
