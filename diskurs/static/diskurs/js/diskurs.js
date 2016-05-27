@@ -14,7 +14,7 @@ function diskursReply() {
     parent.addClass('show_reply');
 
     if (!parent.hasClass('show_child')) {
-        diskursShowPost(arrow);
+        diskursShowPost(arrow, true);
     } else {
         resizeCanvas(true);
     }
@@ -58,7 +58,7 @@ function diskursNewPost(e) {
     e.preventDefault();
 }
 
-function diskursShowPost(element) {
+function diskursShowPost(element, scrollToReply) {
     var parent = element.parent();
     var fadeOutDone = false;
     var ajaxRefreshDone = false;
@@ -75,7 +75,7 @@ function diskursShowPost(element) {
                 fadeOutDone = true;
                 if (fadeOutDone && ajaxRefreshDone) {
                     markPostingsAsSeen();
-                    resizeCanvas(parent.hasClass('show_reply'));
+                    resizeCanvas(scrollToReply);
                 }
             });
         }
@@ -110,7 +110,7 @@ function diskursShowPost(element) {
                     fadeOutDone = true;
                     if (fadeOutDone && ajaxRefreshDone) {
                         markPostingsAsSeen();
-                        resizeCanvas(parent.hasClass('show_reply'));
+                        resizeCanvas(scrollToReply);
                     }
                 });
             });
@@ -122,7 +122,7 @@ function diskursShowPost(element) {
                 fadeOutDone = true;
                 if (fadeOutDone && ajaxRefreshDone) {
                     markPostingsAsSeen();
-                    resizeCanvas(parent.hasClass('show_reply'));
+                    resizeCanvas(scrollToReply);
                 }
             });
         }
@@ -158,7 +158,7 @@ function diskursShowPost(element) {
                     ajaxRefreshDone = true;
                     if (fadeOutDone && ajaxRefreshDone) {
                         markPostingsAsSeen();
-                        resizeCanvas(parent.hasClass('show_reply'));
+                        resizeCanvas(scrollToReply);
                     }
                 } else {
                     alert(data.message);
@@ -193,7 +193,7 @@ $(document).ready(function() {
             var prev = $(this).parent().parent().prev().prev();
             history.pushState({post: '#'+prev.attr('id')}, '', prev.attr('href'));
         } else {
-            diskursShowPost($(this));
+            diskursShowPost($(this), false);
             if (history.state == null || history.state.post != '#'+$(this).attr('id')) {
                 history.pushState({post: '#'+$(this).attr('id')}, '', $(this).attr('href'));
             }
@@ -315,7 +315,7 @@ $(document).ready(function() {
 
 window.onpopstate = function(event) {
     if (event.state != null) {
-        diskursShowPost($(event.state.post));
+        diskursShowPost($(event.state.post), false);
     }
 };
 
@@ -385,12 +385,12 @@ function resizeCanvas(scrollToReply) {
         var scrollMinReplyCorrection = 150;
 
         var scrollMinReply = $postReplyElement.offset().top + $postReplyElement.height() + scrollMinReplyCorrection - height;
-        var scrollMaxReply = $postReplyElement.parent().offset().top;
+        var scrollMaxReply = $postReplyElement.parent().offset().top - $('.diskurs_head').height();
 
-        if (scrollMaxReply < scrollTop) {
-            scrollTop = scrollMaxReply
-        } else if (scrollMinReply > scrollTop) {
+        if (scrollMinReply > scrollTop) {
             scrollTop = scrollMinReply;
+        } else if (scrollMaxReply < scrollTop) {
+            scrollTop = scrollMaxReply
         }
 
 
