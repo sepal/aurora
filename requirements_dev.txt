@@ -15,3 +15,7 @@ django-celery==3.1.17
 
 # data driven tests
 ddt
+
+#diskurs
+django-markup==1.0
+markdown==2.6.5

@@ -1,0 +1,7 @@
+{% extends "diskurs/base.html" %}
+
+{% block content %}
+<div id="diskurs">
+    {% include "diskurs/thread/post.html" with post=thread.filtered_first_post depth=0 thread=thread %}
+</div>
+{%  endblock %}

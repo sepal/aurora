@@ -37,6 +37,7 @@ urlpatterns = patterns('',
         url(r'^statistics/', include('Statistics.urls', namespace='Statistics')),
         url(r'^slides/', include('Slides.urls', namespace='Slides')),
         url(r'', include('AuroraUser.urls', namespace='User')),
+        url(r'^diskurs/', include('diskurs.urls', namespace="diskurs")),
         ))),
 
     url(r'', include('FileUpload.urls')),

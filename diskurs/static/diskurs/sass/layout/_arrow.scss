@@ -1,0 +1,76 @@
+.arrow_wrapper {
+  width: $arrow_width;
+  height: $arrow_height/2;
+  padding-top: $arrow_height/2;
+
+  .arrow {
+    display: block;
+    width: 0;
+    height: (8 * $arrow_height / 40);
+    background: $arrow_color;
+    position: relative;
+
+    &.right {
+
+      &.nicetip {
+        .tip {
+          display: block;
+          width: (40 * $arrow_height / 40);
+          height: (8 * $arrow_height / 40);
+          position: absolute;
+          transform: translate(0,-(12 * $arrow_height / 40)) rotate(45deg);
+          -webkit-transform: translate(0,-(12 * $arrow_height / 40)) rotate(45deg);
+          border-radius: (13 * $arrow_height / 40);
+          background: $arrow_color;
+        }
+
+        &:before {
+          content: ' ';
+          display: block;
+          position: absolute;
+          width: (40 * $arrow_height / 40);
+          height: (8 * $arrow_height / 40);
+          transform: translate(0, (12 * $arrow_height / 40)) rotate(-45deg);
+          -webkit-transform: translate(0, (12 * $arrow_height / 40)) rotate(-45deg);
+          border-radius: (13 * $arrow_height / 40);
+          background: $arrow_color;
+          border: 0px;
+        }
+      }
+    }
+
+    &.nicetip {
+      border-radius: (13 * $arrow_height / 40);
+    }
+  }
+}
+
+#diskurs {
+  .post.show_child, .post.level0 {
+    > .arrow_wrapper {
+      display: block;
+
+      > .arrow {
+        width: $arrow_width;
+
+        &.right {
+          &.nicetip {
+            .tip {
+              transform: translate(($arrow_width - (32 * $arrow_height / 40)), -(12 * $arrow_height / 40)) rotate(45deg);
+              -webkit-transform: translate(($arrow_width - (32 * $arrow_height / 40)), -(12 * $arrow_height / 40)) rotate(45deg);
+            }
+
+            &:before {
+              transform: translate(($arrow_width - (32 * $arrow_height / 40)), (12 * $arrow_height / 40)) rotate(-45deg);
+              -webkit-transform: translate(($arrow_width - (32 * $arrow_height / 40)), (12 * $arrow_height / 40)) rotate(-45deg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.level0 > .arrow_wrapper {
+  display: none;
+}

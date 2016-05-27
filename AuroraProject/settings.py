@@ -1,5 +1,8 @@
 import os
 import djcelery
+from django_markup.filter.markdown_filter import MarkdownMarkupFilter
+from diskurs.markdown.giffer import GifferMarkdownFilter
+
 # Django settings for AuroraProject project.
 
 DEBUG = True
@@ -20,6 +23,20 @@ DATABASES = {
         'PASSWORD': 'root',
         'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '8080',                      # Set to empty string for default.
+    }
+}
+
+MARKUP_FILTER = {
+    'markdown': MarkdownMarkupFilter,
+    'markdown_giffer': GifferMarkdownFilter,
+}
+
+MARKUP_SETTINGS = {
+    'markdown': {
+        'safe_mode': True
+    },
+    'markdown_giffer': {
+        'safe_mode': True
     }
 }
 
@@ -150,6 +167,8 @@ INSTALLED_APPS = (
     'Faq',
     'djcelery',
     'PlagCheck',
+    'diskurs',
+    'django_markup',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
