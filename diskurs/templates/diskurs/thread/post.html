@@ -14,7 +14,7 @@
         <div class="post_reply my_post">
             <div class="container">
                 <div class="post_header{%  if user.avatar %} has_avatar{% endif %}">
-                    <span class="user">{{ user.username }}</span>
+                    <span class="user">{{ user.display_name }}</span>
                     <span class="votes">{% render_votes_sum 0 %}</span>
                 </div>
                 {%  if user.avatar %}
