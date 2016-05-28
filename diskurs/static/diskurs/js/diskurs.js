@@ -202,16 +202,26 @@ $(document).ready(function() {
     });
     $('#diskurs').on('click', '.reply', diskursReply);
     $('#diskurs').on('submit', 'form', diskursNewPost);
+    $('#diskurs').on('click', '.cancel_reply', function() {
+        var $child_post = $(this).parent().parent().parent().parent();
+        var child_post_count = $child_post.children('.post').size();
+        $child_post.parent().removeClass('show_reply');
+        if (child_post_count > 0) {
+
+        } else {
+
+        }
+    });
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
 
-        $(this).prev().prev().prev().emojiPicker({
+        $(this).parent().children('.reply_area').emojiPicker({
             width: '300px',
             height: '200px',
             button: false
         });
 
-        $(this).prev().prev().prev().emojiPicker('toggle');
+        $(this).parent().children('.reply_area').emojiPicker('toggle');
     });
 
     $('#diskurs').on('click', 'a.upvote', function(e) {
