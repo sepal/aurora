@@ -10,7 +10,7 @@
             <a href="{% url 'diskurs:downvote_post' course.short_title thread.id post.id %}" class="downvote {% is_downvoted_post post request.user %}"><i class="fa fa-arrow-down"></i></a>
         </span>
 
-        <span class="count">{% if post.post_set.count > 0 %}<i class="fa fa-comments-o cmtsFA"></i> {{ post.post_set.count }}{% endif %}</span>
+        <span class="count">{% if post.filtered_post_set.count > 0 %}<i class="fa fa-comments-o cmtsFA"></i> {{ post.filtered_post_set.count }}{% endif %}</span>
     </div>
     {%  if post.user_avatar %}
             <div class="avatar"><img src="{{ post.user_avatar.url }}" /></div>
