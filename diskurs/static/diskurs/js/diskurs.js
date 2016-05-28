@@ -1,6 +1,6 @@
 var quotePost = "";
 var quotePostMarkdown = "";
-
+var scrollingEnabled = true;
 
 function diskursReply() {
     var parent = $(this).parent().parent().parent();
@@ -320,6 +320,10 @@ $(document).ready(function() {
         }
     })
 
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        scrollingEnabled = false;
+    }
+
     markPostingsAsSeen();
 });
 
@@ -412,7 +416,8 @@ function resizeCanvas(scrollToReply) {
         scrollTop = scrollMaxTop;
     }
 
-    if (currentScrollLeft < scrollMaxLeft || currentScrollLeft > scrollMaxLeft) {
+    if (scrollingEnabled &&
+        (currentScrollLeft < scrollMaxLeft || currentScrollLeft > scrollMaxLeft)) {
 
         $('html, body').animate({scrollLeft: scrollMaxLeft, scrollTop: scrollTop}, 'slow', 'swing', function() {
             $('#diskurs').width(maxWidth);
@@ -423,7 +428,7 @@ function resizeCanvas(scrollToReply) {
             }
         });
 
-    } else if (currentScrollTop != scrollTop) {
+    } else if (scrollingEnabled && currentScrollTop != scrollTop) {
 
         $('html, body').animate({scrollTop: scrollTop}, 'slow', 'swing', function() {
             $('#diskurs').width(maxWidth);
