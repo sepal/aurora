@@ -114,7 +114,7 @@ def livecast(request, lecture_id=None, course_short_title=None):
 
 def studio_lecture(request, course_short_title=None, lecture_id=None):
     course = Course.get_or_raise_404(course_short_title)
-    user = RequestContext(request)['user']
+    user = request.user
     lectures = _get_contentbar_data(course)
     lecture = get_object_or_404(Lecture, id=lecture_id, course=course, active=True)
     if _livecast_now(lecture):
@@ -138,7 +138,7 @@ def studio_lecture(request, course_short_title=None, lecture_id=None):
 
 def studio_marker(request, marker, course_short_title=None):
     course = Course.get_or_raise_404(course_short_title)
-    user = RequestContext(request)['user']
+    user = request.user
     lectures = _get_contentbar_data(course)
     if marker == 'confusing':
         slides = Slide.objects.filter(confusing=user, lecture__course=course)
@@ -170,7 +170,7 @@ def studio_search(request, course_short_title=None):
 
 
 def mark_slide(request, course_short_title=None, slide_id=None, marker=None, value=None):
-    user = RequestContext(request)['user']
+    user = request.user
     if not request.method == 'POST':
         return HttpResponse(json.dumps({'success': False}), content_type='application/javascript')
     try:

@@ -288,7 +288,7 @@ def detail(request, course_short_title=None):
         params = {'questions': questions, 'selection': 'missing reviews'}
     if selection == "top_level_tasks":
         evaluation = None
-        user = RequestContext(request)['user']
+        user = request.user
         lock = False
         if Evaluation.objects.filter(submission=elaboration):
             evaluation = Evaluation.objects.get(submission=elaboration)
@@ -300,7 +300,7 @@ def detail(request, course_short_title=None):
     if selection == "complaints":
         if elaboration.challenge.is_final_challenge():
             evaluation = None
-            user = RequestContext(request)['user']
+            user = request.user
             lock = False
             if Evaluation.objects.filter(submission=elaboration):
                 evaluation = Evaluation.objects.get(submission=elaboration)
@@ -315,7 +315,7 @@ def detail(request, course_short_title=None):
         params = {'selection': 'evaluated non-adequate work'}
     if selection == "search":
         evaluation = None
-        user = RequestContext(request)['user']
+        user = request.user
         lock = False
         if Evaluation.objects.filter(submission=elaboration):
             evaluation = Evaluation.objects.get(submission=elaboration)
@@ -381,7 +381,7 @@ def start_evaluation(request, course_short_title=None):
 
     # set evaluation lock
     state = 'open'
-    user = RequestContext(request)['user']
+    user = request.user
     if Evaluation.objects.filter(submission=elaboration):
         evaluation = Evaluation.objects.get(submission=elaboration)
         if evaluation.tutor == user:
@@ -512,7 +512,7 @@ def submit_evaluation(request, course_short_title=None):
     evaluation_points = request.POST['evaluation_points']
 
     elaboration = Elaboration.objects.get(pk=elaboration_id)
-    user = RequestContext(request)['user']
+    user = request.user
     course = elaboration.challenge.course
 
     if Evaluation.objects.filter(submission=elaboration):
@@ -547,7 +547,7 @@ def reopen_evaluation(request, course_short_title=None):
     course = evaluation.submission.challenge.course
 
     evaluation.submission_time = None
-    evaluation.tutor = RequestContext(request)['user']
+    evaluation.tutor = request.user
     evaluation.save()
 
     obj, created = Notification.objects.get_or_create(
@@ -706,7 +706,7 @@ def review_answer(request, course_short_title=None):
     data = request.body.decode(encoding='UTF-8')
     data = json.loads(data)
 
-    user = RequestContext(request)['user']
+    user = request.user
     answers = data['answers']
     elab_id_from_client = data['elab']
     
@@ -844,8 +844,8 @@ def sort(request, course_short_title=None):
 
 @aurora_login_required()
 def get_points(request, user, course):
-    is_correct_user_request = RequestContext(request)['user'].id == user.id
-    is_staff_request = RequestContext(request)['user'].is_staff
+    is_correct_user_request = request.user.id == user.id
+    is_staff_request = request.user.is_staff
     if not (is_correct_user_request or is_staff_request):
         return HttpResponseForbidden()
     data = {}

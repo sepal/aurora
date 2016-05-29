@@ -20,7 +20,7 @@ from pprint import pprint
 def save_elaboration(request, course_short_title):
     challenge_id = request.POST['challenge_id']
     challenge = Challenge.objects.get(id=challenge_id)
-    user = RequestContext(request)['user']
+    user = request.user
     if not challenge.is_enabled_for_user(user) and not challenge.is_final_challenge():
         raise Http404
 
@@ -61,7 +61,7 @@ def submit_elaboration(request, course_short_title):
    if not challenge.currently_active:
        raise Http404
 
-   user = RequestContext(request)['user']
+   user = request.user
    course = Course.get_or_raise_404(short_title=course_short_title)
    if not challenge.is_enabled_for_user(user):
        raise Http404

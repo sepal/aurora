@@ -13,7 +13,7 @@ from Course.models import Course, CourseUserRelation
 @aurora_login_required()
 def notifications(request, course_short_title=None):
     data = {}
-    user = RequestContext(request)['user']
+    user = request.user
     course = Course.get_or_raise_404(course_short_title)
 
     if 'id' in request.GET:
@@ -72,7 +72,7 @@ def send_notification(request, course_short_title=None):
 
 @aurora_login_required()
 def read(request, course_short_title=None):
-    user = RequestContext(request)['user']
+    user = request.user
     course = Course.get_or_raise_404(course_short_title)
     notifications = Notification.objects.filter(user=user, course=course)
     for notification in notifications:
@@ -85,7 +85,7 @@ def read(request, course_short_title=None):
 
 @aurora_login_required()
 def refresh(request, course_short_title=None):
-    user = RequestContext(request)['user']
+    user = request.user
     course = Course.get_or_raise_404(course_short_title)
     notifications = Notification.objects.filter(user=user, course=course, read=False)
     return HttpResponse(len(notifications))
