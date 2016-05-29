@@ -45,6 +45,12 @@ class Post(models.Model):
         aurora_user = AuroraUser.objects.get(pk=self.user)
         return aurora_user.avatar
 
+    @property
+    def user_display_name(self):
+        aurora_user = AuroraUser.objects.get(pk=self.user)
+
+        return aurora_user.display_name
+
 
 class Thread(models.Model):
     course = models.ForeignKey(Course)
