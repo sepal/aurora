@@ -122,10 +122,9 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-#AUTHENTICATION_BACKENDS = (
-#    'django.contrib.auth.backends.ModelBackend',
-#    'middleware.DjangoAuthenticationMiddleware.DjangoAuthenticationMiddleware',
-#)
+AUTHENTICATION_BACKENDS = (
+    'middleware.AuroraAuthenticationBackend.AuroraAuthenticationBackend',
+)
 
 ROOT_URLCONF = 'AuroraProject.urls'
 
@@ -269,7 +268,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "AuroraProject.context_processor.general_context_processor",
     "django.core.context_processors.request",
 )
 
