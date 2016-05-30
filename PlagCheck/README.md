@@ -50,7 +50,7 @@ django apps are listed.
 
 ### Worker process
 
-    python manage.py celery worker -E --loglevel=INFO
+    python manage.py celery worker -E --loglevel=INFO --concurrency=1
 
 Only one worker can run at the same time, because:
  - sherlock is not yet multi-thread ready
