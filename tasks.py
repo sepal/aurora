@@ -10,19 +10,22 @@ def celery():
 
 @task
 def venv():
-    run('virtualenv --python=python3.4 .venv')
+    run('virtualenv --python=python3 .venv')
 
 @task
 def deps():
-    run('pip install -r requirements.txt requirements_dev.txt')
+    run('pip install --upgrade pip')
+    run('pip install --upgrade -r requirements.txt -r requirements_dev.txt')
+
+    try:
+        import sherlock
+    except ImportError:
+        run('cd PlagCheck/hashing/sherlock && python setup.py install')
 
 @task
 def clean():
     run('rm -f database.db')
     run('rm -f plagcheck-database.db')
-
-@task
-def install():
-    run('cd PlagCheck/hashing/sherlock && python setup.py install')
-    run('pip install --upgrade pip')
     run('python manage.py syncdb --noinput')
+    run('python manage.py populate_demo_data')
+    #create_plagcheck_db()
