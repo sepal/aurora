@@ -1,0 +1,377 @@
+body {margin:0;padding:0;}
+
+@font-face {
+    font-family: 'yanone_kaffeesatz_rgregular';
+    src: url('../fonts/yanonekaffeesatz-regular-webfont.eot');
+    src: url('../fonts/yanonekaffeesatz-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/yanonekaffeesatz-regular-webfont.woff') format('woff'), url('../fonts/yanonekaffeesatz-regular-webfont.ttf') format('truetype'), url('../fonts/yanonekaffeesatz-regular-webfont.svg#yanone_kaffeesatz_rgregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'yanone_kaffeesatz_rgbold';
+    src: url('../fonts/yanonekaffeesatz-bold-webfont.eot');
+    src: url('../fonts/yanonekaffeesatz-bold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/yanonekaffeesatz-bold-webfont.woff') format('woff'), url('../fonts/yanonekaffeesatz-bold-webfont.ttf') format('truetype'), url('../fonts/yanonekaffeesatz-bold-webfont.svg#yanone_kaffeesatz_rgbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'yanone_kaffeesatzlight';
+    src: url('../fonts/yanonekaffeesatz-light-webfont.eot');
+    src: url('../fonts/yanonekaffeesatz-light-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/yanonekaffeesatz-light-webfont.woff') format('woff'), url('../fonts/yanonekaffeesatz-light-webfont.ttf') format('truetype'), url('../fonts/yanonekaffeesatz-light-webfont.svg#yanone_kaffeesatzlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'yanone_kaffeesatzthin';
+    src: url('../fonts/yanonekaffeesatz-thin-webfont.eot');
+    src: url('../fonts/yanonekaffeesatz-thin-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/yanonekaffeesatz-thin-webfont.woff') format('woff'), url('../fonts/yanonekaffeesatz-thin-webfont.ttf') format('truetype'), url('../fonts/yanonekaffeesatz-thin-webfont.svg#yanone_kaffeesatzthin') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.diskurs_head {
+		background-color:#254B1F;
+	    background-image: url("../img/auroraH.png");
+		background-clip: border-box;
+		background-origin: border-box;
+		background-position: 0 0%;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	    min-height: 40px;
+	    color: black;
+		padding-left:12px;
+	    font-size: 32px;
+	    vertical-align: bottom;
+	    width: 100%;
+		color: black;
+		font-size: 30px;
+		text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+
+	    font-family: 'yanone_kaffeesatzthin';
+		margin-bottom:12px;
+		position:fixed;
+		top:0;
+		left:0;
+		z-index:100;
+}
+
+.back_link a {
+	display:inline-block;
+	float:right;
+	margin-right:0.5em;
+	margin-left:1em;
+	color:white;
+	text-decoration:none;
+	text-transform:uppercase;
+	font-size:14px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+	border-radius:2px;
+	border:none;
+	white-space: nowrap;
+	cursor:pointer;
+	margin-top:20px;;
+}
+.diskurs_head b {
+	font-family:'yanone_kaffeesatz_rgregular';
+	font-weight:normal;
+}
+
+.headline {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+
+.diskurs-index{
+	margin:5em;
+}
+
+.diskurs-index .headline {
+	font-size:162%;
+	font-weight:bold;
+	margin-bottom:1em;
+}
+
+.diskurs-index ul {
+	list-style:none;
+}
+
+
+.infoText {
+	margin-top:15px;
+	width:100%;
+	padding:3px 0;
+	color:gray;
+	font-size:80%;
+	box-sizing: border-box;
+}
+
+#diskurs {
+	margin-top:40px;
+	z-index:0;
+}
+
+
+#diskurs .post .post_header .vote {
+  display:inline-block!important;
+}
+
+#diskurs .post .post_header .cmtsFA {
+	visibility:hidden;
+    display: inline-block;
+	color:gray;
+}
+
+#diskurs .post .post_header .vote .upvote, #diskurs .post .post_header .vote .downvote {
+    visibility: hidden;
+}
+
+#diskurs .post  .delete {
+  visibility: hidden;
+}
+
+#diskurs .post  .reply {
+  visibility: hidden;
+}
+
+
+#diskurs .post > .container:hover .delete, 
+#diskurs .post > .container:hover .reply, 
+#diskurs .post > .container:hover .vote .upvote,  
+#diskurs .post > .container:hover .vote .downvote,  
+#diskurs .post > .container:hover .cmtsFA {
+    visibility: visible;
+    display: inline-block;
+}
+
+#diskurs .post > .container .vote a.marked {
+	visibility:visible!important;
+}
+
+
+#diskurs .votes {
+	color:gray;
+}
+
+#diskurs .post_reply button {
+	border:0;
+	background-color:white;
+	color:rgb(58, 201, 88);
+	padding:0;
+	margin:0;
+	font-size:14px;
+	font-family: "Helvetica";
+}
+
+#diskurs .post_reply button.toggle_emojipicker {
+	float:left;
+}
+#diskurs .post .avatar img {
+/*	float:left;
+	padding-top:4px;
+	padding-right:5px;
+	width:32px;
+	height:32px;
+	*/
+	width:36px;
+	height:36px;
+	position:absolute;
+	left:-26px;
+	top:8px;
+	
+}
+
+#diskurs .post .post_header.has_avatar {
+	margin-left:0;
+}
+
+#diskurs .post .post_header {
+	padding:3px 0 2px 0;
+}
+
+#diskurs .post p {
+	margin-top:4px;
+}
+
+#diskurs .post .container.my_post {
+	background:none;
+}
+
+
+#diskurs .post .my_post .post_header, #diskurs .post .container.my_post .post_header {
+	background-color: rgb(251, 249, 149);
+}
+
+
+
+#diskurs .post .post_footer .reply {
+	color: rgb(58, 201, 88);
+	right: 12px;
+}
+
+#diskurs .post, #diskurs .post p {
+	font-size:14px;
+	line-height:18px;
+}
+
+#diskurs .post .container.op_post {
+	background-color:white;
+}
+
+#diskurs .post .post_content {
+	position:relative;
+	margin:4px 0 4px 0;
+}
+
+#diskurs .post .post_header .vote {
+	font-size:12px;
+}
+.fadeout {
+    position: absolute; 
+    bottom: 0;
+    width:100%;
+    height:12px;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+} 
+
+#diskurs .post .post_header .vote {
+	position:relative;
+	left:8px;
+	display:none;
+}
+
+#diskurs .post .post_footer {
+	border-top:1px solid #eee;
+	padding:3px 0 0 0;
+}
+
+#diskurs .post .post_header {
+	border-bottom: 1px solid #eee;
+}
+
+.arrow_wrapper .arrow {
+	background:rgb(58, 201, 88);
+}
+
+.arrow_wrapper .arrow.right.nicetip:before, .arrow_wrapper .arrow.right.nicetip .tip {
+	background:rgb(58, 201, 88);
+}
+
+#diskurs .post .arrow_wrapper {
+	top:9px;
+	left:300px;
+}
+
+#diskurs .post_reply, #diskurs .post {
+	width: 300px;
+	margin-left: 35px;
+}
+
+
+#diskurs .post .child_post {
+	left:350px;
+}
+
+.post.has_children.show_child {
+}
+
+
+a.read_more, a.read_less {
+	margin:0;
+}
+
+#diskurs .post .post_footer .delete a {
+	color:rgb(58, 201, 88);
+	text-decoration:none;
+	display:none;
+	position:absolute;
+	right:65px;
+}
+
+#diskurs .post .post_header {
+	font-weight:normal;
+}
+
+#diskurs .post > .container:hover .delete {
+	display:inline;
+}
+
+#diskurs .post .post_header .count {
+	right:0px;
+	font-weight:bold;
+}
+
+#diskurs .post .post_header .user {
+	font-weight:bold;
+}
+
+#diskurs .post_reply textarea {
+	border:none;
+	border-bottom:1px solid #eee;
+	font-size:14px;
+	background-color:#F6F8CE;
+	margin-top:0;
+	margin-bottom:0;
+	width:272px;
+	font-family:"helvetica neue", helvetica, arial;
+}
+
+textarea:focus {
+   outline: none;
+}
+
+.info-button {
+	position: relative;
+	left:80px;
+	color:rgb(58, 201, 88);
+}
+
+.info-button:hover + .infoText{
+	visibility:visible;
+}
+
+#diskurs .post .container.new_post {
+	background: none;
+}
+
+
+#diskurs .post .container.new_post .user:before,
+#diskurs .post .container.seen_post .user:before {
+	content:"\a0";
+	font-size:5px;
+	width:14px;
+	height:14px;
+	background-color:rgb(58, 201, 88);
+	border-radius:7px;
+	pointer-events: none;
+    display: inline-block;
+	margin-right:4px;
+	position:relative;
+	bottom:1px;
+}
+
+#diskurs .post .new_count {
+	pointer-events: none;
+	position: absolute;
+	top: 9px;
+	left: 316px;
+	min-width:20px;
+	max-height:20px;
+	background-color:rgb(58, 201, 88);
+	border-radius:10px;
+	color:white;
+	/* padding-top:1px; */
+}

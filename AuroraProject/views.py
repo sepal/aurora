@@ -62,7 +62,7 @@ def course_selection(request):
 @aurora_login_required()
 def home(request, course_short_title=None):
 
-    user = RequestContext(request)['user']
+    user = request.user
     course = Course.get_or_raise_404(course_short_title)
     data = get_points(request, user, course)
     data = create_stat_data(course,data)

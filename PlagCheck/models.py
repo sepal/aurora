@@ -152,7 +152,7 @@ class SuspectFilter(models.Model):
     this would be especially helpful when filtering reviews, where the questions stay the same for each
     review.
     """
-    doc = models.ForeignKey(Elaboration, unique=True)
+    doc = models.ForeignKey(Elaboration)
 
     @staticmethod
     def update_filter(suspect):

@@ -260,6 +260,14 @@
 	z-index:-1;
 }
 
+.not_yet_active .card_description{
+	top:220px;
+}
+
+.not_yet_active .card_status_area {
+	top:210px;
+}
+
 .card_headline {
 	font-size:162%;
 	font-weight:bold;

@@ -73,6 +73,15 @@ $(function() {
 });
 
 $(function() {
+   $(".user-detail").click(function(event) {
+       var url = './user-detail';
+        $.get(url, function (data) {
+            $('#info_area').html(data);
+        });
+   });
+});
+
+$(function() {
     $(".paginator").click(function(event) {
         var url = './detail?elaboration_id=' + $(event.target).attr('id');
         $.get(url, function (data) {
@@ -195,10 +204,19 @@ function load_reviews(elaboration_id) {
    });
 }
 
+
+function load_task(elaboration_id) {
+   var url = './load_task?elaboration_id=' + elaboration_id;
+   $.get(url, function (data) {
+       $('#info_area').html(data);
+   });
+}
+
 $(function() {
    $(".review_submit").click(function(event) {
     event.preventDefault();
     var data = {};
+	data['elab']=$('.button_add_comment_form').data('ref_id');
     data['answers'] = [];
     var missing_answer = false;
     $(".question_container").each(function (index) {

@@ -288,7 +288,7 @@ def detail(request, course_short_title=None):
         params = {'questions': questions, 'selection': 'missing reviews'}
     if selection == "top_level_tasks":
         evaluation = None
-        user = RequestContext(request)['user']
+        user = request.user
         lock = False
         if Evaluation.objects.filter(submission=elaboration):
             evaluation = Evaluation.objects.get(submission=elaboration)
@@ -300,7 +300,7 @@ def detail(request, course_short_title=None):
     if selection == "complaints":
         if elaboration.challenge.is_final_challenge():
             evaluation = None
-            user = RequestContext(request)['user']
+            user = request.user
             lock = False
             if Evaluation.objects.filter(submission=elaboration):
                 evaluation = Evaluation.objects.get(submission=elaboration)
@@ -315,7 +315,7 @@ def detail(request, course_short_title=None):
         params = {'selection': 'evaluated non-adequate work'}
     if selection == "search":
         evaluation = None
-        user = RequestContext(request)['user']
+        user = request.user
         lock = False
         if Evaluation.objects.filter(submission=elaboration):
             evaluation = Evaluation.objects.get(submission=elaboration)
@@ -333,13 +333,19 @@ def detail(request, course_short_title=None):
     reviews = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False)
 
     next = prev = None
-    index = elaborations.index(elaboration)
-    if index + 1 < len(elaborations):
-        next = elaborations[index + 1].id
-    if not index == 0:
-        prev = elaborations[index - 1].id
-    count_next = len(elaborations) - index - 1
-    count_prev = index
+
+    try:
+        index = elaborations.index(elaboration)
+        if index + 1 < len(elaborations):
+            next = elaborations[index + 1].id
+        if not index == 0:
+            prev = elaborations[index - 1].id
+        count_next = len(elaborations) - index - 1
+        count_prev = index
+    except ValueError:
+        index = 0
+        count_next = 0
+        count_prev = 0
 
     stack_elaborations = elaboration.user.get_stack_elaborations(elaboration.challenge.get_stack())
     # sort stack_elaborations by submission time
@@ -375,7 +381,7 @@ def start_evaluation(request, course_short_title=None):
 
     # set evaluation lock
     state = 'open'
-    user = RequestContext(request)['user']
+    user = request.user
     if Evaluation.objects.filter(submission=elaboration):
         evaluation = Evaluation.objects.get(submission=elaboration)
         if evaluation.tutor == user:
@@ -472,6 +478,12 @@ def similarities(request, course_short_title=None):
 
     return render_to_response('plagcheck_compare.html', {'similarities': similarities}, RequestContext(request))
 
+@aurora_login_required()
+@staff_member_required
+def user_detail(request, course_short_title=None):
+    user = Elaboration.objects.get(pk=request.session.get('elaboration_id', '')).user
+    display_points = request.session.get('display_points', 'error')
+    return render_to_response('user.html', {'user': user, 'course_short_title': course_short_title}, RequestContext(request))
 
 @csrf_exempt
 @staff_member_required
@@ -500,7 +512,7 @@ def submit_evaluation(request, course_short_title=None):
     evaluation_points = request.POST['evaluation_points']
 
     elaboration = Elaboration.objects.get(pk=elaboration_id)
-    user = RequestContext(request)['user']
+    user = request.user
     course = elaboration.challenge.course
 
     if Evaluation.objects.filter(submission=elaboration):
@@ -535,7 +547,7 @@ def reopen_evaluation(request, course_short_title=None):
     course = evaluation.submission.challenge.course
 
     evaluation.submission_time = None
-    evaluation.tutor = RequestContext(request)['user']
+    evaluation.tutor = request.user
     evaluation.save()
 
     obj, created = Notification.objects.get_or_create(
@@ -669,6 +681,20 @@ def load_reviews(request, course_short_title=None):
     return render_to_response('task.html', {'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course':course},
                               RequestContext(request))
 
+@aurora_login_required()
+@staff_member_required
+def load_task(request, course_short_title=None):
+    print('here')
+    course = Course.get_or_raise_404(short_title=course_short_title)
+    if not 'elaboration_id' in request.GET:
+        return False;
+
+    elaboration = Elaboration.objects.get(pk=request.GET.get('elaboration_id', ''))
+    stack_elaborations = elaboration.user.get_stack_elaborations(elaboration.challenge.get_stack())
+    reviews = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False)
+
+    return render_to_response('task_s.html', {'stack_elaborations':stack_elaborations, 'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course':course},
+                              RequestContext(request))
 
 @require_POST
 @csrf_exempt
@@ -680,10 +706,11 @@ def review_answer(request, course_short_title=None):
     data = request.body.decode(encoding='UTF-8')
     data = json.loads(data)
 
-    user = RequestContext(request)['user']
+    user = request.user
     answers = data['answers']
-
-    review = Review.objects.create(elaboration_id=request.session.get('elaboration_id', ''), reviewer_id=user.id)
+    elab_id_from_client = data['elab']
+    
+    review = Review.objects.create(elaboration_id=elab_id_from_client, reviewer_id=user.id)
 
     review.appraisal = data['appraisal']
     review.submission_time = datetime.now()
@@ -817,8 +844,8 @@ def sort(request, course_short_title=None):
 
 @aurora_login_required()
 def get_points(request, user, course):
-    is_correct_user_request = RequestContext(request)['user'].id == user.id
-    is_staff_request = RequestContext(request)['user'].is_staff
+    is_correct_user_request = request.user.id == user.id
+    is_staff_request = request.user.is_staff
     if not (is_correct_user_request or is_staff_request):
         return HttpResponseForbidden()
     data = {}
@@ -1001,4 +1028,3 @@ def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=No
     SuspectFilter.update_filter(suspect)
 
     return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
-

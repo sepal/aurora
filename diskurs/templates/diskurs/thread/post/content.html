@@ -1,0 +1,31 @@
+{% load tags %}
+{% load markup_tags %}
+
+<div class="container{%  if post.user == request.user %} my_post{% endif %}{%  if post.user == thread.user %} op_post{% endif %}{%  if post.id not in viewed_posts %} new_post{% endif %}">
+    <div class="post_header{%  if post.user_avatar %} has_avatar{% endif %}">
+        <span class="user">{{ post.user.username }}</span>
+        <span class="votes">{% render_votes_sum post.sum_votes %}</span>
+        <span class="vote">
+            <a href="{% url 'diskurs:upvote_post' course.short_title thread.id post.id %}" class="upvote {% is_upvoted_post post request.user %}"><i class="fa fa-arrow-up"></i></a>
+            <a href="{% url 'diskurs:downvote_post' course.short_title thread.id post.id %}" class="downvote {% is_downvoted_post post request.user %}"><i class="fa fa-arrow-down"></i></a>
+        </span>
+
+        <span class="count">{% if post.post_set.count > 0 %}<i class="fa fa-comments-o cmtsFA"></i> {{ post.post_set.count }}{% endif %}</span>
+    </div>
+    {%  if post.user_avatar %}
+            <div class="avatar"><img src="{{ post.user_avatar.url }}" /></div>
+    {% endif %}
+    <div class="post_content">
+        {{ post.content|apply_markup:'markdown_giffer'}}
+		<div class="fadeout"></div>
+    </div>
+    <div class="post_footer">
+        <span class="timestamp" title="{{ post.created_at}} ">{{ post.created_at|timesince }} ago</span>
+        {% if post.parent_post_id and post.user == request.user or post.parent_post_id and perms.delete_post %}
+            <span class="delete">
+ 			  <a href="{% url 'diskurs:delete_post' course.short_title thread.id post.id %}" class="delete">DELETE</a>
+ 	 	    </span>
+        {% endif %}
+		<span class="reply">REPLY</span>
+    </div>
+</div>

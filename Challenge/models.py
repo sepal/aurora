@@ -9,8 +9,7 @@ from Comments.models import Comment
 from Stack.models import StackChallengeRelation
 from Review.models import Review
 from Elaboration.models import Elaboration
-from Course.models import Course
-
+from Course.models import Course, CourseUserRelation
 
 def challenge_image_path(instance, filename):
     name = 'challenge_%s' % instance.id
@@ -137,19 +136,43 @@ class Challenge(models.Model):
         return final_challenge_ids
 
     def is_final_challenge(self):
-        return False if self.get_next() else True
+        final_challenge = self.get_final_challenge()
+
+        if self.id is final_challenge.id:
+            return True
+
+        return False
 
     def get_first_challenge(self):
-        first_challenge = self
-        while first_challenge.prerequisite is not None:
-            first_challenge = first_challenge.prerequisite
-        return first_challenge
+
+        first = Challenge.objects.raw('''
+            WITH RECURSIVE challenge_tree(id, prerequisite_id, depth) AS (
+                SELECT a.id, a.prerequisite_id, 0
+                FROM Challenge_challenge a
+                WHERE a.id = %s
+            UNION
+                SELECT a.id, a.prerequisite_id, tree.depth + 1
+                FROM Challenge_challenge a, challenge_tree tree
+                WHERE tree.prerequisite_id = a.id
+            )
+            SELECT * FROM Challenge_challenge WHERE id IN (SELECT id FROM challenge_tree ORDER BY depth DESC LIMIT 1);
+        ''', [self.id])
+        return first[0]
 
     def get_final_challenge(self):
-        next_challenge = self
-        while not next_challenge.is_final_challenge():
-            next_challenge = next_challenge.get_next()
-        return next_challenge
+        final = Challenge.objects.raw('''
+            WITH RECURSIVE challenge_tree(id, prerequisite_id, depth) AS (
+                SELECT a.id, a.prerequisite_id, 0
+                FROM Challenge_challenge a
+                WHERE a.id = %s
+            UNION
+                SELECT a.id, a.prerequisite_id, tree.depth + 1
+                FROM Challenge_challenge a, challenge_tree tree
+                WHERE tree.id = a.prerequisite_id
+            )
+            SELECT * FROM Challenge_challenge WHERE id IN (SELECT id FROM challenge_tree ORDER BY depth DESC LIMIT 1);
+        ''', [self.id])
+        return final[0]
 
     def has_enough_user_reviews(self, user):
         return len(self.get_reviews_written_by_user(user)) >= 3
@@ -278,7 +301,7 @@ class Challenge(models.Model):
         return result
 
     def is_in_lock_period(self, user, course):
-        PERIOD = 7
+        PERIOD = 10
         START_YEAR = 2016
         START_MONTH = 3
         START_DAY = 1

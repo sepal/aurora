@@ -1,0 +1,25 @@
+{% extends "diskurs/base.html" %}
+
+{% block content %}
+	<div class="diskurs-index">
+		{% if threads|length != 0 %}
+{% if request.user.is_superuser %}
+		<div class="headline">All discussions: </div>
+{% else %}
+		<div class="headline">Discussions you participate in: </div>
+{% endif %}
+	    <div id="diskurs-list">
+	        <ul>
+	            {% for thread in threads %}
+	                <li>
+	                    <i class="fa fa-arrow-right" style="color:gray"></i> <a href="{% url 'diskurs:thread' course.short_title thread.id %}">{{ thread.title }}</a>
+	                </li>
+	            {% endfor %}
+	        </ul>
+	    </div>
+		{% else %}
+		<div class="headline">Discussions </div>
+	 	So far, you participate in no discussions. To get started, enter the <a href="1">introductory discussion.</a> <br><br>To participate in a real discussion, look for discussion links in newsfeed posts or in slide comments. 
+		{% endif %}
+	</div>
+{%  endblock %}

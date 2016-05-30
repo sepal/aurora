@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q, Sum, Count
 
 from Elaboration.models import Elaboration
@@ -12,7 +13,9 @@ from Review.models import Review, ReviewEvaluation
 from Comments.models import Comment
 
 
-@staff_member_required
+# @staff_member_required
+
+@user_passes_test(lambda u: u.is_superuser)
 def statistics(request, course_short_title=None):
     data = {}
     course = Course.get_or_raise_404(course_short_title)

@@ -6,7 +6,6 @@
 <script type="text/javascript" src="{{ STATIC_URL }}tinymce/tinymce.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/review.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
 {% endblock %}
 
@@ -44,7 +43,7 @@
       </div>
     </div>
 
-{% render_uploads review.elaboration %}
+{% render_original_uploads review.elaboration %}
 
     <div class="elaboration">
       <textarea id="editor_review">{{ review.elaboration.elaboration_text }}</textarea>
@@ -86,7 +85,7 @@
     </form>
   </div>
 {% else %}
-  There are currently no elaborations available for review. Please try again later.
+ <br><br> &nbsp; &nbsp; &nbsp; &nbsp; Sorry, there are currently no elaborations available for review. Please try again later.
 {% endif %}
 </div>
 {% endblock %}

@@ -59,21 +59,26 @@
         {% if elaboration.elaboration_text  %}
             <textarea id="editor_detail">{{ elaboration.elaboration_text}}</textarea>
 		{% endif %}<br>
-          <br /><h1>Revised Work</h1>
+         <br /><h1>Revised Work</h1>
+  	   	{% if elaboration.revised_elaboration_changelog %}
+		<br><B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
+		most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
+		{% endif %}
          {% render_revised_uploads elaboration %}
 		 {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
         	 <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
 		 {% endif %}
-  	   	{% if elaboration.revised_elaboration_changelog %}
-		<B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}
-		{% endif %}
         <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
           {% include 'tags.html' with tagged_object=elaboration %}
         </div><br><br><br><br>
         <div class="spacer"></div>
 
         {% if evaluation %}
+		{% if user.is_superuser %}
+		{% if evaluation.tutor.username %} Feedback written by <b>{{ evaluation.tutor.username }}</b> {% endif %}
+		{% else %}
 		Written feedback<div class="error"></div>
+		{% endif %}
             <form method="post">
                 {% csrf_token %}
                 {% if evaluation.submission_time %}
@@ -128,10 +133,11 @@
   <div class="detail_right">
     <div class="menu">
         <div class="stack selected" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">tasks</div>
+        <div class="user-detail" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">user</div>
 		<div class="review_list" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">reviews</div>
-        <div class="others" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">others</div>
-        <div class="challenge_txt" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">task description</div>
+        <div class="challenge_txt" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">task desc.</div>
         <div class="similarities" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">similarities</div>
+        <div class="others" onclick="$('.menu').children().removeClass('selected');$(this).addClass('selected');">others</div>
     </div>
     <div class="spacer"></div>
     <div id="info_area">{% include "tasks.html" %}</div>

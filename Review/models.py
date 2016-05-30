@@ -107,3 +107,7 @@ class ReviewConfig(models.Model):
             return 0
         else:
             return config[0].candidate_offset_max
+    
+    @staticmethod
+    def setup():
+        ReviewConfig.objects.create(candidate_offset_min = 23, candidate_offset_max = 120)

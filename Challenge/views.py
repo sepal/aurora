@@ -29,7 +29,7 @@ def create_context_myreview(request, course_short_title):
         if 'id' not in request.GET:
             return data
 
-        user = RequestContext(request)['user']
+        user = request.user
 
         data['challenge'] = Challenge.objects.get(pk= request.GET.get('id'))
         challenge = Challenge.objects.get(pk= request.GET.get('id'))
@@ -56,7 +56,7 @@ def create_context_stack(request, course_short_title):
     if 'id' not in request.GET:
         return data
 
-    user = RequestContext(request)['user']
+    user = request.user
     context_stack = Stack.objects.get(pk=request.GET.get('id'))
     data['stack'] = context_stack
     data['stack_blocked'] = context_stack.is_blocked(user)
@@ -112,6 +112,8 @@ def create_context_stack(request, course_short_title):
     data['challenges_active'] = challenges_active
     data['challenges_inactive'] = challenges_inactive
     data['course'] = Course.get_or_raise_404(course_short_title)
+    course = data['course']
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
     data['len'] = len(challenges_active) + len(challenges_inactive)
     return data
 
@@ -122,8 +124,9 @@ def challenges(request, course_short_title=None):
 
     course = Course.get_or_raise_404(short_title=course_short_title)
     data['course'] = course
+    user = request.user
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
 
-    user = RequestContext(request)['user']
     course_stacks = Stack.objects.all().filter(course=course)
     # raise Exception(course_stacks)
     data['course_stacks'] = []
@@ -140,7 +143,8 @@ def challenges(request, course_short_title=None):
             'submission_time': submission_time,
             'currently_active': currently_active,
             'status': stack.get_status_text(user),
-            'points': stack.get_points_earned(user)
+            'points': stack.get_points_earned(user),
+            'is_started': stack.is_started(user),
         })
     return render_to_response('challenges.html', data, context_instance=RequestContext(request))
 
@@ -155,7 +159,7 @@ def create_context_challenge(request, course_short_title):
             challenge = Challenge.objects.get(pk=request.GET.get('id'))
         except:
             raise Http404
-        user = RequestContext(request)['user']
+        user = request.user
         data['challenge'] = challenge
         data['review_questions'] = []
         for review_question in ReviewQuestion.objects.filter(challenge=challenge, visible_to_author=True).order_by("order"):
@@ -177,8 +181,8 @@ def create_context_challenge(request, course_short_title):
 
         if challenge.is_final_challenge():
             data['blocked'] = not challenge.is_enabled_for_user(user)
-            if challenge.is_in_lock_period(RequestContext(request)['user'], course):
-                data['lock'] = challenge.is_in_lock_period(RequestContext(request)['user'], course)
+            if challenge.is_in_lock_period(request.user, course):
+                data['lock'] = challenge.is_in_lock_period(request.user, course)
 #        else:
 #            context_stack = Stack.objects.get(pk=request.GET.get('id'))
 #            data['blocked'] = context_stack.is_blocked(user)
@@ -189,7 +193,9 @@ def create_context_challenge(request, course_short_title):
 @aurora_login_required()
 def challenge(request, course_short_title=None):
     data = create_context_challenge(request, course_short_title)
-    user = RequestContext(request)['user']
+    user = request.user
+    course = data['course']
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
     challenge = data['challenge']
 
     # conditions for an inactive challenge
@@ -209,7 +215,7 @@ def challenge(request, course_short_title=None):
 
 def create_context_view_review(request, data):
     if 'id' in request.GET:
-        user = RequestContext(request)['user']
+        user = request.user
         challenge = Challenge.objects.get(pk=request.GET.get('id'))
         elaboration = Elaboration.objects.filter(challenge=challenge, user=user)[0]
         #TODO: use select related

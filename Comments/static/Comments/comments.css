@@ -131,6 +131,7 @@
 	line-height:17px;
 	padding-top:4px;
 	min-height:40px;
+	word-break: break-word;
 }
 
 .response_body > img, .comment_body > img {
@@ -403,4 +404,12 @@
 	width:100%;
 	text-align:center;
 	font-size:90%;
+}
+
+.fa-arrow-up {
+	cursor:url(/static/img/cursor_upvote.png) 6 6,auto;
+}
+
+.fa-arrow-down {
+	cursor:url(/static/img/cursor_downvote.png) 6 6,auto;
 }

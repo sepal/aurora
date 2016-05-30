@@ -14,13 +14,13 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/dropzone.css" type="text/css" media="screen"/>
 <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/basic.css" type="text/css" media="screen"/>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
-<script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
 <link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
 {% load humanize %}
 {% endblock %}
 
 {% block content %}
+{% if user_enlisted_and_active %}
 {% comments_boilerplate %}
 
 <script type="text/javascript">
@@ -34,7 +34,7 @@
 
 <div id="detail_area">
   <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
-	  
+
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
 	{{ challenge.title|safe }}
 	{% if elaboration.is_submitted %}
@@ -93,7 +93,7 @@
 				start this task
 			</div>
 			{% else %}
-				<div class=" XL" style="color:gray;">This challenge has already ended</div>
+				<div class=" XL" style="color:gray;">This challenge has not yet startet or already ended</div>
 			{% endif %}
 
 		{% endif  %}
@@ -202,15 +202,15 @@
         <div id="{{ review_data.review_id }}" class="review_evaluation_container">
             <div review_id="{{ review_data.review_id }}" appraisal="P"
                  class="review_evaluation positive {% if review_data.evaluation == "P" %} active{% endif %}">
-                ...helped me to improve my work
+                ...helped me improve my work
             </div>
             <div review_id="{{ review_data.review_id }}" appraisal="D"
                  class="review_evaluation neutral {% if review_data.evaluation == "D" %} active{% endif %}">
-                ... was just average
+                ... was ok/average
             </div>
             <div review_id="{{ review_data.review_id }}" appraisal="N"
                  class="review_evaluation negative{% if review_data.evaluation == "N" %} active{% endif %}">
-                ... was meaningless or offensive
+                ... was either minimalist, meaningless or offensive
             </div>
         </div>
 	</div>
@@ -266,4 +266,9 @@
 {% endif %}
   </div>
 </div>
+{% else %}
+
+<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;"> Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr möglich.
+
+{% endif %}
 {% endblock %}

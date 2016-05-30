@@ -1,5 +1,8 @@
 import os
 import djcelery
+from django_markup.filter.markdown_filter import MarkdownMarkupFilter
+from diskurs.markdown.giffer import GifferMarkdownFilter
+
 # Django settings for AuroraProject project.
 
 DEBUG = True
@@ -33,6 +36,20 @@ DATABASES = {
 }
 
 DATABASE_ROUTERS = ['PlagCheck.router.PlagCheckRouter']
+
+MARKUP_FILTER = {
+    'markdown': MarkdownMarkupFilter,
+    'markdown_giffer': GifferMarkdownFilter,
+}
+
+MARKUP_SETTINGS = {
+    'markdown': {
+        'safe_mode': True
+    },
+    'markdown_giffer': {
+        'safe_mode': True
+    }
+}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -116,10 +133,9 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-#AUTHENTICATION_BACKENDS = (
-#    'django.contrib.auth.backends.ModelBackend',
-#    'middleware.DjangoAuthenticationMiddleware.DjangoAuthenticationMiddleware',
-#)
+AUTHENTICATION_BACKENDS = (
+    'middleware.AuroraAuthenticationBackend.AuroraAuthenticationBackend',
+)
 
 ROOT_URLCONF = 'AuroraProject.urls'
 
@@ -161,6 +177,8 @@ INSTALLED_APPS = (
     'Faq',
     'djcelery',
     'PlagCheck',
+    'diskurs',
+    'django_markup',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
@@ -261,7 +279,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "AuroraProject.context_processor.general_context_processor",
     "django.core.context_processors.request",
 )
 
@@ -320,6 +337,41 @@ if DEBUG:
     djcelery.setup_loader()
 
     CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+    def show_toolbar(request):
+        return not request.is_ajax() and 'toolbar' in request.GET
+
+    #INTERNAL_IPS = ('127.0.0.1', '10.0.0.11')
+
+    DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+    MIDDLEWARE_CLASSES += (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'middleware.Profiling.ProfileMiddleware'
+    )
+
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+        'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
+    }
 
 try:
     from local_settings import *
