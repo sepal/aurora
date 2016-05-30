@@ -224,3 +224,10 @@ class Reference(models.Model):
             ret.append((row[0], row[1], row[2]))
 
         return ret
+
+
+class ElaborationStore(models.Model):
+    text = models.TextField()
+    mnr = models.CharField(max_length=100, null=True, unique=True, blank=True)
+    creation_time = models.DateTimeField(auto_now_add=True)
+    submission_time = models.DateTimeField(null=True)
