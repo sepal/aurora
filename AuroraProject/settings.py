@@ -275,13 +275,18 @@ ENDLESS_PAGINATION_NEXT_LABEL = (
     '<div class="paginator next">next <i class="fa fa-angle-double-right"></i></div>'
 )
 
-# PlagCheck settings
+PLAGCHECK = {
+    # a document scanned by PlagCheck needs to have the same or higher similarity percentage
+    # than PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT's value to be reported as a possible
+    # plagiarism.
+    'similarity_threshold': 50,
 
-# a document scanned by PlagCheck needs to have the same or higher similarity percentage
-# than PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT's value to be reported as a possible
-# plagiarism.
-PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT = 50
-PLAGCHECK_DATABASE = 'plagcheck'
+    # discards suspects whose matching hashes count is not greater than this
+    'minimal_match_count': 10,
+
+    # database connection for separation of default database
+    'database': 'plagcheck'
+}
 
 CELERY_ALWAYS_EAGER=False # set to True by unit tests
 CELERY_TASK_SERIALIZER = 'json'

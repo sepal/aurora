@@ -1,4 +1,4 @@
-from AuroraProject.settings import PLAGCHECK_DATABASE
+from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 
 
 class PlagCheckRouter(object):
@@ -7,14 +7,14 @@ class PlagCheckRouter(object):
         #print("read app: %s" % model._meta.app_label)
         if model._meta.app_label == 'PlagCheck':
             #print("select PLAGCHECK db")
-            return PLAGCHECK_DATABASE
+            return plagcheck_settings['database']
         return None
 
     def db_for_write(self, model, **hints):
         #print("write app: %s" % model._meta.app_label)
         if model._meta.app_label == 'PlagCheck':
             #print("select PLAGCHECK db")
-            return PLAGCHECK_DATABASE
+            return plagcheck_settings['database']
         return None
 
     def allow_relation(self, obj1, obj2, **hints):

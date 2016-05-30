@@ -11,7 +11,7 @@ from django.conf import settings
 from django.db.utils import OperationalError
 
 from PlagCheck.models import Reference, Result, Suspect, SuspectState
-from AuroraProject.settings import PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT
+from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 import sherlock
 
 app = Celery('AuroraProject')
@@ -80,7 +80,7 @@ def check(self, **kwargs):
 
                 assert(similarity <= 100)
 
-                if similarity > PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT:
+                if similarity > plagcheck_settings['similarity_threshold'] and match_count > plagcheck_settings['minimal_match_count']:
                     if filter_id is not None:
                         auto_filtered = True
 
