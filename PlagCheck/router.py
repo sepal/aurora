@@ -2,13 +2,18 @@ from AuroraProject.settings import PLAGCHECK_DATABASE
 
 
 class PlagCheckRouter(object):
+
     def db_for_read(self, model, **hints):
+        #print("read app: %s" % model._meta.app_label)
         if model._meta.app_label == 'PlagCheck':
+            #print("select PLAGCHECK db")
             return PLAGCHECK_DATABASE
         return None
 
     def db_for_write(self, model, **hints):
+        #print("write app: %s" % model._meta.app_label)
         if model._meta.app_label == 'PlagCheck':
+            #print("select PLAGCHECK db")
             return PLAGCHECK_DATABASE
         return None
 
@@ -25,7 +30,13 @@ class PlagCheckRouter(object):
         and just there.
         """
         if db == PLAGCHECK_DATABASE:
-            return model._meta.app_label == 'PlagCheck'
+            if model._meta.app_label == 'PlagCheck':
+                #print("Select PLAGCHECK for migration")
+                return True
+            else:
+                #print("Don't Select PLAGCHECK for migration")
+                return False
         elif model._meta.app_label == 'PlagCheck':
+            #print("2 Don't Select PLAGCHECK for migration")
             return False
         return None
