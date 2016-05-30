@@ -11,6 +11,12 @@ class Stack(models.Model):
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
 
+    challenges = models.ManyToManyField(
+        'Challenge.Challenge',
+        through='StackChallengeRelation',
+        through_fields=['stack', 'challenge']
+    )
+
     def get_first_challenge(self):
         for relation in StackChallengeRelation.objects.filter(stack=self):
             return relation.challenge.get_first_challenge()
@@ -22,10 +28,7 @@ class Stack(models.Model):
         return None
 
     def get_challenges(self):
-        challenges = []
-        for relation in StackChallengeRelation.objects.filter(stack=self):
-            challenges.append(relation.challenge)
-        return challenges
+        return self.challenges.all()
 
     def get_challenge_image_urls(self):
         challenge_image_urls = []
@@ -64,6 +67,7 @@ class Stack(models.Model):
             if challenge.is_enabled_for_user(user):
                 available_challenge = challenge
         return available_challenge
+
 
     def get_status_text(self, user):
         last_available_challenge = self.get_last_available_challenge(user)
