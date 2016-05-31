@@ -28,7 +28,7 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from PlagCheck.models import Suspect, Result, Reference, SuspectState, SuspectFilter
+from PlagCheck.models import Suspect, Result, Reference, SuspectState, SuspectFilter, Store
 from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
 from django.db import IntegrityError
 from django.shortcuts import redirect
@@ -983,11 +983,11 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
 
     suspect = Suspect.objects.get(pk=suspect_id)
 
-    docA = Elaboration.objects.get(pk=suspect.doc_id)
-    docB = Elaboration.objects.get(pk=suspect.similar_to_id)
+    docA = Store.objects.get(pk=suspect.stored_doc_id)
+    docB = Store.objects.get(pk=suspect.similar_to_id)
 
-    table = difflib.HtmlDiff(wrapcolumn=70).make_table(docA.elaboration_text.splitlines(),
-                                                        docB.elaboration_text.splitlines())
+    table = difflib.HtmlDiff(wrapcolumn=70).make_table(docA.text.splitlines(),
+                                                        docB.text.splitlines())
 
     show_filtered = int(request.GET.get('show_filtered', 0))
     (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(show_filtered)

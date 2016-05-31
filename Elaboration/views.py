@@ -13,7 +13,6 @@ from Review.models import Review
 from Course.models import Course
 from django.http import Http404
 from FileUpload.models import UploadFile
-import PlagCheck
 from pprint import pprint
 
 @csrf_exempt
@@ -78,8 +77,6 @@ def submit_elaboration(request, course_short_title):
    if elaboration.elaboration_text or UploadFile.objects.filter(elaboration=elaboration).exists():
        elaboration.submission_time = datetime.now()
        elaboration.save()
-
-       # trigger a plagiarism check
-       PlagCheck.tasks.check.delay(doc=elaboration.elaboration_text, doc_id=elaboration.id)
+       elaboration.schedule_plagcheck_verification()
 
        return HttpResponse()

@@ -26,7 +26,7 @@ DATABASES = {
     },
     'plagcheck': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'plagcheck-database.db',
+        'NAME': 'database-plagcheck.db',
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': 'root',
@@ -301,7 +301,7 @@ PLAGCHECK = {
     # discards suspects whose matching hashes count is not greater than this
     'minimal_match_count': 10,
 
-    # database connection for separation of default database
+    # connection name for separation from default database
     'database': 'plagcheck'
 }
 

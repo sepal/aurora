@@ -29,7 +29,7 @@ class PlagCheckRouter(object):
         Make sure only plagcheck migrations get applied on the plagcheck db
         and just there.
         """
-        if db == PLAGCHECK_DATABASE:
+        if db == plagcheck_settings['database']:
             if model._meta.app_label == 'PlagCheck':
                 #print("Select PLAGCHECK for migration")
                 return True

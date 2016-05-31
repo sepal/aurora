@@ -5,7 +5,7 @@ from django.test.utils import override_settings
 
 from PlagCheck.models import Reference, Result, Suspect, SuspectFilter, SuspectState
 from PlagCheck import tasks
-from AuroraProject.settings import PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT
+from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 from ddt import ddt, data
 
 from Elaboration.models import Elaboration
@@ -101,7 +101,7 @@ class PlagCheckTestCase(TestCase):
 
         self.assertEqual(len(ret1['suspects']), 0)
 
-        if expected_similarity > PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT:
+        if expected_similarity > plagcheck_settings['similarity_threshold']:
 
             ret2 = self.import_text("%s_susp.txt" % prefix)
             self.assertGreaterEqual(ret2['suspects'][0].similarity, expected_similarity)

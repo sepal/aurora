@@ -12,6 +12,7 @@ from ReviewAnswer.models import ReviewAnswer
 from collections import Counter
 from taggit.managers import TaggableManager
 from pprint import pprint
+import PlagCheck
 
 
 class Elaboration(models.Model):
@@ -404,3 +405,20 @@ class Elaboration(models.Model):
     def get_last_post_date(self):
         comment = self.comments.latest('post_date')
         return comment.post_date
+
+    def schedule_plagcheck_verification(self, is_revised=False):
+
+        text = self.elaboration_text
+        if is_revised:
+            text = self.revised_elaboration_text
+
+        if self.user.matriculation_number is None:
+            self.user.matriculation_number = str(self.user_id)
+
+        PlagCheck.tasks.check.delay(
+            text=text,
+            doc_id=self.id,
+            mnr=self.user.matriculation_number,
+            submission_time=str(self.submission_time),
+            is_revised=is_revised,
+        )

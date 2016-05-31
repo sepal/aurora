@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import connections
 import PlagCheck
-from AuroraProject.settings import PLAGCHECK_DATABASE
+from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 from Elaboration.models import Elaboration
 
 from PlagCheck.models import *
@@ -22,7 +22,7 @@ class Command(BaseCommand):
         #    'ORDER BY submission_time ASC')
         elaborations = Elaboration.objects.all()
         for elab in elaborations:
-            PlagCheck.tasks.check.delay(doc_id=elab.id, doc=elab.elaboration_text)
+            elab.schedule_plagcheck_verification()
 
         #for row in cursor.fetchall():
-        #    PlagCheck.tasks.check.delay(doc_id=row[0], doc=row[1])
+        #    PlagCheck.tasks.check.delay(doc_id=row[0], stored_doc=row[1])

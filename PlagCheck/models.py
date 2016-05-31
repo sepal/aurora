@@ -12,7 +12,8 @@ from django.utils.encoding import *
 from django.db.models import Lookup
 from django.db.models.fields import Field
 
-from AuroraProject.settings import PLAGCHECK_DATABASE
+from AuroraProject.settings import PLAGCHECK as plagcheck_settings
+from AuroraUser.models import AuroraUser
 
 
 @Field.register_lookup
@@ -26,10 +27,22 @@ class NotEqual(Lookup):
         return '%s <> %s' % (lhs, rhs), params
 
 
+class Store(models.Model):
+    doc_id = models.IntegerField(null=False)
+    text = models.TextField(null=False)
+    mnr = models.CharField(max_length=100, null=False)
+    submission_time = models.DateTimeField(null=False)
+    is_revised = models.BooleanField(null=False)
+
+    def get_user(self):
+        AuroraUser.objects.get(id=self.user_id)
+    user = property(get_user)
+
+
 class Result(models.Model):
     """Just stores the result of a check of one document.
     """
-    doc = models.ForeignKey(Elaboration)
+    stored_doc = models.ForeignKey(Store)
     created = models.DateTimeField(auto_now_add=True, blank=True)
     hash_count = models.IntegerField()
 
@@ -83,8 +96,8 @@ class Suspect(models.Model):
 
     DEFAULT_STATE = SuspectState.SUSPECTED
 
-    doc = models.ForeignKey(Elaboration, related_name='suspected_doc')
-    similar_to = models.ForeignKey(Elaboration, related_name='suspected_similar_to')
+    stored_doc = models.ForeignKey(Store, related_name='suspected_doc')
+    similar_to = models.ForeignKey(Store, related_name='suspected_similar_to')
     similarity = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     result = models.ForeignKey(Result)
@@ -95,7 +108,7 @@ class Suspect(models.Model):
         return self.id
 
     def __str__(self):
-        return "doc:%i similar_to:%i percent:%i state:%s" % (self.doc_id, self.similar_to_id, self.similarity, self.state_enum.name)
+        return "stored_doc:%i similar_to:%i percent:%i state:%s" % (self.stored_doc_id, self.similar_to_id, self.similarity, self.state_enum.name)
 
     @property
     def state_enum(self):
@@ -152,18 +165,18 @@ class SuspectFilter(models.Model):
     this would be especially helpful when filtering reviews, where the questions stay the same for each
     review.
     """
-    doc = models.ForeignKey(Elaboration)
+    stored_doc = models.ForeignKey(Store)
 
     @staticmethod
     def update_filter(suspect):
         if suspect.state is SuspectState.FILTER.value:
             try:
-                SuspectFilter.objects.create(doc_id=suspect.doc_id)
+                SuspectFilter.objects.create(stored_doc_id=suspect.stored_doc_id)
             except IntegrityError:
                 pass
         else:
             try:
-                SuspectFilter.objects.get(doc_id=suspect.doc_id).delete()
+                SuspectFilter.objects.get(stored_doc_id=suspect.stored_doc_id).delete()
             except ObjectDoesNotExist:
                 pass
 
@@ -173,51 +186,51 @@ class Reference(models.Model):
     Holds a hash and links it to the document where it is appearing.
     """
     hash = models.CharField(db_index=True, max_length=255)
-    doc = models.ForeignKey(Elaboration)
+    stored_doc = models.ForeignKey(Store)
 
     # TODO: this causes a integrity error when inserting hashes, why?
     # class Meta:
-    #    unique_together = (("hash", "doc"),)
+    #    unique_together = (("hash", "stored_doc"),)
 
     def __unicode__(self):
         return self.hash
 
     @staticmethod
-    def remove_references(doc_id):
+    def remove_references(stored_doc_id):
         try:
-            Reference.objects.filter(doc_id=doc_id).delete()
+            Reference.objects.filter(stored_doc_id=stored_doc_id).delete()
         except Reference.DoesNotExist:
             pass
 
     @staticmethod
-    def store_references(doc_id, hash_list):
+    def store_references(stored_doc_id, hash_list):
         with transaction.atomic():
             for h in hash_list:
-                Reference.objects.create(hash=h, doc_id=doc_id)
+                Reference.objects.create(hash=h, stored_doc_id=stored_doc_id)
 
     @staticmethod
-    def get_similar_elaborations(doc_id):
+    def get_similar_elaborations(stored_doc_id):
         """
-        Gives a list of similar elaborations in respect to doc_id. The document
-        with doc_id has to be stored into the DB before calling this function.
+        Gives a list of similar elaborations in respect to stored_doc_id. The document
+        with stored_doc_id has to be stored into the DB before calling this function.
 
-        :param doc_id: Document to check against.
+        :param stored_doc_id: Document to check against.
         :return: List of Tuples (similar_doc_id, # similar hashes, filter id)
         """
-        cursor = connections[PLAGCHECK_DATABASE].cursor()
+        cursor = connections[plagcheck_settings['database']].cursor()
 
         # with inner join
-        cursor.execute('SELECT "similar".doc_id, COUNT("similar".doc_id), "filter".id '
+        cursor.execute('SELECT "similar".stored_doc_id, COUNT("similar".stored_doc_id), "filter".id '
                        'FROM ('
-                           'SELECT hash, doc_id '
+                           'SELECT hash, stored_doc_id '
                            'FROM "PlagCheck_reference" '
-                           'WHERE doc_id = %s '
-                           'GROUP BY hash, doc_id'
+                           'WHERE stored_doc_id = %s '
+                           'GROUP BY hash, stored_doc_id'
                            ') as "suspect" '
                        'INNER JOIN "PlagCheck_reference" as "similar" ON "suspect".hash="similar".hash '
-                       'LEFT OUTER JOIN "PlagCheck_suspectfilter" as "filter" ON "similar".doc_id="filter".doc_id '
-                       'WHERE "similar".doc_id != %s '
-                       'GROUP BY "similar".doc_id, "filter".id ', [doc_id, doc_id])
+                       'LEFT OUTER JOIN "PlagCheck_suspectfilter" as "filter" ON "similar".stored_doc_id="filter".stored_doc_id '
+                       'WHERE "similar".stored_doc_id != %s '
+                       'GROUP BY "similar".stored_doc_id, "filter".id ', [stored_doc_id, stored_doc_id])
 
         ret = list()
         for row in cursor.fetchall():
@@ -226,8 +239,3 @@ class Reference(models.Model):
         return ret
 
 
-class ElaborationStore(models.Model):
-    text = models.TextField()
-    mnr = models.CharField(max_length=100, null=True, unique=True, blank=True)
-    creation_time = models.DateTimeField(auto_now_add=True)
-    submission_time = models.DateTimeField(null=True)
