@@ -7,6 +7,7 @@ from enum import IntEnum
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.utils.encoding import *
+import json
 
 
 from django.db.models import Lookup
@@ -30,18 +31,23 @@ class NotEqual(Lookup):
 class Store(models.Model):
     doc_id = models.IntegerField(null=False)
     text = models.TextField(null=False)
-    mnr = models.CharField(max_length=100, null=False)
-    submission_time = models.DateTimeField(null=False)
+    user_id = models.IntegerField(null=True)
+    user_name = models.CharField(max_length=100, null=True)
+    submission_time = models.DateTimeField(null=True)
     is_revised = models.BooleanField(null=False)
 
     def get_user(self):
-        AuroraUser.objects.get(id=self.user_id)
+        return AuroraUser.objects.get(id=self.user_id)
     user = property(get_user)
 
+    def get_json_text(self):
+        return json.dumps({'content': self.text})
+    json_text = property(get_json_text)
 
 class Result(models.Model):
     """Just stores the result of a check of one document.
     """
+
     stored_doc = models.ForeignKey(Store)
     created = models.DateTimeField(auto_now_add=True, blank=True)
     hash_count = models.IntegerField()

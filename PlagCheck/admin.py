@@ -28,7 +28,7 @@ class SuspectsAdmin(PlagCheckModelAdmin):
 
     def link_to_similar_to_id(self, obj):
         link = urlresolvers.reverse("admin:PlagCheck_store_change", args=[obj.similar_to.id])
-        return u'<a href="%s">%s</a>' % (link, obj.stored_doc.id)
+        return u'<a href="%s">%s</a>' % (link, obj.similar_to.id)
     link_to_similar_to_id.allow_tags = True
     link_to_similar_to_id.short_description = 'similar to'
 

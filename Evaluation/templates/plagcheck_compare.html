@@ -1,7 +1,10 @@
 {% load filter %}
+{% load staticfiles %}
 
 {% block additional_headers %}
-  <script type="text/javascript" src="{{ STATIC_URL }}js/info_area.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/info_area.js"></script>
+    <script type="text/javascript" src="{% static "js/jsdiff/diff.js" %}"></script>
+    <link rel="stylesheet" href="{% static "css/plagcheck.css" %}" type="text/css" media="screen"/>
 {% endblock %}
 
 {% block content %}
@@ -41,23 +44,62 @@
             </tr>
             <tr>
                 <td>
-                    Name: {{ suspect.doc.user.nickname }}<br />
-                    Doc ID: {{ suspect.doc_id }}
+                    Name: {{ suspect.stored_doc.user.nickname }}<br />
+                    User ID: {{ suspect.stored_doc.user_id }}<br />
+                    Doc ID: {{ suspect.stored_doc_id }}
                 </td>
                 <td>
                     Name: {{ suspect.similar_to.user.nickname }}<br />
+                    User ID: {{ suspect.similar_to.user_id }}<br />
                     Doc ID: {{ suspect.similar_to_id }}
                 </td>
             </tr>
         </table>
-        <div>
-        <p>Note: this output is produced by the python diff library and not the internal plagcheck library. The python
-        library compares each line with each line which is not the way the plagcheck library detects similarities. Therefore
-        don't rely solely on the coloring and formatting of this output.</p>
+
+        <div id="sides">
+            <div id="left">
+                {% autoescape off %}
+                    {{ suspect.stored_doc.text | safe }}
+                {% endautoescape %}
+            </div>
+            <div id="right">
+            </div>
+
+            <script>
+            {% autoescape off %}
+                var one = {{ suspect.stored_doc.json_text }};
+                var other = {{ suspect.similar_to.json_text }};
+
+                var diff = JsDiff.diffWordsWithSpace(one.content, other.content);
+                var display = document.getElementById('right');
+            {% endautoescape %}
+
+            var text_node = null
+            diff.forEach(function(part){
+                if (part.removed || part.added) {
+                    display.innerHTML += part.value;
+                } else {
+                    display.innerHTML += "<mark>"+part.value+"</mark>";
+                }
+                /**
+                if (part.removed || part.added) {
+                    if (text_node == null) {
+                        text_node += " " + part.value
+                    } else {
+                        text_node = document.createTextNode(part.value)
+                        display.appendChild(text_node);
+                    }
+                } else {
+                    text_node = null;
+                    var span = document.createElement('mark');
+                    var color = 'green';
+                    span.appendChild(document.createTextNode(part.value));
+                    display.appendChild(span);
+                }**/
+            });
+            </script>
+
         </div>
-
-
-        {{ diff_table|safe }}
 
 
 {% endblock %}

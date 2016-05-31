@@ -1,0 +1,16 @@
+#sides{
+    margin:0;
+}
+#left{
+    float:left;
+    width:50%;
+    overflow:auto;
+}
+#right{
+    float:left;
+    width:50%;
+    overflow:auto;
+}
+
+#sides span {
+}
