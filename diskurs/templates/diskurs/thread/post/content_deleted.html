@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="post_header">
+        <span class="user">[deleted]</span>
+        <span class="count">{% if post.filtered_post_set.count > 0 %}<i class="fa fa-comments-o cmtsFA"></i> {{ post.filtered_post_set.count }}{% endif %}</span>
+    </div>
+    <div class="post_content">
+        <p>[deleted]</p>
+    </div>
+    <div class="post_footer">
+        <span class="timestamp" title="{{ post.created_at}} ">{{ post.created_at|timesince }} ago</span>
+    </div>
+</div>
