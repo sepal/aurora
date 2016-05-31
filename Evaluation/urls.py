@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 import Evaluation.views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', Evaluation.views.evaluation, name='home'),
     url(r'^detail$', Evaluation.views.detail, name='detail'),
     url(r'^$', Evaluation.views.back, name='back'),
@@ -40,4 +40,4 @@ urlpatterns = patterns('',
     url(r'^plagcheck/$', Evaluation.views.plagcheck_suspects, name='plagcheck_suspects'),
     url(r'^plagcheck/(?P<suspect_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
     url(r'^plagcheck/(?P<suspect_id>\d+)/save_state/$', Evaluation.views.plagcheck_compare_save_state, name='plagcheck_compare_save_state'),
-)
+]
