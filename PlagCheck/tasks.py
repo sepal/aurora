@@ -46,7 +46,8 @@ def check(self, **kwargs):
 
     :param text -- Content of the document
     :param doc_id -- ID of the document
-    :param mnr -- Matriculation number
+    :param user_id -- ID of the user
+    :param user_name -- Username or matriculation number
     :param submission_time -- Submission time of the document
     :param is_revised -- True if revised_elaboration_text has changed
 

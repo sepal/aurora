@@ -148,14 +148,14 @@ class Challenge(models.Model):
         first = Challenge.objects.raw('''
             WITH RECURSIVE challenge_tree(id, prerequisite_id, depth) AS (
                 SELECT a.id, a.prerequisite_id, 0
-                FROM Challenge_challenge a
+                FROM "Challenge_challenge" a
                 WHERE a.id = %s
             UNION
                 SELECT a.id, a.prerequisite_id, tree.depth + 1
-                FROM Challenge_challenge a, challenge_tree tree
+                FROM "Challenge_challenge" a, challenge_tree tree
                 WHERE tree.prerequisite_id = a.id
             )
-            SELECT * FROM Challenge_challenge WHERE id IN (SELECT id FROM challenge_tree ORDER BY depth DESC LIMIT 1);
+            SELECT * FROM "Challenge_challenge" WHERE id IN (SELECT id FROM challenge_tree ORDER BY depth DESC LIMIT 1);
         ''', [self.id])
         return first[0]
 
@@ -163,14 +163,14 @@ class Challenge(models.Model):
         final = Challenge.objects.raw('''
             WITH RECURSIVE challenge_tree(id, prerequisite_id, depth) AS (
                 SELECT a.id, a.prerequisite_id, 0
-                FROM Challenge_challenge a
+                FROM "Challenge_challenge" a
                 WHERE a.id = %s
             UNION
                 SELECT a.id, a.prerequisite_id, tree.depth + 1
-                FROM Challenge_challenge a, challenge_tree tree
+                FROM "Challenge_challenge" a, challenge_tree tree
                 WHERE tree.id = a.prerequisite_id
             )
-            SELECT * FROM Challenge_challenge WHERE id IN (SELECT id FROM challenge_tree ORDER BY depth DESC LIMIT 1);
+            SELECT * FROM "Challenge_challenge" WHERE id IN (SELECT id FROM challenge_tree ORDER BY depth DESC LIMIT 1);
         ''', [self.id])
         return final[0]
 

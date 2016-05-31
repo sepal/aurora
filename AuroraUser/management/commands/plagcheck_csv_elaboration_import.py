@@ -5,15 +5,18 @@ from Challenge.models import Challenge
 from AuroraUser.models import AuroraUser
 from Elaboration.models import Elaboration
 from django.core.exceptions import ObjectDoesNotExist
+import argparse
+import PlagCheck
+
 
 class Command(BaseCommand):
     help = 'Populates database with demo data'
 
+    def add_arguments(self, parser):
+        parser.add_argument('csv', type=str)
+
     def handle(self, *args, **options):
-        if len(args) < 1:
-            print("usage: force_csv_import CSV_FILE")
-            exit(1)
-        force_csv_import(args[0])
+        force_csv_import(options['csv'])
 
 def readlines(f):
     line = []
@@ -35,18 +38,23 @@ def readlines(f):
             line.append(s)
 
 def add_elaboration(elab, challenge):
-    try:
-        user = AuroraUser.objects.get(username=elab['user'])
-    except ObjectDoesNotExist:
-        user = AuroraUser.objects.create(username=elab['user'], nickname=elab['user'], matriculation_number=elab['user'])
 
-    assert(user is not None)
+    #if is_revised:
+    #    text = self.revised_elaboration_text
 
-    Elaboration.objects.create(challenge=challenge,
-                               user=user,
-                               #creation_time=data['created'],
-                               #submission_time=elab['submitted'],
-                               elaboration_text=elab['text'])
+    #if self.user.matriculation_number is None:
+    #    self.user.matriculation_number = str(self.user_id)
+
+
+    PlagCheck.tasks.check.delay(
+        text=elab['text'],
+        doc_id=elab['id'],
+        user_id=0,
+        user_name=elab['user'],
+        # submission_time=time.strftime('%Y-%m-%dT%H:%M:%SZ', elab['submitted']),
+        submission_time=elab['submitted'],
+        is_revised=False,
+    )
 
 
 def force_csv_import(csv_file, begin_at=0):
@@ -74,13 +82,17 @@ def force_csv_import(csv_file, begin_at=0):
                 elab['user'] = data[2]
                 # eg. 2015-03-30 13:51:05.880115
                 elab['created'] = time.strptime(data[3], "%Y-%m-%d %H:%M:%S.%f")
+
                 if 'None' in data[4]:
                     elab['submitted'] = None
                 else:
                     try:
                         elab['submitted'] = time.strptime(data[4], "%Y-%m-%d %H:%M:%S.%f")
+                        elab['submitted'] = data[4]
                     except ValueError:
                         elab['submitted'] = time.strptime(data[4], "%Y-%m-%d %H:%M:%S")
+                        elab['submitted'] = data[4]
+
                 elab['text'] = data[5]
             except (IndexError, ValueError) as e:
                 print(data)

@@ -15,23 +15,28 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': {
+    'UNUSEDdefault_sqlite': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'database.db',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '8080',                      # Set to empty string for default.
+    },
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'aurora',  # Or path to database file if using sqlite3.
+        'USER': 'aurora',
+        'PASSWORD': 'aurora',
+        'HOST': 'localhost',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
     },
     'plagcheck': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'aurora',  # Or path to database file if using sqlite3.
+        'USER': 'aurora',
+        'PASSWORD': 'aurora',
+        'HOST': 'localhost',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+    },
+    'UNUSEDplagcheck': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'database-plagcheck.db',
-        # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '8080',
     }
 }
 
