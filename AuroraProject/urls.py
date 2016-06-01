@@ -5,6 +5,7 @@ from django.contrib import staticfiles
 from django.contrib import admin
 from django.conf.urls.static import static
 from AuroraProject.settings import MEDIA_ROOT, DEBUG
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 admin.autodiscover()
 
 from AuroraProject import views, settings
@@ -40,7 +41,10 @@ urlpatterns = [
     ])),
 
     url(r'', include('FileUpload.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()
 
 if DEBUG:
     import debug_toolbar
