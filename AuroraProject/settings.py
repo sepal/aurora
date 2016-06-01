@@ -128,7 +128,6 @@ TEMPLATES = [
                 "django.core.context_processors.static",
                 "django.core.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "AuroraProject.context_processor.general_context_processor",
                 "django.core.context_processors.request",
             ],
             'loaders': [
@@ -205,7 +204,7 @@ INSTALLED_APPS = (
     'Slides',
     'Statistics',
     'Notification',
-    'endless_pagination',
+    'el_pagination',
     'taggit',
     'Faq',
     'djcelery',
@@ -303,17 +302,6 @@ else:
     }
 
 LOGIN_URL = '/'
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.request",
-)
 
 ENDLESS_PAGINATION_PER_PAGE = (
     20
