@@ -287,7 +287,7 @@ class Elaboration(models.Model):
 
     @staticmethod
     def get_review_candidate(challenge, user):
-        review_group = user.review_group(course)
+        review_group = user.review_group(challenge.course)
         if review_group == 1:
             return Elaboration.get_random_review_candidate(challenge, user)
         elif review_group == 2:
