@@ -12,7 +12,6 @@ from ReviewAnswer.models import ReviewAnswer
 from collections import Counter
 from taggit.managers import TaggableManager
 from pprint import pprint
-import PlagCheck
 
 
 class Elaboration(models.Model):
@@ -418,7 +417,8 @@ class Elaboration(models.Model):
         if username is None:
             username = "no username"
 
-        PlagCheck.tasks.check.delay(
+        from PlagCheck import tasks
+        tasks.check.delay(
             text=text,
             doc_id=self.id,
             user_id=self.user.id,

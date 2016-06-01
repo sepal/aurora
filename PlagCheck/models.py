@@ -1,21 +1,18 @@
-from django.db import models
-from Elaboration.models import Elaboration
-from django.forms import model_to_dict
-from django.db import connections
-from django.db import transaction
-from enum import IntEnum
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
-from django.utils.encoding import *
 import json
 from collections import OrderedDict
+from enum import IntEnum
 
-
+from django.forms import model_to_dict
+from django.db import models
+from django.db import connections
+from django.db import transaction
+from django.db import IntegrityError
 from django.db.models import Lookup
 from django.db.models.fields import Field
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.encoding import *
 
 from AuroraProject.settings import PLAGCHECK as plagcheck_settings
-from AuroraUser.models import AuroraUser
 
 
 @Field.register_lookup
@@ -38,7 +35,7 @@ class Store(models.Model):
     is_revised = models.BooleanField(null=False)
 
     def get_user(self):
-        return AuroraUser.objects.get(id=self.user_id)
+        return "DEPRECATED"
     user = property(get_user)
 
     def get_clean_text(self):
