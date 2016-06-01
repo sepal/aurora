@@ -55,21 +55,21 @@ def save_elaboration(request, course_short_title):
 @aurora_login_required()
 def submit_elaboration(request, course_short_title):
    if not 'challenge_id' in request.POST:
-       raise Http404
+       raise HttpResponse("missing parameter challenge_id", status=400)
    challenge = Challenge.objects.get(id=request.POST['challenge_id'])
    if not challenge.currently_active:
-       raise Http404
+       raise HttpResponse("challenge is currently not active", status=400)
 
    user = request.user
    course = Course.get_or_raise_404(short_title=course_short_title)
    if not challenge.is_enabled_for_user(user):
-       raise Http404
+       raise HttpResponse("challenge not enabled for user", status=400)
    if challenge.is_final_challenge() and challenge.is_in_lock_period(user, course):
-       raise Http404
+       raise HttpResponse("user is currently locked", status=400)
    elaboration, created = Elaboration.objects.get_or_create(challenge=challenge, user=user)
 
    if elaboration.is_submitted():
-       raise Http404
+       raise HttpResponse("elaboration already submitted", status=400)
 
    elaboration.elaboration_text = request.POST['elaboration_text'] # sanitze here
    elaboration.revised_elaboration_text = elaboration.elaboration_text

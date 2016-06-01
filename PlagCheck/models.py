@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.utils.encoding import *
 import json
+from collections import OrderedDict
 
 
 from django.db.models import Lookup
@@ -40,9 +41,24 @@ class Store(models.Model):
         return AuroraUser.objects.get(id=self.user_id)
     user = property(get_user)
 
+    def get_clean_text(self):
+        return self.text.lstrip('"').rstrip('"')
+    clean_text = property(get_clean_text)
+
     def get_json_text(self):
-        return json.dumps({'content': self.text})
+        return json.dumps({'content': self.clean_text})
     json_text = property(get_json_text)
+
+    def get_document_info(self):
+        info = OrderedDict()
+
+        info['Name'] = self.user_name
+        info['User ID'] = self.user_id
+        info['Elaboration ID'] = self.doc_id
+        info['Submission time'] = self.submission_time
+
+        return info
+    document_info = property(get_document_info)
 
 class Result(models.Model):
     """Just stores the result of a check of one document.
@@ -160,6 +176,18 @@ class Suspect(models.Model):
             pass
 
         return (prev_id, next_id)
+
+    def get_suspect_info(self):
+        info = OrderedDict()
+
+        info['# hashes'] = self.result.hash_count
+        info['# matching hashes'] = self.match_count
+        info['Similarity'] = self.similarity
+        info['Verification time'] = self.created
+
+        return info
+
+    suspect_info = property(get_suspect_info)
 
 
 class SuspectFilter(models.Model):

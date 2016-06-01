@@ -16,90 +16,148 @@
                 <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=next_suspect_id %}?{{ request.GET.urlencode }}">Next</a>
             {% endif %}
         </div>
+
+
+
         <div>
-            <form name="suspect_state" method="post"
-                  action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspect_id=suspect.id %}">
-                <label>Suspect state:</label>
-                <select name="suspect_state_selection" onchange="suspect_state.submit()">
-                    {% for state in suspect_states %}
-                        <option {% if suspect.state_enum.value == state.value %} selected {% endif %}
-                                value="{{ state.value }}">{{ state.name }}</option>
-                    {% endfor %}
-                </select>
-            </form>
-        </div>
-        <div>
-        Result:<br />
-        # hashes: {{ suspect.result.hash_count }}<br />
-        # matching hashes: {{ suspect.match_count }}<br />
-        Similarity: {{ suspect.similarity }}%<br />
-        Date: {{ suspect.result.created }}<br />
-        </div>
-
-
-        <table>
-            <tr>
-                <th>PersonA</th>
-                <th>PersonB</th>
-            </tr>
-            <tr>
-                <td>
-                    Name: {{ suspect.stored_doc.user.nickname }}<br />
-                    User ID: {{ suspect.stored_doc.user_id }}<br />
-                    Doc ID: {{ suspect.stored_doc_id }}
-                </td>
-                <td>
-                    Name: {{ suspect.similar_to.user.nickname }}<br />
-                    User ID: {{ suspect.similar_to.user_id }}<br />
-                    Doc ID: {{ suspect.similar_to_id }}
-                </td>
-            </tr>
-        </table>
-
-        <div id="sides">
-            <div id="left">
-                {% autoescape off %}
-                    {{ suspect.stored_doc.text | safe }}
-                {% endautoescape %}
-            </div>
-            <div id="right">
+            <div id="plagcheck_suspect_info_box" class="plagcheck_compare_info">
+                Verification result:<br />
+                {% for key, value in suspect.suspect_info.items %}
+                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+                {% endfor %}
             </div>
 
-            <script>
+            <div id="plagcheck_suspect_state_info">
+                {% if suspect.state_enum.value == suspect_states_class.SUSPECTED.value %}
+                    The document was marked as SUSPECTED. Please compare the both documents manually and
+                    than decide whether it is really PLAGIARISM or not. If not than choose the appropriate,
+                    so that further actions can be taken afterwards.
+                {% endif %}
+
+                <div id="plagcheck_change_suspect_state">
+                    <form name="suspect_state" method="post"
+                          action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspect_id=suspect.id %}">
+                        <label>Change suspect state:</label>
+                        <select name="suspect_state_selection" onchange="suspect_state.submit()">
+                            {% for state in suspect_states %}
+                                <option {% if suspect.state_enum.value == state.value %} selected {% endif %}
+                                        value="{{ state.value }}">{{ state.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="plagcheck_compare_outer">
+            <div class="plagcheck_compare_label">Suspicious document</div>
+            <div class="plagcheck_compare_info">
+                {% for key, value in suspect.stored_doc.document_info.items %}
+                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+                {% endfor %}
+            </div>
+            <input type="checkbox" id="show_suspect_orig" value="1">Show original</input>
+            <div class="plagcheck_compare_text">
+                <div id="suspect_orig" class="text_disabled"></div>
+                <div id="suspect_processed">
+                    <!--{% autoescape off %}
+                        {{ suspect.stored_doc.clean_text }}
+                    {% endautoescape %}-->
+                </div>
+            </div>
+        </div>
+
+        <div class="plagcheck_compare_outer">
+            <div class="plagcheck_compare_label">Source document</div>
+            <div class="plagcheck_compare_info">
+                {% for key, value in suspect.similar_to.document_info.items %}
+                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+                {% endfor %}
+            </div>
+            <input type="checkbox" id="show_similar_to_orig" value="1">Show original</input>
+            <div class="plagcheck_compare_text">
+                <div id="similar_to_orig" class="text_disabled"></div>
+                <div id="similar_to_processed">
+                </div>
+            </div>
+        </div>
+
+        <script>
+
             {% autoescape off %}
-                var one = {{ suspect.stored_doc.json_text }};
-                var other = {{ suspect.similar_to.json_text }};
-
-                var diff = JsDiff.diffWordsWithSpace(one.content, other.content);
-                var display = document.getElementById('right');
+                var suspect = {{ suspect.stored_doc.json_text }};
+                var similar_to = {{ suspect.similar_to.json_text }};
             {% endautoescape %}
 
-            var text_node = null
-            diff.forEach(function(part){
-                if (part.removed || part.added) {
-                    display.innerHTML += part.value;
-                } else {
-                    display.innerHTML += "<mark>"+part.value+"</mark>";
-                }
-                /**
-                if (part.removed || part.added) {
-                    if (text_node == null) {
-                        text_node += " " + part.value
-                    } else {
-                        text_node = document.createTextNode(part.value)
-                        display.appendChild(text_node);
-                    }
-                } else {
-                    text_node = null;
-                    var span = document.createElement('mark');
-                    var color = 'green';
-                    span.appendChild(document.createTextNode(part.value));
-                    display.appendChild(span);
-                }**/
-            });
-            </script>
+            document.getElementById('similar_to_orig').innerHTML = similar_to.content;
+            document.getElementById('suspect_orig').innerHTML = suspect.content;
 
-        </div>
+
+            var diff = JsDiff.diffWords(suspect.content, similar_to.content);
+
+            var similar_to_processed = document.getElementById('similar_to_processed');
+            var suspect_processed = document.getElementById('suspect_processed');
+
+            diff.forEach(function(part, i){
+                if (!part.removed && !part.added) {
+                    // both sides
+                    similar_to_processed.innerHTML += '<span class="diff_part" id="similar_to_part_'+i+'">' + part.value + '</span>';
+                    suspect_processed.innerHTML += '<span class="diff_part" id="suspect_part_'+i+'">' + part.value + '</span>';
+                } else if (!part.removed && part.added) {
+                    similar_to_processed.innerHTML += part.value;
+                } else if (part.removed && !part.added) {
+                    suspect_processed.innerHTML += part.value;
+                }
+            });
+
+            $('#show_suspect_orig').change(function() {
+                if (this.checked) {
+                    $('#suspect_processed').addClass("text_disabled");
+                    $('#suspect_orig').removeClass("text_disabled");
+                } else {
+                    $('#suspect_processed').removeClass("text_disabled");
+                    $('#suspect_orig').addClass("text_disabled");
+                }
+            });
+
+            $('#show_similar_to_orig').change(function() {
+                if (this.checked) {
+                    $('#similar_to_processed').addClass("text_disabled");
+                    $('#similar_to_orig').removeClass("text_disabled");
+                } else {
+                    $('#similar_to_processed').removeClass("text_disabled");
+                    $('#similar_to_orig').addClass("text_disabled");
+                }
+            });
+
+
+
+            $(".diff_part").on( "mouseenter mouseleave", function(event) {
+                var id_str = $(this).attr('id');
+                var id_str_parts = id_str.split('_part_');
+                var part_type = id_str_parts[0];
+                var part_id = id_str_parts[1];
+
+                var other_part_type = "similar_to";
+                if (part_type == "similar_to") {
+                    other_part_type = "suspect";
+                }
+                var other_part = $('#'+other_part_type+'_part_'+part_id);
+
+                console.log("part_type: "+part_type+", part_id: "+part_id+", other_part_type: "+other_part_type+" other_part: "+other_part);
+
+                if (event.type == "mouseenter") {
+                    other_part.addClass("diff_part_hightlight");
+                    $(this).addClass("diff_part_hightlight");
+                } else {
+                    other_part.removeClass("diff_part_hightlight");
+                    $(this).removeClass("diff_part_hightlight");
+                }
+            });
+
+
+        </script>
 
 
 {% endblock %}

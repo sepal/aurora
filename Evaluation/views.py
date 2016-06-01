@@ -997,6 +997,7 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
         'diff_table': table,
         'suspect': suspect,
         'suspect_states': SuspectState.states(),
+        'suspect_states_class': SuspectState.__members__,
         'next_suspect_id': next_suspect_id,
         'prev_suspect_id': prev_suspect_id,
     }

@@ -1,16 +1,55 @@
-#sides{
-    margin:0;
-}
-#left{
-    float:left;
-    width:50%;
-    overflow:auto;
-}
-#right{
-    float:left;
-    width:50%;
-    overflow:auto;
+.plagcheck_compare_outer {
+    width: 50%;
+    float: left;
+    overflow: auto;
 }
 
-#sides span {
+.plagcheck_compare_outer .plagcheck_compare_label {
+    font-weight: bold;
+    text-align: center;
+}
+
+.plagcheck_compare_outer .plagcheck_compare_text {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#plagcheck_suspect_info_box {
+    float: left;
+    width: 50%;
+}
+
+#plagcheck_suspect_state_info {
+    float: left;
+    width: 40%;
+}
+
+.plagcheck_compare_info {
+    padding: 10px;
+}
+
+.plagcheck_compare_info .info label {
+    font-weight: bold;
+}
+
+.plagcheck_compare_outer .plagcheck_compare_text .diff_part {
+    background-color: yellow;
+    display: inline !important;
+}
+
+.diff_part, .diff_part p, .diff_part li {
+    background-color: yellow;
+    display: inline;
+}
+
+.diff_part_hightlight, .diff_part_hightlight p, .diff_part_hightlight ul li, .diff_part_hightlight li {
+    background-color: orange !important;
+}
+
+#plagcheck_change_suspect_state {
+
+}
+
+.text_disabled {
+    display: none;
 }
