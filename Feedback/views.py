@@ -9,6 +9,11 @@ def post_form(request, course_short_title):
     course = Course.get_or_raise_404(course_short_title)
     return render(request, 'Feedback/post.html', {'course': course})
 
+@login_required
+def success(request, course_short_title):
+    course = Course.get_or_raise_404(course_short_title)
+    return render(request, 'Feedback/message.html', {'course': course})
+
 @csrf_exempt
 def new(request, course_short_title):
     course = Course.get_or_raise_404(course_short_title)

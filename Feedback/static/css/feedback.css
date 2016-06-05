@@ -23,6 +23,7 @@
 .feedback__form-element__description {
     font-size: 12px;
     color: #999;
+    margin: 3px 0;
 }
 
 .feedback__close {
@@ -43,12 +44,6 @@ input[type=text], textarea {
     padding: 3px;
 }
 
-input[type=submit] {
-    background: #f0f0f0;
-    border: none;
-    border-bottom: 2px solid #999;
-}
-
 input[type=file] {
     margin: 7px 0;
 }
@@ -61,6 +56,10 @@ input[type=file] {
     padding: 0.5em;
     border-left: 1px solid white;
     border-right: 1px solid white;
+    background: #f0f0f0;
+    border: none;
+    border-bottom: 2px solid #999;
+    cursor: pointer;
 }
 
 .feedback__tabs {
@@ -90,4 +89,19 @@ input[type=file] {
 
 .feedback__tabs__tab:nth-child(1) {
     margin-left: 0;
+}
+
+.feedback__icon {
+    font-size: 3rem;
+    line-height: 3rem;
+}
+
+.feedback--success {
+    text-align: center;
+}
+
+.feedback--success h1 {
+    font-size: 2rem;
+    line-height: 3rem;
+    margin: 1rem 0;
 }

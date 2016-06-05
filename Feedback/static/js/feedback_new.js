@@ -1,7 +1,11 @@
+"use strict";
+
 $(function () {
-  var action = $(".feedback form").prop("action");
-  action += "?redirect=" + window.location.href;
-  $(".feedback form").attr("action", action);
+  if ($(".feedback form")) {
+    var action = $(".feedback form").prop("action");
+    action += "?redirect=" + window.location.href + "#feedback";
+    $(".feedback form").attr("action", action);
+  }
 
   $(".feedback__close").click(function (event) {
     event.preventDefault();
