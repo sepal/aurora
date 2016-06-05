@@ -1,8 +1,9 @@
 <div class="feedback">
   <div class="feedback__content">
     <div class="feedback__close"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
-    <form method="POST" action="{{ course_short_title }}/feedback/new">
+    <form method="POST" action="/{{ course.short_title }}/feedback/new">
       {% csrf_token %}
+      <input name="location" class="feedback__location" type="hidden" value="">
       <div class="feedback__form-element feedback__form-element--tabs">
         <ul class="feedback__tabs">
           <li class="feedback__tabs__tab feedback__tabs__tab--active" data-value="bug">
@@ -18,7 +19,7 @@
             <i class="fa fa-lock" aria-hidden="true"></i> Security
           </li>
         </ul>
-        <select>
+        <select name="category">
           <option value="bug">Bug</option>
           <option value="feedback">Feedback</option>
           <option value="feature_request">Feature request</option>

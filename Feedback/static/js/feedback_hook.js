@@ -3,7 +3,7 @@ $(function () {
     event.preventDefault();
 
     $.ajax({
-      url: "/gsi/feedback/new",
+      url: "/gsi/feedback/post_form",
       cache: false,
       success: function (html) {
         $('body').append(html);
