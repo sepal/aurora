@@ -1,0 +1,29 @@
+<div class="feedback">
+  <div class="feedback__content">
+    <div class="feedback__close"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="feedback__form-element feedback__form-element--tabs">
+        <select>
+          <option>Bug</option>
+          <option>Feedback</option>
+          <option>Feature Request</option>
+          <option>Security</option>
+        </select>
+      </div>
+      <div class="feedback__form-element">
+        <label for="title">Title</label><br/>
+        <input name="title" type="text">
+
+      </div>
+      <div class="feedback__form-element">
+        <label for="description">Description</label><br/>
+        <textarea name="description"></textarea>
+      </div>
+      <div class="feedback__form-element">
+        <input type="submit" />
+      </div>
+    </form>
+  </div>
+</div>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/feedback.css" type="text/css" media="screen"/>
