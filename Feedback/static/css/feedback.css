@@ -36,3 +36,10 @@
 input[type=text], textarea {
     width: 100%;
 }
+
+input[type=submit] {
+    float: right;
+    padding: 0.5em;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
