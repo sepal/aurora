@@ -1,7 +1,7 @@
 <div class="feedback">
   <div class="feedback__content">
     <div class="feedback__close"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
-    <form method="post">
+    <form method="POST" action="{{ course_short_title }}/feedback/new">
       {% csrf_token %}
       <div class="feedback__form-element feedback__form-element--tabs">
         <ul class="feedback__tabs">
@@ -26,12 +26,12 @@
         </select>
       </div>
       <div class="feedback__form-element">
-        <label for="title">Title</label><br/>
+        <label for="title">Title</label><span class="feedback__form-element__required">*</span><br/>
         <input name="title" type="text">
         <div class="feedback__form-element__description">Give your feedback a one line title.</div>
       </div>
       <div class="feedback__form-element">
-        <label for="description">Description</label><br/>
+        <label for="description">Description</label><span class="feedback__form-element__required">*</span><br/>
         <textarea name="description" rows="6"></textarea>
         <div class="feedback__form-element__description">Here you can provide a more detailed description.</div>
       </div>
@@ -42,6 +42,9 @@
       </div>
       <div class="feedback__form-element feedback__form-element--submit">
         <input type="submit" value="Submit" />
+      </div>
+      <div class="feedback__form-element">
+        <div class="feedback__form-element__description">* this elements are required</div>
       </div>
     </form>
   </div>
