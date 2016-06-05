@@ -4,26 +4,47 @@
     <form method="post">
       {% csrf_token %}
       <div class="feedback__form-element feedback__form-element--tabs">
+        <ul class="feedback__tabs">
+          <li class="feedback__tabs__tab feedback__tabs__tab--active" data-value="bug">
+            <i class="fa fa-bug" aria-hidden="true"></i> Bug
+          </li>
+          <li class="feedback__tabs__tab" data-value="feedback">
+            <i class="fa fa-comment" aria-hidden="true"></i> Feedback
+          </li>
+          <li class="feedback__tabs__tab" data-value="feature_request">
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i> Feature request
+          </li>
+          <li class="feedback__tabs__tab" data-value="security">
+            <i class="fa fa-lock" aria-hidden="true"></i> Security
+          </li>
+        </ul>
         <select>
-          <option>Bug</option>
-          <option>Feedback</option>
-          <option>Feature Request</option>
-          <option>Security</option>
+          <option value="bug">Bug</option>
+          <option value="feedback">Feedback</option>
+          <option value="feature_request">Feature request</option>
+          <option value="security">Security</option>
         </select>
       </div>
       <div class="feedback__form-element">
         <label for="title">Title</label><br/>
         <input name="title" type="text">
-
+        <div class="feedback__form-element__description">Give your feedback a one line title.</div>
       </div>
       <div class="feedback__form-element">
         <label for="description">Description</label><br/>
-        <textarea name="description"></textarea>
+        <textarea name="description" rows="6"></textarea>
+        <div class="feedback__form-element__description">Here you can provide a more detailed description.</div>
       </div>
       <div class="feedback__form-element">
-        <input type="submit" />
+        <label for="description">Screenshot</label><br/>
+        <input type="file" accept="image/*">
+        <div class="feedback__form-element__description">Upload a an optional screenshot.</div>
+      </div>
+      <div class="feedback__form-element feedback__form-element--submit">
+        <input type="submit" value="Submit" />
       </div>
     </form>
   </div>
 </div>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/feedback.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="{{ STATIC_URL }}js/feedback_new.js"></script>
