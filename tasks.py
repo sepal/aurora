@@ -2,7 +2,7 @@ from invoke import run, task, exceptions
 
 @task
 def create_plagcheck_db():
-    run('python manage.py syncdb --database=plagcheck --noinput')
+    run('python manage.py migrate --database=plagcheck --noinput')
 
 @task
 def celery():
@@ -18,7 +18,7 @@ def venv():
 
 @task
 def deps():
-    run('pip install --upgrade pip')
+    run('pip install --upgrade pip wheel distribute')
     run('pip install --upgrade -r requirements.txt -r requirements_dev.txt')
 
     try:
@@ -27,7 +27,7 @@ def deps():
         run('cd PlagCheck/hashing/sherlock && python setup.py install')
 
 @task
-def clean(plagcheck=False, migrate=False, demo=True):
+def clean(plagcheck=False, migrate=True, demo=True):
     """
     Wipe databases and recreate them with following options.
 
@@ -37,17 +37,14 @@ def clean(plagcheck=False, migrate=False, demo=True):
     """
     run('rm -f database.db')
 
-    result = run('python manage.py syncdb --noinput')
-    if result.return_code is not 0:
-        raise exceptions.Failure(result)
-
     if plagcheck:
         run('rm -f database-plagcheck.db')
         create_plagcheck_db()
 
-    if migrate:
-        run('python manage.py makemigrations')
-        run('python manage.py migrate')
+    run('python manage.py migrate')
 
     if demo:
         run('python manage.py populate_demo_data')
+
+    run('python manage.py collectstatic --clear --noinput')
+    run('python manage.py collectstatic --noinput')

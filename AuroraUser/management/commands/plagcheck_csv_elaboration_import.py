@@ -6,7 +6,7 @@ from AuroraUser.models import AuroraUser
 from Elaboration.models import Elaboration
 from django.core.exceptions import ObjectDoesNotExist
 import argparse
-import PlagCheck
+from PlagCheck import tasks
 
 
 class Command(BaseCommand):
@@ -46,7 +46,7 @@ def add_elaboration(elab, challenge):
     #    self.user.matriculation_number = str(self.user_id)
 
 
-    PlagCheck.tasks.check.delay(
+    tasks.check.delay(
         text=elab['text'],
         doc_id=elab['id'],
         user_id=0,
