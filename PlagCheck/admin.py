@@ -8,16 +8,19 @@ class PlagCheckModelAdmin(admin.ModelAdmin):
     pass
 
 class ReferenceAdmin(PlagCheckModelAdmin):
-    list_display = ('hash', 'stored_doc_id', )
+    #list_display = ('hash', 'stored_doc_id', )
+    list_display = ('hash',)
 
 
 class ResultAdmin(PlagCheckModelAdmin):
-    list_display = ('stored_doc_id', 'hash_count')
+    #list_display = ('stored_doc_id', 'hash_count')
+    list_display = ('hash_count',)
 
 
 class SuspectsAdmin(PlagCheckModelAdmin):
     list_filter = ('state', )
-    list_display = ('id', 'link_to_stored_doc_id', 'link_to_similar_to_id', 'hash_count', 'match_count', 'similarity', 'state')
+    #list_display = ('id', 'link_to_stored_doc_id', 'link_to_similar_to_id', 'hash_count', 'match_count', 'similarity', 'state')
+    list_display = ('id', 'hash_count', 'match_count', 'similarity', 'state')
     raw_id_fields = ('stored_doc', 'similar_to',)
 
     def link_to_stored_doc_id(self, obj):
@@ -36,7 +39,8 @@ class SuspectsAdmin(PlagCheckModelAdmin):
         return obj.result.hash_count
 
 class SuspectFilterAdmin(PlagCheckModelAdmin):
-    list_display = ('id', 'stored_doc_id')
+    #list_display = ('id', 'stored_doc_id')
+    list_display = ('id',)
 
 class StoreAdmin(PlagCheckModelAdmin):
     list_display = ('id', 'doc_id')

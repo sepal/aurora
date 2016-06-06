@@ -32,7 +32,7 @@ class Store(models.Model):
     user_id = models.IntegerField(null=True)
     user_name = models.CharField(max_length=100, null=True)
     submission_time = models.DateTimeField(null=True)
-    is_revised = models.BooleanField(null=False)
+    is_revised = models.BooleanField(null=False, default=False)
 
     def get_user(self):
         return "DEPRECATED"
