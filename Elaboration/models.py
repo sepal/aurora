@@ -362,7 +362,7 @@ class Elaboration(models.Model):
 
         candidates = (
             Elaboration.objects
-            .filter(challenge=challenge, submission_time__isnull=True, user__is_staff=False, user_id__in=possible_user_ids)
+            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids)
             .annotate(num_reviews=Count('review'))
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
@@ -376,7 +376,11 @@ class Elaboration(models.Model):
             logger.info('[ENOUGH REVIEWS] User ' + str(user.id) + ' has already written 2 lower-karma reviews for ' + challenge.title)
             return Elaboration.get_random_review_candidate(challenge, user)
 
-        candidate       = candidates[0]
+        candidate = candidates[0]
+        if candidate.number_of_reviews() >= 2:
+            logger.info('[ENOUGH REVIEWS] All Elaboration already have 2 or more reviews, falling back to random')
+            return Elaboration.get_random_review_candidate(challenge, user)
+
         user_karma      = user.review_karma(challenge.course)
         candidate_karma = candidate.user.review_karma(challenge.course)
 
@@ -416,7 +420,7 @@ class Elaboration(models.Model):
         candidates = (
             Elaboration.objects
             .annotate(num_reviews=Count('review'))
-            .filter(challenge=challenge, submission_time__isnull=True, user__is_staff=False, user_id__in=possible_user_ids, num_reviews__lt=1)
+            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids, num_reviews__lt=1)
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
         )
@@ -432,6 +436,9 @@ class Elaboration(models.Model):
         # Sort candidates based on review karma
         candidates = list(candidates)
         candidates.sort(key=lambda elaboration: elaboration.user.review_karma(challenge.course))
+
+        for c in candidates:
+            print(c.number_of_reviews())
 
         # Separate them into users with lower and higher karma than the current user
         # The separated list are already sorted by karma

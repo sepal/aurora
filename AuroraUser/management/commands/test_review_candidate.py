@@ -31,9 +31,10 @@ def test_review_candidate():
 
     # elab = Elaboration.get_lower_karma_review_candidate(challenge, user)
     elab = Elaboration.get_similar_karma_review_candidate(challenge, user)
+    # elab = Elaboration.get_random_review_candidate(challenge, user)
 
     candidate = elab['candidate']
-    print('Chosen: ')
+    print('Chosen by: ' + elab['chosen_by'])
     print(candidate.id)
     print(candidate.number_of_reviews())
     print(candidate.is_submitted())
