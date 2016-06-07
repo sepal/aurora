@@ -318,6 +318,7 @@ class Elaboration(models.Model):
             .exclude(id__in=already_submitted_reviews_ids)
         ).order_by('num_reviews')
 
+
         # Separate candidates
         old_enough_candidates, newer_candidates = [], []
         for candidate in candidates:
@@ -328,7 +329,15 @@ class Elaboration(models.Model):
         elif len(newer_candidates) > 0:
             chosen_candidate = newer_candidates[0]
         else:
-            chosen_candidate = None
+            # Fall back to dummy elaborations
+            candidates = (
+                Elaboration.objects
+                .filter(challenge=challenge, submission_time__isnull=False)
+                .annotate(num_reviews=Count('review'))
+                .exclude(user=user)
+                .exclude(id__in=already_submitted_reviews_ids)
+            ).order_by('num_reviews')
+            chosen_candidate = candidates[0]
 
         return { 'chosen_by': 'random', 'candidate': chosen_candidate }
 
@@ -456,9 +465,9 @@ class Elaboration(models.Model):
         if len(flat_candidates) > 1:
             # Choose one of the first 2 candidates at random
             # Candidate at [0] is the closest avaiable candidate with lower karma while candidate at [1] is the closest with higher karma
-            candidate = candidates[randint(0,1)]
+            candidate = flat_candidates[randint(0,1)]
         else:
-            candidate = candidates[0]
+            candidate = flat_candidates[0]
 
         user_karma      = user.review_karma(challenge.course)
         candidate_karma = candidate.user.review_karma(challenge.course)
@@ -469,7 +478,7 @@ class Elaboration(models.Model):
                     ', challenge: ' + challenge.title
                     )
 
-        return { 'chosen_by': 'similar-karma', 'candidate': candidates[0] }
+        return { 'chosen_by': 'similar-karma', 'candidate': candidate }
 
     def get_success_reviews(self):
         return Review.objects.filter(elaboration=self, submission_time__isnull=False, appraisal=Review.SUCCESS)

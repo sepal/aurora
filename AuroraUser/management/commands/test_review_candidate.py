@@ -26,18 +26,23 @@ def test_review_candidate():
     # test_cases = 0
 
 
-    user = AuroraUser.objects.get(id=352)
-    challenge = Challenge.objects.get(id=23)
+    user = AuroraUser.objects.get(id=236)
+    challenge = Challenge.objects.get(id=89)
 
+    elab = Elaboration.get_review_candidate(challenge, user)
+
+    #
     # elab = Elaboration.get_lower_karma_review_candidate(challenge, user)
-    elab = Elaboration.get_similar_karma_review_candidate(challenge, user)
+    # elab = Elaboration.get_similar_karma_review_candidate(challenge, user)
     # elab = Elaboration.get_random_review_candidate(challenge, user)
-
+    #
     candidate = elab['candidate']
     print('Chosen by: ' + elab['chosen_by'])
     print(candidate.id)
     print(candidate.number_of_reviews())
     print(candidate.is_submitted())
+
+
 
 
 
