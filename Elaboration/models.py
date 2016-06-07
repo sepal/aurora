@@ -362,7 +362,7 @@ class Elaboration(models.Model):
 
         candidates = (
             Elaboration.objects
-            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids)
+            .filter(challenge=challenge, submission_time__isnull=True, user__is_staff=False, user_id__in=possible_user_ids)
             .annotate(num_reviews=Count('review'))
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
@@ -415,7 +415,8 @@ class Elaboration(models.Model):
 
         candidates = (
             Elaboration.objects
-            .filter(challenge=challenge, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids)
+            .annotate(num_reviews=Count('review'))
+            .filter(challenge=challenge, submission_time__isnull=True, user__is_staff=False, user_id__in=possible_user_ids, num_reviews__lt=1)
             .exclude(user=user)
             .exclude(id__in=already_submitted_reviews_ids)
         )
@@ -438,6 +439,8 @@ class Elaboration(models.Model):
         lower_candidates, higher_candidates = [], []
         for candidate in candidates:
             lower_candidates.append(candidate) if candidate.user.review_karma(challenge.course) <= user_karma else higher_candidates.append(candidate)
+
+        lower_candidates.reverse()
 
         # Zip them together and flatten them
         zipped_candidates = zip(lower_candidates, higher_candidates)

@@ -20,21 +20,38 @@ class Command(BaseCommand):
 
 
 def test_review_candidate():
-    found_lower   = 0
-    found_similar = 0
-    found_random  = 0
-    test_cases = 0
-    for course in Course.objects.all():
+    # found_lower   = 0
+    # found_similar = 0
+    # found_random  = 0
+    # test_cases = 0
+
+
+    user = AuroraUser.objects.get(id=352)
+    challenge = Challenge.objects.get(id=23)
+
+    # elab = Elaboration.get_lower_karma_review_candidate(challenge, user)
+    elab = Elaboration.get_similar_karma_review_candidate(challenge, user)
+
+    candidate = elab['candidate']
+    print('Chosen: ')
+    print(candidate.id)
+    print(candidate.number_of_reviews())
+    print(candidate.is_submitted())
+
+
+
+
+    # for course in Course.objects.all():
         # print('Checking Course: ' + course.short_title)
         # print ('Missing reviews: ' + str(Elaboration.get_missing_reviews(course).count()))
 
-        for elaboration in Elaboration.get_missing_reviews(course):
-            test_cases += 2
-            challenge = elaboration.challenge
-            user = elaboration.user
+        # for elaboration in Elaboration.get_missing_reviews(course):
+        #     test_cases += 2
+        #     challenge = elaboration.challenge
+        #     user = elaboration.user
 
             # lower_review   = Elaboration.get_lower_karma_review_candidate(challenge, user)
-            similar_review = Elaboration.get_similar_karma_review_candidate(challenge, user)
+            # similar_review = Elaboration.get_similar_karma_review_candidate(challenge, user)
 
             # if lower_review['chosen_by'] != 'random':
             #     found_lower += 1
