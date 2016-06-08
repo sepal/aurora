@@ -92,19 +92,13 @@ class SuspectState(IntEnum):
     """SUSPECTED: Default state of a possible plagiarism document.
     PLAGIARISM: The suspected document is plagiarism.
     FALSE_POSITIVE: No plagiarism at all, could be improved by algorithm
-    FILTER: Use the suspected document to filter future documents. Which means filters
-    cannot be applied to already checked documents.
-    AUTO_FILTERED: Automatically given state when suspect has been filtered out by
-    previous filters.
     CITED: The suspected document contained a ordinary citation to the similar document.
     """
 
     SUSPECTED = 0
     PLAGIARISM = 1
     FALSE_POSITIVE = 2
-    FILTER = 3
-    AUTO_FILTERED = 4
-    CITED = 5
+    CITED = 3
 
     @staticmethod
     def states():
@@ -124,9 +118,6 @@ class SuspectState(IntEnum):
 class Suspect(models.Model):
     """Stores the result of a check against a individual document, resulting
     in a plagiarism suspect because the similarity reached its threshold value.
-
-    If the suspected document hashes match with another suspected document hashes,
-    whose state is set to FILTER, then the first document get the state AUTO_FILTERED.
     """
 
     DEFAULT_STATE = SuspectState.SUSPECTED
@@ -163,28 +154,20 @@ class Suspect(models.Model):
         """
         self.state = SuspectState(int(value)).value
 
-    def get_prev_next(self, show_filtered=False):
+    def get_prev_next(self):
         """
-        Provides the ids to the next and previous Suspect object, depending
-        on the show_filtered value.
-        :param show_filtered: True if auto filtered Suspects should be taken into account.
+        Provides the ids to the next and previous Suspect object.
         :return: Tuple (previous_id, next_id)
         """
         next_id = None
         try:
-            if show_filtered:
-                next_id = self.get_next_by_created().id
-            else:
-                next_id = self.get_next_by_created(state__ne=SuspectState.AUTO_FILTERED.value).id
+            next_id = self.get_next_by_created().id
         except ObjectDoesNotExist:
             pass
 
         prev_id = None
         try:
-            if show_filtered:
-                prev_id = self.get_previous_by_created().id
-            else:
-                prev_id = self.get_previous_by_created(state__ne=SuspectState.AUTO_FILTERED.value).id
+            prev_id = self.get_previous_by_created().id
         except ObjectDoesNotExist:
             pass
 
@@ -201,31 +184,6 @@ class Suspect(models.Model):
         return info
 
     suspect_info = property(get_suspect_info)
-
-
-class SuspectFilter(models.Model):
-    """Provides filtering against a whole document, usually a suspected document is added
-    as a filter. For a suspected document to be filtered it needs to match a filtered document
-    with a similarity greater then the similarity threshold.
-
-    TODO: implement filtering based on hashes, so that only common parts between two document can be filtered.
-    this would be especially helpful when filtering reviews, where the questions stay the same for each
-    review.
-    """
-    stored_doc = models.ForeignKey(Store)
-
-    @staticmethod
-    def update_filter(suspect):
-        if suspect.state is SuspectState.FILTER.value:
-            try:
-                SuspectFilter.objects.create(stored_doc_id=suspect.stored_doc_id)
-            except IntegrityError:
-                pass
-        else:
-            try:
-                SuspectFilter.objects.get(stored_doc_id=suspect.stored_doc_id).delete()
-            except ObjectDoesNotExist:
-                pass
 
 
 class Reference(models.Model):
@@ -262,12 +220,12 @@ class Reference(models.Model):
         with stored_doc_id has to be stored into the DB before calling this function.
 
         :param stored_doc_id: Document to check against.
-        :return: List of Tuples (similar_doc_id, # similar hashes, filter id)
+        :return: List of Tuples (similar_doc_id, # similar hashes)
         """
         cursor = connections[plagcheck_settings['database']].cursor()
 
         # with inner join
-        cursor.execute('SELECT "similar".stored_doc_id, COUNT("similar".stored_doc_id), "filter".id '
+        cursor.execute('SELECT "similar".stored_doc_id, COUNT("similar".stored_doc_id) '
                        'FROM ('
                            'SELECT hash, stored_doc_id '
                            'FROM "PlagCheck_reference" '
@@ -275,13 +233,22 @@ class Reference(models.Model):
                            'GROUP BY hash, stored_doc_id'
                            ') as "suspect" '
                        'INNER JOIN "PlagCheck_reference" as "similar" ON "suspect".hash="similar".hash '
-                       'LEFT OUTER JOIN "PlagCheck_suspectfilter" as "filter" ON "similar".stored_doc_id="filter".stored_doc_id '
                        'WHERE "similar".stored_doc_id != %s '
-                       'GROUP BY "similar".stored_doc_id, "filter".id ', [stored_doc_id, stored_doc_id])
+                       'GROUP BY "similar".stored_doc_id ', [stored_doc_id, stored_doc_id])
+
+        #cursor.execute('SELECT doc_id, COUNT(doc_id) '
+        #               'FROM ('
+        #                   'SELECT id as src_id, hash as src_hash, doc_id as src_doc_id '
+        #                   'FROM Plagcheck_reference '
+        #                   'WHERE doc_id = %s) as new '
+        #               'INNER JOIN Plagcheck_reference '
+        #               'ON new.src_hash=hash '
+        #               'WHERE doc_id != %s '
+        #               'GROUP BY doc_id', [doc_id, doc_id])
 
         ret = list()
         for row in cursor.fetchall():
-            ret.append((row[0], row[1], row[2]))
+            ret.append((row[0], row[1]))
 
         return ret
 

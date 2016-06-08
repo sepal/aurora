@@ -27,9 +27,7 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from PlagCheck.models import Suspect, Result, Reference, SuspectState, SuspectFilter, Store
-from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
-from django.db import IntegrityError
+from PlagCheck.models import Suspect, Result, Reference, SuspectState
 from django.shortcuts import redirect
 
 # TODO: Use same pagination for all views, see django pagination class
@@ -918,11 +916,7 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
 
     suspect = Suspect.objects.get(pk=suspect_id)
 
-    docA = suspect.stored_doc
-    docB = suspect.similar_to
-
-    show_filtered = int(request.GET.get('show_filtered', 0))
-    (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(show_filtered)
+    (prev_suspect_id, next_suspect_id) = suspect.get_prev_next()
 
     similar_to_has_elaboration = False
     if suspect.similar_to.was_submitted_during(course):

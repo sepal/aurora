@@ -38,10 +38,6 @@ class SuspectsAdmin(PlagCheckModelAdmin):
     def hash_count(self, obj):
         return obj.result.hash_count
 
-class SuspectFilterAdmin(PlagCheckModelAdmin):
-    #list_display = ('id', 'stored_doc_id')
-    list_display = ('id',)
-
 class StoreAdmin(PlagCheckModelAdmin):
     list_display = ('id', 'elaboration_id')
 
@@ -50,4 +46,3 @@ admin.site.register(Store, StoreAdmin)
 admin.site.register(Reference, ReferenceAdmin)
 admin.site.register(Result, ResultAdmin)
 admin.site.register(Suspect, SuspectsAdmin)
-admin.site.register(SuspectFilter, SuspectFilterAdmin)

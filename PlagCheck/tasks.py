@@ -79,24 +79,21 @@ def check(self, **kwargs):
             # of matches for each other document. This returns a list
             # of possible matching documents.
             similar_elaborations = Reference.get_similar_elaborations(stored_doc.id)
-            for (similar_doc_id, match_count, filter_id) in similar_elaborations:
+            for (similar_doc_id, match_count) in similar_elaborations:
                 similarity = round((100.0/hash_count) * match_count, 4)
 
                 if similarity > 100:
-                    raise PlagcheckError('computed similarity is greated than 100% ({0}). doc_id={5}, similar_doc_id={1}, hash_count={4}, match_count={2}, filter_id={3}'.format(similarity, similar_doc_id, match_count, filter_id, hash_count, stored_doc.id))
+                    raise PlagcheckError('computed similarity is greated than 100% ({0}). doc_id={5}, similar_doc_id={1}, hash_count={4}, match_count={2}'.format(similarity, similar_doc_id, match_count, hash_count, stored_doc.id))
 
                 if similarity > plagcheck_settings['similarity_threshold'] \
                         and match_count > plagcheck_settings['minimal_match_count']:
 
-                    if filter_id is not None:
-                        auto_filtered = True
 
                     # put them in a list so that filtered
                     # findings can be handled later
                     suspects.append({
                         'similar_doc_id': similar_doc_id,
                         'similarity': similarity,
-                        'filter_id': filter_id,
                         'match_count': match_count
                     })
 
