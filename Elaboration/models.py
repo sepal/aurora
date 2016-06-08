@@ -446,9 +446,6 @@ class Elaboration(models.Model):
         candidates = list(candidates)
         candidates.sort(key=lambda elaboration: elaboration.user.review_karma(challenge.course))
 
-        for c in candidates:
-            print(c.number_of_reviews())
-
         # Separate them into users with lower and higher karma than the current user
         # The separated list are already sorted by karma
         user_karma = user.review_karma(challenge.course)
@@ -458,9 +455,14 @@ class Elaboration(models.Model):
 
         lower_candidates.reverse()
 
-        # Zip them together and flatten them
-        zipped_candidates = zip(lower_candidates, higher_candidates)
-        flat_candidates = [item for sublist in zipped_candidates for item in sublist] # This is some serious wtf
+        if len(higher_candidates) == 0:
+            flat_candidates = lower_candidates
+        elif len(lower_candidates) == 0:
+            flat_candidates = higher_candidates
+        else:
+            zipped_candidates = zip(lower_candidates, higher_candidates)
+            zipped_candidates = list(zipped_candidates)
+            flat_candidates = [item for sublist in zipped_candidates for item in sublist] # This is some serious wtf#
 
         if len(flat_candidates) > 1:
             # Choose one of the first 2 candidates at random

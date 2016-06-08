@@ -38,3 +38,5 @@ static/slides/gsi/thumb/vo_10_02_13_2_thumb.jpg
 diskurs/static/diskurs/sass/.sass-cache
 
 database-mine.db
+
+AuroraUser/management/commands/create_admin.py

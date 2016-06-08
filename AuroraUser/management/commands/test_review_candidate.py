@@ -25,9 +25,9 @@ def test_review_candidate():
     # found_random  = 0
     # test_cases = 0
 
-
-    user = AuroraUser.objects.get(id=236)
-    challenge = Challenge.objects.get(id=89)
+    user = AuroraUser.objects.get(id=172)
+    challenge = Challenge.objects.get(id=93)
+    print(user.review_group(challenge.course))
 
     elab = Elaboration.get_review_candidate(challenge, user)
 
@@ -41,10 +41,6 @@ def test_review_candidate():
     print(candidate.id)
     print(candidate.number_of_reviews())
     print(candidate.is_submitted())
-
-
-
-
 
 
     # for course in Course.objects.all():
