@@ -456,34 +456,11 @@ def challenge_txt(request, course_short_title=None):
 
 @aurora_login_required()
 @staff_member_required
-def similarities(request, course_short_title=None):
-
-    # elaboration = Elaboration.objects.get(pk=request.session.get('elaboration_id', ''))
-    # challenge_elaborations = Elaboration.objects.filter(challenge=elaboration.challenge,
-    #                                                     submission_time__isnull=False).exclude(pk=elaboration.id)
-
-    suspected = Suspect.objects.all()
-
-    similarities = list()
-    for suspect in suspected:
-        doc = Elaboration.objects.all().get(pk=suspect.doc_id)
-        similar_to = Elaboration.objects.all().get(pk=suspect.similar_to_id)
-
-
-        similarity = dict()
-        similarity['elaboration'] = Elaboration.objects.all().get(pk=suspect.doc_id)
-        similarity['table'] = difflib.HtmlDiff().make_table(doc.elaboration_text.splitlines(),
-                                                            similar_to.elaboration_text.splitlines())
-        similarities.append(similarity)
-
-    return render_to_response('plagcheck_compare.html', {'similarities': similarities}, RequestContext(request))
-
-@aurora_login_required()
-@staff_member_required
 def user_detail(request, course_short_title=None):
     user = Elaboration.objects.get(pk=request.session.get('elaboration_id', '')).user
     display_points = request.session.get('display_points', 'error')
     return render_to_response('user.html', {'user': user, 'course_short_title': course_short_title}, RequestContext(request))
+
 
 @csrf_exempt
 @staff_member_required
