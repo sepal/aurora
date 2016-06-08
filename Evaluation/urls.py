@@ -22,7 +22,6 @@ urlpatterns = [
 
     url(r'^autocomplete_challenge/$', Evaluation.views.autocomplete_challenge),
     url(r'^autocomplete_user/$', Evaluation.views.autocomplete_user),
-    url(r'^autocomplete_tag/$', Evaluation.views.autocomplete_tag),
     url(r'^search/$', Evaluation.views.search),
     url(r'^sort$', Evaluation.views.sort),
     url(r'^set_appraisal/$', Evaluation.views.set_appraisal),
@@ -34,8 +33,6 @@ urlpatterns = [
     url(r'^save_evaluation/$', Evaluation.views.save_evaluation),
     url(r'^submit_evaluation/$', Evaluation.views.submit_evaluation),
     url(r'^reopen_evaluation/$', Evaluation.views.reopen_evaluation),
-    url(r'^add_tags/$', Evaluation.views.add_tags),
-    url(r'^remove_tag/$', Evaluation.views.remove_tag),
 
     url(r'^plagcheck/$', Evaluation.views.plagcheck_suspects, name='plagcheck_suspects'),
     url(r'^plagcheck/(?P<suspect_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),

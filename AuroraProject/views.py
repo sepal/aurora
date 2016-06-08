@@ -7,6 +7,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
+import json
 
 from AuroraProject.decorators import aurora_login_required
 from Course.models import Course
@@ -207,3 +211,45 @@ def result_reviews(request):
     result = get_result_reviews()
 
     return HttpResponse(result, mimetype="text/plain; charset=utf-8")
+
+@csrf_exempt
+@staff_member_required
+def add_tags(request, course_short_title=None):
+    text = request.POST['text']
+    object_id = request.POST['object_id']
+    content_type_id = request.POST['content_type_id']
+
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    taggable_object = content_type.get_object_for_this_type(pk=object_id)
+    taggable_object.add_tags_from_text(text)
+
+    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+
+@csrf_exempt
+@staff_member_required
+def remove_tag(request, course_short_title=None):
+    tag = request.POST['tag']
+    object_id = request.POST['object_id']
+    content_type_id = request.POST['content_type_id']
+
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    taggable_object = content_type.get_object_for_this_type(pk=object_id)
+    taggable_object.remove_tag(tag)
+
+    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+
+
+@login_required()
+@staff_member_required
+def autocomplete_tag(request, course_short_title=None):
+    term = request.GET.get('term', '')
+    content_type_id = request.GET['content_type_id']
+
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    taggable_model = content_type.model_class()
+    tags = taggable_model.tags.all().filter(
+        Q(name__istartswith=term)
+    )
+    names = [tag.name for tag in tags]
+    response_data = json.dumps(names, ensure_ascii=False)
+    return HttpResponse(response_data, content_type='application/json; charset=utf-8')

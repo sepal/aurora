@@ -27,6 +27,10 @@ urlpatterns = [
     url(r'result_elabs_final', views.result_elabs_final, name='result_elabs_final'),
     url(r'result_reviews', views.result_reviews, name='result_reviews'),
 
+    url(r'^add_tags/$', views.add_tags),
+    url(r'^remove_tag/$', views.remove_tag),
+    url(r'^autocomplete_tag/$', views.autocomplete_tag),
+
     url(r'^(?P<course_short_title>(gsi|hci))/', include([
         url(r'^$', views.home, name='home'),
         url(r'^challenge/', include('Challenge.urls', namespace='Challenge')),
