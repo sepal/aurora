@@ -420,7 +420,7 @@ class Elaboration(models.Model):
         from PlagCheck import tasks
         tasks.check.delay(
             text=text,
-            doc_id=self.id,
+            elaboration_id=self.id,
             user_id=self.user.id,
             user_name=self.user.matriculation_number,
             submission_time=str(self.submission_time),

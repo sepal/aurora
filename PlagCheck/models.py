@@ -14,6 +14,8 @@ from django.utils.encoding import *
 
 from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 
+from Elaboration.models import Elaboration
+
 
 @Field.register_lookup
 class NotEqual(Lookup):
@@ -27,12 +29,16 @@ class NotEqual(Lookup):
 
 
 class Store(models.Model):
-    doc_id = models.IntegerField(null=False)
+    elaboration_id = models.IntegerField(null=False)
     text = models.TextField(null=False)
     user_id = models.IntegerField(null=True)
     user_name = models.CharField(max_length=100, null=True)
     submission_time = models.DateTimeField(null=True)
     is_revised = models.BooleanField(null=False, default=False)
+
+    def get_elaboration(self):
+        return Elaboration.objects.get(pk=self.elaboration_id)
+    elaboration = property(get_elaboration)
 
     def get_user(self):
         return "DEPRECATED"
@@ -51,11 +57,21 @@ class Store(models.Model):
 
         info['Name'] = self.user_name
         info['User ID'] = self.user_id
-        info['Elaboration ID'] = self.doc_id
+        info['Elaboration ID'] = self.elaboration_id
         info['Submission time'] = self.submission_time
 
         return info
     document_info = property(get_document_info)
+
+    def was_submitted_during(self, course):
+
+        submission_date = self.submission_time.date()
+
+        if submission_date > course.start_date\
+                and submission_date < course.end_date:
+            return True
+        return False
+
 
 class Result(models.Model):
     """Just stores the result of a check of one document.

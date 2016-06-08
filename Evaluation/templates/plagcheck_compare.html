@@ -1,95 +1,222 @@
-{% load filter %}
-{% load staticfiles %}
+{% load humanize %}
+{% load comments %}
+{% load render_uploads %}
+{% load static %}
+{% comments_boilerplate %}
 
 {% block additional_headers %}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/info_area.js"></script>
+    <script type="text/javascript" src="{% static "js/detail.js" %}"></script>
+    <!--<script type="text/javascript" src="{% static "js/jquery-2.0.3.min.js" %}"></script>-->
+    <script type="text/javascript" src="{{ STATIC_URL }}tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
+    <link rel="stylesheet" href="{% static "css/evaluation.css" %}" type="text/css" media="screen"/>
     <script type="text/javascript" src="{% static "js/jsdiff/diff.js" %}"></script>
     <link rel="stylesheet" href="{% static "css/plagcheck.css" %}" type="text/css" media="screen"/>
 {% endblock %}
 
+
 {% block content %}
-        <div>
-            {% if prev_suspect_id %}
-                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=prev_suspect_id %}?{{ request.GET.urlencode }}">Prev</a>
-            {% endif %}
-            {% if next_suspect_id %}
-                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=next_suspect_id %}?{{ request.GET.urlencode }}">Next</a>
-            {% endif %}
+    <h1>
+        <a href="{% url 'Evaluation:back' course.short_title %}"><div class="back"  title="Back to evaluation overview" id="{{ selection }}"><i class="fa fa-angle-double-up"></i> go back</div> <b>&nbsp;{{ selection|title }}&nbsp;</b></a>
+    </h1>
+
+    <div class="detail_left">
+        <div class="pagination">
+	     {% if prev_suspect_id %}
+             <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=prev_suspect_id  %}?{{ request.GET.urlencode }}">
+                 <div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev</div>
+             </a>
+         {% else %}
+             <div class="no-paginator prev">no prev</div>
+         {% endif %}
+	     {% if next_suspect_id %}
+             <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=next_suspect_id  %}?{{ request.GET.urlencode }}">
+                 <div class="paginator next"> next <i class="fa fa-angle-double-right"></i></div>
+             </a>
+         {% else %}
+             <div class="no-paginator next">no next</div>
+         {% endif %}
         </div>
 
 
+    <div class="spacer"></div>
+    {% include 'elab_info.html' with elaboration=suspect.stored_doc.elaboration %}
+    <div class="spacer"></div>
 
-        <div>
-            <div id="plagcheck_suspect_info_box" class="plagcheck_compare_info">
-                Verification result:<br />
-                {% for key, value in suspect.suspect_info.items %}
-                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                {% endfor %}
+    <div class="plagcheck_compare_outer">
+        <div class="plagcheck_compare_label">Suspicious document</div>
+    <!--
+        <div class="plagcheck_compare_info">
+            {% for key, value in suspect.stored_doc.document_info.items %}
+                <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+            {% endfor %}
+        </div>-->
+        <input type="checkbox" id="show_suspect_orig" value="1">Show original</input>
+        <div class="plagcheck_compare_text">
+            <div id="suspect_orig" class="text_disabled"></div>
+            <div id="suspect_processed">
+                <!--{% autoescape off %}
+                    {{ suspect.stored_doc.clean_text }}
+                {% endautoescape %}-->
             </div>
+        </div>
+    </div>
 
-            <div id="plagcheck_suspect_state_info">
-                {% if suspect.state_enum.value == suspect_states_class.SUSPECTED.value %}
-                    The document was marked as SUSPECTED. Please compare the both documents manually and
-                    than decide whether it is really PLAGIARISM or not. If not than choose the appropriate,
-                    so that further actions can be taken afterwards.
+    <div class="tags tags-{{ suspect.stored_doc.elaboration.get_content_type_id }}-{{ suspect.stored_doc.elaboration.id }}">
+        {% include 'tags.html' with tagged_object=suspect.stored_doc.elaboration %}
+    </div><br><br><br><br>
+    <div class="spacer"></div>
+
+        {% if evaluation %}
+		{% if user.is_superuser %}
+		{% if evaluation.tutor.username %} Feedback written by <b>{{ evaluation.tutor.username }}</b> {% endif %}
+		{% else %}
+		Written feedback<div class="error"></div>
+		{% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {% if evaluation.submission_time %}
+				    <div class="evaluation eval_done">
+                        {{ evaluation.evaluation_text|safe }}
+                    </div>
+                    <div class="point_label">points assigned</div><div class="points eval_done">{{ evaluation.evaluation_points }}</div>
+   				 	<div class="spacer"></div>
+                    <div class="submission_date">
+                        <span title="{{ evaluation.submission_time }}">evaluated {{ evaluation.submission_time|naturaltime }}</span>
+                        <button class="reopen_evaluation" id="{{ elaboration.id }}">Reopen</button>
+                    </div>
+                {% else %}
+                    <div class="evaluation" id="evaluation" {% if not lock %} contenteditable="true" onclick="StartEvaluation({{ elaboration.id }})"{% endif %}
+                            onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                        {{ evaluation.evaluation_text|safe }}{% if lock %}<div class="evaluation_lock">locked by {{ evaluation.tutor.username }}</div>{% endif %}
+                    </div>
+                    <div class="point_label">Points</div><div class="points" {% if not lock %} contenteditable="true" {% endif %} onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                        {% if evaluation.evaluation_points %}{{ evaluation.evaluation_points }}{% endif %}</div>
+                    {% if not lock %}<button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>{% endif %}
                 {% endif %}
+            </form>
+        {% elif selection == 'top-level tasks' %}
+             <div class="evaluation" contenteditable="true"
+                  onclick="StartEvaluation({{ elaboration.id }})" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                click to lock and start evaluation...
+             </div>
+             <div class="point_label">Points</div><div class="points" contenteditable="false" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+             </div>
+             <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+       {% endif %}
+       <div class="spacer"></div>
 
-                <div id="plagcheck_change_suspect_state">
-                    <form name="suspect_state" method="post"
-                          action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspect_id=suspect.id %}">
-                        <label>Change suspect state:</label>
-                        <select name="suspect_state_selection" onchange="suspect_state.submit()">
-                            {% for state in suspect_states %}
-                                <option {% if suspect.state_enum.value == state.value %} selected {% endif %}
-                                        value="{{ state.value }}">{{ state.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </form>
-                </div>
+
+        {% if elaboration %}
+		<div class="comments">
+			<b>Discuss this work with {{ elaboration.user.first_name }} {{ elaboration.user.last_name }} ({{ elaboration.user.nickname }})</b>
+            {% render_multi_comment_list for elaboration %}
+		</div>
+        {% endif %}
+
+        {% if reviews %}
+            <div class="spacer"></div>
+            {% include "reviews.html" %}
+        {% endif %}
+        {% if selection == 'missing reviews' %}
+            <div class="spacer"></div>
+            {% include "add_review.html" %}
+        {% endif %}
+  </div>
+
+
+    <div class="detail_left">
+
+    {% if similar_to_has_elaboration %}
+        <div class="spacer"></div>
+        {% include 'elab_info.html' with elaboration=suspect.similar_to.elaboration %}
+    {% else %}
+        <div class="spacer"></div>
+        <div class="plagcheck_compare_label">Source document</div>
+        <div class="plagcheck_compare_info">
+            {% for key, value in suspect.similar_to.document_info.items %}
+                <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+            {% endfor %}
+        </div>
+        <input type="checkbox" id="show_similar_to_orig" value="1">Show original</input>
+        <div class="plagcheck_compare_text">
+            <div id="similar_to_orig" class="text_disabled"></div>
+            <div id="similar_to_processed">
             </div>
         </div>
+    {% endif %}
 
 
-        <div class="plagcheck_compare_outer">
-            <div class="plagcheck_compare_label">Suspicious document</div>
-            <div class="plagcheck_compare_info">
-                {% for key, value in suspect.stored_doc.document_info.items %}
-                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                {% endfor %}
-            </div>
-            <input type="checkbox" id="show_suspect_orig" value="1">Show original</input>
-            <div class="plagcheck_compare_text">
-                <div id="suspect_orig" class="text_disabled"></div>
-                <div id="suspect_processed">
-                    <!--{% autoescape off %}
-                        {{ suspect.stored_doc.clean_text }}
-                    {% endautoescape %}-->
-                </div>
-            </div>
-        </div>
+    <div class="tags tags-{{ suspect.stored_doc.elaboration.get_content_type_id }}-{{ suspect.stored_doc.elaboration.id }}">
+        {% include 'tags.html' with tagged_object=suspect.stored_doc.elaboration %}
+    </div><br><br><br><br>
+    <div class="spacer"></div>
 
-        <div class="plagcheck_compare_outer">
-            <div class="plagcheck_compare_label">Source document</div>
-            <div class="plagcheck_compare_info">
-                {% for key, value in suspect.similar_to.document_info.items %}
-                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                {% endfor %}
-            </div>
-            <input type="checkbox" id="show_similar_to_orig" value="1">Show original</input>
-            <div class="plagcheck_compare_text">
-                <div id="similar_to_orig" class="text_disabled"></div>
-                <div id="similar_to_processed">
-                </div>
-            </div>
-        </div>
+        {% if evaluation %}
+		{% if user.is_superuser %}
+		{% if evaluation.tutor.username %} Feedback written by <b>{{ evaluation.tutor.username }}</b> {% endif %}
+		{% else %}
+		Written feedback<div class="error"></div>
+		{% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {% if evaluation.submission_time %}
+				    <div class="evaluation eval_done">
+                        {{ evaluation.evaluation_text|safe }}
+                    </div>
+                    <div class="point_label">points assigned</div><div class="points eval_done">{{ evaluation.evaluation_points }}</div>
+   				 	<div class="spacer"></div>
+                    <div class="submission_date">
+                        <span title="{{ evaluation.submission_time }}">evaluated {{ evaluation.submission_time|naturaltime }}</span>
+                        <button class="reopen_evaluation" id="{{ elaboration.id }}">Reopen</button>
+                    </div>
+                {% else %}
+                    <div class="evaluation" id="evaluation" {% if not lock %} contenteditable="true" onclick="StartEvaluation({{ elaboration.id }})"{% endif %}
+                            onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                        {{ evaluation.evaluation_text|safe }}{% if lock %}<div class="evaluation_lock">locked by {{ evaluation.tutor.username }}</div>{% endif %}
+                    </div>
+                    <div class="point_label">Points</div><div class="points" {% if not lock %} contenteditable="true" {% endif %} onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                        {% if evaluation.evaluation_points %}{{ evaluation.evaluation_points }}{% endif %}</div>
+                    {% if not lock %}<button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>{% endif %}
+                {% endif %}
+            </form>
+        {% elif selection == 'top-level tasks' %}
+             <div class="evaluation" contenteditable="true"
+                  onclick="StartEvaluation({{ elaboration.id }})" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                click to lock and start evaluation...
+             </div>
+             <div class="point_label">Points</div><div class="points" contenteditable="false" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+             </div>
+             <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+       {% endif %}
+       <div class="spacer"></div>
 
-        <script>
-            {% autoescape off %}
-                var suspect = {{ suspect.stored_doc.json_text }};
-                var similar_to = {{ suspect.similar_to.json_text }};
-            {% endautoescape %}
-        </script>
-        <script type="text/javascript" src="{% static "js/plagcheck.js" %}"></script>
 
+        {% if elaboration %}
+		<div class="comments">
+			<b>Discuss this work with {{ elaboration.user.first_name }} {{ elaboration.user.last_name }} ({{ elaboration.user.nickname }})</b>
+            {% render_multi_comment_list for elaboration %}
+		</div>
+        {% endif %}
+
+        {% if reviews %}
+            <div class="spacer"></div>
+            {% include "reviews.html" %}
+        {% endif %}
+        {% if selection == 'missing reviews' %}
+            <div class="spacer"></div>
+            {% include "add_review.html" %}
+        {% endif %}
+  </div>
+
+  <div class="clear"></div>
+
+    <script>
+        {% autoescape off %}
+            var suspect = {{ suspect.stored_doc.json_text }};
+            var similar_to = {{ suspect.similar_to.json_text }};
+        {% endautoescape %}
+    </script>
+    <script type="text/javascript" src="{% static "js/plagcheck.js" %}"></script>
 
 {% endblock %}

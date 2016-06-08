@@ -1,15 +1,16 @@
+/*
 .plagcheck_compare_outer {
-    width: 50%;
+    width: 100%;
     float: left;
     overflow: auto;
-}
+}*/
 
-.plagcheck_compare_outer .plagcheck_compare_label {
+.plagcheck_compare_label {
     font-weight: bold;
     text-align: center;
 }
 
-.plagcheck_compare_outer .plagcheck_compare_text {
+.plagcheck_compare_text {
     border: 1px solid black;
     padding: 10px;
 }
@@ -32,7 +33,7 @@
     font-weight: bold;
 }
 
-.plagcheck_compare_outer .plagcheck_compare_text .diff_part {
+.plagcheck_compare_text .diff_part {
     background-color: yellow;
     display: inline !important;
 }

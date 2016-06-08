@@ -919,14 +919,18 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
 
     suspect = Suspect.objects.get(pk=suspect_id)
 
-    docA = Store.objects.get(pk=suspect.stored_doc_id)
-    docB = Store.objects.get(pk=suspect.similar_to_id)
+    docA = suspect.stored_doc
+    docB = suspect.similar_to
 
     table = difflib.HtmlDiff(wrapcolumn=70).make_table(docA.text.splitlines(),
                                                         docB.text.splitlines())
 
     show_filtered = int(request.GET.get('show_filtered', 0))
     (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(show_filtered)
+
+    similar_to_has_elaboration = False
+    if suspect.similar_to.was_submitted_during(course):
+        similar_to_has_elaboration = True
 
     context = {
         'course': course,
@@ -936,13 +940,14 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
         'suspect_states_class': SuspectState.__members__,
         'next_suspect_id': next_suspect_id,
         'prev_suspect_id': prev_suspect_id,
+        'similar_to_has_elaboration': similar_to_has_elaboration,
     }
 
     # number of suspected documents
     suspects_count = Suspect.objects.filter(state=SuspectState.SUSPECTED.value).count()
 
     return render_to_response('evaluation.html', {
-            'overview': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
+            'detail_html': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
             'course': course,
             'stabilosiert_plagcheck_suspects': 'stabilosiert',
             'count_plagcheck_suspects': suspects_count,

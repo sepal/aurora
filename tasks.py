@@ -1,10 +1,6 @@
 from invoke import run, task, exceptions
 
 @task
-def create_plagcheck_db():
-    run('python manage.py migrate --database=plagcheck --noinput')
-
-@task
 def celery():
     run('python manage.py celery worker -E --loglevel=INFO --concurrency=1')
 
@@ -39,7 +35,7 @@ def clean(plagcheck=False, migrate=True, demo=True):
 
     if plagcheck:
         run('rm -f database-plagcheck.db')
-        create_plagcheck_db()
+        run('python manage.py migrate --database=plagcheck --noinput')
 
     run('python manage.py migrate')
 

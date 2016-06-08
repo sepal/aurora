@@ -48,7 +48,7 @@ def add_elaboration(elab, challenge):
 
     tasks.check.delay(
         text=elab['text'],
-        doc_id=elab['id'],
+        elaboration_id=elab['id'],
         user_id=0,
         user_name=elab['user'],
         # submission_time=time.strftime('%Y-%m-%dT%H:%M:%SZ', elab['submitted']),

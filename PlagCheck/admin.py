@@ -43,7 +43,7 @@ class SuspectFilterAdmin(PlagCheckModelAdmin):
     list_display = ('id',)
 
 class StoreAdmin(PlagCheckModelAdmin):
-    list_display = ('id', 'doc_id')
+    list_display = ('id', 'elaboration_id')
 
 
 admin.site.register(Store, StoreAdmin)

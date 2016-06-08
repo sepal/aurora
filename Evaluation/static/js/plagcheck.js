@@ -60,7 +60,7 @@
                 }
                 var other_part = $('#'+other_part_type+'_part_'+part_id);
 
-                console.log("part_type: "+part_type+", part_id: "+part_id+", other_part_type: "+other_part_type+" other_part: "+other_part);
+                //console.log("part_type: "+part_type+", part_id: "+part_id+", other_part_type: "+other_part_type+" other_part: "+other_part);
 
                 if (event.type == "mouseenter") {
                     other_part.addClass("diff_part_hightlight");
