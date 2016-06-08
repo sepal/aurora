@@ -9,7 +9,6 @@ urlpatterns = [
     url(r'^stack/$', Evaluation.views.stack, name='tasks'),
     url(r'^others/$', Evaluation.views.others, name='others'),
     url(r'^challenge_txt/$', Evaluation.views.challenge_txt, name='task_description'),
-    url(r'^similarities/$', Evaluation.views.similarities, name='similarities'),
     url(r'^user-detail$', Evaluation.views.user_detail, name='user-detail'),
     url(r'^reviewlist/$', Evaluation.views.reviewlist, name='reviews'),
     url(r'^missing_reviews$', Evaluation.views.missing_reviews, name='missing_reviews'),

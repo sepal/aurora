@@ -1,6 +1,5 @@
 from datetime import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-import difflib
 import json
 from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
@@ -922,9 +921,6 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
     docA = suspect.stored_doc
     docB = suspect.similar_to
 
-    table = difflib.HtmlDiff(wrapcolumn=70).make_table(docA.text.splitlines(),
-                                                        docB.text.splitlines())
-
     show_filtered = int(request.GET.get('show_filtered', 0))
     (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(show_filtered)
 
@@ -934,7 +930,6 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
 
     context = {
         'course': course,
-        'diff_table': table,
         'suspect': suspect,
         'suspect_states': SuspectState.states(),
         'suspect_states_class': SuspectState.__members__,
