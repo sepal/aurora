@@ -892,11 +892,14 @@ def plagcheck_suspects(request, course_short_title=None):
         'suspects_count': suspect_list.count(),
     }
 
+    request.session['selection'] = 'plagcheck_suspects'
+
     return render_to_response('evaluation.html', {
             'overview': render_to_string('plagcheck_suspects.html', context, RequestContext(request)),
             'course': course,
             'stabilosiert_plagcheck_suspects': 'stabilosiert',
             'count_plagcheck_suspects': suspect_list.count(),
+            'selection': request.session['selection'],
         },
         context_instance=RequestContext(request))
 
@@ -917,7 +920,6 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
     context = {
         'course': course,
         'suspect': suspect,
-        #'evaluation': Evaluation.objects.get(submission=suspect.stored_doc.elaboration_id),
         'suspect_states': SuspectState.states(),
         'suspect_states_class': SuspectState.__members__,
         'next_suspect_id': next_suspect_id,
