@@ -35,7 +35,7 @@
          {% endif %}
 	 </div>
      <div class="spacer"></div>
-     {% include 'elab_info.html' with elaboration=elaboration %}
+     {% include 'elaboration_info.html' with elaboration=elaboration %}
         <div class="spacer"></div>
 
         {% render_original_uploads elaboration %}
@@ -97,12 +97,7 @@
        <div class="spacer"></div>
 
 
-        {% if elaboration %}
-		<div class="comments">
-			<b>Discuss this work with {{ elaboration.user.first_name }} {{ elaboration.user.last_name }} ({{ elaboration.user.nickname }})</b>
-            {% render_multi_comment_list for elaboration %}
-		</div>
-        {% endif %}
+        {% include "elaboration_comments.html" with elaboration=elaboration %}
 
         {% if reviews %}
             <div class="spacer"></div>
