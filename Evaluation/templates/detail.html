@@ -13,29 +13,29 @@
 
 {% block content %}
 
-   <h1>
-       <a href="{% url 'Evaluation:back' course.short_title %}"><div class="back"  title="Back to evaluation overview" id="{{ selection }}"><i class="fa fa-angle-double-up"></i> go back</div> <b>&nbsp;{{ selection|title }}&nbsp;</b></a>
-   </h1>
+    <h1>
+        <a href="{% url 'Evaluation:back' course.short_title %}"><div class="back"  title="Back to evaluation overview" id="{{ selection }}"><i class="fa fa-angle-double-up"></i> go back</div> <b>&nbsp;{{ selection|title }}&nbsp;</b></a>
+    </h1>
 
-  <div class="detail_left">
-  <div class="pagination">
-	     {% if prev %}
-             <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ prev }}">
-                 <div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev ({{ count_prev }})</div>
-             </a>
-         {% else %}
-             <div class="no-paginator prev">no prev</div>
-         {% endif %}
-	     {% if next %}
-             <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ next }}">
-                 <div class="paginator next">({{ count_next }}) next <i class="fa fa-angle-double-right"></i></div>
-             </a>
-         {% else %}
-             <div class="no-paginator next">no next</div>
-         {% endif %}
-	 </div>
-     <div class="spacer"></div>
-     {% include 'elaboration_info.html' with elaboration=elaboration %}
+    <div class="detail_left">
+        <div class="pagination">
+            {% if prev %}
+                <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ prev }}">
+                    <div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev ({{ count_prev }})</div>
+                </a>
+            {% else %}
+                <div class="no-paginator prev">no prev</div>
+            {% endif %}
+            {% if next %}
+                <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ next }}">
+                    <div class="paginator next">({{ count_next }}) next <i class="fa fa-angle-double-right"></i></div>
+                </a>
+            {% else %}
+                <div class="no-paginator next">no next</div>
+            {% endif %}
+        </div>
+        <div class="spacer"></div>
+        {% include 'elaboration_info.html' with elaboration=elaboration %}
         <div class="spacer"></div>
 
         {% render_original_uploads elaboration %}
@@ -43,17 +43,18 @@
         {% if elaboration.elaboration_text  %}
             <textarea id="editor_detail">{{ elaboration.elaboration_text}}</textarea>
 		{% endif %}<br>
-         <br /><h1>Revised Work</h1>
+        <br /><h1>Revised Work</h1>
+
   	   	{% if elaboration.revised_elaboration_changelog %}
-		<br><B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
-		most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
+		    <br><B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
+		    most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
 		{% endif %}
-         {% render_revised_uploads elaboration %}
-		 {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
-        	 <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
-		 {% endif %}
+        {% render_revised_uploads elaboration %}
+        {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
+            <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
+        {% endif %}
         <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
-          {% include 'tags.html' with tagged_object=elaboration %}
+            {% include 'tags.html' with tagged_object=elaboration %}
         </div><br><br><br><br>
         <div class="spacer"></div>
 
