@@ -1,11 +1,6 @@
 {% load filter %}
 
 {% block content %}
-    {% if show_filtered %}
-        <a href="?show_filtered=0">Don't show auto-filtered suspects</a>
-    {% else %}
-        <a href="?show_filtered=1">Show auto-filtered suspects</a>
-    {% endif %}
     <table class="overview_table">
         <tr>
             <th>id</th>

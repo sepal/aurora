@@ -873,11 +873,7 @@ def get_points(request, user, course):
 def plagcheck_suspects(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    show_filtered = int(request.GET.get('show_filtered', 0))
-    if show_filtered is 1:
-        suspect_list = Suspect.objects.all()
-    else:
-        suspect_list = Suspect.objects.exclude(state=SuspectState.AUTO_FILTERED.value)
+    suspect_list = Suspect.objects.filter(state=SuspectState.SUSPECTED.value)
 
     # pagination
     paginator = Paginator(suspect_list, 25)
@@ -889,22 +885,18 @@ def plagcheck_suspects(request, course_short_title=None):
     except EmptyPage:
         suspects = paginator.page(paginator.num_pages)
 
-    # number of suspected documents
-    suspects_count = Suspect.objects.filter(state=SuspectState.SUSPECTED.value).count()
-
     context = {
         'course': course,
         'suspects': suspects,
         'suspect_states': SuspectState.choices(),
-        'suspects_count': suspects_count,
-        'show_filtered': show_filtered,
+        'suspects_count': suspect_list.count(),
     }
 
     return render_to_response('evaluation.html', {
             'overview': render_to_string('plagcheck_suspects.html', context, RequestContext(request)),
             'course': course,
             'stabilosiert_plagcheck_suspects': 'stabilosiert',
-            'count_plagcheck_suspects': suspects_count,
+            'count_plagcheck_suspects': suspect_list.count(),
         },
         context_instance=RequestContext(request))
 
@@ -925,6 +917,7 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
     context = {
         'course': course,
         'suspect': suspect,
+        #'evaluation': Evaluation.objects.get(submission=suspect.stored_doc.elaboration_id),
         'suspect_states': SuspectState.states(),
         'suspect_states_class': SuspectState.__members__,
         'next_suspect_id': next_suspect_id,
@@ -955,7 +948,5 @@ def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=No
     suspect.state_enum = new_state
 
     suspect.save()
-
-    SuspectFilter.update_filter(suspect)
 
     return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
