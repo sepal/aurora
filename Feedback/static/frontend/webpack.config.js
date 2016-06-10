@@ -1,7 +1,7 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const validate = require('webpack-validator');
+const parts = require('./lib/parts')
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
@@ -16,10 +16,7 @@ const common = {
     path: PATHS.build,
     filename: 'feedback.js'
   },
-  plugin: [
-    new HtmlWebpackPlugin({
-      title: 'Webpack demo',
-    })
+  plugins: [
   ]
 };
 
@@ -27,10 +24,16 @@ var config;
 
 switch(process.env.npm_lifecycle_event) {
   case 'build':
-    config = merge(common, {});
+    config = merge(
+      common,
+      parts.setupCSS(PATHS.app)
+    );
     break;
   default:
-    config = merge(common, {});
+    config = merge(
+      common,
+      parts.setupCSS(PATHS.app)
+    );
 }
 
 module.exports = validate(config);
