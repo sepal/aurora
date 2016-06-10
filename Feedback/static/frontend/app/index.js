@@ -1,5 +1,4 @@
-require('react');
-require("./main.scss");
+import React from 'react';
+import HelloWorld from './component';
 
-var component = require('./component');
-document.body.appendChild(component());
+React.render("<HelloWorld name='John' />");

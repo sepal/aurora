@@ -11,12 +11,12 @@ exports.extractCSS = function (paths, output_dir) {
       loaders: [
         {
           test: /\.css$/,
-          loader: ExtractTextPlugin.extract('style', 'css!postcss'),
+          loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss'),
           include: paths
         },
         {
           test: /\.scss$/,
-          loader: ExtractTextPlugin.extract('style', 'css!sass!postcss'),
+          loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass!postcss'),
           include: paths
         }
       ]
@@ -24,7 +24,9 @@ exports.extractCSS = function (paths, output_dir) {
     plugins: [
       // Output extracted CSS to a file.
       // todo: make the output folder configurable.
-      new ExtractTextPlugin(path.join(output_dir, 'feedback.css'))
+      new ExtractTextPlugin(path.join(output_dir, 'feedback.css'), {
+        allChunks: true
+      })
     ],
     postcss: function () {
       return [autoprefixer];
