@@ -26,6 +26,7 @@ switch(process.env.npm_lifecycle_event) {
   case 'build':
     config = merge(
       common,
+      parts.minify(),
       parts.setupCSS(PATHS.app)
     );
     break;
