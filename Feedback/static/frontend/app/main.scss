@@ -1,0 +1,14 @@
+body {
+  background: cornsilk;
+}
+
+.foo {
+  color: red;
+  &.bar {
+    color: blue;
+  }
+}
+
+:fullscreen{
+  color: green;
+}
