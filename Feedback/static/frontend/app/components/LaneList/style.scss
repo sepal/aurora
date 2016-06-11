@@ -1,0 +1,20 @@
+@import "../../styles/config/colors";
+@import "../../styles/config/layout";
+
+.laneList {
+  margin: {
+    top: $margin;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  };
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.item {
+  flex: 1 0 auto;
+  padding: 0 30px;
+}

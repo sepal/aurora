@@ -1,6 +1,10 @@
 @import "../../styles/config/colors";
 @import "../../styles/config/layout";
 
-.{{ camelCase name }} {
+.feedback {
+  background: white;
+}
 
+.title {
+  font-size: 2.5em;
 }
