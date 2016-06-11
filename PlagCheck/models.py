@@ -182,8 +182,19 @@ class Suspect(models.Model):
         info['Verification time'] = self.created
 
         return info
-
     suspect_info = property(get_suspect_info)
+
+    @staticmethod
+    def get_suspected_elaborations(course):
+        suspects = Suspect.objects.all()
+        elaborations = []
+
+        for suspect in suspects:
+            elaboration = suspect.stored_doc.elaboration
+            if elaboration.challenge.course == course:
+                elaborations.append(elaboration)
+
+        return elaborations
 
 
 class Reference(models.Model):
@@ -235,16 +246,6 @@ class Reference(models.Model):
                        'INNER JOIN "PlagCheck_reference" as "similar" ON "suspect".hash="similar".hash '
                        'WHERE "similar".stored_doc_id != %s '
                        'GROUP BY "similar".stored_doc_id ', [stored_doc_id, stored_doc_id])
-
-        #cursor.execute('SELECT doc_id, COUNT(doc_id) '
-        #               'FROM ('
-        #                   'SELECT id as src_id, hash as src_hash, doc_id as src_doc_id '
-        #                   'FROM Plagcheck_reference '
-        #                   'WHERE doc_id = %s) as new '
-        #               'INNER JOIN Plagcheck_reference '
-        #               'ON new.src_hash=hash '
-        #               'WHERE doc_id != %s '
-        #               'GROUP BY doc_id', [doc_id, doc_id])
 
         ret = list()
         for row in cursor.fetchall():
