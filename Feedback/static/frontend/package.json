@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack --watch",
     "build": "webpack",
-    "generate": "plop --plopfile lib/generators/index.js",
+    "generate": "plop --plopfile lib/generators/index.js"
   },
   "keywords": [],
   "author": "",
