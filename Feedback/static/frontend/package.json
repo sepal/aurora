@@ -7,7 +7,6 @@
     "start": "webpack --watch",
     "build": "webpack",
     "generate": "plop --plopfile lib/generators/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
