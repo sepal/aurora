@@ -4,17 +4,15 @@
 .lane {
   border: 1px solid $gray;
   border-radius: $border-radius--big;
+  background: $gray;
 }
 
 .title {
   font-size: 1em;
   font-weight: bold;
   padding: $padding;
-  background: $gray;
 }
 
 .content {
   padding: $padding;
-  background: white;
-  border-radius: $border-radius;
 }

@@ -23,17 +23,15 @@
   padding: 0 30px; }
 .style__lane___4hRD2 {
   border: 1px solid #cbcbcb;
-  border-radius: 5px; }
+  border-radius: 5px;
+  background: #cbcbcb; }
 
 .style__title___1plB0 {
   font-size: 1em;
   font-weight: bold;
-  padding: 14px;
-  background: #cbcbcb; }
+  padding: 14px; }
 
 .style__content___1KwTm {
-  padding: 14px;
-  background: white;
-  border-radius: 3px; }
+  padding: 14px; }
 
 /*# sourceMappingURL=feedback.css.map*/
