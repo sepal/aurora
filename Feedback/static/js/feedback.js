@@ -2385,6 +2385,12 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { styleName: 'feedback' },
+	        _react2.default.createElement(
+	          'button',
+	          { styleName: 'add' },
+	          _react2.default.createElement('i', { className: 'fa fa-plus' }),
+	          ' Add a new issue'
+	        ),
 	        _react2.default.createElement(_LaneList2.default, { lanes: _lanes2.default })
 	      );
 	    }
@@ -9076,7 +9082,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"feedback":"style__feedback___1bBU5","title":"style__title___1NzFM"};
+	module.exports = {"feedback":"style__feedback___1bBU5","title":"style__title___1NzFM","add":"style__add___84vK9"};
 
 /***/ },
 /* 197 */
@@ -9301,7 +9307,7 @@
 	          _react2.default.createElement(
 	            'span',
 	            { styleName: 'upvotes' },
-	            _react2.default.createElement('li', { className: 'fa fa-thumbs-up' }),
+	            _react2.default.createElement('i', { className: 'fa fa-thumbs-up' }),
 	            ' ',
 	            issue.upvotes,
 	            ' upvotes'
@@ -9309,7 +9315,7 @@
 	          _react2.default.createElement(
 	            'span',
 	            { styleName: 'comments' },
-	            _react2.default.createElement('li', { className: 'fa fa-comments' }),
+	            _react2.default.createElement('i', { className: 'fa fa-comments' }),
 	            ' ',
 	            issue.comments,
 	            ' comments'

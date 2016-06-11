@@ -9,8 +9,8 @@ function IssueList(props) {
         <div>
           <div>{issue.title}</div>
           <div styleName="footer">
-            <span styleName="upvotes"><li className="fa fa-thumbs-up"></li> {issue.upvotes} upvotes</span>
-            <span styleName="comments"><li className="fa fa-comments"></li> {issue.comments} comments</span>
+            <span styleName="upvotes"><i className="fa fa-thumbs-up"></i> {issue.upvotes} upvotes</span>
+            <span styleName="comments"><i className="fa fa-comments"></i> {issue.comments} comments</span>
           </div>
         </div>
       </li>
