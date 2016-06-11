@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack --watch",
     "build": "webpack",
+    "generate": "plop --plopfile lib/generators/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,6 +21,7 @@
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "node-sass": "^3.7.0",
+    "plop": "^1.5.0",
     "postcss-loader": "^0.9.1",
     "react-lite": "^0.15.14",
     "sass-loader": "^3.2.0",
