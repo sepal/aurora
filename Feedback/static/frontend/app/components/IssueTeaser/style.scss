@@ -1,0 +1,25 @@
+@import "../../styles/config/colors";
+@import "../../styles/config/layout";
+@import "../../styles/abstract/selecting";
+
+.issueTeaser {
+  padding: $spacing;
+  border-radius: $border-radius;
+
+  cursor: pointer;
+
+  background: white;
+  @include element-active {
+    background: $gray--lighter;
+  }
+}
+
+.upvotes, .comments {
+  margin-right: $spacing--big;
+}
+
+.footer {
+  margin-top: $spacing;
+  color: $gray;
+  font-size: 0.9em;
+}

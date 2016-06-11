@@ -46,21 +46,22 @@
   padding: 14px;
   text-align: center;
   border-radius: 3px; }
-.style__issue___2WnOS {
-  background: white;
-  border-radius: 3px;
-  padding: 14px;
-  margin-top: 21px;
-  cursor: pointer; }
-  .style__issue___2WnOS:nth-child(1) {
+.style__item___1pf8H {
+  margin-top: 21px; }
+  .style__item___1pf8H:nth-child(1) {
     margin-top: 0; }
-  .style__issue___2WnOS:hover, .style__issue___2WnOS:active, .style__issue___2WnOS:focus {
+.style__issueTeaser___24P-_ {
+  padding: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  background: white; }
+  .style__issueTeaser___24P-_:hover, .style__issueTeaser___24P-_:active, .style__issueTeaser___24P-_:focus {
     background: #f7f7f7; }
 
-.style__upvotes___2o-__, .style__comments___1WlOb {
+.style__upvotes___33hIh, .style__comments___2LJ8L {
   margin-right: 21px; }
 
-.style__footer___l4Qwp {
+.style__footer___3_sdP {
   margin-top: 14px;
   color: #aaa;
   font-size: 0.9em; }

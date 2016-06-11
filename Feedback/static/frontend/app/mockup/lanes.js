@@ -1,14 +1,14 @@
 export default [
   {
     id: 0,
-    name: 'new',
+    name: 'New',
   },
   {
     id: 1,
-    name: 'progress',
+    name: 'In Progress',
   },
   {
     id: 2,
-    name: 'finished',
+    name: 'Finished',
   }
 ];

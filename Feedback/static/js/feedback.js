@@ -9248,13 +9248,13 @@
 	});
 	exports.default = [{
 	  id: 0,
-	  name: 'new'
+	  name: 'New'
 	}, {
 	  id: 1,
-	  name: 'progress'
+	  name: 'In Progress'
 	}, {
 	  id: 2,
-	  name: 'finished'
+	  name: 'Finished'
 	}];
 
 /***/ },
@@ -9286,42 +9286,19 @@
 	
 	var _style2 = _interopRequireDefault(_style);
 	
+	var _IssueTeaser = __webpack_require__(205);
+	
+	var _IssueTeaser2 = _interopRequireDefault(_IssueTeaser);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function IssueList(props) {
 	  var issues = props.issues.map(function (issue) {
 	    return _react2.default.createElement(
 	      'li',
-	      { key: issue.id, styleName: 'issue' },
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          issue.title
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { styleName: 'footer' },
-	          _react2.default.createElement(
-	            'span',
-	            { styleName: 'upvotes' },
-	            _react2.default.createElement('i', { className: 'fa fa-thumbs-up' }),
-	            ' ',
-	            issue.upvotes,
-	            ' upvotes'
-	          ),
-	          _react2.default.createElement(
-	            'span',
-	            { styleName: 'comments' },
-	            _react2.default.createElement('i', { className: 'fa fa-comments' }),
-	            ' ',
-	            issue.comments,
-	            ' comments'
-	          )
-	        )
-	      )
+	      { key: issue.id, styleName: 'item' },
+	      _react2.default.createElement(_IssueTeaser2.default, { title: issue.title, upvotes: issue.upvotes,
+	        comments: issue.comments })
 	    );
 	  });
 	  return _react2.default.createElement(
@@ -9338,7 +9315,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"issue":"style__issue___2WnOS","upvotes":"style__upvotes___2o-__","comments":"style__comments___1WlOb","footer":"style__footer___l4Qwp"};
+	module.exports = {"item":"style__item___1pf8H"};
 
 /***/ },
 /* 204 */
@@ -9380,6 +9357,73 @@
 	  upvotes: 1,
 	  comments: 3
 	}];
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactCssModules = __webpack_require__(3);
+	
+	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
+	
+	var _style = __webpack_require__(206);
+	
+	var _style2 = _interopRequireDefault(_style);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function IssueTeaser(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    { styleName: 'issueTeaser' },
+	    _react2.default.createElement(
+	      'div',
+	      null,
+	      props.title
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { styleName: 'footer' },
+	      _react2.default.createElement(
+	        'span',
+	        { styleName: 'upvotes' },
+	        _react2.default.createElement('i', {
+	          className: 'fa fa-thumbs-up' }),
+	        ' ',
+	        props.upvotes,
+	        ' upvotes'
+	      ),
+	      _react2.default.createElement(
+	        'span',
+	        { styleName: 'comments' },
+	        _react2.default.createElement('i', {
+	          className: 'fa fa-comments' }),
+	        ' ',
+	        props.comments,
+	        ' comments'
+	      )
+	    )
+	  );
+	}
+	
+	exports.default = (0, _reactCssModules2.default)(IssueTeaser, _style2.default);
+
+/***/ },
+/* 206 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"issueTeaser":"style__issueTeaser___24P-_","upvotes":"style__upvotes___33hIh","comments":"style__comments___2LJ8L","footer":"style__footer___3_sdP"};
 
 /***/ }
 /******/ ]);
