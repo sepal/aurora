@@ -2,17 +2,30 @@
 @import "../../styles/config/layout";
 
 .lane {
-  border: 1px solid $gray;
+  border: 1px solid $gray--light;
   border-radius: $border-radius--big;
-  background: $gray;
+  background: $gray--light;
+  padding: $spacing 0;
 }
 
 .title {
   font-size: 1em;
   font-weight: bold;
-  padding: $padding;
+  padding: 0 $spacing;
 }
 
 .content {
-  padding: $padding;
+  padding: {
+    top: $spacing;
+    left: $spacing;
+    right: $spacing;
+  };
+}
+
+.empty {
+  color: $gray;
+  background: white;
+  padding: $spacing;
+  text-align: center;
+  border-radius: $border-radius;
 }

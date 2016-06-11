@@ -20,18 +20,46 @@
   -webkit-box-flex: 1;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
-  padding: 0 30px; }
+  padding: 0 21px; }
 .style__lane___4hRD2 {
   border: 1px solid #cbcbcb;
   border-radius: 5px;
-  background: #cbcbcb; }
+  background: #cbcbcb;
+  padding: 14px 0; }
 
 .style__title___1plB0 {
   font-size: 1em;
   font-weight: bold;
-  padding: 14px; }
+  padding: 0 14px; }
 
 .style__content___1KwTm {
-  padding: 14px; }
+  padding-top: 14px;
+  padding-left: 14px;
+  padding-right: 14px; }
+
+.style__empty___2CGeI {
+  color: #aaa;
+  background: white;
+  padding: 14px;
+  text-align: center;
+  border-radius: 3px; }
+.style__issue___2WnOS {
+  background: white;
+  border-radius: 3px;
+  padding: 14px;
+  margin-top: 21px;
+  cursor: pointer; }
+  .style__issue___2WnOS:nth-child(1) {
+    margin-top: 0; }
+  .style__issue___2WnOS:hover, .style__issue___2WnOS:active, .style__issue___2WnOS:focus {
+    background: #f7f7f7; }
+
+.style__upvotes___2o-__, .style__comments___1WlOb {
+  margin-right: 21px; }
+
+.style__footer___l4Qwp {
+  margin-top: 14px;
+  color: #aaa;
+  font-size: 0.9em; }
 
 /*# sourceMappingURL=feedback.css.map*/

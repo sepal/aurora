@@ -2354,11 +2354,11 @@
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _LaneList = __webpack_require__(199);
+	var _LaneList = __webpack_require__(197);
 	
 	var _LaneList2 = _interopRequireDefault(_LaneList);
 	
-	var _lanes = __webpack_require__(202);
+	var _lanes = __webpack_require__(200);
 	
 	var _lanes2 = _interopRequireDefault(_lanes);
 	
@@ -9088,8 +9088,6 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -9102,6 +9100,68 @@
 	
 	var _style2 = _interopRequireDefault(_style);
 	
+	var _Lane = __webpack_require__(199);
+	
+	var _Lane2 = _interopRequireDefault(_Lane);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function LaneList(props) {
+	  var lanes = props.lanes.map(function (lane) {
+	    return _react2.default.createElement(
+	      'li',
+	      { styleName: 'item', key: lane.id },
+	      _react2.default.createElement(_Lane2.default, { title: lane.name, id: lane.id })
+	    );
+	  });
+	  return _react2.default.createElement(
+	    'ul',
+	    { styleName: 'laneList' },
+	    lanes
+	  );
+	}
+	
+	exports.default = (0, _reactCssModules2.default)(LaneList, _style2.default);
+
+/***/ },
+/* 198 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"laneList":"style__laneList___3QiPe","item":"style__item___2YZ1o"};
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactCssModules = __webpack_require__(3);
+	
+	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
+	
+	var _style = __webpack_require__(201);
+	
+	var _style2 = _interopRequireDefault(_style);
+	
+	var _IssueList = __webpack_require__(202);
+	
+	var _IssueList2 = _interopRequireDefault(_IssueList);
+	
+	var _issues = __webpack_require__(204);
+	
+	var _issues2 = _interopRequireDefault(_issues);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9113,15 +9173,42 @@
 	var Lane = function (_React$Component) {
 	  _inherits(Lane, _React$Component);
 	
-	  function Lane() {
+	  function Lane(props) {
 	    _classCallCheck(this, Lane);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Lane).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Lane).call(this, props));
+	
+	    var issues = _issues2.default.filter(function (issue) {
+	      console.log(issue);
+	      return issue.lane == _this.props.id;
+	    });
+	
+	    _this.state = {
+	      issues: issues
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(Lane, [{
+	    key: 'renderIssueTeaser',
+	    value: function renderIssueTeaser() {
+	      return _react2.default.createElement(_IssueList2.default, { issues: this.state.issues });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var content = void 0;
+	
+	      if (this.state.issues == 0) {
+	        content = _react2.default.createElement(
+	          'div',
+	          { styleName: 'empty' },
+	          'No issues here yet.'
+	        );
+	      } else {
+	        content = this.renderIssueTeaser();
+	      }
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { styleName: 'lane' },
@@ -9133,7 +9220,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { styleName: 'content' },
-	          'foobar'
+	          content
 	        )
 	      );
 	    }
@@ -9145,14 +9232,34 @@
 	exports.default = (0, _reactCssModules2.default)(Lane, _style2.default);
 
 /***/ },
-/* 198 */
+/* 200 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [{
+	  id: 0,
+	  name: 'new'
+	}, {
+	  id: 1,
+	  name: 'progress'
+	}, {
+	  id: 2,
+	  name: 'finished'
+	}];
+
+/***/ },
+/* 201 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"lane":"style__lane___4hRD2","title":"style__title___1plB0","content":"style__content___1KwTm"};
+	module.exports = {"lane":"style__lane___4hRD2","title":"style__title___1plB0","content":"style__content___1KwTm","empty":"style__empty___2CGeI"};
 
 /***/ },
-/* 199 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9169,59 +9276,103 @@
 	
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
 	
-	var _style = __webpack_require__(200);
+	var _style = __webpack_require__(203);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _Lane = __webpack_require__(197);
-	
-	var _Lane2 = _interopRequireDefault(_Lane);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function LaneList(props) {
-	  var lanes = props.lanes.map(function (lane) {
+	function IssueList(props) {
+	  var issues = props.issues.map(function (issue) {
 	    return _react2.default.createElement(
 	      'li',
-	      { styleName: 'item', key: lane.id },
-	      _react2.default.createElement(_Lane2.default, { title: lane.name })
+	      { key: issue.id, styleName: 'issue' },
+	      _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          issue.title
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { styleName: 'footer' },
+	          _react2.default.createElement(
+	            'span',
+	            { styleName: 'upvotes' },
+	            _react2.default.createElement('li', { className: 'fa fa-thumbs-up' }),
+	            ' ',
+	            issue.upvotes,
+	            ' upvotes'
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { styleName: 'comments' },
+	            _react2.default.createElement('li', { className: 'fa fa-comments' }),
+	            ' ',
+	            issue.comments,
+	            ' comments'
+	          )
+	        )
+	      )
 	    );
 	  });
 	  return _react2.default.createElement(
 	    'ul',
-	    { styleName: 'laneList' },
-	    lanes
+	    null,
+	    issues
 	  );
 	}
 	
-	exports.default = (0, _reactCssModules2.default)(LaneList, _style2.default);
+	exports.default = (0, _reactCssModules2.default)(IssueList, _style2.default);
 
 /***/ },
-/* 200 */
+/* 203 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"laneList":"style__laneList___3QiPe","item":"style__item___2YZ1o"};
+	module.exports = {"issue":"style__issue___2WnOS","upvotes":"style__upvotes___2o-__","comments":"style__comments___1WlOb","footer":"style__footer___l4Qwp"};
 
 /***/ },
-/* 201 */,
-/* 202 */
+/* 204 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = [{
 	  id: 0,
-	  name: 'new'
+	  lane: 0,
+	  type: "Feature Request",
+	  post_date: 1462372465,
+	  author: "s3",
+	  title: "Newsfeed, nur eigene Nachrichten anzeigen",
+	  body: 'Da meine eigenen Posts bereits weit zurückliegen, muss ich lange ' + 'scrollen, um sie wieder zu finden. Es wäre praktisch, wenn bei den Filtern ' + '"Open Newsfeed" auch eine Option "Own Comments" zu finden wäre.',
+	  upvotes: 2,
+	  comments: 0
 	}, {
 	  id: 1,
-	  name: 'progress'
+	  lane: 1,
+	  type: "Bug",
+	  post_date: 1463063665,
+	  author: "s0",
+	  title: "Vorreihen von nicht-Dummy-Abgaben",
+	  body: 'Ich glaube, ein Grund für das aktuelle Review-Problem ist, dass es ' + 'übermäßig viele Dummies gibt bzw. richtige Abgaben nicht bevorzugt werden. ' + 'Gegen Anfang des Semesters wurden echte Abgaben anscheinend noch ' + 'vorgereiht, da man sogar schon wenige Stunden nach Veröffentlichung einer ' + 'Challenge richtige Abgaben reviewen konnte. Aktuell sieht man, selbst wenn ' + 'man erst Tage nachher abgibt, fast ausschließlich nur Dummies. Ich denke, ' + 'dass man die Situation durch Vorreihen der richtigen Abgaben wieder ' + 'deutlich verbessern könnte. (Es scheint, als wäre es in den ersten Wochen ' + 'so gewesen, vllt. ist irgendwo ein Bug; z.B. eine nicht-gesetzte Dummy-Flag ' + 'oder Ähnliches.)',
+	  upvotes: 4,
+	  comments: 3
 	}, {
 	  id: 2,
-	  name: 'new'
+	  lane: 0,
+	  type: "Bug",
+	  post_date: 1463063665,
+	  author: "s0",
+	  title: "Darstellungsfehler auf der Startseite",
+	  body: 'Auf der Startseite wird das Kästchen mit den Lecturedates falsch ' + 'dargestellt. Sobald man irgendein anderes Kästechen auf-/zuklappt, rutscht ' + 'es dann auf seinen richtigen Platz zurück.',
+	  upvotes: 1,
+	  comments: 3
 	}];
 
 /***/ }

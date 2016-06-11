@@ -9,6 +9,6 @@ export default [
   },
   {
     id: 2,
-    name: 'new',
+    name: 'finished',
   }
 ];

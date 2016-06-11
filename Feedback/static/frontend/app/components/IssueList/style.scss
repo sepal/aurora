@@ -1,0 +1,31 @@
+@import "../../styles/config/colors";
+@import "../../styles/config/layout";
+@import "../../styles/abstract/selecting";
+
+.issue {
+  background: white;
+  border-radius: $border-radius;
+
+  padding: $spacing;
+  margin-top: $spacing--big;
+
+  &:nth-child(1) {
+    margin-top: 0;
+  }
+
+  cursor: pointer;
+
+  @include element-active {
+    background: $gray--lighter;
+  }
+}
+
+.upvotes, .comments {
+  margin-right: $spacing--big;
+}
+
+.footer {
+  margin-top: $spacing;
+  color: $gray;
+  font-size: 0.9em;
+}

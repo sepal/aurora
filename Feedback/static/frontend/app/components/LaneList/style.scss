@@ -3,7 +3,7 @@
 
 .laneList {
   margin: {
-    top: $margin;
+    top: $spacing--big;
     left: 0;
     bottom: 0;
     right: 0;
@@ -16,5 +16,5 @@
 
 .item {
   flex: 1 0 auto;
-  padding: 0 30px;
+  padding: 0 $spacing--big;
 }
