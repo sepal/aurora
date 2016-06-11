@@ -48,9 +48,6 @@ module.exports = {
         templateFile: './component/styles.scss.hbs'
       })
     }
-
-    console.log(actions);
-
     return actions;
   }
 };
