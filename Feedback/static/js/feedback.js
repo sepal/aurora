@@ -2354,11 +2354,11 @@
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _LaneList = __webpack_require__(197);
+	var _LaneList = __webpack_require__(199);
 	
 	var _LaneList2 = _interopRequireDefault(_LaneList);
 	
-	var _lanes = __webpack_require__(200);
+	var _lanes = __webpack_require__(208);
 	
 	var _lanes2 = _interopRequireDefault(_lanes);
 	
@@ -9085,7 +9085,9 @@
 	module.exports = {"feedback":"style__feedback___1bBU5","title":"style__title___1NzFM","add":"style__add___84vK9"};
 
 /***/ },
-/* 197 */
+/* 197 */,
+/* 198 */,
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9102,11 +9104,11 @@
 	
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
 	
-	var _style = __webpack_require__(198);
+	var _style = __webpack_require__(200);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _Lane = __webpack_require__(199);
+	var _Lane = __webpack_require__(201);
 	
 	var _Lane2 = _interopRequireDefault(_Lane);
 	
@@ -9130,14 +9132,14 @@
 	exports.default = (0, _reactCssModules2.default)(LaneList, _style2.default);
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"laneList":"style__laneList___3QiPe","item":"style__item___2YZ1o"};
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9156,15 +9158,15 @@
 	
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
 	
-	var _style = __webpack_require__(201);
+	var _style = __webpack_require__(202);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _IssueList = __webpack_require__(202);
+	var _IssueList = __webpack_require__(203);
 	
 	var _IssueList2 = _interopRequireDefault(_IssueList);
 	
-	var _issues = __webpack_require__(204);
+	var _issues = __webpack_require__(207);
 	
 	var _issues2 = _interopRequireDefault(_issues);
 	
@@ -9238,34 +9240,14 @@
 	exports.default = (0, _reactCssModules2.default)(Lane, _style2.default);
 
 /***/ },
-/* 200 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = [{
-	  id: 0,
-	  name: 'New'
-	}, {
-	  id: 1,
-	  name: 'In Progress'
-	}, {
-	  id: 2,
-	  name: 'Finished'
-	}];
-
-/***/ },
-/* 201 */
+/* 202 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"lane":"style__lane___4hRD2","title":"style__title___1plB0","content":"style__content___1KwTm","empty":"style__empty___2CGeI"};
 
 /***/ },
-/* 202 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9282,7 +9264,7 @@
 	
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
 	
-	var _style = __webpack_require__(203);
+	var _style = __webpack_require__(204);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
@@ -9311,52 +9293,11 @@
 	exports.default = (0, _reactCssModules2.default)(IssueList, _style2.default);
 
 /***/ },
-/* 203 */
+/* 204 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"item":"style__item___1pf8H"};
-
-/***/ },
-/* 204 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = [{
-	  id: 0,
-	  lane: 0,
-	  type: "Feature Request",
-	  post_date: 1462372465,
-	  author: "s3",
-	  title: "Newsfeed, nur eigene Nachrichten anzeigen",
-	  body: 'Da meine eigenen Posts bereits weit zurückliegen, muss ich lange ' + 'scrollen, um sie wieder zu finden. Es wäre praktisch, wenn bei den Filtern ' + '"Open Newsfeed" auch eine Option "Own Comments" zu finden wäre.',
-	  upvotes: 2,
-	  comments: 0
-	}, {
-	  id: 1,
-	  lane: 1,
-	  type: "Bug",
-	  post_date: 1463063665,
-	  author: "s0",
-	  title: "Vorreihen von nicht-Dummy-Abgaben",
-	  body: 'Ich glaube, ein Grund für das aktuelle Review-Problem ist, dass es ' + 'übermäßig viele Dummies gibt bzw. richtige Abgaben nicht bevorzugt werden. ' + 'Gegen Anfang des Semesters wurden echte Abgaben anscheinend noch ' + 'vorgereiht, da man sogar schon wenige Stunden nach Veröffentlichung einer ' + 'Challenge richtige Abgaben reviewen konnte. Aktuell sieht man, selbst wenn ' + 'man erst Tage nachher abgibt, fast ausschließlich nur Dummies. Ich denke, ' + 'dass man die Situation durch Vorreihen der richtigen Abgaben wieder ' + 'deutlich verbessern könnte. (Es scheint, als wäre es in den ersten Wochen ' + 'so gewesen, vllt. ist irgendwo ein Bug; z.B. eine nicht-gesetzte Dummy-Flag ' + 'oder Ähnliches.)',
-	  upvotes: 4,
-	  comments: 3
-	}, {
-	  id: 2,
-	  lane: 0,
-	  type: "Bug",
-	  post_date: 1463063665,
-	  author: "s0",
-	  title: "Darstellungsfehler auf der Startseite",
-	  body: 'Auf der Startseite wird das Kästchen mit den Lecturedates falsch ' + 'dargestellt. Sobald man irgendein anderes Kästechen auf-/zuklappt, rutscht ' + 'es dann auf seinen richtigen Platz zurück.',
-	  upvotes: 1,
-	  comments: 3
-	}];
 
 /***/ },
 /* 205 */
@@ -9424,6 +9365,67 @@
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"issueTeaser":"style__issueTeaser___24P-_","upvotes":"style__upvotes___33hIh","comments":"style__comments___2LJ8L","footer":"style__footer___3_sdP"};
+
+/***/ },
+/* 207 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [{
+	  id: 0,
+	  lane: 0,
+	  type: "Feature Request",
+	  post_date: 1462372465,
+	  author: "s3",
+	  title: "Newsfeed, nur eigene Nachrichten anzeigen",
+	  body: 'Da meine eigenen Posts bereits weit zurückliegen, muss ich lange ' + 'scrollen, um sie wieder zu finden. Es wäre praktisch, wenn bei den Filtern ' + '"Open Newsfeed" auch eine Option "Own Comments" zu finden wäre.',
+	  upvotes: 2,
+	  comments: 0
+	}, {
+	  id: 1,
+	  lane: 1,
+	  type: "Bug",
+	  post_date: 1463063665,
+	  author: "s0",
+	  title: "Vorreihen von nicht-Dummy-Abgaben",
+	  body: 'Ich glaube, ein Grund für das aktuelle Review-Problem ist, dass es ' + 'übermäßig viele Dummies gibt bzw. richtige Abgaben nicht bevorzugt werden. ' + 'Gegen Anfang des Semesters wurden echte Abgaben anscheinend noch ' + 'vorgereiht, da man sogar schon wenige Stunden nach Veröffentlichung einer ' + 'Challenge richtige Abgaben reviewen konnte. Aktuell sieht man, selbst wenn ' + 'man erst Tage nachher abgibt, fast ausschließlich nur Dummies. Ich denke, ' + 'dass man die Situation durch Vorreihen der richtigen Abgaben wieder ' + 'deutlich verbessern könnte. (Es scheint, als wäre es in den ersten Wochen ' + 'so gewesen, vllt. ist irgendwo ein Bug; z.B. eine nicht-gesetzte Dummy-Flag ' + 'oder Ähnliches.)',
+	  upvotes: 4,
+	  comments: 3
+	}, {
+	  id: 2,
+	  lane: 0,
+	  type: "Bug",
+	  post_date: 1463063665,
+	  author: "s0",
+	  title: "Darstellungsfehler auf der Startseite",
+	  body: 'Auf der Startseite wird das Kästchen mit den Lecturedates falsch ' + 'dargestellt. Sobald man irgendein anderes Kästechen auf-/zuklappt, rutscht ' + 'es dann auf seinen richtigen Platz zurück.',
+	  upvotes: 1,
+	  comments: 3
+	}];
+
+/***/ },
+/* 208 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [{
+	  id: 0,
+	  name: 'New'
+	}, {
+	  id: 1,
+	  name: 'In Progress'
+	}, {
+	  id: 2,
+	  name: 'Finished'
+	}];
 
 /***/ }
 /******/ ]);
