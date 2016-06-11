@@ -5,17 +5,16 @@ import styles from './style.scss';
 import Lane from '../Lane';
 
 function LaneList(props) {
+  var lanes = props.lanes.map(lane => {
+    return (
+      <li styleName="item" key={lane.id}>
+        <Lane title={lane.name} />
+      </li>
+    )
+  });
   return (
     <ul styleName='laneList'>
-      <li styleName="item">
-        <Lane title="New"/>
-      </li>
-      <li styleName="item">
-        <Lane title="InProgress"/>
-      </li>
-      <li styleName="item">
-        <Lane title="Finished"/>
-      </li>
+      {lanes}
     </ul>
   );
 }

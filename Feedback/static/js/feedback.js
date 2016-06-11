@@ -2358,6 +2358,10 @@
 	
 	var _LaneList2 = _interopRequireDefault(_LaneList);
 	
+	var _lanes = __webpack_require__(202);
+	
+	var _lanes2 = _interopRequireDefault(_lanes);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2381,7 +2385,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { styleName: 'feedback' },
-	        _react2.default.createElement(_LaneList2.default, null)
+	        _react2.default.createElement(_LaneList2.default, { lanes: _lanes2.default })
 	      );
 	    }
 	  }]);
@@ -9176,24 +9180,17 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function LaneList(props) {
+	  var lanes = props.lanes.map(function (lane) {
+	    return _react2.default.createElement(
+	      'li',
+	      { styleName: 'item', key: lane.id },
+	      _react2.default.createElement(_Lane2.default, { title: lane.name })
+	    );
+	  });
 	  return _react2.default.createElement(
 	    'ul',
 	    { styleName: 'laneList' },
-	    _react2.default.createElement(
-	      'li',
-	      { styleName: 'item' },
-	      _react2.default.createElement(_Lane2.default, { title: 'New' })
-	    ),
-	    _react2.default.createElement(
-	      'li',
-	      { styleName: 'item' },
-	      _react2.default.createElement(_Lane2.default, { title: 'InProgress' })
-	    ),
-	    _react2.default.createElement(
-	      'li',
-	      { styleName: 'item' },
-	      _react2.default.createElement(_Lane2.default, { title: 'Finished' })
-	    )
+	    lanes
 	  );
 	}
 	
@@ -9205,6 +9202,27 @@
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"laneList":"style__laneList___3QiPe","item":"style__item___2YZ1o"};
+
+/***/ },
+/* 201 */,
+/* 202 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [{
+	  id: 0,
+	  name: 'new'
+	}, {
+	  id: 1,
+	  name: 'progress'
+	}, {
+	  id: 2,
+	  name: 'new'
+	}];
 
 /***/ }
 /******/ ]);
