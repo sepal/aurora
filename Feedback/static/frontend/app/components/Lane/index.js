@@ -9,7 +9,6 @@ class Lane extends React.Component {
   constructor(props) {
     super(props);
     const issues = IssueMockup.filter(issue => {
-      console.log(issue);
       return issue.lane == this.props.id
     });
 

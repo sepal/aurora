@@ -1,8 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+
 import Feedback from './components/Feedback';
+import Kanban from './components/Kanban';
 
 document.addEventListener("DOMContentLoaded", function(event) {
   var node = document.getElementById('test');
-  ReactDOM.render(<Feedback />, node);
+  ReactDOM.render(
+    (
+      <Router history={browserHistory}>
+        <Route path="/gsi/feedback" component={Feedback}>
+          <IndexRoute component={Kanban}/>
+        </Route>
+      </Router>
+    )
+    , node);
 });

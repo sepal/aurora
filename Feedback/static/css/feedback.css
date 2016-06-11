@@ -1,10 +1,40 @@
-.style__feedback___1bBU5 {
+.style__modal___2FOtZ {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5001;
+  background: rgba(0, 0, 0, 0.75); }
+
+.style__window___EE3X8 {
+  border-radius: 5px;
+  border: 1px solid #cbcbcb;
+  background: white;
+  margin: 105px auto;
+  width: 960px; }
+
+.style__header___gSFNj {
+  width: 100%; }
+
+.style__content___2LRPA {
+  padding: 14px; }
+
+.style__close___JgRVK {
+  float: right;
+  font-size: 2em;
+  color: red; }
+  .style__close___JgRVK:hover, .style__close___JgRVK:active, .style__close___JgRVK:focus {
+    background: none !important;
+    text-shadow: none !important;
+    color: #ff6666 !important; }
+.style__feedback___sAr02 {
   background: white; }
 
-.style__title___1NzFM {
+.style__title___2R3T_ {
   font-size: 2.5em; }
 
-.style__add___84vK9 {
+.style__add___2FI9e {
   margin: 21px; }
 .style__laneList___3QiPe {
   margin-top: 21px;

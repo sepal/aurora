@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "react-css-modules": "^3.7.6",
-    "react-lite": "^0.15.14"
+    "react-lite": "^0.15.14",
+    "react-router": "^2.4.1"
   }
 }
