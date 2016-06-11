@@ -54,6 +54,9 @@ switch (process.env.npm_lifecycle_event) {
   case 'build':
     config = merge(
       common,
+      {
+        devtool: 'source-map'
+      },
       parts.injectVariable(
         'process.env.NODE_ENV',
         'production'

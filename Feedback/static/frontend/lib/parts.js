@@ -16,7 +16,7 @@ exports.extractCSS = function (paths, output_dir) {
         },
         {
           test: /\.scss$/,
-          loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass!postcss'),
+          loader: ExtractTextPlugin.extract('style?sourceMap', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass?sourceMap!postcss'),
           include: paths
         }
       ]
