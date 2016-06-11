@@ -1,8 +1,8 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
-import styles from './component.scss';
+import styles from './hello.scss';
 
-class HelloWorld extends React.Component {
+class Hello extends React.Component {
   render() {
     return (
       <div styleName='box'>
@@ -12,4 +12,4 @@ class HelloWorld extends React.Component {
   }
 }
 
-export default CSSModules(HelloWorld, styles);
+export default Hello;

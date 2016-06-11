@@ -1,4 +1,8 @@
 import React from 'react';
-import HelloWorld from './component';
+import ReactDOM from 'react-dom';
+import Hello from './hello';
 
-React.render("<HelloWorld name='John' />");
+document.addEventListener("DOMContentLoaded", function(event) {
+  var node = document.getElementById('test');
+  ReactDOM.render(<Hello name="John" />, node);
+});

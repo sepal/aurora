@@ -75,7 +75,6 @@ switch (process.env.npm_lifecycle_event) {
       {
         devtool: 'source-map'
       },
-      parts.clean(PATHS.build),
       parts.extractCSS(PATHS.app, PATHS.css)
     );
 }

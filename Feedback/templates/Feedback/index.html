@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% block content %}
+  <div id="test">
+    <span>Loading...</span>
+  </div>
+
+  <script type="text/javascript"
+          src="{% static 'js/feedback_manifest.js' %}"></script>
+  <script type="text/javascript"
+          src="{% static 'js/feedback_vendor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/feedback.js' %}"></script>
+
+{% endblock %}
