@@ -12,17 +12,22 @@ class IssueDetail extends React.Component {
     });
 
     if (issues.length != 0) {
-      this.state = {
-        issue: issues[0]
-      }
+      this.state = issues[0]
     }
 
   }
+
   render() {
     return (
       <div styleName='issueDetail'>
-        <div styleName="title">{this.state.issue.title}</div>
-        <div styleName="body">{this.state.issue.body}</div>
+        <div>
+          <div styleName="title">
+            <i className="fa fa-exclamation-circle" styleName="icon"></i>
+            {this.state.title}
+          </div>
+          <div styleName="author">by {this.state.author}</div>
+        </div>
+        <div styleName="body">{this.state.body}</div>
       </div>
     );
   }

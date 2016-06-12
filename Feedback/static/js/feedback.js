@@ -9181,7 +9181,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { styleName: 'content' },
+	            null,
 	            this.props.children
 	          )
 	        )
@@ -9199,7 +9199,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"modal":"style__modal___2FOtZ","window":"style__window___EE3X8","header":"style__header___gSFNj","content":"style__content___2LRPA","close":"style__close___JgRVK"};
+	module.exports = {"modal":"style__modal___2FOtZ","window":"style__window___EE3X8","header":"style__header___gSFNj","close":"style__close___JgRVK"};
 
 /***/ },
 /* 199 */
@@ -15249,9 +15249,7 @@
 	    });
 	
 	    if (issues.length != 0) {
-	      _this.state = {
-	        issue: issues[0]
-	      };
+	      _this.state = issues[0];
 	    }
 	
 	    return _this;
@@ -15265,13 +15263,24 @@
 	        { styleName: 'issueDetail' },
 	        _react2.default.createElement(
 	          'div',
-	          { styleName: 'title' },
-	          this.state.issue.title
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { styleName: 'title' },
+	            _react2.default.createElement('i', { className: 'fa fa-exclamation-circle', styleName: 'icon' }),
+	            this.state.title
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { styleName: 'author' },
+	            'by ',
+	            this.state.author
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { styleName: 'body' },
-	          this.state.issue.body
+	          this.state.body
 	        )
 	      );
 	    }
@@ -15287,7 +15296,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"issueDetail":"style__issueDetail___3NStx","title":"style__title___xJt70","body":"style__body___GZBCd"};
+	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","author":"style__author___21E5S","body":"style__body___GZBCd"};
 
 /***/ }
 /******/ ]);

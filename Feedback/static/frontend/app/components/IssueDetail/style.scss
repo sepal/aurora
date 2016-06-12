@@ -1,13 +1,32 @@
 @import "../../styles/config/colors";
 @import "../../styles/config/layout";
 
+%container {
+  position: relative;
+}
+
+
+.icon {
+  position: absolute;
+  left: -$spacing--big*2;
+  color: $gray;
+  font-size: 2em;
+}
+
 .issueDetail {
-  width: 100%;
+  padding: $spacing $spacing $spacing $spacing--big*3;
 }
 
 .title {
   font-size: 1.2em;
   font-weight: bold;
+  @extend %container;
+
+}
+
+.author {
+  font-size: 0.9em;
+  color: $gray;
 }
 
 .body {

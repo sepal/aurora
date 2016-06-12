@@ -1,6 +1,7 @@
 @import "../../styles/config/colors";
 @import "../../styles/config/layout";
 @import "../../styles/abstract/selecting";
+@import "../../styles/abstract/layout";
 
 .modal {
   position: fixed;
@@ -23,17 +24,17 @@
 }
 
 .header {
+  position: relative;
   width: 100%;
 }
 
-.content {
-  padding: $spacing--big;
-}
-
 .close {
-  float: right;
+  position: absolute;
+  right: 0;
+  top: 0;
   font-size: 2em;
   color: red;
+  z-index: 5;
 
   @include element-active {
     background: none !important;

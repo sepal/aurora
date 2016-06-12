@@ -12,6 +12,11 @@
   @include element-active {
     background: $gray--lighter;
   }
+
+  a {
+    color: $color;
+    text-decoration: none;
+  }
 }
 
 .upvotes, .comments {

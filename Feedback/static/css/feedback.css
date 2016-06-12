@@ -15,15 +15,16 @@
   width: 600px; }
 
 .style__header___gSFNj {
+  position: relative;
   width: 100%; }
 
-.style__content___2LRPA {
-  padding: 21px; }
-
 .style__close___JgRVK {
-  float: right;
+  position: absolute;
+  right: 0;
+  top: 0;
   font-size: 2em;
-  color: red; }
+  color: red;
+  z-index: 5; }
   .style__close___JgRVK:hover, .style__close___JgRVK:active, .style__close___JgRVK:focus {
     background: none !important;
     text-shadow: none !important;
@@ -87,6 +88,9 @@
   background: white; }
   .style__issueTeaser___24P-_:hover, .style__issueTeaser___24P-_:active, .style__issueTeaser___24P-_:focus {
     background: #f7f7f7; }
+  .style__issueTeaser___24P-_ a {
+    color: #222;
+    text-decoration: none; }
 
 .style__upvotes___33hIh, .style__comments___2LJ8L {
   margin-right: 21px; }
@@ -95,12 +99,25 @@
   margin-top: 14px;
   color: #aaa;
   font-size: 0.9em; }
+.style__title___xJt70 {
+  position: relative; }
+
+.style__icon___2yqJ2 {
+  position: absolute;
+  left: -42px;
+  color: #aaa;
+  font-size: 2em; }
+
 .style__issueDetail___3NStx {
-  width: 100%; }
+  padding: 14px 14px 14px 63px; }
 
 .style__title___xJt70 {
   font-size: 1.2em;
   font-weight: bold; }
+
+.style__author___21E5S {
+  font-size: 0.9em;
+  color: #aaa; }
 
 .style__body___GZBCd {
   margin-top: 14px; }
