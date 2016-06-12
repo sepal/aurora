@@ -15,10 +15,12 @@ function IssueTeaser(props) {
     >
       <div>{props.title}</div>
       <div styleName="footer">
-        <span styleName="upvotes"><i
-          className="fa fa-thumbs-up"></i> {props.upvotes} upvotes</span>
-        <span styleName="comments"><i
-          className="fa fa-comments"></i> {props.comments} comments</span>
+        <span styleName="upvotes">
+          <i className="fa fa-thumbs-up"></i> {props.upvotes} upvotes
+        </span>
+        <span styleName="comments">
+          <i className="fa fa-comments"></i> {props.comments} comments
+        </span>
       </div>
     </Link>
   );

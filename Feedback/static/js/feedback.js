@@ -9461,8 +9461,7 @@
 	      _react2.default.createElement(
 	        'span',
 	        { styleName: 'upvotes' },
-	        _react2.default.createElement('i', {
-	          className: 'fa fa-thumbs-up' }),
+	        _react2.default.createElement('i', { className: 'fa fa-thumbs-up' }),
 	        ' ',
 	        props.upvotes,
 	        ' upvotes'
@@ -9470,8 +9469,7 @@
 	      _react2.default.createElement(
 	        'span',
 	        { styleName: 'comments' },
-	        _react2.default.createElement('i', {
-	          className: 'fa fa-comments' }),
+	        _react2.default.createElement('i', { className: 'fa fa-comments' }),
 	        ' ',
 	        props.comments,
 	        ' comments'
