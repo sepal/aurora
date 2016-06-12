@@ -19,7 +19,7 @@
   border: 1px solid $gray--light;
   background: white;
   margin: $spacing--big*5 auto;
-  width: 960px;
+  width: 600px;
 }
 
 .header {
@@ -27,7 +27,7 @@
 }
 
 .content {
-  padding: $spacing;
+  padding: $spacing--big;
 }
 
 .close {

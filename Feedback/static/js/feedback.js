@@ -64,6 +64,10 @@
 	
 	var _Kanban2 = _interopRequireDefault(_Kanban);
 	
+	var _IssueDetail = __webpack_require__(273);
+	
+	var _IssueDetail2 = _interopRequireDefault(_IssueDetail);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener("DOMContentLoaded", function (event) {
@@ -74,7 +78,8 @@
 	    _react2.default.createElement(
 	      _reactRouter.Route,
 	      { path: '/gsi/feedback', component: _Feedback2.default },
-	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Kanban2.default })
+	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Kanban2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/gsi/feedback/issue/:id', component: _IssueDetail2.default })
 	    )
 	  ), node);
 	});
@@ -2372,6 +2377,10 @@
 	
 	var _Modal2 = _interopRequireDefault(_Modal);
 	
+	var _Kanban = __webpack_require__(271);
+	
+	var _Kanban2 = _interopRequireDefault(_Kanban);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2403,15 +2412,15 @@
 	    value: function render() {
 	      var location = this.props.location;
 	
-	      var isModal = location.state && location.state.modal && this.previousChildren;
+	      var isModal = location.pathname.match(/^\/gsi\/feedback[/]*$/i) == null;
 	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        isModal ? this.previousChildren : this.props.children,
+	        isModal ? _react2.default.createElement(_Kanban2.default, null) : this.props.children,
 	        isModal && _react2.default.createElement(
 	          _Modal2.default,
-	          { isOpen: true, returnTo: location.state.returnTo },
+	          { isOpen: true, returnTo: '/gsi/feedback' },
 	          this.props.children
 	        )
 	      );
@@ -9121,6 +9130,8 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(210);
+	
 	var _reactCssModules = __webpack_require__(3);
 	
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
@@ -9159,9 +9170,13 @@
 	            'div',
 	            { styleName: 'header' },
 	            _react2.default.createElement(
-	              'button',
-	              { styleName: 'close' },
-	              _react2.default.createElement('i', { className: 'fa fa-times-circle' })
+	              _reactRouter.Link,
+	              { to: this.props.returnTo },
+	              _react2.default.createElement(
+	                'button',
+	                { styleName: 'close' },
+	                _react2.default.createElement('i', { className: 'fa fa-times-circle' })
+	              )
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -9379,7 +9394,7 @@
 	      'li',
 	      { key: issue.id, styleName: 'item' },
 	      _react2.default.createElement(_IssueTeaser2.default, { title: issue.title, upvotes: issue.upvotes,
-	        comments: issue.comments })
+	        comments: issue.comments, id: issue.id })
 	    );
 	  });
 	  return _react2.default.createElement(
@@ -9412,6 +9427,8 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(210);
+	
 	var _reactCssModules = __webpack_require__(3);
 	
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
@@ -9427,30 +9444,40 @@
 	    'div',
 	    { styleName: 'issueTeaser' },
 	    _react2.default.createElement(
-	      'div',
-	      null,
-	      props.title
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { styleName: 'footer' },
+	      _reactRouter.Link,
+	      {
+	        key: props.id,
+	        to: {
+	          pathname: '/gsi/feedback/issue/' + props.id,
+	          state: { returnTo: '/gsi/feedback' }
+	        }
+	      },
 	      _react2.default.createElement(
-	        'span',
-	        { styleName: 'upvotes' },
-	        _react2.default.createElement('i', {
-	          className: 'fa fa-thumbs-up' }),
-	        ' ',
-	        props.upvotes,
-	        ' upvotes'
+	        'div',
+	        null,
+	        props.title
 	      ),
 	      _react2.default.createElement(
-	        'span',
-	        { styleName: 'comments' },
-	        _react2.default.createElement('i', {
-	          className: 'fa fa-comments' }),
-	        ' ',
-	        props.comments,
-	        ' comments'
+	        'div',
+	        { styleName: 'footer' },
+	        _react2.default.createElement(
+	          'span',
+	          { styleName: 'upvotes' },
+	          _react2.default.createElement('i', {
+	            className: 'fa fa-thumbs-up' }),
+	          ' ',
+	          props.upvotes,
+	          ' upvotes'
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { styleName: 'comments' },
+	          _react2.default.createElement('i', {
+	            className: 'fa fa-comments' }),
+	          ' ',
+	          props.comments,
+	          ' comments'
+	        )
 	      )
 	    )
 	  );
@@ -15172,6 +15199,95 @@
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"feedback":"style__feedback___sAr02","title":"style__title___2R3T_","add":"style__add___2FI9e"};
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactCssModules = __webpack_require__(3);
+	
+	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
+	
+	var _style = __webpack_require__(274);
+	
+	var _style2 = _interopRequireDefault(_style);
+	
+	var _issues = __webpack_require__(207);
+	
+	var _issues2 = _interopRequireDefault(_issues);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var IssueDetail = function (_React$Component) {
+	  _inherits(IssueDetail, _React$Component);
+	
+	  function IssueDetail(props) {
+	    _classCallCheck(this, IssueDetail);
+	
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(IssueDetail).call(this, props));
+	
+	    var issues = _issues2.default.filter(function (issue) {
+	      return issue.id == props.params.id;
+	    });
+	
+	    if (issues.length != 0) {
+	      _this.state = {
+	        issue: issues[0]
+	      };
+	    }
+	
+	    return _this;
+	  }
+	
+	  _createClass(IssueDetail, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { styleName: 'issueDetail' },
+	        _react2.default.createElement(
+	          'div',
+	          { styleName: 'title' },
+	          this.state.issue.title
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { styleName: 'body' },
+	          this.state.issue.body
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return IssueDetail;
+	}(_react2.default.Component);
+	
+	exports.default = (0, _reactCssModules2.default)(IssueDetail, _style2.default);
+
+/***/ },
+/* 274 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"issueDetail":"style__issueDetail___3NStx","title":"style__title___xJt70","body":"style__body___GZBCd"};
 
 /***/ }
 /******/ ]);

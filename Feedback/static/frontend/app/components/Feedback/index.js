@@ -2,6 +2,7 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 import Modal from '../Modal';
+import Kanban from '../Kanban';
 
 class Feedback extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -17,19 +18,17 @@ class Feedback extends React.Component {
 
   render() {
     let {location} = this.props;
-    let isModal = location.state &&
-      location.state.modal &&
-      this.previousChildren;
+    let isModal = location.pathname.match(/^\/gsi\/feedback[/]*$/i) == null;
 
     return (
       <div>
         {isModal ?
-          this.previousChildren :
+          <Kanban /> :
           this.props.children
         }
 
         {isModal && (
-          <Modal isOpen={true} returnTo={location.state.returnTo}>
+          <Modal isOpen={true} returnTo="/gsi/feedback">
             {this.props.children}
           </Modal>
         )}

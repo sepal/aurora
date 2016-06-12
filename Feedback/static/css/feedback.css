@@ -12,13 +12,13 @@
   border: 1px solid #cbcbcb;
   background: white;
   margin: 105px auto;
-  width: 960px; }
+  width: 600px; }
 
 .style__header___gSFNj {
   width: 100%; }
 
 .style__content___2LRPA {
-  padding: 14px; }
+  padding: 21px; }
 
 .style__close___JgRVK {
   float: right;
@@ -95,5 +95,14 @@
   margin-top: 14px;
   color: #aaa;
   font-size: 0.9em; }
+.style__issueDetail___3NStx {
+  width: 100%; }
+
+.style__title___xJt70 {
+  font-size: 1.2em;
+  font-weight: bold; }
+
+.style__body___GZBCd {
+  margin-top: 14px; }
 
 /*# sourceMappingURL=feedback.css.map*/
