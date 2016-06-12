@@ -9441,43 +9441,40 @@
 	
 	function IssueTeaser(props) {
 	  return _react2.default.createElement(
-	    'div',
-	    { styleName: 'issueTeaser' },
-	    _react2.default.createElement(
-	      _reactRouter.Link,
-	      {
-	        key: props.id,
-	        to: {
-	          pathname: '/gsi/feedback/issue/' + props.id,
-	          state: { returnTo: '/gsi/feedback' }
-	        }
+	    _reactRouter.Link,
+	    {
+	      key: props.id,
+	      to: {
+	        pathname: '/gsi/feedback/issue/' + props.id,
+	        state: { returnTo: '/gsi/feedback' }
 	      },
+	      styleName: 'issueTeaser'
+	    },
+	    _react2.default.createElement(
+	      'div',
+	      null,
+	      props.title
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { styleName: 'footer' },
 	      _react2.default.createElement(
-	        'div',
-	        null,
-	        props.title
+	        'span',
+	        { styleName: 'upvotes' },
+	        _react2.default.createElement('i', {
+	          className: 'fa fa-thumbs-up' }),
+	        ' ',
+	        props.upvotes,
+	        ' upvotes'
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { styleName: 'footer' },
-	        _react2.default.createElement(
-	          'span',
-	          { styleName: 'upvotes' },
-	          _react2.default.createElement('i', {
-	            className: 'fa fa-thumbs-up' }),
-	          ' ',
-	          props.upvotes,
-	          ' upvotes'
-	        ),
-	        _react2.default.createElement(
-	          'span',
-	          { styleName: 'comments' },
-	          _react2.default.createElement('i', {
-	            className: 'fa fa-comments' }),
-	          ' ',
-	          props.comments,
-	          ' comments'
-	        )
+	        'span',
+	        { styleName: 'comments' },
+	        _react2.default.createElement('i', {
+	          className: 'fa fa-comments' }),
+	        ' ',
+	        props.comments,
+	        ' comments'
 	      )
 	    )
 	  );

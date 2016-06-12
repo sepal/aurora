@@ -3,6 +3,7 @@
 @import "../../styles/abstract/selecting";
 
 .issueTeaser {
+  display: block;
   padding: $spacing;
   border-radius: $border-radius;
 
@@ -13,10 +14,8 @@
     background: $gray--lighter;
   }
 
-  a {
-    color: $color;
-    text-decoration: none;
-  }
+  color: $color;
+  text-decoration: none;
 }
 
 .upvotes, .comments {

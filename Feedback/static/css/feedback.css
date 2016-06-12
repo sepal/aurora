@@ -82,15 +82,15 @@
   .style__item___1pf8H:nth-child(1) {
     margin-top: 0; }
 .style__issueTeaser___24P-_ {
+  display: block;
   padding: 14px;
   border-radius: 3px;
   cursor: pointer;
-  background: white; }
+  background: white;
+  color: #222;
+  text-decoration: none; }
   .style__issueTeaser___24P-_:hover, .style__issueTeaser___24P-_:active, .style__issueTeaser___24P-_:focus {
     background: #f7f7f7; }
-  .style__issueTeaser___24P-_ a {
-    color: #222;
-    text-decoration: none; }
 
 .style__upvotes___33hIh, .style__comments___2LJ8L {
   margin-right: 21px; }
