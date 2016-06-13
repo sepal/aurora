@@ -83,3 +83,34 @@
     border-bottom: 1px solid $gray--light;
   }
 }
+
+.new-comment {
+  position: relative;
+  margin-top: $spacing;
+
+  .pic {
+    position: absolute;
+    left: -50px;
+    width: 40px;
+    text-align: center;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  input[type=submit] {
+    margin-top: $spacing;
+  }
+}
+
+.textarea {
+  border: 1px solid $gray;
+  padding: $spacing;
+
+  textarea {
+    border: none;
+    width: 100%;
+  }
+}

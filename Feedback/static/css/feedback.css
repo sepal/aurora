@@ -164,6 +164,27 @@
   .style__comments___3B6Sj h2 {
     font-weight: bold;
     border-bottom: 1px solid #cbcbcb; }
+
+.style__new-comment___2Ji8D {
+  position: relative;
+  margin-top: 14px; }
+  .style__new-comment___2Ji8D .style__pic___On24Q {
+    position: absolute;
+    left: -50px;
+    width: 40px;
+    text-align: center; }
+    .style__new-comment___2Ji8D .style__pic___On24Q img {
+      width: 100%;
+      height: auto; }
+  .style__new-comment___2Ji8D input[type=submit] {
+    margin-top: 14px; }
+
+.style__textarea___2wI_p {
+  border: 1px solid #aaa;
+  padding: 14px; }
+  .style__textarea___2wI_p textarea {
+    border: none;
+    width: 100%; }
 .style__comment___G4kQ2 {
   display: block;
   padding: 14px 0; }

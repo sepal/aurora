@@ -32,12 +32,7 @@ class IssueDetail extends React.Component {
 
   renderComments() {
     if (this.state.comments.length > 1) {
-      return (
-        <div styleName="comments">
-          <h2>Comments:</h2>
-          <CommentList comments={this.state.comments} />
-        </div>
-      );
+      return <CommentList comments={this.state.comments} />
     }
   }
 
@@ -90,7 +85,19 @@ class IssueDetail extends React.Component {
           </ul>
         </div>
         {this.renderImages()}
-        {this.renderComments()}
+        <div styleName="comments">
+          <h2>Comments:</h2>
+          <div styleName="new-comment">
+            <div styleName="pic">
+              <img src="/static/img/8.png" />
+            </div>
+            <div styleName="textarea">
+              <textarea rows="3" placeholder="Create a new comment"></textarea>
+            </div>
+            <button>Submit</button>
+          </div>
+          {this.renderComments()}
+        </div>
       </div>
     );
   }

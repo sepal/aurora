@@ -15317,16 +15317,7 @@
 	    key: 'renderComments',
 	    value: function renderComments() {
 	      if (this.state.comments.length > 1) {
-	        return _react2.default.createElement(
-	          'div',
-	          { styleName: 'comments' },
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            'Comments:'
-	          ),
-	          _react2.default.createElement(_CommentList2.default, { comments: this.state.comments })
-	        );
+	        return _react2.default.createElement(_CommentList2.default, { comments: this.state.comments });
 	      }
 	    }
 	  }, {
@@ -15442,7 +15433,35 @@
 	          )
 	        ),
 	        this.renderImages(),
-	        this.renderComments()
+	        _react2.default.createElement(
+	          'div',
+	          { styleName: 'comments' },
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Comments:'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { styleName: 'new-comment' },
+	            _react2.default.createElement(
+	              'div',
+	              { styleName: 'pic' },
+	              _react2.default.createElement('img', { src: '/static/img/8.png' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { styleName: 'textarea' },
+	              _react2.default.createElement('textarea', { rows: '3', placeholder: 'Create a new comment' })
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              null,
+	              'Submit'
+	            )
+	          ),
+	          this.renderComments()
+	        )
 	      );
 	    }
 	  }]);
@@ -15457,7 +15476,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","subtitle":"style__subtitle___4NkXT","type":"style__type___3yEVN","content":"style__content___U4YyQ","images":"style__images___1oV_T","body":"style__body___GZBCd","actions":"style__actions___uHxjh","comments":"style__comments___3B6Sj"};
+	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","subtitle":"style__subtitle___4NkXT","type":"style__type___3yEVN","content":"style__content___U4YyQ","images":"style__images___1oV_T","body":"style__body___GZBCd","actions":"style__actions___uHxjh","comments":"style__comments___3B6Sj","new-comment":"style__new-comment___2Ji8D","pic":"style__pic___On24Q","textarea":"style__textarea___2wI_p"};
 
 /***/ },
 /* 275 */
