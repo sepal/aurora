@@ -197,8 +197,11 @@ class Elaboration(models.Model):
     def get_extra_reviews(user, course):
         from Challenge.models import Challenge
 
-        final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
         user_submitted_challenge_ids = Elaboration.objects.filter(user_id=user.id, submission_time__isnull=False).values_list('challenge_id', flat=True)
+
+        final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
+        already_written_review_elaboration_ids = Review.objects.filter(reviewer_id=user.id).values_list('elaboration_id', flat=True)
+        exclude_elaboration_ids = list(final_challenge_ids) + list(already_written_review_elaboration_ids)
 
         missing_reviews = (
             Elaboration.objects
@@ -208,7 +211,7 @@ class Elaboration(models.Model):
                        user__is_staff=False,
                        challenge__course=course,
                        num_reviews__lt=2)
-                .exclude(challenge__id__in=final_challenge_ids)
+                .exclude(challenge__id__in=exclude_elaboration_ids)
                 .order_by('num_reviews', 'submission_time')
         )
 
