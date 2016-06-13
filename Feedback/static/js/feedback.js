@@ -15251,6 +15251,10 @@
 	
 	var _style2 = _interopRequireDefault(_style);
 	
+	var _CommentList = __webpack_require__(275);
+	
+	var _CommentList2 = _interopRequireDefault(_CommentList);
+	
 	var _issues = __webpack_require__(207);
 	
 	var _issues2 = _interopRequireDefault(_issues);
@@ -15292,6 +15296,23 @@
 	          return _react2.default.createElement('i', { className: 'fa fa-bug' });
 	        case 'Feedback':
 	          return _react2.default.createElement('i', { className: 'fa fa-commenting-o' });
+	      }
+	    }
+	  }, {
+	    key: 'renderComments',
+	    value: function renderComments() {
+	      console.log(this.state.comments.length);
+	      if (this.state.comments.length > 1) {
+	        return _react2.default.createElement(
+	          'div',
+	          { styleName: 'comments' },
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Comments:'
+	          ),
+	          _react2.default.createElement(_CommentList2.default, { comments: this.state.comments })
+	        );
 	      }
 	    }
 	  }, {
@@ -15373,7 +15394,8 @@
 	              )
 	            )
 	          )
-	        )
+	        ),
+	        this.renderComments()
 	      );
 	    }
 	  }]);
@@ -15388,7 +15410,120 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","subtitle":"style__subtitle___4NkXT","type":"style__type___3yEVN","content":"style__content___U4YyQ","body":"style__body___GZBCd","actions":"style__actions___uHxjh"};
+	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","subtitle":"style__subtitle___4NkXT","type":"style__type___3yEVN","content":"style__content___U4YyQ","body":"style__body___GZBCd","actions":"style__actions___uHxjh","comments":"style__comments___3B6Sj"};
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactCssModules = __webpack_require__(3);
+	
+	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
+	
+	var _style = __webpack_require__(276);
+	
+	var _style2 = _interopRequireDefault(_style);
+	
+	var _Comment = __webpack_require__(277);
+	
+	var _Comment2 = _interopRequireDefault(_Comment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function CommentList(props) {
+	  var comments = props.comments.map(function (comment) {
+	    return _react2.default.createElement(
+	      'li',
+	      { key: 'comment.id' },
+	      _react2.default.createElement(_Comment2.default, { author: comment.author,
+	        pic: comment.pic,
+	        comment: comment.comment })
+	    );
+	  });
+	
+	  return _react2.default.createElement(
+	    'ul',
+	    null,
+	    comments
+	  );
+	}
+	
+	exports.default = (0, _reactCssModules2.default)(CommentList, _style2.default);
+
+/***/ },
+/* 276 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactCssModules = __webpack_require__(3);
+	
+	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
+	
+	var _style = __webpack_require__(278);
+	
+	var _style2 = _interopRequireDefault(_style);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var url_regex = /(https?:\/\/[^\s]+)/g;
+	
+	function Comment(props) {
+	  var comments = props.comment;
+	  comments = comments.replace(url_regex, function (url) {
+	    return '<a href="' + url + '">' + url + '</a>';
+	  });
+	
+	  return _react2.default.createElement(
+	    'div',
+	    { styleName: 'comment' },
+	    _react2.default.createElement(
+	      'div',
+	      { styleName: 'header' },
+	      _react2.default.createElement('img', { styleName: 'pic', src: props.pic }),
+	      _react2.default.createElement(
+	        'span',
+	        null,
+	        props.author
+	      )
+	    ),
+	    _react2.default.createElement('div', { styleName: 'body',
+	      dangerouslySetInnerHTML: { __html: comments } })
+	  );
+	}
+	
+	exports.default = (0, _reactCssModules2.default)(Comment, _style2.default);
+
+/***/ },
+/* 278 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"comment":"style__comment___G4kQ2","header":"style__header___34YKR","pic":"style__pic___2TDWD","body":"style__body___1jW9A"};
 
 /***/ }
 /******/ ]);

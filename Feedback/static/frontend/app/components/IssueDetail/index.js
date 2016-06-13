@@ -1,6 +1,7 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
 import styles from './style.scss';
+import CommentList from '../CommentList';
 
 import IssueMockup from '../../mockup/issues';
 
@@ -25,6 +26,18 @@ class IssueDetail extends React.Component {
         return <i className="fa fa-bug"></i>;
       case 'Feedback':
         return <i className="fa fa-commenting-o"></i>;
+    }
+  }
+
+  renderComments() {
+    console.log(this.state.comments.length);
+    if (this.state.comments.length > 1) {
+      return (
+        <div styleName="comments">
+          <h2>Comments:</h2>
+          <CommentList comments={this.state.comments} />
+        </div>
+      );
     }
   }
 
@@ -55,6 +68,7 @@ class IssueDetail extends React.Component {
             </li>
           </ul>
         </div>
+        {this.renderComments()}
       </div>
     );
   }

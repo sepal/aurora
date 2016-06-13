@@ -7,9 +7,11 @@
 
 .icon {
   position: absolute;
-  left: -$spacing--big*2;
+  left: -50px;
+  width: 40px;
   color: $gray;
   font-size: 2em;
+  text-align: center;
 }
 
 .issueDetail {
@@ -60,5 +62,14 @@
 
   li {
     margin-bottom: $spacing;
+  }
+}
+
+.comments {
+  margin-top: $spacing--big;
+
+  h2 {
+    font-weight: bold;
+    border-bottom: 1px solid $gray--light;
   }
 }
