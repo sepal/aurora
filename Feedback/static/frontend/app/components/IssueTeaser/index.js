@@ -13,7 +13,7 @@ function IssueTeaser(props) {
       }}
       styleName="issueTeaser"
     >
-      <div>{props.title}</div>
+      <div><span styleName="type">[{props.type}]</span> {props.title}</div>
       <div styleName="footer">
         <span styleName="upvotes">
           <i className="fa fa-thumbs-up"></i> {props.upvotes} upvotes
