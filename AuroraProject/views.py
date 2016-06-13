@@ -69,6 +69,9 @@ def home(request, course_short_title=None):
     data = create_stat_data(course,data)
     data['user_is_top_reviewer'] = False
     if user.is_top_reviewer(course):
+        data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
+        data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
+        data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
         data['user_is_top_reviewer'] = True
         data = get_extra_review_data(user, course, data)
     faq_list = Faq.get_faqs(course_short_title)

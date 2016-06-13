@@ -106,6 +106,15 @@ class AuroraUser(User):
     def is_top_reviewer(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).top_reviewer
 
+    def number_of_extra_reviews(self, course):
+        return Review.objects.filter(submission_time__isnull=True, reviewer=self, chosen_by='extra_review').count()
+
+    def number_of_reviews_until_next_extra_point(self, course):
+        return 3 - (self.number_of_extra_reviews(course) % 3)
+
+    def extra_points_earned_with_reviews(self, course):
+        return self.number_of_extra_reviews(course) // 3
+
     def has_enough_special_reviews(self, challenge):
         return Review.objects.filter(elaboration__challenge=challenge).exclude(chosen_by='random').count() == 2
 

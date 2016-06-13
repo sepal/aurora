@@ -1,5 +1,9 @@
 Experimental Feature, display warning here<br><br>
 
+Number of extra reviews written: {{ number_of_extra_reviews }} <br>
+Number of reviews until next extra point: {{ reviews_until_next_extra_point }} <br>
+Extra points earned: {{ extra_points_earned_with_reviews }} <br><br>
+
 {%  for elaboration in extra_reviews %}
   <a href="{% url 'Review:extra_review' course_short_title=course.short_title %}?id={{elaboration.challenge.id}}&amp;elaboration_id={{elaboration.id}}">{{ elaboration.challenge.title }}</a><br>
 {% endfor %}
