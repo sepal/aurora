@@ -41,6 +41,24 @@ class IssueDetail extends React.Component {
     }
   }
 
+  renderImages() {
+    if (this.state.images) {
+      const images = this.state.images.map(image => {
+        return (
+          <li>
+            <a href={image} target="_blank"><img src={image} /></a>
+          </li>
+        )
+      });
+
+      return (
+        <ul styleName="images">
+          {images}
+        </ul>
+      )
+    }
+  }
+
   render() {
     const upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
     const date = Moment.unix(this.state.post_date).calendar();
@@ -71,6 +89,7 @@ class IssueDetail extends React.Component {
             </li>
           </ul>
         </div>
+        {this.renderImages()}
         {this.renderComments()}
       </div>
     );

@@ -40,6 +40,17 @@
   flex-wrap: nowrap;
 }
 
+.images {
+  margin-top: $spacing;
+  width: 100%;
+  clear: both;
+
+  img {
+    width: 150px;
+    height: auto;
+  }
+}
+
 .body {
   flex-grow: 2;
 

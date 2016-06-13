@@ -62,6 +62,9 @@ export default [
     body: 'Auf der Startseite wird das Kästchen mit den Lecturedates falsch ' +
     'dargestellt. Sobald man irgendein anderes Kästechen auf-/zuklappt, rutscht ' +
     'es dann auf seinen richtigen Platz zurück.',
+    images: [
+      "/static/img/NqFjrql.png"
+    ],
     upvotes: 1,
     comments: [
       {

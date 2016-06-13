@@ -9554,6 +9554,7 @@
 	  author: "s0",
 	  title: "Darstellungsfehler auf der Startseite",
 	  body: 'Auf der Startseite wird das Kästchen mit den Lecturedates falsch ' + 'dargestellt. Sobald man irgendein anderes Kästechen auf-/zuklappt, rutscht ' + 'es dann auf seinen richtigen Platz zurück.',
+	  images: ["/static/img/NqFjrql.png"],
 	  upvotes: 1,
 	  comments: [{
 	    id: 0,
@@ -15329,6 +15330,29 @@
 	      }
 	    }
 	  }, {
+	    key: 'renderImages',
+	    value: function renderImages() {
+	      if (this.state.images) {
+	        var images = this.state.images.map(function (image) {
+	          return _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { href: image, target: '_blank' },
+	              _react2.default.createElement('img', { src: image })
+	            )
+	          );
+	        });
+	
+	        return _react2.default.createElement(
+	          'ul',
+	          { styleName: 'images' },
+	          images
+	        );
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
@@ -15417,6 +15441,7 @@
 	            )
 	          )
 	        ),
+	        this.renderImages(),
 	        this.renderComments()
 	      );
 	    }
@@ -15432,7 +15457,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","subtitle":"style__subtitle___4NkXT","type":"style__type___3yEVN","content":"style__content___U4YyQ","body":"style__body___GZBCd","actions":"style__actions___uHxjh","comments":"style__comments___3B6Sj"};
+	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","subtitle":"style__subtitle___4NkXT","type":"style__type___3yEVN","content":"style__content___U4YyQ","images":"style__images___1oV_T","body":"style__body___GZBCd","actions":"style__actions___uHxjh","comments":"style__comments___3B6Sj"};
 
 /***/ },
 /* 275 */

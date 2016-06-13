@@ -133,6 +133,14 @@
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap; }
 
+.style__images___1oV_T {
+  margin-top: 14px;
+  width: 100%;
+  clear: both; }
+  .style__images___1oV_T img {
+    width: 150px;
+    height: auto; }
+
 .style__body___GZBCd {
   -webkit-box-flex: 2;
   -ms-flex-positive: 2;
