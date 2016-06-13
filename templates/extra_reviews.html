@@ -1,0 +1,6 @@
+Experimental Feature, display warning here<br><br>
+
+{%  for elaboration in extra_reviews %}
+  <a href="{% url 'Review:extra_review' course_short_title=course.short_title %}?id={{elaboration.challenge.id}}&amp;elaboration_id={{elaboration.id}}">{{ elaboration.challenge.title }}</a><br>
+{% endfor %}
+<br>

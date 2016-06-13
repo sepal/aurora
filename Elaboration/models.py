@@ -194,6 +194,35 @@ class Elaboration(models.Model):
         return missing_reviews
 
     @staticmethod
+    def get_extra_reviews(user, course):
+        from Challenge.models import Challenge
+
+        final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
+        user_submitted_challenge_ids = Elaboration.objects.filter(user_id=user.id, submission_time__isnull=False).values_list('challenge_id', flat=True)
+
+        missing_reviews = (
+            Elaboration.objects
+                .annotate(num_reviews=Count('review'))
+                .filter(submission_time__lte=datetime.now() - timedelta(days=1),
+                       challenge__id__in=user_submitted_challenge_ids,
+                       user__is_staff=False,
+                       challenge__course=course,
+                       num_reviews__lt=2)
+                .exclude(challenge__id__in=final_challenge_ids)
+                .order_by('num_reviews', 'submission_time')
+        )
+
+        missing_reviews = list(missing_reviews[:7])
+
+        # Add Open Reviews to top of list
+        open_reviews = Review.objects.filter(submission_time__isnull=True, reviewer=user)
+        for review in open_reviews:
+            missing_reviews = [review.elaboration] + missing_reviews
+
+        return missing_reviews[:7]
+
+
+    @staticmethod
     def get_top_level_tasks(course):
         from Challenge.models import Challenge
 

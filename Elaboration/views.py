@@ -82,3 +82,8 @@ def submit_elaboration(request, course_short_title):
        elaboration.submission_time = datetime.now()
        elaboration.save()
        return HttpResponse()
+
+def get_extra_review_data(user, course, data):
+    all_missing_reviews = Elaboration.get_extra_reviews(user, course)
+    data['extra_reviews'] = all_missing_reviews
+    return data

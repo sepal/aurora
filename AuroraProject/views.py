@@ -18,6 +18,7 @@ from Elaboration.models import Elaboration
 from Evaluation.views import get_points
 from Challenge.models import Challenge
 from Statistics.views import create_stat_data
+from Elaboration.views import get_extra_review_data
 from Faq.models import Faq
 
 import logging
@@ -66,6 +67,10 @@ def home(request, course_short_title=None):
     course = Course.get_or_raise_404(course_short_title)
     data = get_points(request, user, course)
     data = create_stat_data(course,data)
+    data['user_is_top_reviewer'] = False
+    if user.is_top_reviewer(course):
+        data['user_is_top_reviewer'] = True
+        data = get_extra_review_data(user, course, data)
     faq_list = Faq.get_faqs(course_short_title)
     context = RequestContext(request, {'newsfeed': data['course'], 'faq_list': faq_list})
 

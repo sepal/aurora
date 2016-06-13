@@ -103,6 +103,9 @@ class AuroraUser(User):
     def review_karma(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).review_karma
 
+    def is_top_reviewer(self, course):
+        return CourseUserRelation.objects.get(user=self, course=course).top_reviewer
+
     def has_enough_special_reviews(self, challenge):
         return Review.objects.filter(elaboration__challenge=challenge).exclude(chosen_by='random').count() == 2
 

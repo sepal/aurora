@@ -51,6 +51,35 @@ def review(request, course_short_title):
     return render_to_response('review.html', data, context_instance=RequestContext(request))
 
 
+def create_context_extra_review(request):
+    data = {}
+    if 'id' in request.GET:
+        user = RequestContext(request)['user']
+        challenge = Challenge.objects.get(pk=request.GET.get('id'))
+        elaboration = Elaboration.objects.get(pk=request.GET.get('elaboration_id'))
+        if not challenge.is_enabled_for_user(user):
+            raise Http404
+        if not challenge.submitted_by_user(user):
+            raise Http404
+
+        review = Review.get_open_review(challenge, user)
+        if not review:
+            review = Review(elaboration=elaboration, reviewer=user, chosen_by='extra_review')
+            review.save()
+
+        data['review'] = review
+        data['stack_id'] = challenge.get_stack().id
+        review_questions = ReviewQuestion.objects.filter(challenge=challenge).order_by("order")
+        data['questions'] = review_questions
+    return data
+
+@aurora_login_required()
+def extra_review(request, course_short_title):
+    data = create_context_extra_review(request)
+    data['course'] = Course.get_or_raise_404(course_short_title)
+    return render_to_response('review.html', data, context_instance=RequestContext(request))
+
+
 @aurora_login_required()
 def review_answer(request, course_short_title):
     user = RequestContext(request)['user']

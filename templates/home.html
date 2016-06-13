@@ -27,6 +27,17 @@
 		</div>
         {% endif %}
 
+    {% if user_is_top_reviewer %}
+      <div class="sidebar_item">
+        <div class="feed_header"  id="part_5">
+          <i class="fa fa-toggle-down half"></i> <b>Extra Reviews</b>
+        </div>
+        <div class="feed_column"  id="content_part_5">
+          {% include 'extra_reviews.html' %}
+  			</div>
+      </div>
+    {% endif %}
+
 		{% if user.is_staff %}
 		<div class="sidebar_item">
 	        <div class="feed_header" id="part_X">
@@ -169,5 +180,5 @@
 		</div>
 		<br><br><br><br><br>
     </div>
-	
+
 {% endblock %}
