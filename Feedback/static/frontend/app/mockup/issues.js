@@ -16,7 +16,7 @@ export default [
     id: 1,
     lane: 1,
     type: "Bug",
-    post_date: 1463063665,
+    post_date: 1463728834,
     author: "s1",
     title: "Vorreihen von nicht-Dummy-Abgaben",
     body: 'Ich glaube, ein Grund für das aktuelle Review-Problem ist, dass es ' +
@@ -33,6 +33,7 @@ export default [
     comments: [
       {
         id: 0,
+        post_date: 1463833234,
         pic: "/static/img/7.png",
         author: "peterpur",
         comment: "sorry, die überdurchschnittliche vergabe von dummy-arbeiten " +
@@ -41,6 +42,7 @@ export default [
       },
       {
         id: 1,
+        post_date: 1463847634,
         pic: "/static/img/2.png",
         author: "s1",
         comment: "Kurzes Feedback: Ich hatte, nach geschätzten 10 Dummies in " +
@@ -64,15 +66,17 @@ export default [
     comments: [
       {
         id: 0,
+        post_date: 1463067297,
         pic: "/static/img/1.png",
         author: "s0",
         comment: "Habe dazu einen kleinen clip gemacht: " +
         "https://flowlo.me/tmp/aurora.webm"
       },
       {
-        id: 0,
+        id: 1,
         pic: "/static/img/1.png",
         author: "s0",
+        post_date: 1463068257,
         comment: "Chrome Version 50.0.2661.102 m<br/>" +
         "Bildschirm 1920x1080<br/>" +
         "Safari 8.0.7 / 1920x1080"

@@ -11,7 +11,8 @@ function CommentList(props) {
       <li key="comment.id">
         <Comment author={comment.author}
             pic={comment.pic}
-            comment={comment.comment} />
+            comment={comment.comment}
+            post_date={comment.post_date}/>
       </li>
     );
   });

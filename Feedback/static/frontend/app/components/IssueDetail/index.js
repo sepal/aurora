@@ -6,8 +6,6 @@ import CommentList from '../CommentList';
 
 import IssueMockup from '../../mockup/issues';
 
-Moment.locale('de');
-
 class IssueDetail extends React.Component {
   constructor(props) {
     super(props);
