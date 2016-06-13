@@ -5,7 +5,6 @@
   position: relative;
 }
 
-
 .icon {
   position: absolute;
   left: -$spacing--big*2;
@@ -18,17 +17,48 @@
 }
 
 .title {
+  width: 90%;
   font-size: 1.2em;
   font-weight: bold;
   @extend %container;
 
 }
 
-.author {
+.subtitle {
   font-size: 0.9em;
   color: $gray;
 }
 
+.type {
+  color: $gray;
+}
+
+.content {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
 .body {
-  margin-top: $spacing;
+  flex-grow: 2;
+
+  margin: {
+    top: $spacing;
+    left: $spacing;
+  }
+  width: 75%;
+}
+
+.actions {
+  text-align: right;
+  flex-grow: 1;
+
+  margin: {
+    top: $spacing;
+    left: $spacing;
+  }
+  width: 25%;
+
+  li {
+    margin-bottom: $spacing;
+  }
 }

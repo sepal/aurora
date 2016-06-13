@@ -17,17 +17,45 @@ class IssueDetail extends React.Component {
 
   }
 
+  renderIcon() {
+    console.log(this.type);
+    switch (this.state.type) {
+      case 'Feature Request':
+        return <i className="fa fa-lightbulb-o"></i>;
+      case 'Bug':
+        return <i className="fa fa-bug"></i>;
+      case 'Feedback':
+        return <i className="fa fa-commenting-o"></i>;
+    }
+  }
+
   render() {
+    let upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
     return (
       <div styleName='issueDetail'>
         <div>
           <div styleName="title">
-            <i className="fa fa-exclamation-circle" styleName="icon"></i>
-            {this.state.title}
+            <span styleName="icon">
+            {this.renderIcon()}
+            </span>
+            <span styleName="type">[{this.state.type}]</span> {this.state.title}
           </div>
-          <div styleName="author">by {this.state.author}</div>
+          <div styleName="subtitle">
+            <span>by {this.state.author}</span>,&nbsp;
+            <span>{this.state.upvotes} {upvote_label}</span>
+          </div>
         </div>
-        <div styleName="body">{this.state.body}</div>
+        <div styleName="content">
+          <div styleName="body">{this.state.body}</div>
+          <ul styleName="actions">
+            <li>
+              <button><i className="fa fa-thumbs-up"></i> upvote</button>
+            </li>
+            <li>
+              <button><i className="fa fa-eye"></i> subscribe</button>
+            </li>
+          </ul>
+        </div>
       </div>
     );
   }

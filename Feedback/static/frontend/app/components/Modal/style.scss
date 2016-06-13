@@ -29,9 +29,7 @@
 }
 
 .close {
-  position: absolute;
-  right: 0;
-  top: 0;
+  float: right;
   font-size: 2em;
   color: red;
   z-index: 5;

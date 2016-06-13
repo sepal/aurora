@@ -19,9 +19,7 @@
   width: 100%; }
 
 .style__close___JgRVK {
-  position: absolute;
-  right: 0;
-  top: 0;
+  float: right;
   font-size: 2em;
   color: red;
   z-index: 5; }
@@ -99,6 +97,9 @@
   margin-top: 14px;
   color: #aaa;
   font-size: 0.9em; }
+
+.style__type___UZouT {
+  color: #aaa; }
 .style__title___xJt70 {
   position: relative; }
 
@@ -112,14 +113,41 @@
   padding: 14px 14px 14px 63px; }
 
 .style__title___xJt70 {
+  width: 90%;
   font-size: 1.2em;
   font-weight: bold; }
 
-.style__author___21E5S {
+.style__subtitle___4NkXT {
   font-size: 0.9em;
   color: #aaa; }
 
+.style__type___3yEVN {
+  color: #aaa; }
+
+.style__content___U4YyQ {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap; }
+
 .style__body___GZBCd {
-  margin-top: 14px; }
+  -webkit-box-flex: 2;
+  -ms-flex-positive: 2;
+  flex-grow: 2;
+  margin-top: 14px;
+  margin-left: 14px;
+  width: 75%; }
+
+.style__actions___uHxjh {
+  text-align: right;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  margin-top: 14px;
+  margin-left: 14px;
+  width: 25%; }
+  .style__actions___uHxjh li {
+    margin-bottom: 14px; }
 
 /*# sourceMappingURL=feedback.css.map*/

@@ -9394,7 +9394,7 @@
 	      'li',
 	      { key: issue.id, styleName: 'item' },
 	      _react2.default.createElement(_IssueTeaser2.default, { title: issue.title, upvotes: issue.upvotes,
-	        comments: issue.comments, id: issue.id })
+	        comments: issue.comments, id: issue.id, type: issue.type })
 	    );
 	  });
 	  return _react2.default.createElement(
@@ -9453,6 +9453,14 @@
 	    _react2.default.createElement(
 	      'div',
 	      null,
+	      _react2.default.createElement(
+	        'span',
+	        { styleName: 'type' },
+	        '[',
+	        props.type,
+	        ']'
+	      ),
+	      ' ',
 	      props.title
 	    ),
 	    _react2.default.createElement(
@@ -9485,7 +9493,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"issueTeaser":"style__issueTeaser___24P-_","upvotes":"style__upvotes___33hIh","comments":"style__comments___2LJ8L","footer":"style__footer___3_sdP"};
+	module.exports = {"issueTeaser":"style__issueTeaser___24P-_","upvotes":"style__upvotes___33hIh","comments":"style__comments___2LJ8L","footer":"style__footer___3_sdP","type":"style__type___UZouT"};
 
 /***/ },
 /* 207 */
@@ -15251,8 +15259,22 @@
 	  }
 	
 	  _createClass(IssueDetail, [{
+	    key: 'renderIcon',
+	    value: function renderIcon() {
+	      console.log(this.type);
+	      switch (this.state.type) {
+	        case 'Feature Request':
+	          return _react2.default.createElement('i', { className: 'fa fa-lightbulb-o' });
+	        case 'Bug':
+	          return _react2.default.createElement('i', { className: 'fa fa-bug' });
+	        case 'Feedback':
+	          return _react2.default.createElement('i', { className: 'fa fa-commenting-o' });
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
 	      return _react2.default.createElement(
 	        'div',
 	        { styleName: 'issueDetail' },
@@ -15262,20 +15284,72 @@
 	          _react2.default.createElement(
 	            'div',
 	            { styleName: 'title' },
-	            _react2.default.createElement('i', { className: 'fa fa-exclamation-circle', styleName: 'icon' }),
+	            _react2.default.createElement(
+	              'span',
+	              { styleName: 'icon' },
+	              this.renderIcon()
+	            ),
+	            _react2.default.createElement(
+	              'span',
+	              { styleName: 'type' },
+	              '[',
+	              this.state.type,
+	              ']'
+	            ),
+	            ' ',
 	            this.state.title
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { styleName: 'author' },
-	            'by ',
-	            this.state.author
+	            { styleName: 'subtitle' },
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              'by ',
+	              this.state.author
+	            ),
+	            ', ',
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              this.state.upvotes,
+	              ' ',
+	              upvote_label
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { styleName: 'body' },
-	          this.state.body
+	          { styleName: 'content' },
+	          _react2.default.createElement(
+	            'div',
+	            { styleName: 'body' },
+	            this.state.body
+	          ),
+	          _react2.default.createElement(
+	            'ul',
+	            { styleName: 'actions' },
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                'button',
+	                null,
+	                _react2.default.createElement('i', { className: 'fa fa-thumbs-up' }),
+	                ' upvote'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                'button',
+	                null,
+	                _react2.default.createElement('i', { className: 'fa fa-eye' }),
+	                ' subscribe'
+	              )
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -15291,7 +15365,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","author":"style__author___21E5S","body":"style__body___GZBCd"};
+	module.exports = {"title":"style__title___xJt70","icon":"style__icon___2yqJ2","issueDetail":"style__issueDetail___3NStx","subtitle":"style__subtitle___4NkXT","type":"style__type___3yEVN","content":"style__content___U4YyQ","body":"style__body___GZBCd","actions":"style__actions___uHxjh"};
 
 /***/ }
 /******/ ]);
