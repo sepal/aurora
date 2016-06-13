@@ -4,6 +4,8 @@ import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
 function IssueTeaser(props) {
+  let upvote_label = props.upvotes == 1 ? "upvote" : "upvotes";
+  let comment_label = props.comments == 1 ? "comment" : "comments";
   return (
     <Link
       key={props.id}
@@ -16,10 +18,10 @@ function IssueTeaser(props) {
       <div><span styleName="type">[{props.type}]</span> {props.title}</div>
       <div styleName="footer">
         <span styleName="upvotes">
-          <i className="fa fa-thumbs-up"></i> {props.upvotes} upvotes
+          <i className="fa fa-thumbs-up"></i> {props.upvotes} {upvote_label}
         </span>
         <span styleName="comments">
-          <i className="fa fa-comments"></i> {props.comments} comments
+          <i className="fa fa-comments"></i> {props.comments} {comment_label}
         </span>
       </div>
     </Link>

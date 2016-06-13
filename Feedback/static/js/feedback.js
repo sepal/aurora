@@ -9394,7 +9394,7 @@
 	      'li',
 	      { key: issue.id, styleName: 'item' },
 	      _react2.default.createElement(_IssueTeaser2.default, { title: issue.title, upvotes: issue.upvotes,
-	        comments: issue.comments, id: issue.id, type: issue.type })
+	        comments: issue.comments.length, id: issue.id, type: issue.type })
 	    );
 	  });
 	  return _react2.default.createElement(
@@ -9440,6 +9440,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function IssueTeaser(props) {
+	  var upvote_label = props.upvotes == 1 ? "upvote" : "upvotes";
+	  var comment_label = props.comments == 1 ? "comment" : "comments";
 	  return _react2.default.createElement(
 	    _reactRouter.Link,
 	    {
@@ -9472,7 +9474,8 @@
 	        _react2.default.createElement('i', { className: 'fa fa-thumbs-up' }),
 	        ' ',
 	        props.upvotes,
-	        ' upvotes'
+	        ' ',
+	        upvote_label
 	      ),
 	      _react2.default.createElement(
 	        'span',
@@ -9480,7 +9483,8 @@
 	        _react2.default.createElement('i', { className: 'fa fa-comments' }),
 	        ' ',
 	        props.comments,
-	        ' comments'
+	        ' ',
+	        comment_label
 	      )
 	    )
 	  );
@@ -9513,17 +9517,27 @@
 	  title: "Newsfeed, nur eigene Nachrichten anzeigen",
 	  body: 'Da meine eigenen Posts bereits weit zurückliegen, muss ich lange ' + 'scrollen, um sie wieder zu finden. Es wäre praktisch, wenn bei den Filtern ' + '"Open Newsfeed" auch eine Option "Own Comments" zu finden wäre.',
 	  upvotes: 2,
-	  comments: 0
+	  comments: []
 	}, {
 	  id: 1,
 	  lane: 1,
 	  type: "Bug",
 	  post_date: 1463063665,
-	  author: "s0",
+	  author: "s1",
 	  title: "Vorreihen von nicht-Dummy-Abgaben",
 	  body: 'Ich glaube, ein Grund für das aktuelle Review-Problem ist, dass es ' + 'übermäßig viele Dummies gibt bzw. richtige Abgaben nicht bevorzugt werden. ' + 'Gegen Anfang des Semesters wurden echte Abgaben anscheinend noch ' + 'vorgereiht, da man sogar schon wenige Stunden nach Veröffentlichung einer ' + 'Challenge richtige Abgaben reviewen konnte. Aktuell sieht man, selbst wenn ' + 'man erst Tage nachher abgibt, fast ausschließlich nur Dummies. Ich denke, ' + 'dass man die Situation durch Vorreihen der richtigen Abgaben wieder ' + 'deutlich verbessern könnte. (Es scheint, als wäre es in den ersten Wochen ' + 'so gewesen, vllt. ist irgendwo ein Bug; z.B. eine nicht-gesetzte Dummy-Flag ' + 'oder Ähnliches.)',
 	  upvotes: 4,
-	  comments: 3
+	  comments: [{
+	    id: 0,
+	    pic: "/static/img/7.png",
+	    author: "peterpur",
+	    comment: "sorry, die überdurchschnittliche vergabe von dummy-arbeiten " + "war ein fehler, den wir jetzt behoben haben. ich hoffe, dass es ab " + "jetzt runder läuft."
+	  }, {
+	    id: 1,
+	    pic: "/static/img/2.png",
+	    author: "s1",
+	    comment: "Kurzes Feedback: Ich hatte, nach geschätzten 10 Dummies in " + "letzter Zeit, gerade eben wieder die ersten 3 " + "ordentlichen Abgaben." + " Scheint jetzt also wieder besser zu klappen. Danke!"
+	  }]
 	}, {
 	  id: 2,
 	  lane: 0,
@@ -9533,7 +9547,17 @@
 	  title: "Darstellungsfehler auf der Startseite",
 	  body: 'Auf der Startseite wird das Kästchen mit den Lecturedates falsch ' + 'dargestellt. Sobald man irgendein anderes Kästechen auf-/zuklappt, rutscht ' + 'es dann auf seinen richtigen Platz zurück.',
 	  upvotes: 1,
-	  comments: 3
+	  comments: [{
+	    id: 0,
+	    pic: "/static/img/1.png",
+	    author: "s0",
+	    comment: "Habe dazu einen kleinen clip gemacht: " + "https://flowlo.me/tmp/aurora.webm"
+	  }, {
+	    id: 0,
+	    pic: "/static/img/1.png",
+	    author: "s0",
+	    comment: "Chrome Version 50.0.2661.102 m<br/>" + "Bildschirm 1920x1080<br/>" + "Safari 8.0.7 / 1920x1080"
+	  }]
 	}];
 
 /***/ },
@@ -15261,7 +15285,6 @@
 	  _createClass(IssueDetail, [{
 	    key: 'renderIcon',
 	    value: function renderIcon() {
-	      console.log(this.type);
 	      switch (this.state.type) {
 	        case 'Feature Request':
 	          return _react2.default.createElement('i', { className: 'fa fa-lightbulb-o' });

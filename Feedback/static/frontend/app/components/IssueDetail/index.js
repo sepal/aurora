@@ -18,7 +18,6 @@ class IssueDetail extends React.Component {
   }
 
   renderIcon() {
-    console.log(this.type);
     switch (this.state.type) {
       case 'Feature Request':
         return <i className="fa fa-lightbulb-o"></i>;

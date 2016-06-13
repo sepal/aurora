@@ -9,7 +9,7 @@ function IssueList(props) {
     return (
       <li key={issue.id} styleName="item">
         <IssueTeaser title={issue.title} upvotes={issue.upvotes}
-                     comments={issue.comments} id={issue.id} type={issue.type} />
+                     comments={issue.comments.length} id={issue.id} type={issue.type} />
       </li>
     );
   });
