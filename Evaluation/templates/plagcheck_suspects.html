@@ -1,14 +1,13 @@
 {% load filter %}
 {% load el_pagination_tags %}
+{% load humanize %} 
 
 {% block content %}
     <table class="overview_table">
         <tr>
-            <th>id</th>
-            <th>doc_id</th>
-            <th>similar_to</th>
+            <th>student</th>
+            <th>elaboration</th>
             <th>similarity</th>
-            <th>state</th>
             <th>date found</th>
         </tr>
 
@@ -16,12 +15,10 @@
         {% for suspect in suspects %}
             <tr class="{% cycle 'darkRow' 'lightRow' %}"
                 onclick="document.location = '{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=suspect.id %}?{{ request.GET.urlencode }}'">&nbsp;
-                <td>{{ suspect.id }}</td>
-                <td>{{ suspect.stored_doc_id }}</td>
-                <td>{{ suspect.similar_to_id }}</td>
+                <td><img class="gravatar" src="{{ suspect.stored_doc.user.avatar.url }}" style="vertical-align:middle"> {{ suspect.stored_doc.user.nickname }}</td>
+                <td>{{ suspect.stored_doc.elaboration.challenge.title|safe }}</td>
                 <td>{{ suspect.similarity }}</td>
-                <td>{{ suspect.state_enum.name }}</td>
-                <td>{{ suspect.created }}</td>
+                <td>{{ suspect.created|naturaltime }}</td>
             </tr>
         {% endfor %}
     </table>

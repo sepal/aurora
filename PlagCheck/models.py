@@ -41,7 +41,9 @@ class Store(models.Model):
     elaboration = property(get_elaboration)
 
     def get_user(self):
-        return "DEPRECATED"
+        from AuroraUser.models import AuroraUser
+
+        return AuroraUser.objects.get(pk=self.user_id)
     user = property(get_user)
 
     def get_clean_text(self):
