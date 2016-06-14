@@ -84,6 +84,8 @@ def submit_elaboration(request, course_short_title):
        return HttpResponse()
 
 def get_extra_review_data(user, course, data):
-    all_missing_reviews = Elaboration.get_extra_reviews(user, course)
-    data['extra_reviews'] = all_missing_reviews
+    extra_reviews = Elaboration.get_extra_reviews(user, course)
+    data['extra_reviews'] = extra_reviews['missing_reviews']
+    data['has_open_review'] = extra_reviews['has_open_review']
+
     return data

@@ -13,6 +13,7 @@ from django.core.files import File
 from Review.models import Review, ReviewEvaluation
 from Course.models import Course, CourseUserRelation
 from Challenge.models import Challenge
+import logging
 
 def avatar_path(instance, filename):
     name = 'avatar_%s' % instance.id
@@ -92,17 +93,9 @@ class AuroraUser(User):
             relation.review_karma = review_karma
             relation.save()
 
-            # if course.short_title == 'gsi' and (self.id == 0 or self.id == 151 or self.id == 0):
-            #     print(str(self.id) + ' - '+ str(review_karma))
-            #     # print(student_reviews.query)
-            #     for var in dir()[4:]:
-            #         value_of_var = eval(var)
-            #         print(str(var)+ '=' + str(value_of_var))
-
-
     def review_karma(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).review_karma
-
+    
     def is_top_reviewer(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).top_reviewer
 
