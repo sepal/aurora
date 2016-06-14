@@ -703,37 +703,6 @@ def review_answer(request, course_short_title=None):
 
 @aurora_login_required()
 @staff_member_required
-def back(request, course_short_title=None):
-    selection = request.session.get('selection', 'error')
-    course = Course.get_or_raise_404(short_title=course_short_title)
-
-    if selection == "search":
-        return HttpResponse()
-    if selection == "missing_reviews":
-        elaborations = Elaboration.get_missing_reviews(course)
-    if selection == "top_level_tasks":
-        elaborations = Elaboration.get_top_level_tasks(course)
-    if selection == "non_adequate_work":
-        elaborations = Elaboration.get_non_adequate_work(course)
-    if selection == "complaints":
-        elaborations = Elaboration.get_complaints(course)
-    if selection == "awesome":
-        elaborations = Elaboration.get_awesome(course)
-    if selection == "evaluated_non_adequate_work":
-        elaborations = Elaboration.get_evaluated_non_adequate_work(course)
-
-    # update overview
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
-    request.session['elaborations'] = serializers.serialize('json', elaborations)
-
-    return evaluation(request, course_short_title)
-
-
-@aurora_login_required()
-@staff_member_required
 def reviewlist(request, course_short_title=None):
     elaboration = Elaboration.objects.get(pk=request.session.get('elaboration_id', ''))
     reviews = Review.objects.filter(reviewer=elaboration.user, submission_time__isnull=False).order_by(
