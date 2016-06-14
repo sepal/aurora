@@ -15,13 +15,7 @@
             <td>{{ elab.challenge.title|safe }}</td>
             <td class="timestamp" title="{{ elab.submission_time }}">{{ elab.submission_time|naturaltime }}</td>
             <td class="indicator_field">
-				<div title="Exceptional" class="awesome_reviews indicator">{{ elab.get_awesome_reviews|length }}</div>
-                <div title="All requirements met" class="success_reviews indicator">{{ elab.get_success_reviews|length }}</div>
-                <div title="Requirements missed" class="fail_reviews indicator">{{ elab.get_fail_reviews|length }}</div>
-                <div title="Plagiarism/cheated" class="notry_reviews indicator">{{ elab.get_nothing_reviews|length }}</div>
-                <div title="Public comments" class="visible_comments indicator">{{ elab.get_visible_comments_count }}</div>
-                <div title="Private comments" class="invisible_comments indicator">{{ elab.get_invisible_comments_count }}</div>
-                {% if elab.get_lva_team_notes %}<div title="LVA team notes" class="lva_team_notes indicator">A</div>{% endif %}
+				{% include 'elaboration_indicators.html' with elaboration=elab %}
             </td>
         </tr>
     {% endfor %}
