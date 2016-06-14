@@ -16,7 +16,8 @@ class Command(BaseCommand):
         parser.add_argument('csv', type=str)
 
     def handle(self, *args, **options):
-        force_csv_import(options['csv'])
+        #force_csv_import(options['csv'])
+        force_csv_import(args[0])
 
 def readlines(f):
     line = []

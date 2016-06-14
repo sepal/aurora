@@ -12,7 +12,6 @@ from django.db.utils import OperationalError
 
 from PlagCheck.models import Reference, Result, Suspect, SuspectState, Store
 from AuroraProject.settings import PLAGCHECK as plagcheck_settings
-from Elaboration.models import Elaboration
 import sherlock
 
 app = Celery('AuroraProject')
