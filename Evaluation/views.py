@@ -1,5 +1,4 @@
 from datetime import datetime
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import json
 from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
@@ -14,7 +13,7 @@ from django.db.models import Q
 from taggit.models import TaggedItem
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden
-
+from django.shortcuts import redirect
 
 from AuroraProject.decorators import aurora_login_required
 from Challenge.models import Challenge
@@ -27,11 +26,8 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from PlagCheck.models import Suspect, Result, Reference, SuspectState
-from django.shortcuts import redirect
+from PlagCheck.models import Suspect, SuspectState
 
-# TODO: Use same pagination for all views, see django pagination class
-# TODO: Why are there mostly 2 templates processed for each view?
 
 @aurora_login_required()
 @staff_member_required
@@ -41,7 +37,8 @@ def evaluation(request, course_short_title=None):
     elaborations = []
     count = 0
     selection = request.session.get('selection', 'error')
-    if selection not in ('error', 'questions'):
+
+    if selection not in ('error', 'questions', 'plagcheck_suspects'):
         for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
             elaborations.append(serialized_elaboration.object)
         if selection == 'search':
@@ -72,6 +69,20 @@ def evaluation(request, course_short_title=None):
             challenges.append(serialized_challenge.object)
         count = len(challenges)
         overview = render_to_string('questions.html', {'challenges': challenges}, RequestContext(request))
+    elif selection == 'plagcheck_suspects':
+        suspect_list = Suspect.objects.filter(state=SuspectState.SUSPECTED.value)
+
+        count = suspect_list.count()
+
+        context = {
+            'course': course,
+            'suspects': suspect_list,
+            'suspect_states': SuspectState.choices(),
+            'suspects_count': count,
+        }
+
+        overview = render_to_string('plagcheck_suspects.html', context, RequestContext(request))
+
 
     challenges = Challenge.objects.all()
 
@@ -844,30 +855,23 @@ def plagcheck_suspects(request, course_short_title=None):
 
     suspect_list = Suspect.objects.filter(state=SuspectState.SUSPECTED.value)
 
-    # pagination
-    paginator = Paginator(suspect_list, 25)
-    page = request.GET.get('page')
-    try:
-        suspects = paginator.page(page)
-    except PageNotAnInteger:
-        suspects = paginator.page(1)
-    except EmptyPage:
-        suspects = paginator.page(paginator.num_pages)
+    count = suspect_list.count()
 
     context = {
         'course': course,
-        'suspects': suspects,
+        'suspects': suspect_list,
         'suspect_states': SuspectState.choices(),
-        'suspects_count': suspect_list.count(),
+        'suspects_count': count,
     }
 
     request.session['selection'] = 'plagcheck_suspects'
+    request.session['count'] = count
 
     return render_to_response('evaluation.html', {
             'overview': render_to_string('plagcheck_suspects.html', context, RequestContext(request)),
             'course': course,
             'stabilosiert_plagcheck_suspects': 'stabilosiert',
-            'count_plagcheck_suspects': suspect_list.count(),
+            'count_plagcheck_suspects': count,
             'selection': request.session['selection'],
         },
         context_instance=RequestContext(request))
