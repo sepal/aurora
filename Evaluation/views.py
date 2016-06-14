@@ -884,11 +884,7 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
 
     suspect = Suspect.objects.get(pk=suspect_id)
 
-    (prev_suspect_id, next_suspect_id) = suspect.get_prev_next()
-
-    similar_to_has_elaboration = False
-    if suspect.similar_to.was_submitted_during(course):
-        similar_to_has_elaboration = True
+    (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(state=SuspectState.SUSPECTED.value)
 
     context = {
         'course': course,
@@ -897,7 +893,8 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
         'suspect_states_class': SuspectState.__members__,
         'next_suspect_id': next_suspect_id,
         'prev_suspect_id': prev_suspect_id,
-        'similar_to_has_elaboration': similar_to_has_elaboration,
+        'similar_to_has_elaboration': suspect.similar_to.was_submitted_during(course),
+        'suspect_has_elaboration': suspect.stored_doc.was_submitted_during(course)
     }
 
     # number of suspected documents

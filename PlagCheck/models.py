@@ -65,6 +65,14 @@ class Store(models.Model):
         return info
     document_info = property(get_document_info)
 
+    def get_plagcheck_info(self):
+        info = OrderedDict()
+
+        info['# hashes'] = self.result_set.order_by('created').all()[0].hash_count
+
+        return info
+    plagcheck_info = property(get_plagcheck_info)
+
     def was_submitted_during(self, course):
 
         submission_date = self.submission_time.date()
@@ -138,6 +146,9 @@ class Suspect(models.Model):
     def __str__(self):
         return "stored_doc:%i similar_to:%i percent:%i state:%s" % (self.stored_doc_id, self.similar_to_id, self.similarity, self.state_enum.name)
 
+    class Meta:
+        ordering = ['created']
+
     @property
     def state_enum(self):
         """
@@ -156,20 +167,20 @@ class Suspect(models.Model):
         """
         self.state = SuspectState(int(value)).value
 
-    def get_prev_next(self):
+    def get_prev_next(self, **filter_args):
         """
         Provides the ids to the next and previous Suspect object.
         :return: Tuple (previous_id, next_id)
         """
         next_id = None
         try:
-            next_id = self.get_next_by_created().id
+            next_id = self.get_next_by_created(**filter_args).id
         except ObjectDoesNotExist:
             pass
 
         prev_id = None
         try:
-            prev_id = self.get_previous_by_created().id
+            prev_id = self.get_previous_by_created(**filter_args).id
         except ObjectDoesNotExist:
             pass
 
@@ -178,10 +189,9 @@ class Suspect(models.Model):
     def get_suspect_info(self):
         info = OrderedDict()
 
-        info['# hashes'] = self.result.hash_count
         info['# matching hashes'] = self.match_count
-        info['Similarity'] = self.similarity
-        info['Verification time'] = self.created
+        info['Similarity'] = "{0} %".format(self.similarity)
+        info['Verification date'] = self.created
 
         return info
     suspect_info = property(get_suspect_info)

@@ -41,8 +41,13 @@
     text-align: center;
 }
 
+.plagcheck_verification_info {
+    width: 89%;
+    text-align: center;
+}
 
-.plagcheck_compare_info .info label {
+
+.info label {
     font-weight: bold;
 }
 

@@ -41,7 +41,21 @@
         <div class="plagcheck_info_left">
             <div class="plagcheck_compare_label">Suspicious document</div>
             <div class="spacer"></div>
-            {% include 'elaboration_info.html' with elaboration=suspect.stored_doc.elaboration %}
+            {% if suspect_has_elaboration %}
+                {% include 'elaboration_info.html' with elaboration=suspect.stored_doc.elaboration %}
+            {% else %}
+                <div class="plagcheck_compare_info">
+                    {% for key, value in suspect.stored_doc.document_info.items %}
+                        <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="spacer"></div>
+            <div class="plagcheck_compare_info">
+                {% for key, value in suspect.stored_doc.plagcheck_info.items %}
+                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+                {% endfor %}
+            </div>
             <div class="spacer"></div>
             <div>
                 <form name="suspect_state" method="post"
@@ -59,19 +73,28 @@
         </div>
         <div class="plagcheck_info_right">
             <div class="plagcheck_compare_label">Source document</div>
+            <div class="spacer"></div>
             {% if similar_to_has_elaboration %}
-                <div class="spacer"></div>
                 {% include 'elaboration_info.html' with elaboration=suspect.similar_to.elaboration %}
             {% else %}
-                <div class="spacer"></div>
-
                 <div class="plagcheck_compare_info">
                     {% for key, value in suspect.similar_to.document_info.items %}
                         <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                     {% endfor %}
                 </div>
             {% endif %}
-
+            <div class="spacer"></div>
+            <div class="plagcheck_compare_info">
+                {% for key, value in suspect.similar_to.plagcheck_info.items %}
+                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="plagcheck_verification_info">
+            {% for key, value in suspect.suspect_info.items %}
+                <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+            {% endfor %}
         </div>
         <div class="clear"></div>
         <div class="plagcheck_text">
