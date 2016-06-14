@@ -1,4 +1,5 @@
 {% load filter %}
+{% load el_pagination_tags %}
 
 {% block content %}
     <table class="overview_table">
@@ -8,10 +9,10 @@
             <th>similar_to</th>
             <th>similarity</th>
             <th>state</th>
-            <th>found at</th>
+            <th>date found</th>
         </tr>
 
-
+        {% paginate suspects %}
         {% for suspect in suspects %}
             <tr class="{% cycle 'darkRow' 'lightRow' %}"
                 onclick="document.location = '{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=suspect.id %}?{{ request.GET.urlencode }}'">&nbsp;
@@ -24,20 +25,18 @@
             </tr>
         {% endfor %}
     </table>
-    <div class="pagination">
-            <span class="step-links">
-                {% if suspects.has_previous %}
-                    <a href="?{% url_replace request 'page' suspects.previous_page_number %}">previous</a>
-                {% endif %}
 
-                <span class="current">
-                    Page {{ suspects.number }} of {{ suspects.paginator.num_pages }}.
-                </span>
-
-                {% if suspects.has_next %}
-                    <a href="?{% url_replace request 'page' suspects.next_page_number %}">next</a>
-                {% endif %}
-            </span>
-        </div>
+    {% get_pages %}
+    {% with total_pages=pages|length %}
+        {% show_current_number as actual_page %}
+        {{ pages.previous }}
+        {% if pages.previous %}
+            <div class="prev" style="color:gray">&nbsp; ({{ actual_page|add:"-1" }})</div>
+        {% endif %}
+        {{ pages.next }}
+        {% if pages.next %}
+            <div class="next" style="color:gray">({{ total_pages|subtract:actual_page }}) &nbsp; </div>
+        {% endif %}
+    {% endwith %}
 
 {% endblock %}

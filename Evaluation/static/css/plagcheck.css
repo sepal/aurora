@@ -1,33 +1,46 @@
-/*
-.plagcheck_compare_outer {
-    width: 100%;
+.plagcheck_compare {
+    width: 99%;
+    background-color: #E7FFCF;
+    padding: 10px;
+    float:left;
+    box-sizing: border-box;
+    border-radius: 9px;
+}
+
+.plagcheck_info_left {
+    width: 49%;
     float: left;
-    overflow: auto;
-}*/
+    margin-right: 5px;
+}
+
+.plagcheck_info_right {
+    width: 49%;
+    float: left;
+    margin-left: 5px;
+}
+
+.plagcheck_text_left {
+    width: 49%;
+    float: left;
+    margin-right: 5px;
+}
+
+.plagcheck_text_right {
+    width: 49%;
+    float: left;
+    margin-left: 5px;
+}
+
+.plagcheck_text {
+    width: 100%;
+}
+
 
 .plagcheck_compare_label {
     font-weight: bold;
     text-align: center;
 }
 
-.plagcheck_compare_text {
-    border: 1px solid black;
-    padding: 10px;
-}
-
-#plagcheck_suspect_info_box {
-    float: left;
-    width: 50%;
-}
-
-#plagcheck_suspect_state_info {
-    float: left;
-    width: 40%;
-}
-
-.plagcheck_compare_info {
-    padding: 10px;
-}
 
 .plagcheck_compare_info .info label {
     font-weight: bold;
@@ -45,10 +58,6 @@
 
 .diff_part_hightlight, .diff_part_hightlight p, .diff_part_hightlight ul li, .diff_part_hightlight li {
     background-color: orange !important;
-}
-
-#plagcheck_change_suspect_state {
-
 }
 
 .text_disabled {
