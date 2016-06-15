@@ -201,7 +201,6 @@ class Elaboration(models.Model):
 
         final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
         already_written_review_elaboration_ids = Review.objects.filter(reviewer_id=user.id).values_list('elaboration_id', flat=True)
-        exclude_elaboration_ids = list(final_challenge_ids) + list(already_written_review_elaboration_ids)
 
         missing_reviews = (
             Elaboration.objects
@@ -211,9 +210,12 @@ class Elaboration(models.Model):
                         user__is_staff=False,
                         challenge__course=course,
                         num_reviews__lt=2)
-                .exclude(challenge__id__in=exclude_elaboration_ids)
+                .exclude(challenge__id__in=final_challenge_ids)
+                .exclude(id__in=already_written_review_elaboration_ids)
                 .order_by('num_reviews', 'submission_time')
         )
+
+        print(missing_reviews.query)
 
         missing_reviews = list(missing_reviews)
         missing_reviews.sort(key=lambda e: e.user.review_karma(course))
@@ -222,6 +224,7 @@ class Elaboration(models.Model):
         has_open_review = False
         open_reviews = Review.objects.filter(submission_time__isnull=True, reviewer=user)
         for review in open_reviews:
+            print(review.id)
             has_open_review = True
             missing_reviews = [review.elaboration] + missing_reviews
 
