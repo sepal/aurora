@@ -3,7 +3,7 @@ from unittest import skip
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from PlagCheck.models import Reference, Result, Suspect, SuspectFilter, SuspectState
+from PlagCheck.models import Reference, Result, Suspect, SuspectState
 from PlagCheck import tasks
 from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 from ddt import ddt, data
