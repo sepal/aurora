@@ -212,6 +212,7 @@ class Elaboration(models.Model):
                         num_reviews__lt=2)
                 .exclude(challenge__id__in=final_challenge_ids)
                 .exclude(id__in=already_written_review_elaboration_ids)
+                .exclude(user=user)
                 .order_by('num_reviews', 'submission_time')
         )
 
