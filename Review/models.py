@@ -7,6 +7,7 @@ class Review(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     submission_time = models.DateTimeField(null=True)
     reviewer = models.ForeignKey('AuroraUser.AuroraUser')
+    chosen_by = models.CharField(max_length=100, null=True, blank=True, default='random')
     tags = TaggableManager()
 
     NOTHING = 'N'
@@ -107,7 +108,7 @@ class ReviewConfig(models.Model):
             return 0
         else:
             return config[0].candidate_offset_max
-    
+
     @staticmethod
     def setup():
         ReviewConfig.objects.create(candidate_offset_min = 23, candidate_offset_max = 120)

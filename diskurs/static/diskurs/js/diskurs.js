@@ -1,6 +1,6 @@
 var quotePost = "";
 var quotePostMarkdown = "";
-
+var scrollingEnabled = true;
 
 function diskursReply() {
     var parent = $(this).parent().parent().parent();
@@ -14,7 +14,7 @@ function diskursReply() {
     parent.addClass('show_reply');
 
     if (!parent.hasClass('show_child')) {
-        diskursShowPost(arrow);
+        diskursShowPost(arrow, true);
     } else {
         resizeCanvas(true);
     }
@@ -43,13 +43,6 @@ function diskursNewPost(e) {
                     count = '';
                 }
                 form.parent().parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
-                form.parent().parent().prev().children('.container').children('.post_content').readmore({
-					speed: 75,
-					collapsedHeight: 200,
-					heightMargin: 32,
-                    lessLink: '<a class="read_less" href="#">Shrink</a>',
-                    moreLink: '<a class="read_more" href="#">Show all</a>'
-                });
                 form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id', data.new_last_id);
                 form.find('textarea').val('');
                 form.parent().parent().parent().parent().removeClass('show_reply');
@@ -65,7 +58,7 @@ function diskursNewPost(e) {
     e.preventDefault();
 }
 
-function diskursShowPost(element) {
+function diskursShowPost(element, scrollToReply) {
     var parent = element.parent();
     var fadeOutDone = false;
     var ajaxRefreshDone = false;
@@ -78,11 +71,11 @@ function diskursShowPost(element) {
             elementToFadeOut.children('.child_post').fadeOut('fast', function() {
                 elementToFadeOut.removeClass('show_child');
                 $(this).css('display', '');
-                resizeCanvas(parent.hasClass('show_reply'));
 
                 fadeOutDone = true;
                 if (fadeOutDone && ajaxRefreshDone) {
                     markPostingsAsSeen();
+                    resizeCanvas(scrollToReply);
                 }
             });
         }
@@ -113,11 +106,11 @@ function diskursShowPost(element) {
                 elementToFadeIn.addClass('show_child');
                 elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                     $(this).css('display', '');
-                    resizeCanvas(parent.hasClass('show_reply'));
 
                     fadeOutDone = true;
                     if (fadeOutDone && ajaxRefreshDone) {
                         markPostingsAsSeen();
+                        resizeCanvas(scrollToReply);
                     }
                 });
             });
@@ -125,11 +118,11 @@ function diskursShowPost(element) {
             elementToFadeIn.addClass('show_child');
             elementToFadeIn.children('.child_post').fadeIn('fast', function() {
                 $(this).css('display', '');
-                resizeCanvas(parent.hasClass('show_reply'));
 
                 fadeOutDone = true;
                 if (fadeOutDone && ajaxRefreshDone) {
                     markPostingsAsSeen();
+                    resizeCanvas(scrollToReply);
                 }
             });
         }
@@ -165,6 +158,7 @@ function diskursShowPost(element) {
                     ajaxRefreshDone = true;
                     if (fadeOutDone && ajaxRefreshDone) {
                         markPostingsAsSeen();
+                        resizeCanvas(scrollToReply);
                     }
                 } else {
                     alert(data.message);
@@ -199,7 +193,7 @@ $(document).ready(function() {
             var prev = $(this).parent().parent().prev().prev();
             history.pushState({post: '#'+prev.attr('id')}, '', prev.attr('href'));
         } else {
-            diskursShowPost($(this));
+            diskursShowPost($(this), false);
             if (history.state == null || history.state.post != '#'+$(this).attr('id')) {
                 history.pushState({post: '#'+$(this).attr('id')}, '', $(this).attr('href'));
             }
@@ -208,23 +202,26 @@ $(document).ready(function() {
     });
     $('#diskurs').on('click', '.reply', diskursReply);
     $('#diskurs').on('submit', 'form', diskursNewPost);
-    $('.post_content').readmore({
-        speed: 75,
-		collapsedHeight: 200,
-		heightMargin: 32,
-		lessLink: '<a class="read_less" href="#"><i class="fa fa fa-angle-double-up"></i></a>',
-        moreLink: '<a class="read_more" href="#"><i class="fa fa-angle-double-down"></i></a>'
+    $('#diskurs').on('click', '.cancel_reply', function() {
+        var $child_post = $(this).parent().parent().parent().parent();
+        var child_post_count = $child_post.children('.post').size();
+        $child_post.parent().removeClass('show_reply');
+        if (child_post_count > 0) {
+
+        } else {
+
+        }
     });
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
 
-        $(this).prev().prev().prev().emojiPicker({
+        $(this).parent().children('.reply_area').emojiPicker({
             width: '300px',
             height: '200px',
             button: false
         });
 
-        $(this).prev().prev().prev().emojiPicker('toggle');
+        $(this).parent().children('.reply_area').emojiPicker('toggle');
     });
 
     $('#diskurs').on('click', 'a.upvote', function(e) {
@@ -323,12 +320,16 @@ $(document).ready(function() {
         }
     })
 
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        scrollingEnabled = false;
+    }
+
     markPostingsAsSeen();
 });
 
 window.onpopstate = function(event) {
     if (event.state != null) {
-        diskursShowPost($(event.state.post));
+        diskursShowPost($(event.state.post), false);
     }
 };
 
@@ -398,12 +399,12 @@ function resizeCanvas(scrollToReply) {
         var scrollMinReplyCorrection = 150;
 
         var scrollMinReply = $postReplyElement.offset().top + $postReplyElement.height() + scrollMinReplyCorrection - height;
-        var scrollMaxReply = $postReplyElement.parent().offset().top;
+        var scrollMaxReply = $postReplyElement.parent().offset().top - $('.diskurs_head').height();
 
-        if (scrollMaxReply < scrollTop) {
-            scrollTop = scrollMaxReply
-        } else if (scrollMinReply > scrollTop) {
+        if (scrollMinReply > scrollTop) {
             scrollTop = scrollMinReply;
+        } else if (scrollMaxReply < scrollTop) {
+            scrollTop = scrollMaxReply
         }
 
 
@@ -415,7 +416,8 @@ function resizeCanvas(scrollToReply) {
         scrollTop = scrollMaxTop;
     }
 
-    if (currentScrollLeft < scrollMaxLeft || currentScrollLeft > scrollMaxLeft) {
+    if (scrollingEnabled &&
+        (currentScrollLeft < scrollMaxLeft || currentScrollLeft > scrollMaxLeft)) {
 
         $('html, body').animate({scrollLeft: scrollMaxLeft, scrollTop: scrollTop}, 'slow', 'swing', function() {
             $('#diskurs').width(maxWidth);
@@ -426,7 +428,7 @@ function resizeCanvas(scrollToReply) {
             }
         });
 
-    } else if (currentScrollTop != scrollTop) {
+    } else if (scrollingEnabled && currentScrollTop != scrollTop) {
 
         $('html, body').animate({scrollTop: scrollTop}, 'slow', 'swing', function() {
             $('#diskurs').width(maxWidth);
@@ -450,6 +452,13 @@ function resizeCanvas(scrollToReply) {
 function markPostingsAsSeen() {
     $('#diskurs').find('.new_post').filter(":visible").each(function() {
         $(this).addClass('seen_post').removeClass('new_post');
+    });
+    $('.level1 .post_content:not([aria-expanded])').readmore({
+        speed: 75,
+		collapsedHeight: 200,
+		heightMargin: 32,
+		lessLink: '<a class="read_less" href="#"><i class="fa fa fa-angle-double-up"></i></a>',
+        moreLink: '<a class="read_more" href="#"><i class="fa fa-angle-double-down"></i></a>'
     });
     refreshNew();
 }

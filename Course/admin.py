@@ -21,7 +21,6 @@ class CourseAdmin(admin.ModelAdmin):
 
 admin.site.register(Course, CourseAdmin)
 
-
 class CourseUserRelationAdmin(admin.ModelAdmin):
     fieldsets = [
         (
