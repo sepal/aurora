@@ -95,12 +95,12 @@ class AuroraUser(User):
 
     def review_karma(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).review_karma
-    
+
     def is_top_reviewer(self, course):
         return CourseUserRelation.objects.get(user=self, course=course).top_reviewer
 
     def number_of_extra_reviews(self, course):
-        return Review.objects.filter(submission_time__isnull=True, reviewer=self, chosen_by='extra_review').count()
+        return Review.objects.filter(submission_time__isnull=False, reviewer=self, chosen_by='extra_review').count()
 
     def number_of_reviews_until_next_extra_point(self, course):
         return 3 - (self.number_of_extra_reviews(course) % 3)
