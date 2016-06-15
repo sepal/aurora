@@ -11,6 +11,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
     <link rel="stylesheet" href="{% static "css/evaluation.css" %}" type="text/css" media="screen"/>
     <script type="text/javascript" src="{% static "js/jsdiff/diff.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/plagcheck.js" %}"></script>
     <link rel="stylesheet" href="{% static "css/plagcheck.css" %}" type="text/css" media="screen"/>
 {% endblock %}
 
@@ -145,8 +146,8 @@
         {% autoescape off %}
             var suspect = {{ suspect.stored_doc.json_text }};
             var similar_to = {{ suspect.similar_to.json_text }};
+            load_plagcheck_diff(suspect.content, similar_to.content);
         {% endautoescape %}
     </script>
-    <script type="text/javascript" src="{% static "js/plagcheck.js" %}"></script>
 
 {% endblock %}

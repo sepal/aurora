@@ -472,7 +472,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return left === right || this.options.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right);
 	};
 	wordDiff.tokenize = function (value) {
-	  //var tokens = value.split(/(\s+|["'^])(?!>)/);
+	  // plagcheck modification
 	  var tokens = value.split(/(<.*?>|\w*&\w{1,5};\w*|\s+|\b)/);
 
 	  // Join the boundary splits that we do not consider to be boundaries. This is primarily the extended Latin character set.
