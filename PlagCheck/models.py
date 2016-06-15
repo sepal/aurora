@@ -68,7 +68,7 @@ class Store(models.Model):
     def get_plagcheck_info(self):
         info = OrderedDict()
 
-        info['# hashes'] = self.result_set.order_by('created').all()[0].hash_count
+        info['# hashes'] = self.result_set.order_by('-created').all()[0].hash_count
 
         return info
     plagcheck_info = property(get_plagcheck_info)
@@ -147,7 +147,7 @@ class Suspect(models.Model):
         return "stored_doc:%i similar_to:%i percent:%i state:%s" % (self.stored_doc_id, self.similar_to_id, self.similarity, self.state_enum.name)
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-created']
 
     @property
     def state_enum(self):
