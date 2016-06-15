@@ -1,29 +1,29 @@
-from invoke import run, task, exceptions
+from invoke import task
 
 @task
-def celery():
-    run('python manage.py celery worker -E --loglevel=INFO --concurrency=1')
+def celery(ctx):
+    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency=1')
 
 @task
-def flower():
-    run('celery -A PlagCheck flower')
+def flower(ctx):
+    ctx.run('celery -A PlagCheck flower')
 
 @task
-def venv():
-    run('virtualenv --python=python3 .venv')
+def venv(ctx):
+    ctx.run('virtualenv --python=python3 .venv')
 
 @task
-def deps():
-    run('pip install --upgrade pip wheel distribute')
-    run('pip install --upgrade -r requirements.txt -r requirements_dev.txt')
+def deps(ctx):
+    ctx.run('pip install --upgrade pip wheel distribute')
+    ctx.run('pip install --upgrade -r requirements.txt -r requirements_dev.txt')
 
     try:
         import sherlock
     except ImportError:
-        run('cd PlagCheck/hashing/sherlock && python setup.py install')
+        ctx.run('cd PlagCheck/hashing/sherlock && python setup.py install')
 
 @task
-def clean(plagcheck=False, migrate=True, demo=True):
+def clean(ctx, plagcheck=False, migrate=True, demo=True):
     """
     Wipe databases and recreate them with following options.
 
@@ -31,16 +31,15 @@ def clean(plagcheck=False, migrate=True, demo=True):
     :param demo: Populate demo data (default=True)
     :param migrate: Do also migrations (default=False)
     """
-    run('rm -f database.db')
+    ctx.run('rm -f database.db')
+    ctx.run('python manage.py migrate')
 
     if plagcheck:
-        run('rm -f database-plagcheck.db')
-        run('python manage.py migrate --database=plagcheck --noinput')
-
-    run('python manage.py migrate')
+        ctx.run('rm -f database-plagcheck.db')
+        ctx.run('python manage.py migrate --database=plagcheck --noinput')
 
     if demo:
-        run('python manage.py populate_demo_data')
+        ctx.run('python manage.py populate_demo_data')
 
-    run('python manage.py collectstatic --clear --noinput')
-    run('python manage.py collectstatic --noinput')
+    ctx.run('python manage.py collectstatic --clear --noinput')
+    ctx.run('python manage.py collectstatic --noinput')
