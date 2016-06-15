@@ -97,38 +97,24 @@
                 <div class="info"><label>{{ key }}:</label> {{ value }}</div>
             {% endfor %}
         </div>
+        <div class="spacer"></div>
         <div class="clear"></div>
         <div class="plagcheck_text">
             <div class="plagcheck_text_left">
-                <!--
-                <div class="plagcheck_compare_info">
-                    {% for key, value in suspect.stored_doc.document_info.items %}
-                        <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                    {% endfor %}
-                </div>-->
                 <input type="checkbox" id="show_suspect_orig" value="1">Show original</input>
                 <div class="plagcheck_compare_text">
                     <div id="suspect_orig" class="text_disabled"></div>
                     <div id="suspect_processed"></div>
                 </div>
 
-
-                <div class="tags tags-{{ suspect.stored_doc.elaboration.get_content_type_id }}-{{ suspect.stored_doc.elaboration.id }}">
-                    {% include 'tags.html' with tagged_object=suspect.stored_doc.elaboration %}
-                </div>
-                <br />
-                <div class="spacer"></div>
-
-                {% include 'elaboration_comments.html' with elaboration=suspect.stored_doc.elaboration %}
-
-                {% if reviews %}
+                {% if suspect_has_elaboration %}
+                    <div class="tags tags-{{ suspect.stored_doc.elaboration.get_content_type_id }}-{{ suspect.stored_doc.elaboration.id }}">
+                        {% include 'tags.html' with tagged_object=suspect.stored_doc.elaboration %}
+                    </div>
+                    <br />
                     <div class="spacer"></div>
-                    {% include "reviews.html" %}
-                {% endif %}
 
-                {% if selection == 'missing reviews' %}
-                    <div class="spacer"></div>
-                    {% include "add_review.html" %}
+                    {% include 'elaboration_comments.html' with elaboration=suspect.stored_doc.elaboration %}
                 {% endif %}
             </div>
             <div class="plagcheck_text_right">
