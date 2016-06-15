@@ -3,6 +3,7 @@
 *.pyc
 local_settings.py
 database.db
+database-plagcheck.db
 .idea
 admin
 .vagrant
