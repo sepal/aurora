@@ -186,7 +186,6 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -223,6 +222,12 @@ LOGGING = {
             'filename': '/tmp/aurora.log',
             'formatter': 'timed',
         },
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'timed'
+        },
     },
     'loggers': {} # loggers are set below
 }
@@ -252,23 +257,24 @@ if not DEBUG:
 else:
     LOGGING['loggers'] = {
         'django.request': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': False,
         },
         # django logs
         'django': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'ERROR',
             'propagate': True,
         },
         # python logs
         '': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'ERROR',
             'propagate': True,
         },
     }
+
 
 LOGIN_URL = '/'
 
