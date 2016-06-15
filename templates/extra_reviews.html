@@ -1,8 +1,8 @@
 Durch Ihre &uuml;berdurchschnittlich guten Reviews haben Sie sich das Recht erarbeitet, durch zus&auml;tzliche Reviews Extrapunkte zu bekommen. Für jeweils drei Reviews bekommen Sie einen Extrapunkt.<br><br>
 
-<font size="80%">Sie haben {{ number_of_extra_reviews }} Extra-Review{{ number_of_extra_reviews|pluralize }} verfasst. <br>
+<div style="font-size:80%">Sie haben {{ number_of_extra_reviews }} Extra-Review{{ number_of_extra_reviews|pluralize }} verfasst. <br>
 Nach weiteren {{ reviews_until_next_extra_point }} Review{{ reviews_until_next_extra_point|pluralize }} bekommen Sie einen Punkt <br>
-Review-Extrapunkte bis jetzt: {{ extra_points_earned_with_reviews }} <br><br></font>
+Review-Extrapunkte bis jetzt: {{ extra_points_earned_with_reviews }} <br><br></div>
 
 {%  for elaboration in extra_reviews %}
   {% if has_open_review and forloop.counter0 > 0 %}
