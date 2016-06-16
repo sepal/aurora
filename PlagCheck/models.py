@@ -84,12 +84,13 @@ class Store(models.Model):
 
 
 class Result(models.Model):
-    """Just stores the result of a check of one document.
+    """Stores the result of a check of one document.
     """
 
     stored_doc = models.ForeignKey(Store)
-    created = models.DateTimeField(auto_now_add=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, blank=False)
     hash_count = models.IntegerField()
+    submission_time = models.DateTimeField(blank=False)
 
     def __unicode__(self):
         return self.id
