@@ -1,8 +1,8 @@
 from invoke import task
 
 @task
-def celery(ctx):
-    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency=1')
+def celery(ctx, worker=1):
+    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency={0}'.format(worker))
 
 @task
 def flower(ctx):
