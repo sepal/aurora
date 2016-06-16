@@ -92,7 +92,7 @@ If this doesn't work for you, you can use amqp-tools from your package repositor
 Import all elaborations from ELABORATION_CSV_FILE starting at START_LINE. START_LINE is useful
 when aborting the import and continue with the import at the specified line. START_LINE defaults to 0.
 
-### Cleaning all elaborations, references, results and suspects except the filtered
+### Cleaning all elaborations, references, results and suspicions except the filtered
 
 This is useful to test a big dataset. Import the csv dataset once, then create filters,
 call this clean script and import the csv dataset again. This way filters will be applied to all

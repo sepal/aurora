@@ -10,7 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AuroraProject.settings')
 from django.conf import settings
 from django.db.utils import OperationalError
 
-from PlagCheck.models import Reference, Result, Suspect, SuspectState, Store
+from PlagCheck.models import Reference, Result, Suspicion, SuspicionState, Store
 from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 import sherlock
 
@@ -63,7 +63,7 @@ def check(self, **kwargs):
         hash_count = len(hash_set)
 
         # check if hashes are generated which means punctuations found
-        suspects = list()
+        suspicions = list()
         auto_filtered = False
         if hash_count > 0:
             # store (new) references
@@ -85,7 +85,7 @@ def check(self, **kwargs):
 
                     # put them in a list so that filtered
                     # findings can be handled later
-                    suspects.append({
+                    suspicions.append({
                         'similar_doc_id': similar_doc_id,
                         'similarity': similarity,
                         'match_count': match_count
@@ -99,16 +99,16 @@ def check(self, **kwargs):
 
         # if there is a similar document that was assigned the state
         # FILTER then mark all suspecting elaborations as AUTO_FILTERED
-        state = Suspect.DEFAULT_STATE.value
+        state = Suspicion.DEFAULT_STATE.value
         if auto_filtered:
-            state = SuspectState.AUTO_FILTERED.value
+            state = SuspicionState.AUTO_FILTERED.value
 
-        for suspect in suspects:
-            Suspect.objects.create(
+        for suspicion in suspicions:
+            Suspicion.objects.create(
                 stored_doc_id=stored_doc.id,
-                similar_to_id=suspect['similar_doc_id'],
-                similarity=suspect['similarity'],
-                match_count=suspect['match_count'],
+                similar_to_id=suspicion['similar_doc_id'],
+                similarity=suspicion['similarity'],
+                match_count=suspicion['match_count'],
                 result=result,
                 state=state
             )

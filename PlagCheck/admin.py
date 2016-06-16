@@ -17,7 +17,7 @@ class ResultAdmin(PlagCheckModelAdmin):
     list_display = ('hash_count',)
 
 
-class SuspectsAdmin(PlagCheckModelAdmin):
+class SuspicionAdmin(PlagCheckModelAdmin):
     list_filter = ('state', )
     #list_display = ('id', 'link_to_stored_doc_id', 'link_to_similar_to_id', 'hash_count', 'match_count', 'similarity', 'state')
     list_display = ('id', 'hash_count', 'match_count', 'similarity', 'state')
@@ -45,4 +45,4 @@ class StoreAdmin(PlagCheckModelAdmin):
 admin.site.register(Store, StoreAdmin)
 admin.site.register(Reference, ReferenceAdmin)
 admin.site.register(Result, ResultAdmin)
-admin.site.register(Suspect, SuspectsAdmin)
+admin.site.register(Suspicion, SuspicionAdmin)

@@ -21,15 +21,15 @@
     </h1>
     <div class="plagcheck_compare">
         <div class="pagination">
-            {% if prev_suspect_id %}
-                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=prev_suspect_id  %}?{{ request.GET.urlencode }}">
+            {% if prev_suspicion_id %}
+                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspicion_id=prev_suspicion_id  %}?{{ request.GET.urlencode }}">
                     <div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev</div>
                 </a>
             {% else %}
                 <div class="no-paginator prev">no prev</div>
             {% endif %}
-            {% if next_suspect_id %}
-                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspect_id=next_suspect_id  %}?{{ request.GET.urlencode }}">
+            {% if next_suspicion_id %}
+                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspicion_id=next_suspicion_id  %}?{{ request.GET.urlencode }}">
                     <div class="paginator next"> next <i class="fa fa-angle-double-right"></i></div>
                 </a>
             {% else %}
@@ -42,28 +42,28 @@
             <div class="plagcheck_compare_label">Suspicious document</div>
             <div class="spacer"></div>
             {% if suspect_has_elaboration %}
-                {% include 'elaboration_info.html' with elaboration=suspect.stored_doc.elaboration %}
+                {% include 'elaboration_info.html' with elaboration=suspicion.stored_doc.elaboration %}
             {% else %}
                 <div class="plagcheck_compare_info">
-                    {% for key, value in suspect.stored_doc.document_info.items %}
+                    {% for key, value in suspicion.stored_doc.document_info.items %}
                         <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                     {% endfor %}
                 </div>
             {% endif %}
             <div class="spacer"></div>
             <div class="plagcheck_compare_info">
-                {% for key, value in suspect.stored_doc.plagcheck_info.items %}
+                {% for key, value in suspicion.stored_doc.plagcheck_info.items %}
                     <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                 {% endfor %}
             </div>
             <div class="spacer"></div>
             <div>
-                <form name="suspect_state" method="post"
-                      action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspect_id=suspect.id %}">
-                    <label>Suspect state:</label>
-                    <select name="suspect_state_selection" onchange="suspect_state.submit()">
-                        {% for state in suspect_states %}
-                            <option {% if suspect.state_enum.value == state.value %} selected {% endif %}
+                <form name="suspicion_state" method="post"
+                      action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspicion_id=suspicion.id %}">
+                    <label>Suspicion state:</label>
+                    <select name="suspicion_state_selection" onchange="suspicion_state.submit()">
+                        {% for state in suspicion_states %}
+                            <option {% if suspicion.state_enum.value == state.value %} selected {% endif %}
                                     value="{{ state.value }}">{{ state.name }}</option>
                         {% endfor %}
                     </select>
@@ -75,24 +75,24 @@
             <div class="plagcheck_compare_label">Source document</div>
             <div class="spacer"></div>
             {% if similar_to_has_elaboration %}
-                {% include 'elaboration_info.html' with elaboration=suspect.similar_to.elaboration %}
+                {% include 'elaboration_info.html' with elaboration=suspicion.similar_to.elaboration %}
             {% else %}
                 <div class="plagcheck_compare_info">
-                    {% for key, value in suspect.similar_to.document_info.items %}
+                    {% for key, value in suspicion.similar_to.document_info.items %}
                         <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                     {% endfor %}
                 </div>
             {% endif %}
             <div class="spacer"></div>
             <div class="plagcheck_compare_info">
-                {% for key, value in suspect.similar_to.plagcheck_info.items %}
+                {% for key, value in suspicion.similar_to.plagcheck_info.items %}
                     <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                 {% endfor %}
             </div>
         </div>
         <div class="clear"></div>
         <div class="plagcheck_verification_info">
-            {% for key, value in suspect.suspect_info.items %}
+            {% for key, value in suspicion.suspicion_info.items %}
                 <div class="info"><label>{{ key }}:</label> {{ value }}</div>
             {% endfor %}
         </div>
@@ -107,13 +107,13 @@
                 </div>
 
                 {% if suspect_has_elaboration %}
-                    <div class="tags tags-{{ suspect.stored_doc.elaboration.get_content_type_id }}-{{ suspect.stored_doc.elaboration.id }}">
-                        {% include 'tags.html' with tagged_object=suspect.stored_doc.elaboration %}
+                    <div class="tags tags-{{ suspicion.stored_doc.elaboration.get_content_type_id }}-{{ suspicion.stored_doc.elaboration.id }}">
+                        {% include 'tags.html' with tagged_object=suspicion.stored_doc.elaboration %}
                     </div>
                     <br />
                     <div class="spacer"></div>
 
-                    {% include 'elaboration_comments.html' with elaboration=suspect.stored_doc.elaboration %}
+                    {% include 'elaboration_comments.html' with elaboration=suspicion.stored_doc.elaboration %}
                 {% endif %}
             </div>
             <div class="plagcheck_text_right">
@@ -129,8 +129,8 @@
     <div class="clear"></div>
     <script>
         {% autoescape off %}
-            var suspect = {{ suspect.stored_doc.json_text }};
-            var similar_to = {{ suspect.similar_to.json_text }};
+            var suspect = {{ suspicion.stored_doc.json_text }};
+            var similar_to = {{ suspicion.similar_to.json_text }};
             load_plagcheck_diff(suspect.content, similar_to.content);
         {% endautoescape %}
     </script>

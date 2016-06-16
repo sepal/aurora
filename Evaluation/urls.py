@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^submit_evaluation/$', Evaluation.views.submit_evaluation),
     url(r'^reopen_evaluation/$', Evaluation.views.reopen_evaluation),
 
-    url(r'^plagcheck/$', Evaluation.views.plagcheck_suspects, name='plagcheck_suspects'),
-    url(r'^plagcheck/(?P<suspect_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
-    url(r'^plagcheck/(?P<suspect_id>\d+)/save_state/$', Evaluation.views.plagcheck_compare_save_state, name='plagcheck_compare_save_state'),
+    url(r'^plagcheck/$', Evaluation.views.plagcheck_suspicions, name='plagcheck_suspicions'),
+    url(r'^plagcheck/(?P<suspicion_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
+    url(r'^plagcheck/(?P<suspicion_id>\d+)/save_state/$', Evaluation.views.plagcheck_compare_save_state, name='plagcheck_compare_save_state'),
 ]

@@ -26,7 +26,7 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from PlagCheck.models import Suspect, SuspectState
+from PlagCheck.models import Suspicion, SuspicionState
 
 
 @aurora_login_required()
@@ -38,7 +38,7 @@ def evaluation(request, course_short_title=None):
     count = 0
     selection = request.session.get('selection', 'error')
 
-    if selection not in ('error', 'questions', 'plagcheck_suspects'):
+    if selection not in ('error', 'questions', 'plagcheck_suspicions'):
         for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
             elaborations.append(serialized_elaboration.object)
         if selection == 'search':
@@ -69,19 +69,19 @@ def evaluation(request, course_short_title=None):
             challenges.append(serialized_challenge.object)
         count = len(challenges)
         overview = render_to_string('questions.html', {'challenges': challenges}, RequestContext(request))
-    elif selection == 'plagcheck_suspects':
-        suspect_list = Suspect.objects.filter(state=SuspectState.SUSPECTED.value)
+    elif selection == 'plagcheck_suspicions':
+        suspicion_list = Suspicion.objects.filter(state=SuspicionState.SUSPECTED.value)
 
-        count = suspect_list.count()
+        count = suspicion_list.count()
 
         context = {
             'course': course,
-            'suspects': suspect_list,
-            'suspect_states': SuspectState.choices(),
-            'suspects_count': count,
+            'suspicions': suspicion_list,
+            'suspicion_states': SuspicionState.choices(),
+            'suspicions_count': count,
         }
 
-        overview = render_to_string('plagcheck_suspects.html', context, RequestContext(request))
+        overview = render_to_string('plagcheck_suspicions.html', context, RequestContext(request))
 
 
     challenges = Challenge.objects.all()
@@ -850,28 +850,28 @@ def get_points(request, user, course):
 
 @csrf_exempt
 @staff_member_required
-def plagcheck_suspects(request, course_short_title=None):
+def plagcheck_suspicions(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    suspect_list = Suspect.objects.filter(state=SuspectState.SUSPECTED.value)
+    suspicion_list = Suspicion.objects.filter(state=SuspicionState.SUSPECTED.value)
 
-    count = suspect_list.count()
+    count = suspicion_list.count()
 
     context = {
         'course': course,
-        'suspects': suspect_list,
-        'suspect_states': SuspectState.choices(),
-        'suspects_count': count,
+        'suspicions': suspicion_list,
+        'suspicion_states': SuspicionState.choices(),
+        'suspicions_count': count,
     }
 
-    request.session['selection'] = 'plagcheck_suspects'
+    request.session['selection'] = 'plagcheck_suspicions'
     request.session['count'] = count
 
     return render_to_response('evaluation.html', {
-            'overview': render_to_string('plagcheck_suspects.html', context, RequestContext(request)),
+            'overview': render_to_string('plagcheck_suspicions.html', context, RequestContext(request)),
             'course': course,
-            'stabilosiert_plagcheck_suspects': 'stabilosiert',
-            'count_plagcheck_suspects': count,
+            'stabilosiert_plagcheck_suspicions': 'stabilosiert',
+            'count_plagcheck_suspicions': count,
             'selection': request.session['selection'],
         },
         context_instance=RequestContext(request))
@@ -879,32 +879,32 @@ def plagcheck_suspects(request, course_short_title=None):
 
 @csrf_exempt
 @staff_member_required
-def plagcheck_compare(request, course_short_title=None, suspect_id=None):
+def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    suspect = Suspect.objects.get(pk=suspect_id)
+    suspicion = Suspicion.objects.get(pk=suspicion_id)
 
-    (prev_suspect_id, next_suspect_id) = suspect.get_prev_next(state=SuspectState.SUSPECTED.value)
+    (prev_suspicion_id, next_suspicion_id) = suspicion.get_prev_next(state=SuspicionState.SUSPECTED.value)
 
     context = {
         'course': course,
-        'suspect': suspect,
-        'suspect_states': SuspectState.states(),
-        'suspect_states_class': SuspectState.__members__,
-        'next_suspect_id': next_suspect_id,
-        'prev_suspect_id': prev_suspect_id,
-        'similar_to_has_elaboration': suspect.similar_to.was_submitted_during(course),
-        'suspect_has_elaboration': suspect.stored_doc.was_submitted_during(course)
+        'suspicion': suspicion,
+        'suspicion_states': SuspicionState.states(),
+        'suspicion_states_class': SuspicionState.__members__,
+        'next_suspicion_id': next_suspicion_id,
+        'prev_suspicion_id': prev_suspicion_id,
+        'similar_to_has_elaboration': suspicion.similar_to.was_submitted_during(course),
+        'suspect_has_elaboration': suspicion.stored_doc.was_submitted_during(course)
     }
 
-    # number of suspected documents
-    suspects_count = Suspect.objects.filter(state=SuspectState.SUSPECTED.value).count()
+    # number of suspicious documents
+    suspicions_count = Suspicion.objects.filter(state=SuspicionState.SUSPECTED.value).count()
 
     return render_to_response('evaluation.html', {
             'detail_html': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
             'course': course,
-            'stabilosiert_plagcheck_suspects': 'stabilosiert',
-            'count_plagcheck_suspects': suspects_count,
+            'stabilosiert_plagcheck_suspicions': 'stabilosiert',
+            'count_plagcheck_suspicions': suspicions_count,
         },
         context_instance=RequestContext(request))
 
@@ -912,13 +912,13 @@ def plagcheck_compare(request, course_short_title=None, suspect_id=None):
 @csrf_exempt
 @staff_member_required
 @require_POST
-def plagcheck_compare_save_state(request, course_short_title=None, suspect_id=None):
-    suspect = Suspect.objects.get(pk=suspect_id)
+def plagcheck_compare_save_state(request, course_short_title=None, suspicion_id=None):
+    suspicion = Suspicion.objects.get(pk=suspicion_id)
 
-    new_state = request.POST.get('suspect_state_selection', None)
+    new_state = request.POST.get('suspicion_state_selection', None)
 
-    suspect.state_enum = new_state
+    suspicion.state_enum = new_state
 
-    suspect.save()
+    suspicion.save()
 
-    return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspect_id=suspect_id)
+    return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspicion_id=suspicion_id)

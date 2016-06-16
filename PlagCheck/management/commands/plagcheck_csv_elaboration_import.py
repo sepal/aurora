@@ -50,11 +50,12 @@ def add_elaboration(elab):
     )
 
 def import_from_csv(csv_file):
-    elaborations = read_elaborations_from_csv(csv_file)
+    items = read_elaborations_from_csv(csv_file)
 
-    sorted(elaborations, key=lambda k: k['submitted'])
+    sorted(items, key=lambda k: k['submitted'])
 
-
+    for item in items:
+        add_elaboration(item)
 
 def read_elaborations_from_csv(csv_file, begin_at=0):
     i = 0

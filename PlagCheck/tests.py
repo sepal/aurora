@@ -3,7 +3,7 @@ from unittest import skip
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from PlagCheck.models import Reference, Result, Suspect, SuspectState
+from PlagCheck.models import Reference, Result, Suspicion, SuspicionState
 from PlagCheck import tasks
 from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 from ddt import ddt, data
@@ -81,7 +81,7 @@ class PlagCheckTestCase(TestCase):
 
         ret['elaboration'] = Elaboration.objects.create(challenge=challenge, user=user, elaboration_text=text)
         ret['result'] = Result.objects.get(doc_id=ret['elaboration'].id)
-        ret['suspects'] = Suspect.objects.filter(doc_id=ret['elaboration'].id)
+        ret['suspicions'] = Suspicion.objects.filter(doc_id=ret['elaboration'].id)
 
         return ret
 
@@ -99,12 +99,12 @@ class PlagCheckTestCase(TestCase):
     def do_pair_test(self, prefix, expected_similarity):
         ret1 = self.import_text("%s_src.txt" % prefix)
 
-        self.assertEqual(len(ret1['suspects']), 0)
+        self.assertEqual(len(ret1['suspicions']), 0)
 
         if expected_similarity > plagcheck_settings['similarity_threshold']:
 
             ret2 = self.import_text("%s_susp.txt" % prefix)
-            self.assertGreaterEqual(ret2['suspects'][0].similarity, expected_similarity)
+            self.assertGreaterEqual(ret2['suspicions'][0].similarity, expected_similarity)
 
     # Tests
     def test_sherlock_mod(self):
@@ -143,13 +143,13 @@ class PlagCheckTestCase(TestCase):
         """ Import a 3 word text 3 times and check similarity """
 
         ret = self.import_text("simple/hello_world.txt")
-        self.assertEqual(len(ret['suspects']), 0)
+        self.assertEqual(len(ret['suspicions']), 0)
 
         ret = self.import_text("simple/hello_world.txt")
-        self.assertEqual(len(ret['suspects']), 1)
+        self.assertEqual(len(ret['suspicions']), 1)
 
         ret = self.import_text("simple/hello_world.txt")
-        self.assertEqual(len(ret['suspects']), 2)
+        self.assertEqual(len(ret['suspicions']), 2)
 
     #@skip("remove this")
     def test_elaboration_single_similar(self):
@@ -180,26 +180,26 @@ class PlagCheckTestCase(TestCase):
         (doc_id, similar_hashes, filter_id) = similarities[1]
         self.assertEqual(similar_hashes, 3)
 
-    def test_suspect_single_similar(self):
+    def test_suspicion_single_similar(self):
         ret1 = self.import_text("princeton/princeton_001_src.txt")
 
-        self.assertEqual(Suspect.objects.all().count(), 0)
+        self.assertEqual(Suspicion.objects.all().count(), 0)
 
         ret2 = self.import_text("princeton/princeton_001_susp.txt")
 
-        self.assertEqual(Suspect.objects.all().count(), 1)
+        self.assertEqual(Suspicion.objects.all().count(), 1)
 
-        suspect = Suspect.objects.get()
+        suspicion = Suspicion.objects.get()
 
-        self.assertEqual(suspect.doc_id, ret2['elaboration'].id)
-        self.assertEqual(suspect.similar_to_id, ret1['elaboration'].id)
-        self.assertEqual(suspect.similarity, 75)
+        self.assertEqual(suspicion.doc_id, ret2['elaboration'].id)
+        self.assertEqual(suspicion.similar_to_id, ret1['elaboration'].id)
+        self.assertEqual(suspicion.similarity, 75)
 
     def test_duplicate_hash(self):
         self.import_text("simple/duplicate_hash.txt")
         self.import_text("simple/duplicate_hash.txt")
-        suspect = Suspect.objects.get()
-        self.assertEqual(suspect.similarity, 100)
+        suspicion = Suspicion.objects.get()
+        self.assertEqual(suspicion.similarity, 100)
 
     @data(("princeton/princeton_001", 75), ("princeton/princeton_002", 30), ("princeton/princeton_003", 80))
     def test_princeton_dataset(self, value):

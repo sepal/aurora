@@ -125,7 +125,7 @@ class Result(models.Model):
         return model_to_dict(self)
 
 
-class SuspectState(IntEnum):
+class SuspicionState(IntEnum):
     """SUSPECTED: Default state of a possible plagiarism document.
     PLAGIARISM: The suspected document is plagiarism.
     FALSE_POSITIVE: No plagiarism at all, could be improved by algorithm
@@ -140,31 +140,31 @@ class SuspectState(IntEnum):
     @staticmethod
     def states():
         states = []
-        for state in SuspectState:
+        for state in SuspicionState:
             states.append({'value': state.value, 'name': state.name})
         return states
 
     @staticmethod
     def choices():
         choices = []
-        for state in SuspectState:
+        for state in SuspicionState:
             choices.append((state.value, state.name))
         return choices
 
 
-class Suspect(models.Model):
+class Suspicion(models.Model):
     """Stores the result of a check against a individual document, resulting
     in a plagiarism suspect because the similarity reached its threshold value.
     """
 
-    DEFAULT_STATE = SuspectState.SUSPECTED
+    DEFAULT_STATE = SuspicionState.SUSPECTED
 
-    stored_doc = models.ForeignKey(Store, related_name='suspected_doc')
-    similar_to = models.ForeignKey(Store, related_name='suspected_similar_to')
+    stored_doc = models.ForeignKey(Store, related_name='suspicion_suspect')
+    similar_to = models.ForeignKey(Store, related_name='suspicion_similar_to')
     similarity = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     result = models.ForeignKey(Result)
-    state = models.CharField(max_length=2, default=DEFAULT_STATE.value, choices=SuspectState.choices())
+    state = models.CharField(max_length=2, default=DEFAULT_STATE.value, choices=SuspicionState.choices())
     match_count = models.IntegerField()
 
     def __unicode__(self):
@@ -183,7 +183,7 @@ class Suspect(models.Model):
         :exception ValueError - when the given state is invalid
         :return: The respective enum object for the state value
         """
-        return SuspectState(int(self.state))
+        return SuspicionState(int(self.state))
 
     @state_enum.setter
     def state_enum(self, value):
@@ -192,7 +192,7 @@ class Suspect(models.Model):
         :exception ValueError - when the stored state is invalid
         :param value: int, string or enum representing the state
         """
-        self.state = SuspectState(int(value)).value
+        self.state = SuspicionState(int(value)).value
 
     def get_prev_next(self, **filter_args):
         """
@@ -213,7 +213,7 @@ class Suspect(models.Model):
 
         return (prev_id, next_id)
 
-    def get_suspect_info(self):
+    def get_suspicion_info(self):
         info = OrderedDict()
 
         info['# matching hashes'] = self.match_count
@@ -221,15 +221,15 @@ class Suspect(models.Model):
         info['Verification date'] = self.created
 
         return info
-    suspect_info = property(get_suspect_info)
+    suspicion_info = property(get_suspicion_info)
 
     @staticmethod
     def get_suspected_elaborations(course):
-        suspects = Suspect.objects.all()
+        suspicions = Suspicion.objects.all()
         elaborations = []
 
-        for suspect in suspects:
-            elaboration = suspect.stored_doc.elaboration
+        for suspicion in suspicions:
+            elaboration = suspicion.stored_doc.elaboration
             if elaboration.challenge.course == course:
                 elaborations.append(elaboration)
 
@@ -281,8 +281,8 @@ class Reference(models.Model):
                            'FROM "PlagCheck_reference" '
                            'WHERE stored_doc_id = %s '
                            'GROUP BY hash, stored_doc_id'
-                           ') as "suspect" '
-                       'INNER JOIN "PlagCheck_reference" as "similar" ON "suspect".hash="similar".hash '
+                           ') as "suspicion" '
+                       'INNER JOIN "PlagCheck_reference" as "similar" ON "suspicion".hash="similar".hash '
                        'WHERE "similar".stored_doc_id != %s '
                        'GROUP BY "similar".stored_doc_id ', [stored_doc_id, stored_doc_id])
 
