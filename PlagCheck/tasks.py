@@ -43,18 +43,13 @@ def check(self, **kwargs):
 
     The following are all required kwargs parameters that have to be passed.
 
-    :param text -- Content of the document
-    :param doc_id -- ID of the document
-    :param user_id -- ID of the user
-    :param user_name -- Username or matriculation number
-    :param submission_time -- Submission time of the document
-    :param is_revised -- True if revised_elaboration_text has changed
+    :param doc_id -- ID of the document within the Store
 
     :return: Future object of this task invocation when called asynchronously,
     or the result if called synchronously.
     """
     try:
-        stored_doc = Store.objects.create(**kwargs)
+        stored_doc = Store.objects.get(pk=kwargs['doc_id'])
 
         # delete existing references to older versions of this document
         Reference.remove_references(stored_doc.id)
@@ -99,6 +94,7 @@ def check(self, **kwargs):
         result = Result.objects.create(
             hash_count=hash_count,
             stored_doc_id=stored_doc.id,
+            submission_time=stored_doc.submission_time.isoformat(),
         )
 
         # if there is a similar document that was assigned the state

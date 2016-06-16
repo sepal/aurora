@@ -4,16 +4,12 @@ from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 class PlagCheckRouter(object):
 
     def db_for_read(self, model, **hints):
-        #print("read app: %s" % model._meta.app_label)
         if model._meta.app_label == 'PlagCheck':
-            #print("select PLAGCHECK db")
             return plagcheck_settings['database']
         return None
 
     def db_for_write(self, model, **hints):
-        #print("write app: %s" % model._meta.app_label)
         if model._meta.app_label == 'PlagCheck':
-            #print("select PLAGCHECK db")
             return plagcheck_settings['database']
         return None
 
@@ -31,12 +27,9 @@ class PlagCheckRouter(object):
         """
         if db == plagcheck_settings['database']:
             if model._meta.app_label == 'PlagCheck':
-                #print("Select PLAGCHECK for migration")
                 return True
             else:
-                #print("Don't Select PLAGCHECK for migration")
                 return False
         elif model._meta.app_label == 'PlagCheck':
-            #print("2 Don't Select PLAGCHECK for migration")
             return False
         return None

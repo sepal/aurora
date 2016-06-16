@@ -2,11 +2,7 @@ from django.core.management.base import BaseCommand
 from django.db.utils import OperationalError
 import time
 from Challenge.models import Challenge
-from AuroraUser.models import AuroraUser
-from Elaboration.models import Elaboration
-from django.core.exceptions import ObjectDoesNotExist
-import argparse
-from PlagCheck import tasks
+from PlagCheck.verification import *
 
 
 class Command(BaseCommand):
@@ -17,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         #force_csv_import(options['csv'])
-        force_csv_import(args[0])
+        import_from_csv(args[0])
 
 def readlines(f):
     line = []
@@ -38,16 +34,12 @@ def readlines(f):
         else:
             line.append(s)
 
-def add_elaboration(elab, challenge):
+def add_elaboration(elab):
 
-    #if is_revised:
-    #    text = self.revised_elaboration_text
+    if elab['submitted'] is None:
+        return
 
-    #if self.user.matriculation_number is None:
-    #    self.user.matriculation_number = str(self.user_id)
-
-
-    tasks.check.delay(
+    plagcheck_store_and_verify(
         text=elab['text'],
         elaboration_id=elab['id'],
         user_id=0,
@@ -57,10 +49,17 @@ def add_elaboration(elab, challenge):
         is_revised=False,
     )
 
+def import_from_csv(csv_file):
+    elaborations = read_elaborations_from_csv(csv_file)
 
-def force_csv_import(csv_file, begin_at=0):
+    sorted(elaborations, key=lambda k: k['submitted'])
+
+
+
+def read_elaborations_from_csv(csv_file, begin_at=0):
     i = 0
 
+    elaborations = []
     default_challenge = Challenge.objects.all()[0]
     with open(csv_file, "rb") as f:
         for bytelist in readlines(f):
@@ -85,7 +84,9 @@ def force_csv_import(csv_file, begin_at=0):
                 elab['created'] = time.strptime(data[3], "%Y-%m-%d %H:%M:%S.%f")
 
                 if 'None' in data[4]:
-                    elab['submitted'] = None
+                    continue
+                elif data[4] is None:
+                    continue
                 else:
                     try:
                         elab['submitted'] = time.strptime(data[4], "%Y-%m-%d %H:%M:%S.%f")
@@ -93,6 +94,7 @@ def force_csv_import(csv_file, begin_at=0):
                     except ValueError:
                         elab['submitted'] = time.strptime(data[4], "%Y-%m-%d %H:%M:%S")
                         elab['submitted'] = data[4]
+                    #elab['submitted'] = str(elab['submitted'])
 
                 elab['text'] = data[5]
             except (IndexError, ValueError) as e:
@@ -101,7 +103,7 @@ def force_csv_import(csv_file, begin_at=0):
             done = False
             while done is False:
                 try:
-                    add_elaboration(elab, default_challenge)
+                    elaborations.append(elab)
                     done = True
 
                 # retry when database is locked
@@ -109,3 +111,5 @@ def force_csv_import(csv_file, begin_at=0):
                     pass
                 except Exception as e:
                     raise Exception("Exception occurred at line %i" % i, e)
+
+    return elaborations

@@ -14,6 +14,7 @@ from Course.models import Course
 from django.http import Http404
 from FileUpload.models import UploadFile
 from pprint import pprint
+from PlagCheck.verification import plagcheck_elaboration
 
 @csrf_exempt
 def save_elaboration(request, course_short_title):
@@ -77,6 +78,7 @@ def submit_elaboration(request, course_short_title):
    if elaboration.elaboration_text or UploadFile.objects.filter(elaboration=elaboration).exists():
        elaboration.submission_time = datetime.now()
        elaboration.save()
-       elaboration.schedule_plagcheck_verification()
+
+       plagcheck_elaboration(elaboration)
 
        return HttpResponse()

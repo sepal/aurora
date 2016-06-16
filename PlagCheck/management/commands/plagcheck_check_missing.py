@@ -1,28 +1,13 @@
 from django.core.management.base import BaseCommand
-from django.db import connections
-import PlagCheck
-from AuroraProject.settings import PLAGCHECK as plagcheck_settings
+
+from PlagCheck.verification import plagcheck_elaboration
 from Elaboration.models import Elaboration
-
-from PlagCheck.models import *
-
 
 class Command(BaseCommand):
     help = 'Triggers a plagiarism check for documents which haven\'t checked yet'
 
     def handle(self, *args, **options):
-        #cursor = connections[PLAGCHECK_DATABASE].cursor()
 
-        #cursor.execute(
-        #    'SELECT id, elaboration_text '
-        #    'FROM Elaboration_elaboration '
-        #    'WHERE id NOT IN ('
-        #        'SELECT doc_id '
-        #        'FROM Plagcheck_result) '
-        #    'ORDER BY submission_time ASC')
         elaborations = Elaboration.objects.all()
         for elab in elaborations:
-            elab.schedule_plagcheck_verification()
-
-        #for row in cursor.fetchall():
-        #    PlagCheck.tasks.check.delay(doc_id=row[0], stored_doc=row[1])
+            plagcheck_elaboration(elab)

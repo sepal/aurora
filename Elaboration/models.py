@@ -577,25 +577,3 @@ class Elaboration(models.Model):
     def get_last_post_date(self):
         comment = self.comments.latest('post_date')
         return comment.post_date
-
-    def schedule_plagcheck_verification(self, is_revised=False):
-
-        text = self.elaboration_text
-        if is_revised:
-            text = self.revised_elaboration_text
-
-        username = self.user.matriculation_number
-        if username is None:
-            username = self.user.nickname
-        if username is None:
-            username = "no username"
-
-        from PlagCheck import tasks
-        tasks.check.delay(
-            text=text,
-            elaboration_id=self.id,
-            user_id=self.user.id,
-            user_name=self.user.matriculation_number,
-            submission_time=str(self.submission_time),
-            is_revised=is_revised,
-        )

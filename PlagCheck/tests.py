@@ -201,41 +201,6 @@ class PlagCheckTestCase(TestCase):
         suspect = Suspect.objects.get()
         self.assertEqual(suspect.similarity, 100)
 
-    def test_filter(self):
-        ret = self.import_text("simple/hello_world.txt")
-        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
-        self.import_text("simple/hello_world.txt")
-        suspect = Suspect.objects.get()
-        self.assertEqual(suspect.similarity, 100)
-        self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
-
-    def test_filter_small_diff(self):
-        ret = self.import_text("simple/der_kommentar.txt")
-        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
-        self.import_text("simple/das_kommentar.txt")
-        suspect = Suspect.objects.get()
-        self.assertGreater(suspect.similarity, 50)
-        self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
-
-    def test_filter_small_diff_reverse(self):
-        ret = self.import_text("simple/das_kommentar.txt")
-        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
-        self.import_text("simple/der_kommentar.txt")
-        suspect = Suspect.objects.get()
-        self.assertGreater(suspect.similarity, 50)
-        self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
-
-    def test_filter_small_diff_others(self):
-        ret = self.import_text("simple/der_kommentar.txt")
-        SuspectFilter.objects.create(doc_id=ret['elaboration'].id)
-        self.import_text("simple/der_kommentar.txt")
-        self.import_text("simple/der_kommentar.txt")
-        suspects = Suspect.objects.all()
-
-        for suspect in suspects:
-            #print(str(suspect))
-            self.assertEqual(suspect.state_enum.value, SuspectState.AUTO_FILTERED.value)
-
     @data(("princeton/princeton_001", 75), ("princeton/princeton_002", 30), ("princeton/princeton_003", 80))
     def test_princeton_dataset(self, value):
         """ Run test sets from https://www.princeton.edu/pr/pub/integrity/pages/plagiarism/ """

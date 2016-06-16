@@ -6,7 +6,6 @@ from django.forms import model_to_dict
 from django.db import models
 from django.db import connections
 from django.db import transaction
-from django.db import IntegrityError
 from django.db.models import Lookup
 from django.db.models.fields import Field
 from django.core.exceptions import ObjectDoesNotExist
@@ -81,6 +80,33 @@ class Store(models.Model):
                 and submission_date < course.end_date:
             return True
         return False
+
+    @staticmethod
+    def get_unverified_docs():
+        docs = []
+
+        outdated_verifications = Store.objects.raw(
+            'SELECT store.* '
+            ' FROM "PlagCheck_result" result, PlagCheck_store store '
+            ' WHERE result.stored_doc_id == store.id '
+            '  AND store.submission_time != result.submission_time;'
+        )
+
+        for doc in outdated_verifications:
+            docs.append(doc)
+
+        missing_verifications = Store.objects.raw(
+            'SELECT store.* '
+            ' FROM PlagCheck_store store '
+            ' LEFT OUTER JOIN PlagCheck_result result '
+            '  ON store.id = result.stored_doc_id;'
+        )
+
+        for doc in missing_verifications:
+            docs.append(doc)
+
+        return docs
+
 
 
 class Result(models.Model):
