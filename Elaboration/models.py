@@ -216,8 +216,6 @@ class Elaboration(models.Model):
                 .order_by('num_reviews', 'submission_time')
         )
 
-        print(missing_reviews.query)
-
         missing_reviews = list(missing_reviews)
         missing_reviews.sort(key=lambda e: e.user.review_karma(course))
 
