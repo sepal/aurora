@@ -30,7 +30,7 @@ def plagcheck_check_unverified():
 def plagcheck_store(dry_run=False, **kwargs):
     doc = None
 
-    if kwargs['submission_time'] is None:
+    if kwargs['submission_time'] in (None, 'None'):
         return None
 
     try:
