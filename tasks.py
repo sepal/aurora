@@ -6,7 +6,7 @@ def celery(ctx, worker=1):
 
 @task
 def flower(ctx):
-    ctx.run('celery -A PlagCheck flower')
+    ctx.run('celery flower')
 
 @task
 def venv(ctx):
@@ -37,6 +37,7 @@ def clean(ctx, plagcheck=False, migrate=True, demo=True):
     if plagcheck:
         ctx.run('rm -f database-plagcheck.db')
         ctx.run('python manage.py migrate --database=plagcheck --noinput')
+        ctx.run('celery purge -f')
 
     if demo:
         ctx.run('python manage.py populate_demo_data')

@@ -22,9 +22,47 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
+class SuspicionFilter(object):
+    """
+    :type suspicion: Suspicion
+    """
+    @staticmethod
+    def filter(suspicion):
+        raise NotImplementedError("subclass and implement static filter method")
+
+
+class SimilarityThresholdFilter(SuspicionFilter):
+    @staticmethod
+    def filter(suspicion):
+        if suspicion.similarity <= plagcheck_settings['similarity_threshold']:
+            return False
+        return True
+
+
+class MinimalMatchCountFilter(SuspicionFilter):
+    @staticmethod
+    def filter(suspicion):
+        if suspicion.match_count <= plagcheck_settings['minimal_match_count']:
+            return False
+        return True
+
+
+class RevisedElaborationFilter(SuspicionFilter):
+    @staticmethod
+    def filter(suspicion):
+        if suspicion.suspect_doc.user_id == suspicion.similar_doc.user_id \
+                and suspicion.suspect_doc.elaboration_id == suspicion.similar_doc.elaboration_id \
+                and suspicion.suspect_doc.is_revised != suspicion.similar_doc.is_revised:
+            return False
+        return True
+
+suspicion_filters = [SimilarityThresholdFilter, MinimalMatchCountFilter, RevisedElaborationFilter]
+
+
 class PlagcheckError(Exception):
     def __init__(self, msg):
         self.msg = msg
+
 
 @app.task(bind=True)
 def check(self, **kwargs):
@@ -64,7 +102,6 @@ def check(self, **kwargs):
 
         # check if hashes are generated which means punctuations found
         suspicions = list()
-        auto_filtered = False
         if hash_count > 0:
             # store (new) references
             Reference.store_references(suspect_doc.id, hash_set)
@@ -77,19 +114,19 @@ def check(self, **kwargs):
                 similarity = round((100.0/hash_count) * match_count, 4)
 
                 if similarity > 100:
-                    raise PlagcheckError('computed similarity is greated than 100% ({0}). doc_id={5}, similar_doc_id={1}, hash_count={4}, match_count={2}'.format(similarity, similar_doc_id, match_count, hash_count, suspect_doc.id))
+                    raise PlagcheckError(
+                        'computed similarity is greated than 100% ({0}). doc_id={5}, '
+                        'similar_doc_id={1}, hash_count={4}, match_count={2}'
+                        .format(similarity, similar_doc_id, match_count, hash_count, suspect_doc.id)
+                    )
 
-                if similarity > plagcheck_settings['similarity_threshold'] \
-                        and match_count > plagcheck_settings['minimal_match_count']:
-
-
-                    # put them in a list so that filtered
-                    # findings can be handled later
-                    suspicions.append({
-                        'similar_doc_id': similar_doc_id,
-                        'similarity': similarity,
-                        'match_count': match_count
-                    })
+                # put them in a list so that filtered
+                # findings can be handled later
+                suspicions.append({
+                    'similar_doc_id': similar_doc_id,
+                    'similarity': similarity,
+                    'match_count': match_count
+                })
 
         result = Result.objects.create(
             hash_count=hash_count,
@@ -97,21 +134,25 @@ def check(self, **kwargs):
             submission_time=suspect_doc.submission_time.isoformat(),
         )
 
-        # if there is a similar document that was assigned the state
-        # FILTER then mark all suspecting elaborations as AUTO_FILTERED
-        state = Suspicion.DEFAULT_STATE.value
-        if auto_filtered:
-            state = SuspicionState.AUTO_FILTERED.value
-
-        for suspicion in suspicions:
-            Suspicion.objects.create(
+        for suspicion_item in suspicions:
+            suspicion = Suspicion(
                 suspect_doc_id=suspect_doc.id,
-                similar_doc_id=suspicion['similar_doc_id'],
-                similarity=suspicion['similarity'],
-                match_count=suspicion['match_count'],
+                similar_doc_id=suspicion_item['similar_doc_id'],
+                similarity=suspicion_item['similarity'],
+                match_count=suspicion_item['match_count'],
                 result=result,
-                state=state
+                state=Suspicion.DEFAULT_STATE.value
             )
+
+            # run through all configured filters and determine
+            # if suspicion is valid or not
+            suspected = True
+            for suspicion_filter in suspicion_filters:
+                if suspicion_filter.filter(suspicion) is False:
+                    suspected = False
+
+            if suspected:
+                suspicion.save()
 
         return result.celery_result()
     except OperationalError as e:

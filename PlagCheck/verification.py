@@ -1,13 +1,14 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from PlagCheck.models import Document
 
 from PlagCheck import tasks as plagcheck_tasks
 
 
-def plagcheck_store_and_verify(**kwargs):
-    doc = plagcheck_store(**kwargs)
+def plagcheck_store_and_verify(store_only=False, dry=False, **kwargs):
+    doc = plagcheck_store(dry, **kwargs)
 
-    plagcheck_verify(doc)
+    if not store_only:
+        plagcheck_verify(doc)
 
     return doc
 
@@ -26,11 +27,11 @@ def plagcheck_check_unverified():
         plagcheck_verify(doc)
 
 
-def plagcheck_store(**kwargs):
+def plagcheck_store(dry_run=False, **kwargs):
     doc = None
 
     if kwargs['submission_time'] is None:
-        return doc
+        return None
 
     try:
         doc = Document.objects.get(
@@ -44,43 +45,48 @@ def plagcheck_store(**kwargs):
             return None
 
         updated_doc = Document(pk=doc.pk, **kwargs)
-        updated_doc.save()
+
+        if not dry_run:
+            updated_doc.save()
 
         doc = updated_doc
 
     except ObjectDoesNotExist:
-        doc = Document.objects.create(**kwargs)
+        if not dry_run:
+            doc = Document.objects.create(**kwargs)
+        else:
+            doc = object()
 
     return doc
 
 
-def plagcheck_elaboration(elaboration, is_revised=False, store_only=False):
-
-        text = elaboration.elaboration_text
-        if is_revised:
-            text = elaboration.revised_elaboration_text
+def plagcheck_elaboration(elaboration, store_only=False):
 
         username = elaboration.user.matriculation_number
         if username is None:
             username = elaboration.user.nickname
 
-        if not store_only:
+        doc = plagcheck_store_and_verify(
+            store_only=store_only,
+
+            text=elaboration.elaboration_text,
+            elaboration_id=elaboration.id,
+            user_id=elaboration.user.id,
+            user_name=username,
+            submission_time=str(elaboration.submission_time),
+            is_revised=False,
+        )
+
+        if elaboration.elaboration_text != elaboration.revised_elaboration_text:
             doc = plagcheck_store_and_verify(
-                text=text,
+                store_only=store_only,
+
+                text=elaboration.revised_elaboration_text,
                 elaboration_id=elaboration.id,
                 user_id=elaboration.user.id,
                 user_name=username,
                 submission_time=str(elaboration.submission_time),
-                is_revised=is_revised,
-            )
-        else:
-            doc = plagcheck_store(
-                text=text,
-                elaboration_id=elaboration.id,
-                user_id=elaboration.user.id,
-                user_name=username,
-                submission_time=str(elaboration.submission_time),
-                is_revised=is_revised,
+                is_revised=True,
             )
 
         return doc
