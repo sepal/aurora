@@ -194,6 +194,44 @@ class Elaboration(models.Model):
         return missing_reviews
 
     @staticmethod
+    def get_extra_reviews(user, course):
+        from Challenge.models import Challenge
+
+        user_submitted_challenge_ids = Elaboration.objects.filter(user_id=user.id, submission_time__isnull=False).values_list('challenge_id', flat=True)
+
+        final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
+        already_written_review_elaboration_ids = Review.objects.filter(reviewer_id=user.id).values_list('elaboration_id', flat=True)
+
+        missing_reviews = (
+            Elaboration.objects
+                .annotate(num_reviews=Count('review'))
+                .filter(challenge__id__in=user_submitted_challenge_ids,
+                        submission_time__isnull=False,
+                        user__is_staff=False,
+                        challenge__course=course,
+                        num_reviews__lt=2)
+                .exclude(challenge__id__in=final_challenge_ids)
+                .exclude(id__in=already_written_review_elaboration_ids)
+                .exclude(user=user)
+                .order_by('num_reviews', 'submission_time')
+        )
+
+        missing_reviews = list(missing_reviews)
+        missing_reviews.sort(key=lambda e: e.user.review_karma(course))
+
+        # Add Open Reviews to top of list
+        has_open_review = False
+        open_reviews = Review.objects.filter(submission_time__isnull=True, reviewer=user)
+        for review in open_reviews:
+            print(review.id)
+            has_open_review = True
+            missing_reviews = [review.elaboration] + missing_reviews
+
+        return { 'has_open_review': has_open_review, 'missing_reviews': missing_reviews[:7] }
+        # return missing_reviews[:7]
+
+
+    @staticmethod
     def get_top_level_tasks(course):
         from Challenge.models import Challenge
 
@@ -359,12 +397,15 @@ class Elaboration(models.Model):
 
         current_user_index = list(all_possible_users).index(current_user)
 
-        if current_user_index < karma_max_distance:
-            upper_index = 100
-            lower_index = 0
-        else:
-            upper_index = current_user_index - karma_min_distance
-            lower_index = current_user_index - karma_max_distance
+        # if current_user_index < karma_max_distance:
+        #     upper_index = 100
+        #     lower_index = 0
+        # else:
+        #     upper_index = current_user_index - karma_min_distance
+        #     lower_index = current_user_index - karma_max_distance
+
+        upper_index = current_user_index
+        lower_index = 0
 
         possible_users = all_possible_users[lower_index:upper_index]
         possible_user_ids = [rel.user_id for rel in possible_users]
@@ -420,8 +461,11 @@ class Elaboration(models.Model):
 
         current_user_index = list(all_possible_users).index(current_user)
 
-        lower_index = max(0, current_user_index - karma_lower_distance)
-        upper_index = min(all_possible_users.count(), current_user_index + karma_upper_distance)
+        # lower_index = max(0, current_user_index - karma_lower_distance)
+        # upper_index = min(all_possible_users.count(), current_user_index + karma_upper_distance)
+
+        lower_index = 0
+        upper_index = all_possible_users.count()
 
         possible_users = all_possible_users[lower_index:upper_index]
         possible_user_ids = [rel.user_id for rel in possible_users]
