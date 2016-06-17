@@ -89,7 +89,7 @@ class Document(models.Model):
         outdated_verifications = Document.objects.raw(
             'SELECT "store".* '
             ' FROM "PlagCheck_result" as "result", "PlagCheck_document" as "store" '
-            ' WHERE "result".doc_id == "store".id '
+            ' WHERE "result".doc_id = "store".id '
             '  AND "store".submission_time != "result".submission_time;'
         )
 
