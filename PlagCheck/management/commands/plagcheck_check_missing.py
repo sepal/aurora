@@ -15,7 +15,8 @@ class Command(BaseCommand):
         counter = 0
         for elab in elaborations:
             counter += 1
-            stdout.write("\rAdding elaboration {0:10d} of {1:10d}".format(counter, count))
+            percent = (100.0 / count) * counter
+            stdout.write("\rAdding elaboration {0} of {1} ({2:6.2f}%)".format(counter, count, percent))
             stdout.flush()
             plagcheck_elaboration(elab, store_only=True)
         stdout.write("\n")
