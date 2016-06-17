@@ -892,7 +892,11 @@ def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
 
     suspicion = Suspicion.objects.get(pk=suspicion_id)
 
-    (prev_suspicion_id, next_suspicion_id) = suspicion.get_prev_next(state=SuspicionState.SUSPECTED.value)
+    (prev_suspicion_id, next_suspicion_id) = suspicion.get_prev_next(
+        state=SuspicionState.SUSPECTED.value,
+        #suspect_doc__submission_time__range=(course.start_date, course.end_date),
+        suspect_doc__submission_time__gt=course.start_date,
+    )
 
     context = {
         'course': course,

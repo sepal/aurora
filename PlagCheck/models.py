@@ -75,10 +75,11 @@ class Document(models.Model):
 
     def was_submitted_during(self, course):
 
-        submission_date = self.submission_time.date()
+        submission_time = self.submission_time.date()
 
-        if submission_date > course.start_date\
-                and submission_date < course.end_date:
+        #if submission_time > course.start_date\
+        #        and submission_time < course.end_date:
+        if submission_time >= course.start_date:
             return True
         return False
 
@@ -175,7 +176,7 @@ class Suspicion(models.Model):
         return "suspect_doc:%i similar:%i percent:%i state:%s" % (self.suspect_doc_id, self.similar_doc_id, self.similarity, self.state_enum.name)
 
     class Meta:
-        ordering = ['-created']
+        ordering = ['created']
 
     @property
     def state_enum(self):
