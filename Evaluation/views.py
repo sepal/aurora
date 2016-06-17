@@ -72,7 +72,8 @@ def evaluation(request, course_short_title=None):
     elif selection == 'plagcheck_suspicions':
         suspicion_list = Suspicion.objects.filter(
             state=SuspicionState.SUSPECTED.value,
-            suspect_doc__submission_time__range=(course.start_date, course.end_date),
+            #suspect_doc__submission_time__range=(course.start_date, course.end_date),
+            suspect_doc__submission_time__gt=course.start_date,
         )
 
         count = suspicion_list.count()
@@ -858,7 +859,8 @@ def plagcheck_suspicions(request, course_short_title=None):
 
     suspicion_list = Suspicion.objects.filter(
         state=SuspicionState.SUSPECTED.value,
-        suspect_doc__submission_time__range=(course.start_date, course.end_date),
+        #suspect_doc__submission_time__range=(course.start_date, course.end_date),
+        suspect_doc__submission_time__gt=course.start_date,
     )
 
     count = suspicion_list.count()
