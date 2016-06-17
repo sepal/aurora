@@ -1,26 +1,26 @@
 
 
-load_plagcheck_diff = function (suspect_txt, similar_to_txt) {
+load_plagcheck_diff = function (suspect_txt, similar_txt) {
 
-    document.getElementById('similar_to_orig').innerHTML = similar_to_txt;
+    document.getElementById('similar_orig').innerHTML = similar_txt;
     document.getElementById('suspect_orig').innerHTML = suspect_txt;
 
-    var diff = JsDiff.diffWords(suspect_txt, similar_to_txt);
+    var diff = JsDiff.diffWords(suspect_txt, similar_txt);
 
-    var similar_to_processed = document.getElementById('similar_to_processed');
+    var similar_processed = document.getElementById('similar_processed');
     var suspect_processed = document.getElementById('suspect_processed');
 
     diff.forEach(function(part, i){
         if (!part.removed && !part.added) {
             if (part.value.match(/^[\s,\.]*$/)) {
-                similar_to_processed.innerHTML += part.value;
+                similar_processed.innerHTML += part.value;
                 suspect_processed.innerHTML += part.value;
             } else {
-                similar_to_processed.innerHTML += '<span class="diff_part" id="similar_to_part_' + i + '">' + part.value + '</span>';
+                similar_processed.innerHTML += '<span class="diff_part" id="similar_part_' + i + '">' + part.value + '</span>';
                 suspect_processed.innerHTML += '<span class="diff_part" id="suspect_part_' + i + '">' + part.value + '</span>';
             }
         } else if (!part.removed && part.added) {
-            similar_to_processed.innerHTML += part.value;
+            similar_processed.innerHTML += part.value;
         } else if (part.removed && !part.added) {
             suspect_processed.innerHTML += part.value;
         }
@@ -40,13 +40,13 @@ $(function() {
 });
 
 $(function() {
-    $('#show_similar_to_orig').change(function() {
+    $('#show_similar_orig').change(function() {
         if (this.checked) {
-            $('#similar_to_processed').addClass("text_disabled");
-            $('#similar_to_orig').removeClass("text_disabled");
+            $('#similar_processed').addClass("text_disabled");
+            $('#similar_orig').removeClass("text_disabled");
         } else {
-            $('#similar_to_processed').removeClass("text_disabled");
-            $('#similar_to_orig').addClass("text_disabled");
+            $('#similar_processed').removeClass("text_disabled");
+            $('#similar_orig').addClass("text_disabled");
         }
     });
 });
@@ -58,8 +58,8 @@ $(function() {
         var part_type = id_str_parts[0];
         var part_id = id_str_parts[1];
 
-        var other_part_type = "similar_to";
-        if (part_type == "similar_to") {
+        var other_part_type = "similar";
+        if (part_type == "similar") {
             other_part_type = "suspect";
         }
         var other_part = $('#'+other_part_type+'_part_'+part_id);

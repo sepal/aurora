@@ -49,13 +49,13 @@ def check(self, **kwargs):
     or the result if called synchronously.
     """
     try:
-        stored_doc = Store.objects.get(pk=kwargs['doc_id'])
+        suspect_doc = Store.objects.get(pk=kwargs['doc_id'])
 
         # delete existing references to older versions of this document
-        Reference.remove_references(stored_doc.id)
+        Reference.remove_references(suspect_doc.id)
 
         # generate a list of hashes
-        hash_list = sherlock.signature_str(stored_doc.text)
+        hash_list = sherlock.signature_str(suspect_doc.text)
 
         # remove duplicate hashes from the list
         hash_set = set(hash_list)
@@ -67,17 +67,17 @@ def check(self, **kwargs):
         auto_filtered = False
         if hash_count > 0:
             # store (new) references
-            Reference.store_references(stored_doc.id, hash_set)
+            Reference.store_references(suspect_doc.id, hash_set)
 
             # compute individual similarity by computing the count
             # of matches for each other document. This returns a list
             # of possible matching documents.
-            similar_elaborations = Reference.get_similar_elaborations(stored_doc.id)
+            similar_elaborations = Reference.get_similar_elaborations(suspect_doc.id)
             for (similar_doc_id, match_count) in similar_elaborations:
                 similarity = round((100.0/hash_count) * match_count, 4)
 
                 if similarity > 100:
-                    raise PlagcheckError('computed similarity is greated than 100% ({0}). doc_id={5}, similar_doc_id={1}, hash_count={4}, match_count={2}'.format(similarity, similar_doc_id, match_count, hash_count, stored_doc.id))
+                    raise PlagcheckError('computed similarity is greated than 100% ({0}). doc_id={5}, similar_doc_id={1}, hash_count={4}, match_count={2}'.format(similarity, similar_doc_id, match_count, hash_count, suspect_doc.id))
 
                 if similarity > plagcheck_settings['similarity_threshold'] \
                         and match_count > plagcheck_settings['minimal_match_count']:
@@ -93,8 +93,8 @@ def check(self, **kwargs):
 
         result = Result.objects.create(
             hash_count=hash_count,
-            stored_doc_id=stored_doc.id,
-            submission_time=stored_doc.submission_time.isoformat(),
+            doc_id=suspect_doc.id,
+            submission_time=suspect_doc.submission_time.isoformat(),
         )
 
         # if there is a similar document that was assigned the state
@@ -105,8 +105,8 @@ def check(self, **kwargs):
 
         for suspicion in suspicions:
             Suspicion.objects.create(
-                stored_doc_id=stored_doc.id,
-                similar_to_id=suspicion['similar_doc_id'],
+                suspect_doc_id=suspect_doc.id,
+                similar_doc_id=suspicion['similar_doc_id'],
                 similarity=suspicion['similarity'],
                 match_count=suspicion['match_count'],
                 result=result,

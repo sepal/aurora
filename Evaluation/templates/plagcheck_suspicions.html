@@ -15,8 +15,8 @@
         {% for suspicion in suspicions %}
             <tr class="{% cycle 'darkRow' 'lightRow' %}"
                 onclick="document.location = '{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspicion_id=suspicion.id %}?{{ request.GET.urlencode }}'">&nbsp;
-                <td><img class="gravatar" src="{{ suspicion.stored_doc.user.avatar.url }}" style="vertical-align:middle"> {{ suspicion.stored_doc.user.nickname }}</td>
-                <td>{{ suspicion.stored_doc.elaboration.challenge.title|safe }}</td>
+                <td><img class="gravatar" src="{{ suspicion.suspect_doc.user.avatar.url }}" style="vertical-align:middle"> {{ suspicion.suspect_doc.user.nickname }}</td>
+                <td>{{ suspicion.suspect_doc.elaboration.challenge.title|safe }}</td>
                 <td>{{ suspicion.similarity }}</td>
                 <td>{{ suspicion.created|naturaltime }}</td>
             </tr>

@@ -1,6 +1,7 @@
 import json
 from collections import OrderedDict
 from enum import IntEnum
+from itertools import chain
 
 from django.forms import model_to_dict
 from django.db import models
@@ -86,24 +87,24 @@ class Store(models.Model):
         docs = []
 
         outdated_verifications = Store.objects.raw(
-            'SELECT store.* '
-            ' FROM "PlagCheck_result" result, PlagCheck_store store '
-            ' WHERE result.stored_doc_id == store.id '
-            '  AND store.submission_time != result.submission_time;'
+            'SELECT "store".* '
+            ' FROM "PlagCheck_result" as "result", "PlagCheck_store" as "store" '
+            ' WHERE "result".doc_id == "store".id '
+            '  AND "store".submission_time != "result".submission_time;'
         )
-
-        for doc in outdated_verifications:
-            docs.append(doc)
 
         missing_verifications = Store.objects.raw(
-            'SELECT store.* '
-            ' FROM PlagCheck_store store '
-            ' LEFT OUTER JOIN PlagCheck_result result '
-            '  ON store.id = result.stored_doc_id;'
+            'SELECT "store".* '
+            ' FROM "PlagCheck_store" as "store" '
+            ' LEFT OUTER JOIN "PlagCheck_result" as "result" '
+            '  ON "store".id = "result".doc_id '
+            '  WHERE "result".doc_id IS NULL;'
         )
 
-        for doc in missing_verifications:
-            docs.append(doc)
+        docs = sorted(
+            chain(outdated_verifications, missing_verifications),
+            key=lambda doc: doc.submission_time
+        )
 
         return docs
 
@@ -113,7 +114,7 @@ class Result(models.Model):
     """Stores the result of a check of one document.
     """
 
-    stored_doc = models.ForeignKey(Store)
+    doc = models.ForeignKey(Store)
     created = models.DateTimeField(auto_now_add=True, blank=False)
     hash_count = models.IntegerField()
     submission_time = models.DateTimeField(blank=False)
@@ -159,8 +160,8 @@ class Suspicion(models.Model):
 
     DEFAULT_STATE = SuspicionState.SUSPECTED
 
-    stored_doc = models.ForeignKey(Store, related_name='suspicion_suspect')
-    similar_to = models.ForeignKey(Store, related_name='suspicion_similar_to')
+    suspect_doc = models.ForeignKey(Store, related_name='suspicion_suspect')
+    similar_doc = models.ForeignKey(Store, related_name='suspicion_similar')
     similarity = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     result = models.ForeignKey(Result)
@@ -171,7 +172,7 @@ class Suspicion(models.Model):
         return self.id
 
     def __str__(self):
-        return "stored_doc:%i similar_to:%i percent:%i state:%s" % (self.stored_doc_id, self.similar_to_id, self.similarity, self.state_enum.name)
+        return "suspect_doc:%i similar:%i percent:%i state:%s" % (self.suspect_doc_id, self.similar_doc_id, self.similarity, self.state_enum.name)
 
     class Meta:
         ordering = ['-created']
@@ -229,7 +230,7 @@ class Suspicion(models.Model):
         elaborations = []
 
         for suspicion in suspicions:
-            elaboration = suspicion.stored_doc.elaboration
+            elaboration = suspicion.suspect_doc.elaboration
             if elaboration.challenge.course == course:
                 elaborations.append(elaboration)
 
@@ -241,50 +242,50 @@ class Reference(models.Model):
     Holds a hash and links it to the document where it is appearing.
     """
     hash = models.CharField(db_index=True, max_length=255)
-    stored_doc = models.ForeignKey(Store)
+    suspect_doc = models.ForeignKey(Store)
 
     # TODO: this causes a integrity error when inserting hashes, why?
     # class Meta:
-    #    unique_together = (("hash", "stored_doc"),)
+    #    unique_together = (("hash", "suspect_doc"),)
 
     def __unicode__(self):
         return self.hash
 
     @staticmethod
-    def remove_references(stored_doc_id):
+    def remove_references(suspect_doc_id):
         try:
-            Reference.objects.filter(stored_doc_id=stored_doc_id).delete()
+            Reference.objects.filter(suspect_doc_id=suspect_doc_id).delete()
         except Reference.DoesNotExist:
             pass
 
     @staticmethod
-    def store_references(stored_doc_id, hash_list):
+    def store_references(suspect_doc_id, hash_list):
         with transaction.atomic():
             for h in hash_list:
-                Reference.objects.create(hash=h, stored_doc_id=stored_doc_id)
+                Reference.objects.create(hash=h, suspect_doc_id=suspect_doc_id)
 
     @staticmethod
-    def get_similar_elaborations(stored_doc_id):
+    def get_similar_elaborations(suspect_doc_id):
         """
-        Gives a list of similar elaborations in respect to stored_doc_id. The document
-        with stored_doc_id has to be stored into the DB before calling this function.
+        Gives a list of similar elaborations in respect to suspect_doc_id. The document
+        with suspect_doc_id has to be stored into the DB before calling this function.
 
-        :param stored_doc_id: Document to check against.
+        :param suspect_doc_id: Document to check against.
         :return: List of Tuples (similar_doc_id, # similar hashes)
         """
         cursor = connections[plagcheck_settings['database']].cursor()
 
         # with inner join
-        cursor.execute('SELECT "similar".stored_doc_id, COUNT("similar".stored_doc_id) '
+        cursor.execute('SELECT "similar".suspect_doc_id, COUNT("similar".suspect_doc_id) '
                        'FROM ('
-                           'SELECT hash, stored_doc_id '
+                           'SELECT hash, suspect_doc_id '
                            'FROM "PlagCheck_reference" '
-                           'WHERE stored_doc_id = %s '
-                           'GROUP BY hash, stored_doc_id'
+                           'WHERE suspect_doc_id = %s '
+                           'GROUP BY hash, suspect_doc_id'
                            ') as "suspicion" '
                        'INNER JOIN "PlagCheck_reference" as "similar" ON "suspicion".hash="similar".hash '
-                       'WHERE "similar".stored_doc_id != %s '
-                       'GROUP BY "similar".stored_doc_id ', [stored_doc_id, stored_doc_id])
+                       'WHERE "similar".suspect_doc_id != %s '
+                       'GROUP BY "similar".suspect_doc_id ', [suspect_doc_id, suspect_doc_id])
 
         ret = list()
         for row in cursor.fetchall():

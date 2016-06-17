@@ -42,17 +42,17 @@
             <div class="plagcheck_compare_label">Suspicious document</div>
             <div class="spacer"></div>
             {% if suspect_has_elaboration %}
-                {% include 'elaboration_info.html' with elaboration=suspicion.stored_doc.elaboration %}
+                {% include 'elaboration_info.html' with elaboration=suspicion.suspect_doc.elaboration %}
             {% else %}
                 <div class="plagcheck_compare_info">
-                    {% for key, value in suspicion.stored_doc.document_info.items %}
+                    {% for key, value in suspicion.suspect_doc.document_info.items %}
                         <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                     {% endfor %}
                 </div>
             {% endif %}
             <div class="spacer"></div>
             <div class="plagcheck_compare_info">
-                {% for key, value in suspicion.stored_doc.plagcheck_info.items %}
+                {% for key, value in suspicion.suspect_doc.plagcheck_info.items %}
                     <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                 {% endfor %}
             </div>
@@ -74,18 +74,18 @@
         <div class="plagcheck_info_right">
             <div class="plagcheck_compare_label">Source document</div>
             <div class="spacer"></div>
-            {% if similar_to_has_elaboration %}
-                {% include 'elaboration_info.html' with elaboration=suspicion.similar_to.elaboration %}
+            {% if similar_has_elaboration %}
+                {% include 'elaboration_info.html' with elaboration=suspicion.similar_doc.elaboration %}
             {% else %}
                 <div class="plagcheck_compare_info">
-                    {% for key, value in suspicion.similar_to.document_info.items %}
+                    {% for key, value in suspicion.similar_doc.document_info.items %}
                         <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                     {% endfor %}
                 </div>
             {% endif %}
             <div class="spacer"></div>
             <div class="plagcheck_compare_info">
-                {% for key, value in suspicion.similar_to.plagcheck_info.items %}
+                {% for key, value in suspicion.similar_doc.plagcheck_info.items %}
                     <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                 {% endfor %}
             </div>
@@ -107,20 +107,20 @@
                 </div>
 
                 {% if suspect_has_elaboration %}
-                    <div class="tags tags-{{ suspicion.stored_doc.elaboration.get_content_type_id }}-{{ suspicion.stored_doc.elaboration.id }}">
-                        {% include 'tags.html' with tagged_object=suspicion.stored_doc.elaboration %}
+                    <div class="tags tags-{{ suspicion.suspect_doc.elaboration.get_content_type_id }}-{{ suspicion.suspect_doc.elaboration.id }}">
+                        {% include 'tags.html' with tagged_object=suspicion.suspect_doc.elaboration %}
                     </div>
                     <br />
                     <div class="spacer"></div>
 
-                    {% include 'elaboration_comments.html' with elaboration=suspicion.stored_doc.elaboration %}
+                    {% include 'elaboration_comments.html' with elaboration=suspicion.suspect_doc.elaboration %}
                 {% endif %}
             </div>
             <div class="plagcheck_text_right">
-                <input type="checkbox" id="show_similar_to_orig" value="1">Show original</input>
+                <input type="checkbox" id="show_similar_orig" value="1">Show original</input>
                 <div class="plagcheck_compare_text">
-                    <div id="similar_to_orig" class="text_disabled"></div>
-                    <div id="similar_to_processed"></div>
+                    <div id="similar_orig" class="text_disabled"></div>
+                    <div id="similar_processed"></div>
                 </div>
             </div>
         </div>
@@ -129,9 +129,9 @@
     <div class="clear"></div>
     <script>
         {% autoescape off %}
-            var suspect = {{ suspicion.stored_doc.json_text }};
-            var similar_to = {{ suspicion.similar_to.json_text }};
-            load_plagcheck_diff(suspect.content, similar_to.content);
+            var suspect = {{ suspicion.suspect_doc.json_text }};
+            var similar = {{ suspicion.similar_doc.json_text }};
+            load_plagcheck_diff(suspect.content, similar.content);
         {% endautoescape %}
     </script>
 

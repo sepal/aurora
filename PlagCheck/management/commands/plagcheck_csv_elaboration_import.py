@@ -3,6 +3,7 @@ from django.db.utils import OperationalError
 import time
 from Challenge.models import Challenge
 from PlagCheck.verification import *
+from sys import stdout
 
 
 class Command(BaseCommand):
@@ -14,6 +15,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         #force_csv_import(options['csv'])
         import_from_csv(args[0])
+
 
 def readlines(f):
     line = []
@@ -34,28 +36,51 @@ def readlines(f):
         else:
             line.append(s)
 
-def add_elaboration(elab):
-
-    if elab['submitted'] is None:
-        return
-
-    plagcheck_store_and_verify(
-        text=elab['text'],
-        elaboration_id=elab['id'],
-        user_id=0,
-        user_name=elab['user'],
-        # submission_time=time.strftime('%Y-%m-%dT%H:%M:%SZ', elab['submitted']),
-        submission_time=elab['submitted'],
-        is_revised=False,
-    )
 
 def import_from_csv(csv_file):
-    items = read_elaborations_from_csv(csv_file)
+    print("Reading elaborations from csv file")
+    elabs = read_elaborations_from_csv(csv_file)
 
-    sorted(items, key=lambda k: k['submitted'])
+    count_total = len(elabs)
 
-    for item in items:
-        add_elaboration(item)
+    print("Got {0} elaborations.".format(count_total))
+
+    print("Adding elaborations to plagcheck document store ...")
+
+    count_valid=0
+    count_invalid=0
+    for elab in elabs:
+        done = False
+        while not done:
+            try:
+                doc = plagcheck_store(
+                    text=elab['text'],
+                    elaboration_id=elab['id'],
+                    user_id=0,
+                    user_name=elab['user'],
+                    submission_time=elab['submitted'],
+                    is_revised=False,
+                )
+                done = True
+
+            except OperationalError:
+                pass
+
+        if doc:
+            count_valid += 1
+        else:
+            count_invalid += 1
+
+        percent = (100.0 / count_total) * (count_valid + count_invalid)
+
+        stdout.write("\r{0:6.2f}% {1:10} valid, {2:10} invalid or already added".format(percent, count_valid, count_invalid))
+        stdout.flush()
+
+    stdout.write("\n")
+
+    print("Checking all unverified documents ...")
+    plagcheck_check_unverified()
+
 
 def read_elaborations_from_csv(csv_file, begin_at=0):
     i = 0

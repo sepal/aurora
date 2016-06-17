@@ -893,8 +893,8 @@ def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
         'suspicion_states_class': SuspicionState.__members__,
         'next_suspicion_id': next_suspicion_id,
         'prev_suspicion_id': prev_suspicion_id,
-        'similar_to_has_elaboration': suspicion.similar_to.was_submitted_during(course),
-        'suspect_has_elaboration': suspicion.stored_doc.was_submitted_during(course)
+        'similar_has_elaboration': suspicion.similar_doc.was_submitted_during(course),
+        'suspect_has_elaboration': suspicion.suspect_doc.was_submitted_during(course)
     }
 
     # number of suspicious documents

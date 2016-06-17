@@ -192,7 +192,7 @@ class PlagCheckTestCase(TestCase):
         suspicion = Suspicion.objects.get()
 
         self.assertEqual(suspicion.doc_id, ret2['elaboration'].id)
-        self.assertEqual(suspicion.similar_to_id, ret1['elaboration'].id)
+        self.assertEqual(suspicion.similar_doc_id, ret1['elaboration'].id)
         self.assertEqual(suspicion.similarity, 75)
 
     def test_duplicate_hash(self):
