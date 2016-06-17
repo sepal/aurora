@@ -11,60 +11,59 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Document',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('elaboration_id', models.IntegerField()),
+                ('text', models.TextField()),
+                ('user_id', models.IntegerField(null=True)),
+                ('user_name', models.CharField(max_length=100, null=True)),
+                ('submission_time', models.DateTimeField(null=True)),
+                ('is_revised', models.BooleanField(default=False)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Reference',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
-                ('hash', models.CharField(db_index=True, max_length=255)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('hash', models.CharField(max_length=255, db_index=True)),
+                ('suspect_doc', models.ForeignKey(to='PlagCheck.Document')),
             ],
+            options={
+            },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Result',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('hash_count', models.IntegerField()),
+                ('submission_time', models.DateTimeField()),
+                ('doc', models.ForeignKey(to='PlagCheck.Document')),
             ],
+            options={
+            },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='Store',
+            name='Suspicion',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
-                ('doc_id', models.IntegerField()),
-                ('text', models.TextField()),
-                ('user_id', models.IntegerField(null=True)),
-                ('user_name', models.CharField(null=True, max_length=100)),
-                ('submission_time', models.DateTimeField(null=True)),
-                ('is_revised', models.BooleanField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Suspect',
-            fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('similarity', models.IntegerField()),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('state', models.CharField(default=0, choices=[(0, 'SUSPECTED'), (1, 'PLAGIARISM'), (2, 'FALSE_POSITIVE'), (3, 'FILTER'), (4, 'AUTO_FILTERED'), (5, 'CITED')], max_length=2)),
+                ('state', models.CharField(choices=[(0, 'SUSPECTED'), (1, 'PLAGIARISM'), (2, 'FALSE_POSITIVE'), (3, 'CITED')], max_length=2, default=0)),
                 ('match_count', models.IntegerField()),
                 ('result', models.ForeignKey(to='PlagCheck.Result')),
-                ('similar_to', models.ForeignKey(related_name='suspected_similar_to', to='PlagCheck.Store')),
-                ('stored_doc', models.ForeignKey(related_name='suspected_doc', to='PlagCheck.Store')),
+                ('similar_doc', models.ForeignKey(related_name='suspicion_similar', to='PlagCheck.Document')),
+                ('suspect_doc', models.ForeignKey(related_name='suspicion_suspect', to='PlagCheck.Document')),
             ],
-        ),
-        migrations.CreateModel(
-            name='SuspectFilter',
-            fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
-                ('stored_doc', models.ForeignKey(to='PlagCheck.Store')),
-            ],
-        ),
-        migrations.AddField(
-            model_name='result',
-            name='stored_doc',
-            field=models.ForeignKey(to='PlagCheck.Store'),
-        ),
-        migrations.AddField(
-            model_name='reference',
-            name='stored_doc',
-            field=models.ForeignKey(to='PlagCheck.Store'),
+            options={
+                'ordering': ['-created'],
+            },
+            bases=(models.Model,),
         ),
     ]
