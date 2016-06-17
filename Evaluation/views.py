@@ -70,7 +70,10 @@ def evaluation(request, course_short_title=None):
         count = len(challenges)
         overview = render_to_string('questions.html', {'challenges': challenges}, RequestContext(request))
     elif selection == 'plagcheck_suspicions':
-        suspicion_list = Suspicion.objects.filter(state=SuspicionState.SUSPECTED.value)
+        suspicion_list = Suspicion.objects.filter(
+            state=SuspicionState.SUSPECTED.value,
+            suspect_doc__submission_time__range=(course.start_date, course.end_date),
+        )
 
         count = suspicion_list.count()
 
@@ -853,7 +856,10 @@ def get_points(request, user, course):
 def plagcheck_suspicions(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    suspicion_list = Suspicion.objects.filter(state=SuspicionState.SUSPECTED.value)
+    suspicion_list = Suspicion.objects.filter(
+        state=SuspicionState.SUSPECTED.value,
+        suspect_doc__submission_time__range=(course.start_date, course.end_date),
+    )
 
     count = suspicion_list.count()
 
