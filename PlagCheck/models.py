@@ -28,7 +28,7 @@ class NotEqual(Lookup):
         return '%s <> %s' % (lhs, rhs), params
 
 
-class Store(models.Model):
+class Document(models.Model):
     elaboration_id = models.IntegerField(null=False)
     text = models.TextField(null=False)
     user_id = models.IntegerField(null=True)
@@ -86,16 +86,16 @@ class Store(models.Model):
     def get_unverified_docs():
         docs = []
 
-        outdated_verifications = Store.objects.raw(
+        outdated_verifications = Document.objects.raw(
             'SELECT "store".* '
-            ' FROM "PlagCheck_result" as "result", "PlagCheck_store" as "store" '
+            ' FROM "PlagCheck_result" as "result", "PlagCheck_document" as "store" '
             ' WHERE "result".doc_id == "store".id '
             '  AND "store".submission_time != "result".submission_time;'
         )
 
-        missing_verifications = Store.objects.raw(
+        missing_verifications = Document.objects.raw(
             'SELECT "store".* '
-            ' FROM "PlagCheck_store" as "store" '
+            ' FROM "PlagCheck_document" as "store" '
             ' LEFT OUTER JOIN "PlagCheck_result" as "result" '
             '  ON "store".id = "result".doc_id '
             '  WHERE "result".doc_id IS NULL;'
@@ -114,7 +114,7 @@ class Result(models.Model):
     """Stores the result of a check of one document.
     """
 
-    doc = models.ForeignKey(Store)
+    doc = models.ForeignKey(Document)
     created = models.DateTimeField(auto_now_add=True, blank=False)
     hash_count = models.IntegerField()
     submission_time = models.DateTimeField(blank=False)
@@ -160,8 +160,8 @@ class Suspicion(models.Model):
 
     DEFAULT_STATE = SuspicionState.SUSPECTED
 
-    suspect_doc = models.ForeignKey(Store, related_name='suspicion_suspect')
-    similar_doc = models.ForeignKey(Store, related_name='suspicion_similar')
+    suspect_doc = models.ForeignKey(Document, related_name='suspicion_suspect')
+    similar_doc = models.ForeignKey(Document, related_name='suspicion_similar')
     similarity = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     result = models.ForeignKey(Result)
@@ -242,7 +242,7 @@ class Reference(models.Model):
     Holds a hash and links it to the document where it is appearing.
     """
     hash = models.CharField(db_index=True, max_length=255)
-    suspect_doc = models.ForeignKey(Store)
+    suspect_doc = models.ForeignKey(Document)
 
     # TODO: this causes a integrity error when inserting hashes, why?
     # class Meta:

@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from PlagCheck.models import Store
+from PlagCheck.models import Document
 
 from PlagCheck import tasks as plagcheck_tasks
 
@@ -18,7 +18,7 @@ def plagcheck_verify(doc):
 
 
 def plagcheck_check_unverified():
-    unverified_docs = Store.get_unverified_docs()
+    unverified_docs = Document.get_unverified_docs()
 
     print("Got {0} unverified documents.".format(len(unverified_docs)))
 
@@ -33,7 +33,7 @@ def plagcheck_store(**kwargs):
         return doc
 
     try:
-        doc = Store.objects.get(
+        doc = Document.objects.get(
             elaboration_id=kwargs['elaboration_id'],
             user_id=kwargs['user_id'],
             is_revised=kwargs['is_revised'],
@@ -43,13 +43,13 @@ def plagcheck_store(**kwargs):
         if str(doc.submission_time) == str(kwargs['submission_time']):
             return None
 
-        updated_doc = Store(pk=doc.pk, **kwargs)
+        updated_doc = Document(pk=doc.pk, **kwargs)
         updated_doc.save()
 
         doc = updated_doc
 
     except ObjectDoesNotExist:
-        doc = Store.objects.create(**kwargs)
+        doc = Document.objects.create(**kwargs)
 
     return doc
 

@@ -24,13 +24,13 @@ class SuspicionAdmin(PlagCheckModelAdmin):
     raw_id_fields = ('suspect_doc', 'similar_doc',)
 
     def link_to_suspect_doc_id(self, obj):
-        link = urlresolvers.reverse("admin:PlagCheck_store_change", args=[obj.suspect_doc.id])
+        link = urlresolvers.reverse("admin:PlagCheck_document_change", args=[obj.suspect_doc.id])
         return u'<a href="%s">%s</a>' % (link, obj.suspect_doc.id)
     link_to_suspect_doc_id.allow_tags = True
     link_to_suspect_doc_id.short_description = 'suspect doc'
 
     def link_to_similar_doc_id(self, obj):
-        link = urlresolvers.reverse("admin:PlagCheck_store_change", args=[obj.similar_doc.id])
+        link = urlresolvers.reverse("admin:PlagCheck_document_change", args=[obj.similar_doc.id])
         return u'<a href="%s">%s</a>' % (link, obj.similar_doc.id)
     link_to_similar_doc_id.allow_tags = True
     link_to_similar_doc_id.short_description = 'similar to'
@@ -38,11 +38,11 @@ class SuspicionAdmin(PlagCheckModelAdmin):
     def hash_count(self, obj):
         return obj.result.hash_count
 
-class StoreAdmin(PlagCheckModelAdmin):
+class DocumentAdmin(PlagCheckModelAdmin):
     list_display = ('id', 'elaboration_id')
 
 
-admin.site.register(Store, StoreAdmin)
+admin.site.register(Document, DocumentAdmin)
 admin.site.register(Reference, ReferenceAdmin)
 admin.site.register(Result, ResultAdmin)
 admin.site.register(Suspicion, SuspicionAdmin)

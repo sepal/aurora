@@ -10,7 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AuroraProject.settings')
 from django.conf import settings
 from django.db.utils import OperationalError
 
-from PlagCheck.models import Reference, Result, Suspicion, SuspicionState, Store
+from PlagCheck.models import Reference, Result, Suspicion, SuspicionState, Document
 from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 import sherlock
 
@@ -43,13 +43,13 @@ def check(self, **kwargs):
 
     The following are all required kwargs parameters that have to be passed.
 
-    :param doc_id -- ID of the document within the Store
+    :param doc_id -- ID of the document within the Document store
 
     :return: Future object of this task invocation when called asynchronously,
     or the result if called synchronously.
     """
     try:
-        suspect_doc = Store.objects.get(pk=kwargs['doc_id'])
+        suspect_doc = Document.objects.get(pk=kwargs['doc_id'])
 
         # delete existing references to older versions of this document
         Reference.remove_references(suspect_doc.id)
