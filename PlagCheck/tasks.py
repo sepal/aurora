@@ -148,8 +148,9 @@ def check(self, **kwargs):
             # if suspicion is valid or not
             suspected = True
             for suspicion_filter in suspicion_filters:
-                if suspicion_filter.filter(suspicion) is False:
+                if not suspicion_filter.filter(suspicion):
                     suspected = False
+                    break
 
             if suspected:
                 suspicion.save()
