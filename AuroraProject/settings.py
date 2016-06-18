@@ -314,13 +314,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
 
-ENDLESS_PAGINATION_PER_PAGE = (
+EL_PAGINATION_PER_PAGE = (
     20
 )
-ENDLESS_PAGINATION_PREVIOUS_LABEL = (
+EL_PAGINATION_PREVIOUS_LABEL = (
     '<div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev</div>'
 )
-ENDLESS_PAGINATION_NEXT_LABEL = (
+EL_PAGINATION_NEXT_LABEL = (
     '<div class="paginator next">next <i class="fa fa-angle-double-right"></i></div>'
 )
 
