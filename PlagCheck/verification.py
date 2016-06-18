@@ -101,5 +101,11 @@ def plagcheck_filter_existing_suspicions():
         (new_state, reason) = filter_suspicion(suspicion, suspicion_filters)
 
         if suspicion.state_enum is not new_state:
-            print("Would change (suspicion_id: {0}) {1} to {2} by {3}".format(suspicion.id, str(suspicion.state_enum), str(new_state), reason.__name__))
+            print("Change (suspicion_id: {0}) {1} to {2} by {3}".format(suspicion.id, str(suspicion.state_enum), str(new_state), reason.__name__))
 
+            if new_state is None:
+                suspicion.state = SuspicionState.FALSE_POSITIVE.value
+            else:
+                suspicion.state = new_state.value
+
+            suspicion.save()
