@@ -46,10 +46,15 @@ for development purposes, which you would have to set manually.
 See the settings at `File | Settings | Tools | Python Integrated Tools`
 
 - system requirements: python3, gcc or xcode and python3 headers.
-- python requirements: pip, virtualenv
-- Create a virtual environment (`https://www.jetbrains.com/pycharm/help/configuring-available-python-interpreters.html`):
+- python requirements: pip, virtualenv, invoke
+- Create a virtualenv:
+  - Fastest way:  `invoke virtualenv && source .venv/bin/activate`
   - Either via pyCharm `File | Settings | Project (aurora) | Project interpreter` `Create VirtualEnv` (Be sure to select python3)
   - Or via command line: `virtualenv --python python3 .venv`
-- Select the created virtual environment for the django run configuration. Makes it possible to run the server from within pyCharm with the
+  - PyCharm: Select the created virtual environment for the django run configuration. Makes it possible to run the server from within pyCharm with the
 play button.
+- Install project dependencies: `invoke deps`
+- Setup databases: `invoke clean -p`
+- Run celery: `invoke celery`
+- Run server: `python manage.py runserver`
 
