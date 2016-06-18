@@ -94,7 +94,7 @@ def plagcheck_elaboration(elaboration, store_only=False):
         return doc
 
 
-def plagcheck_filter_existing_suspicions():
+def plagcheck_filter_existing_suspicions(dry_run=False):
     suspicions = Suspicion.objects.filter(state__exact=SuspicionState.SUSPECTED.value)
 
     for suspicion in suspicions:
@@ -108,4 +108,5 @@ def plagcheck_filter_existing_suspicions():
             else:
                 suspicion.state = new_state.value
 
-            suspicion.save()
+            if not dry_run:
+                suspicion.save()
