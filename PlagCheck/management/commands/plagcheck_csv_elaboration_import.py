@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db.utils import OperationalError
-import time
+from django.core.exceptions import ValidationError
 from Challenge.models import Challenge
 from PlagCheck.verification import *
 from sys import stdout
@@ -43,9 +43,7 @@ def import_from_csv(csv_file, dry_run=False):
 
     count_total = len(elabs)
 
-    print("Got {0} elaborations.".format(count_total))
-
-    print("Adding elaborations to plagcheck document store ...")
+    print("Adding {0} elaborations to plagcheck document store.".format(count_total))
 
     count_valid=0
     count_invalid=0
@@ -93,7 +91,6 @@ def read_elaborations_from_csv(csv_file, begin_at=0):
     i = 0
 
     elaborations = []
-    default_challenge = Challenge.objects.all()[0]
     with open(csv_file, "rb") as f:
         for bytelist in readlines(f):
             line = b''.join(bytelist).decode("utf-8")

@@ -33,10 +33,14 @@ class RevisedElaborationFilter(SuspicionFilter):
 class SelfPlagiarismFilter(SuspicionFilter):
     @staticmethod
     def filter(suspicion):
-        if suspicion.suspect_doc.user_id == suspicion.similar_doc.user_id \
-                or suspicion.suspect_doc.user_name == suspicion.similar_doc.user_name:
+        if suspicion.suspect_doc.user_name == suspicion.similar_doc.user_name:
             return SuspicionState.SUSPECTED_SELF_PLAGIARISM
         return SuspicionState.SUSPECTED
 
 
-suspicion_filters = [SimilarityThresholdFilter, MinimalMatchCountFilter, RevisedElaborationFilter]
+suspicion_filters = [
+    SimilarityThresholdFilter,
+    MinimalMatchCountFilter,
+    RevisedElaborationFilter,
+    SelfPlagiarismFilter,
+]
