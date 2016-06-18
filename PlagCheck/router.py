@@ -1,16 +1,16 @@
-from AuroraProject.settings import PLAGCHECK as plagcheck_settings
+from PlagCheck.util.settings import PlagCheckSettings
 
 
 class PlagCheckRouter(object):
 
     def db_for_read(self, model, **hints):
         if model._meta.app_label == 'PlagCheck':
-            return plagcheck_settings['database']
+            return PlagCheckSettings.database
         return None
 
     def db_for_write(self, model, **hints):
         if model._meta.app_label == 'PlagCheck':
-            return plagcheck_settings['database']
+            return PlagCheckSettings.database
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -25,7 +25,7 @@ class PlagCheckRouter(object):
         Make sure only plagcheck migrations get applied on the plagcheck db
         and just there.
         """
-        if db == plagcheck_settings['database']:
+        if db == PlagCheckSettings.database:
             if model._meta.app_label == 'PlagCheck':
                 return True
             else:

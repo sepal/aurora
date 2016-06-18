@@ -5,13 +5,14 @@ from django.test.utils import override_settings
 
 from PlagCheck.models import Reference, Result, Suspicion, SuspicionState
 from PlagCheck import tasks
-from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 from ddt import ddt, data
 
 from Elaboration.models import Elaboration
 from Challenge.models import Challenge
 from AuroraUser.models import AuroraUser
 from Course.models import Course
+
+from PlagCheck.util.settings import PlagCheckSettings
 import sherlock # noqa
 
 
@@ -101,7 +102,7 @@ class PlagCheckTestCase(TestCase):
 
         self.assertEqual(len(ret1['suspicions']), 0)
 
-        if expected_similarity > plagcheck_settings['similarity_threshold']:
+        if expected_similarity > PlagCheckSettings.similarity_threshold:
 
             ret2 = self.import_text("%s_susp.txt" % prefix)
             self.assertGreaterEqual(ret2['suspicions'][0].similarity, expected_similarity)

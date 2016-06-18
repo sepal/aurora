@@ -2,10 +2,10 @@ from django.contrib import admin
 from PlagCheck.models import *
 from django.core import urlresolvers
 
-from AuroraProject.settings import PLAGCHECK as plagcheck_settings
 
 class PlagCheckModelAdmin(admin.ModelAdmin):
     pass
+
 
 class ReferenceAdmin(PlagCheckModelAdmin):
     #list_display = ('hash', 'suspect_doc_id', )
@@ -37,6 +37,7 @@ class SuspicionAdmin(PlagCheckModelAdmin):
 
     def hash_count(self, obj):
         return obj.result.hash_count
+
 
 class DocumentAdmin(PlagCheckModelAdmin):
     list_display = ('id', 'elaboration_id')

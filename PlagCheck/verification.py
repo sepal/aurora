@@ -1,7 +1,9 @@
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from PlagCheck.models import Document
+from django.core.exceptions import ObjectDoesNotExist
 
+from PlagCheck.models import Document, Suspicion, SuspicionState
+from PlagCheck.util.filter import filter_suspicion
 from PlagCheck import tasks as plagcheck_tasks
+from PlagCheck.filters import suspicion_filters
 
 
 def plagcheck_store_and_verify(store_only=False, dry=False, **kwargs):
@@ -90,3 +92,14 @@ def plagcheck_elaboration(elaboration, store_only=False):
             )
 
         return doc
+
+
+def plagcheck_filter_existing_suspicions():
+    suspicions = Suspicion.objects.filter(state__exact=SuspicionState.SUSPECTED.value)
+
+    for suspicion in suspicions:
+        (new_state, reason) = filter_suspicion(suspicion, suspicion_filters)
+
+        if suspicion.state_enum is not new_state:
+            print("Would change (suspicion_id: {0}) {1} to {2} by {3}".format(suspicion.id, str(suspicion.state_enum), str(new_state), reason.__name__))
+

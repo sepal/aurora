@@ -1,6 +1,5 @@
 import json
 from collections import OrderedDict
-from enum import IntEnum
 from itertools import chain
 
 from django.forms import model_to_dict
@@ -12,9 +11,10 @@ from django.db.models.fields import Field
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import *
 
-from AuroraProject.settings import PLAGCHECK as plagcheck_settings
-
 from Elaboration.models import Elaboration
+
+from PlagCheck.util.state import SuspicionState
+from PlagCheck.util.settings import PlagCheckSettings
 
 
 @Field.register_lookup
@@ -125,33 +125,6 @@ class Result(models.Model):
 
     def celery_result(self):
         return model_to_dict(self)
-
-
-class SuspicionState(IntEnum):
-    """SUSPECTED: Default state of a possible plagiarism document.
-    PLAGIARISM: The suspected document is plagiarism.
-    FALSE_POSITIVE: No plagiarism at all, could be improved by algorithm
-    CITED: The suspected document contained a ordinary citation to the similar document.
-    """
-
-    SUSPECTED = 0
-    PLAGIARISM = 1
-    FALSE_POSITIVE = 2
-    CITED = 3
-
-    @staticmethod
-    def states():
-        states = []
-        for state in SuspicionState:
-            states.append({'value': state.value, 'name': state.name})
-        return states
-
-    @staticmethod
-    def choices():
-        choices = []
-        for state in SuspicionState:
-            choices.append((state.value, state.name))
-        return choices
 
 
 class Suspicion(models.Model):
@@ -274,7 +247,7 @@ class Reference(models.Model):
         :param suspect_doc_id: Document to check against.
         :return: List of Tuples (similar_doc_id, # similar hashes)
         """
-        cursor = connections[plagcheck_settings['database']].cursor()
+        cursor = connections[PlagCheckSettings.database].cursor()
 
         # with inner join
         cursor.execute('SELECT "similar".suspect_doc_id, COUNT("similar".suspect_doc_id) '

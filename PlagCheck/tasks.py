@@ -10,8 +10,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AuroraProject.settings')
 from django.conf import settings
 from django.db.utils import OperationalError
 
-from PlagCheck.models import Reference, Result, Suspicion, SuspicionState, Document
-from AuroraProject.settings import PLAGCHECK as plagcheck_settings
+from PlagCheck.models import Reference, Result, Suspicion, Document
+
+from PlagCheck.util.filter import filter_suspicion
+from PlagCheck.filters import suspicion_filters
 import sherlock
 
 app = Celery('AuroraProject')
@@ -20,43 +22,6 @@ app = Celery('AuroraProject')
 # pickle the object when using Windows.
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-
-
-class SuspicionFilter(object):
-    """
-    :type suspicion: Suspicion
-    """
-    @staticmethod
-    def filter(suspicion):
-        raise NotImplementedError("subclass and implement static filter method")
-
-
-class SimilarityThresholdFilter(SuspicionFilter):
-    @staticmethod
-    def filter(suspicion):
-        if suspicion.similarity <= plagcheck_settings['similarity_threshold']:
-            return False
-        return True
-
-
-class MinimalMatchCountFilter(SuspicionFilter):
-    @staticmethod
-    def filter(suspicion):
-        if suspicion.match_count <= plagcheck_settings['minimal_match_count']:
-            return False
-        return True
-
-
-class RevisedElaborationFilter(SuspicionFilter):
-    @staticmethod
-    def filter(suspicion):
-        if suspicion.suspect_doc.user_id == suspicion.similar_doc.user_id \
-                and suspicion.suspect_doc.elaboration_id == suspicion.similar_doc.elaboration_id \
-                and suspicion.suspect_doc.is_revised != suspicion.similar_doc.is_revised:
-            return False
-        return True
-
-suspicion_filters = [SimilarityThresholdFilter, MinimalMatchCountFilter, RevisedElaborationFilter]
 
 
 class PlagcheckError(Exception):
@@ -144,15 +109,10 @@ def check(self, **kwargs):
                 state=Suspicion.DEFAULT_STATE.value
             )
 
-            # run through all configured filters and determine
-            # if suspicion is valid or not
-            suspected = True
-            for suspicion_filter in suspicion_filters:
-                if not suspicion_filter.filter(suspicion):
-                    suspected = False
-                    break
+            (suspicion_state, reason) = filter_suspicion(suspicion, suspicion_filters)
 
-            if suspected:
+            if suspicion_state is not None:
+                suspicion.state = suspicion_state.value
                 suspicion.save()
 
         return result.celery_result()
