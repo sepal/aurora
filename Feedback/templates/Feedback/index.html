@@ -11,6 +11,10 @@
   <script type="text/javascript"
           src="{% static 'js/feedback_vendor.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/feedback.js' %}"></script>
+  <script type="text/javascript">
+    var course = "{{ course }}";
+    var lane_list = {{ lanes|safe }};
+  </script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/feedback.css' %}" />
 
 {% endblock %}

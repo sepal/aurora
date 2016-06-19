@@ -4,16 +4,22 @@ import styles from './style.scss';
 
 import LaneList from '../LaneList';
 
-import LanesMockup from '../../mockup/lanes';
-
 class Feedback extends React.Component {
   render() {
+    let lanes = [];
+    lanes = lane_list.map((lane) => {
+      return {
+        'id': lane.pk,
+        'name': lane.fields.name
+      }
+    });
+
     return (
-      <div styleName="feedback">
+      <div styleName="kanban">
         <button styleName="add">
           <i className="fa fa-plus"></i> Add a new issue
         </button>
-        <LaneList lanes={LanesMockup} />
+        <LaneList lanes={lanes} />
       </div>
     );
   }

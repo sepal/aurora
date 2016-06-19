@@ -1,7 +1,7 @@
 export default [
   {
     id: 0,
-    lane: 0,
+    lane: 1,
     type: "Feature Request",
     post_date: 1462372465,
     author: "s3",
@@ -14,7 +14,7 @@ export default [
   },
   {
     id: 1,
-    lane: 1,
+    lane: 4,
     type: "Bug",
     post_date: 1463728834,
     author: "s1",
@@ -54,7 +54,7 @@ export default [
   },
   {
     id: 2,
-    lane: 0,
+    lane: 3,
     type: "Bug",
     post_date: 1463063665,
     author: "s0",

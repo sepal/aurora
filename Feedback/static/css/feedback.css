@@ -27,8 +27,9 @@
     background: none !important;
     text-shadow: none !important;
     color: #ff6666 !important; }
-.style__feedback___sAr02 {
-  background: white; }
+.style__kanban___o3cm8 {
+  background: white;
+  height: 100%; }
 
 .style__title___2R3T_ {
   font-size: 2.5em; }
@@ -40,13 +41,15 @@
   margin-left: 0;
   margin-bottom: 0;
   margin-right: 0;
-  padding: 0;
+  padding: 21px 0;
   list-style: none;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap; }
+  flex-wrap: nowrap;
+  height: 100%;
+  overflow: scroll; }
 
 .style__item___2YZ1o {
   -webkit-box-flex: 1;
@@ -57,7 +60,8 @@
   border: 1px solid #cbcbcb;
   border-radius: 5px;
   background: #cbcbcb;
-  padding: 14px 0; }
+  padding: 14px 0;
+  width: 270px; }
 
 .style__title___1plB0 {
   font-size: 1em;
