@@ -7,6 +7,9 @@ class AuroraUserAdmin(admin.ModelAdmin):
             None, {
                 'fields': [
                     'nickname',
+                    'username',
+                    'first_name',
+                    'last_name',
                     'last_activity',
                     'statement',
                     'upload_path',
@@ -21,5 +24,7 @@ class AuroraUserAdmin(admin.ModelAdmin):
     ]
     list_display = ('id', 'nickname', 'last_activity', 'statement', 'upload_path', 'avatar', 'oid', 'matriculation_number', 'study_code', )
     readonly_fields = ("last_activity", "upload_path", )
+    search_fields = ('nickname', 'username', 'first_name', 'last_name', )
+
 
 admin.site.register(AuroraUser, AuroraUserAdmin)
