@@ -65,7 +65,7 @@ def plagcheck_elaboration(elaboration, store_only=False):
 
         username = elaboration.user.matriculation_number
         if username is None:
-            username = elaboration.user.nickname
+            username = elaboration.user.username
 
         doc = plagcheck_store_and_verify(
             store_only=store_only,

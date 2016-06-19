@@ -43,6 +43,6 @@ class SelfPlagiarismFilter(SuspicionFilter):
 class DummyUserFilter(SuspicionFilter):
     @staticmethod
     def filter(suspicion):
-        if re.match('^[ds]\d+$', suspicion.suspect_doc.user_name):
+        if re.match('^(Nickname_){0,1}[ds]\d+$', suspicion.suspect_doc.user_name):
             return None
         return SuspicionState.SUSPECTED
