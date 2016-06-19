@@ -13,14 +13,14 @@ from Review.models import Review
 from Course.models import Course
 from django.http import Http404
 from FileUpload.models import UploadFile
-import PlagCheck
 from pprint import pprint
+from PlagCheck.verification import plagcheck_elaboration
 
 @csrf_exempt
 def save_elaboration(request, course_short_title):
     challenge_id = request.POST['challenge_id']
     challenge = Challenge.objects.get(id=challenge_id)
-    user = RequestContext(request)['user']
+    user = request.user
     if not challenge.is_enabled_for_user(user) and not challenge.is_final_challenge():
         raise Http404
 
@@ -56,31 +56,31 @@ def save_elaboration(request, course_short_title):
 @aurora_login_required()
 def submit_elaboration(request, course_short_title):
    if not 'challenge_id' in request.POST:
-       raise Http404
+       return HttpResponse("missing parameter challenge_id", status=400)
    challenge = Challenge.objects.get(id=request.POST['challenge_id'])
    if not challenge.currently_active:
-       raise Http404
+       return HttpResponse("challenge is currently not active", status=400)
 
-   user = RequestContext(request)['user']
+   user = request.user
    course = Course.get_or_raise_404(short_title=course_short_title)
    if not challenge.is_enabled_for_user(user):
-       raise Http404
+       return HttpResponse("challenge not enabled for user", status=400)
    if challenge.is_final_challenge() and challenge.is_in_lock_period(user, course):
-       raise Http404
+       return HttpResponse("user is currently locked", status=400)
    elaboration, created = Elaboration.objects.get_or_create(challenge=challenge, user=user)
 
    if elaboration.is_submitted():
-       raise Http404
+       return HttpResponse("elaboration already submitted", status=400)
 
    elaboration.elaboration_text = request.POST['elaboration_text'] # sanitze here
    elaboration.revised_elaboration_text = elaboration.elaboration_text
 
-   # trigger a plagiarism check
-   PlagCheck.tasks.check.delay(doc=elaboration.elaboration_text, doc_id=elaboration.id)
-
    if elaboration.elaboration_text or UploadFile.objects.filter(elaboration=elaboration).exists():
        elaboration.submission_time = datetime.now()
        elaboration.save()
+
+       plagcheck_elaboration(elaboration)
+
        return HttpResponse()
 
 def get_extra_review_data(user, course, data):

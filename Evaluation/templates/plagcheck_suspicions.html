@@ -1,0 +1,43 @@
+{% load filter %}
+{% load el_pagination_tags %}
+{% load humanize %}
+
+{% block content %}
+    <div class="loading_animation">
+        <img src="{{ STATIC_URL }}img/loading3.gif">
+    </div>
+    <table class="overview_table">
+        <tr>
+            <th>student</th>
+            <th>elaboration</th>
+            <th>similarity</th>
+            <th>date found</th>
+        </tr>
+
+        {% paginate suspicions %}
+        {% for suspicion in suspicions %}
+            <tr class="{% cycle 'darkRow' 'lightRow' %}"
+                onclick="document.location = '{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspicion_id=suspicion.id %}?{{ request.GET.urlencode }}'">&nbsp;
+                <td><img class="gravatar" src="{{ suspicion.suspect_doc.user.avatar.url }}" style="vertical-align:middle"> {{ suspicion.suspect_doc.user.nickname }}</td>
+                <td>{{ suspicion.suspect_doc.elaboration.challenge.title|safe }}</td>
+                <td>{{ suspicion.similarity }}</td>
+                <td>{{ suspicion.created|naturaltime }}</td>
+            </tr>
+        {% endfor %}
+
+        {% get_pages %}
+        {% with total_pages=pages|length %}
+            {% show_current_number as actual_page %}
+            {{ pages.previous }}
+            {% if pages.previous %}
+                <div class="prev" style="color:gray">&nbsp; ({{ actual_page|add:"-1" }})</div>
+            {% endif %}
+            {{ pages.next }}
+            {% if pages.next %}
+                <div class="next" style="color:gray">({{ total_pages|subtract:actual_page }}) &nbsp; </div>
+            {% endif %}
+        {% endwith %}
+
+    </table>
+
+{% endblock %}

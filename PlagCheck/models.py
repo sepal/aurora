@@ -1,16 +1,20 @@
-from django.db import models
-from Elaboration.models import Elaboration
+import json
+from collections import OrderedDict
+from itertools import chain
+
 from django.forms import model_to_dict
-from django.db import connection
+from django.db import models
+from django.db import connections
 from django.db import transaction
-from enum import IntEnum
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
-from django.utils.encoding import *
-
-
 from django.db.models import Lookup
 from django.db.models.fields import Field
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.encoding import *
+
+from Elaboration.models import Elaboration
+
+from PlagCheck.util.state import SuspicionState
+from PlagCheck.util.settings import PlagCheckSettings
 
 
 @Field.register_lookup
@@ -24,12 +28,97 @@ class NotEqual(Lookup):
         return '%s <> %s' % (lhs, rhs), params
 
 
+class Document(models.Model):
+    elaboration_id = models.IntegerField(null=False)
+    text = models.TextField(null=False)
+    user_id = models.IntegerField(null=True)
+    user_name = models.CharField(max_length=100, null=True)
+    submission_time = models.DateTimeField(null=True)
+    is_revised = models.BooleanField(null=False, default=False)
+
+    def get_elaboration(self):
+        return Elaboration.objects.get(pk=self.elaboration_id)
+    elaboration = property(get_elaboration)
+
+    def get_user(self):
+        from AuroraUser.models import AuroraUser
+
+        return AuroraUser.objects.get(pk=self.user_id)
+    user = property(get_user)
+
+    def get_clean_text(self):
+        return self.text.lstrip('"').rstrip('"')
+    clean_text = property(get_clean_text)
+
+    def get_json_text(self):
+        return json.dumps({'content': self.clean_text})
+    json_text = property(get_json_text)
+
+    def get_document_info(self):
+        info = OrderedDict()
+
+        info['Name'] = self.user_name
+        info['User ID'] = self.user_id
+        info['Elaboration ID'] = self.elaboration_id
+        info['Submission time'] = self.submission_time
+
+        return info
+    document_info = property(get_document_info)
+
+    def get_plagcheck_info(self):
+        info = OrderedDict()
+
+        info['# hashes'] = self.result_set.order_by('-created').all()[0].hash_count
+
+        return info
+    plagcheck_info = property(get_plagcheck_info)
+
+    def was_submitted_during(self, course):
+
+        submission_time = self.submission_time.date()
+
+        #if submission_time > course.start_date\
+        #        and submission_time < course.end_date:
+        if submission_time >= course.start_date:
+            return True
+        return False
+
+    @staticmethod
+    def get_unverified_docs():
+        docs = []
+
+        outdated_verifications = Document.objects.raw(
+            'SELECT "store".* '
+            ' FROM "PlagCheck_result" as "result", "PlagCheck_document" as "store" '
+            ' WHERE "result".doc_id = "store".id '
+            '  AND "store".submission_time != "result".submission_time;'
+        )
+
+        missing_verifications = Document.objects.raw(
+            'SELECT "store".* '
+            ' FROM "PlagCheck_document" as "store" '
+            ' LEFT OUTER JOIN "PlagCheck_result" as "result" '
+            '  ON "store".id = "result".doc_id '
+            '  WHERE "result".doc_id IS NULL;'
+        )
+
+        docs = sorted(
+            chain(outdated_verifications, missing_verifications),
+            key=lambda doc: doc.submission_time
+        )
+
+        return docs
+
+
+
 class Result(models.Model):
-    """Just stores the result of a check of one document.
+    """Stores the result of a check of one document.
     """
-    doc = models.ForeignKey(Elaboration)
-    created = models.DateTimeField(auto_now_add=True, blank=True)
+
+    doc = models.ForeignKey(Document)
+    created = models.DateTimeField(auto_now_add=True, blank=False)
     hash_count = models.IntegerField()
+    submission_time = models.DateTimeField(blank=False)
 
     def __unicode__(self):
         return self.id
@@ -38,62 +127,29 @@ class Result(models.Model):
         return model_to_dict(self)
 
 
-class SuspectState(IntEnum):
-    """SUSPECTED: Default state of a possible plagiarism document.
-    PLAGIARISM: The suspected document is plagiarism.
-    FALSE_POSITIVE: No plagiarism at all, could be improved by algorithm
-    FILTER: Use the suspected document to filter future documents. Which means filters
-    cannot be applied to already checked documents.
-    AUTO_FILTERED: Automatically given state when suspect has been filtered out by
-    previous filters.
-    CITED: The suspected document contained a ordinary citation to the similar document.
-    """
-
-    SUSPECTED = 0
-    PLAGIARISM = 1
-    FALSE_POSITIVE = 2
-    FILTER = 3
-    AUTO_FILTERED = 4
-    CITED = 5
-
-    @staticmethod
-    def states():
-        states = []
-        for state in SuspectState:
-            states.append({'value': state.value, 'name': state.name})
-        return states
-
-    @staticmethod
-    def choices():
-        choices = []
-        for state in SuspectState:
-            choices.append((state.value, state.name))
-        return choices
-
-
-class Suspect(models.Model):
+class Suspicion(models.Model):
     """Stores the result of a check against a individual document, resulting
     in a plagiarism suspect because the similarity reached its threshold value.
-
-    If the suspected document hashes match with another suspected document hashes,
-    whose state is set to FILTER, then the first document get the state AUTO_FILTERED.
     """
 
-    DEFAULT_STATE = SuspectState.SUSPECTED
+    DEFAULT_STATE = SuspicionState.SUSPECTED
 
-    doc = models.ForeignKey(Elaboration, related_name='suspected_doc')
-    similar_to = models.ForeignKey(Elaboration, related_name='suspected_similar_to')
+    suspect_doc = models.ForeignKey(Document, related_name='suspicion_suspect')
+    similar_doc = models.ForeignKey(Document, related_name='suspicion_similar')
     similarity = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     result = models.ForeignKey(Result)
-    state = models.CharField(max_length=2, default=DEFAULT_STATE.value, choices=SuspectState.choices())
+    state = models.CharField(max_length=2, default=DEFAULT_STATE.value, choices=SuspicionState.choices())
     match_count = models.IntegerField()
 
     def __unicode__(self):
         return self.id
 
     def __str__(self):
-        return "doc:%i similar_to:%i percent:%i state:%s" % (self.doc_id, self.similar_to_id, self.similarity, self.state_enum.name)
+        return "suspect_doc:%i similar:%i percent:%i state:%s" % (self.suspect_doc_id, self.similar_doc_id, self.similarity, self.state_enum.name)
+
+    class Meta:
+        ordering = ['created']
 
     @property
     def state_enum(self):
@@ -102,7 +158,7 @@ class Suspect(models.Model):
         :exception ValueError - when the given state is invalid
         :return: The respective enum object for the state value
         """
-        return SuspectState(int(self.state))
+        return SuspicionState(int(self.state))
 
     @state_enum.setter
     def state_enum(self, value):
@@ -111,59 +167,48 @@ class Suspect(models.Model):
         :exception ValueError - when the stored state is invalid
         :param value: int, string or enum representing the state
         """
-        self.state = SuspectState(int(value)).value
+        self.state = SuspicionState(int(value)).value
 
-    def get_prev_next(self, show_filtered=False):
+    def get_prev_next(self, **filter_args):
         """
-        Provides the ids to the next and previous Suspect object, depending
-        on the show_filtered value.
-        :param show_filtered: True if auto filtered Suspects should be taken into account.
+        Provides the ids to the next and previous Suspect object.
         :return: Tuple (previous_id, next_id)
         """
         next_id = None
         try:
-            if show_filtered:
-                next_id = self.get_next_by_created().id
-            else:
-                next_id = self.get_next_by_created(state__ne=SuspectState.AUTO_FILTERED.value).id
+            next_id = self.get_next_by_created(**filter_args).id
         except ObjectDoesNotExist:
             pass
 
         prev_id = None
         try:
-            if show_filtered:
-                prev_id = self.get_previous_by_created().id
-            else:
-                prev_id = self.get_previous_by_created(state__ne=SuspectState.AUTO_FILTERED.value).id
+            prev_id = self.get_previous_by_created(**filter_args).id
         except ObjectDoesNotExist:
             pass
 
         return (prev_id, next_id)
 
+    def get_suspicion_info(self):
+        info = OrderedDict()
 
-class SuspectFilter(models.Model):
-    """Provides filtering against a whole document, usually a suspected document is added
-    as a filter. For a suspected document to be filtered it needs to match a filtered document
-    with a similarity greater then the similarity threshold.
+        info['# matching hashes'] = self.match_count
+        info['Similarity'] = "{0} %".format(self.similarity)
+        info['Verification date'] = self.created
 
-    TODO: implement filtering based on hashes, so that only common parts between two document can be filtered.
-    this would be especially helpful when filtering reviews, where the questions stay the same for each
-    review.
-    """
-    doc = models.ForeignKey(Elaboration, unique=True)
+        return info
+    suspicion_info = property(get_suspicion_info)
 
     @staticmethod
-    def update_filter(suspect):
-        if suspect.state is SuspectState.FILTER.value:
-            try:
-                SuspectFilter.objects.create(doc_id=suspect.doc_id)
-            except IntegrityError:
-                pass
-        else:
-            try:
-                SuspectFilter.objects.get(doc_id=suspect.doc_id).delete()
-            except ObjectDoesNotExist:
-                pass
+    def get_suspected_elaborations(course):
+        suspicions = Suspicion.objects.all()
+        elaborations = []
+
+        for suspicion in suspicions:
+            elaboration = suspicion.suspect_doc.elaboration
+            if elaboration.challenge.course == course:
+                elaborations.append(elaboration)
+
+        return elaborations
 
 
 class Reference(models.Model):
@@ -171,54 +216,55 @@ class Reference(models.Model):
     Holds a hash and links it to the document where it is appearing.
     """
     hash = models.CharField(db_index=True, max_length=255)
-    doc = models.ForeignKey(Elaboration)
+    suspect_doc = models.ForeignKey(Document)
 
     # TODO: this causes a integrity error when inserting hashes, why?
     # class Meta:
-    #    unique_together = (("hash", "doc"),)
+    #    unique_together = (("hash", "suspect_doc"),)
 
     def __unicode__(self):
         return self.hash
 
     @staticmethod
-    def remove_references(doc_id):
+    def remove_references(suspect_doc_id):
         try:
-            Reference.objects.filter(doc_id=doc_id).delete()
+            Reference.objects.filter(suspect_doc_id=suspect_doc_id).delete()
         except Reference.DoesNotExist:
             pass
 
     @staticmethod
-    def store_references(doc_id, hash_list):
+    def store_references(suspect_doc_id, hash_list):
         with transaction.atomic():
             for h in hash_list:
-                Reference.objects.create(hash=h, doc_id=doc_id)
+                Reference.objects.create(hash=h, suspect_doc_id=suspect_doc_id)
 
     @staticmethod
-    def get_similar_elaborations(doc_id):
+    def get_similar_elaborations(suspect_doc_id):
         """
-        Gives a list of similar elaborations in respect to doc_id. The document
-        with doc_id has to be stored into the DB before calling this function.
+        Gives a list of similar elaborations in respect to suspect_doc_id. The document
+        with suspect_doc_id has to be stored into the DB before calling this function.
 
-        :param doc_id: Document to check against.
-        :return: List of Tuples (similar_doc_id, # similar hashes, filter id)
+        :param suspect_doc_id: Document to check against.
+        :return: List of Tuples (similar_doc_id, # similar hashes)
         """
-        cursor = connection.cursor()
+        cursor = connections[PlagCheckSettings.database].cursor()
 
         # with inner join
-        cursor.execute('SELECT "similar".doc_id, COUNT("similar".doc_id), "filter".id '
+        cursor.execute('SELECT "similar".suspect_doc_id, COUNT("similar".suspect_doc_id) '
                        'FROM ('
-                           'SELECT hash, doc_id '
+                           'SELECT hash, suspect_doc_id '
                            'FROM "PlagCheck_reference" '
-                           'WHERE doc_id = %s '
-                           'GROUP BY hash, doc_id'
-                           ') as "suspect" '
-                       'INNER JOIN "PlagCheck_reference" as "similar" ON "suspect".hash="similar".hash '
-                       'LEFT OUTER JOIN "PlagCheck_suspectfilter" as "filter" ON "similar".doc_id="filter".doc_id '
-                       'WHERE "similar".doc_id != %s '
-                       'GROUP BY "similar".doc_id, "filter".id ', [doc_id, doc_id])
+                           'WHERE suspect_doc_id = %s '
+                           'GROUP BY hash, suspect_doc_id'
+                           ') as "suspicion" '
+                       'INNER JOIN "PlagCheck_reference" as "similar" ON "suspicion".hash="similar".hash '
+                       'WHERE "similar".suspect_doc_id != %s '
+                       'GROUP BY "similar".suspect_doc_id ', [suspect_doc_id, suspect_doc_id])
 
         ret = list()
         for row in cursor.fetchall():
-            ret.append((row[0], row[1], row[2]))
+            ret.append((row[0], row[1]))
 
         return ret
+
+

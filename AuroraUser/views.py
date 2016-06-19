@@ -117,14 +117,14 @@ def sso_auth_callback(request):
 @aurora_login_required()
 @ensure_csrf_cookie
 def profile(request, course_short_title):
-    user = RequestContext(request)['user']
+    user = request.user
     selected_course = Course.get_or_raise_404(course_short_title)
     return render_to_response('profile.html', {'user': user, 'course': selected_course}, context_instance=RequestContext(request))
 
 @aurora_login_required()
 def profile_save(request, course_short_title):
     data = {}
-    user = RequestContext(request)['user']
+    user = request.user
     text_limit = 100
     valid_nickname = True
     if 'nickname' in request.POST and request.POST['nickname'] == "":
@@ -181,7 +181,7 @@ def is_valid_email(email, text_limit):
 @DeprecationWarning
 @aurora_login_required()
 def course(request):
-    user = RequestContext(request)['user']
+    user = request.user
     response_data = {}
     if request.method == 'POST':
         try:

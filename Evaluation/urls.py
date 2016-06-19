@@ -2,14 +2,12 @@ from django.conf.urls import patterns, url
 
 import Evaluation.views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', Evaluation.views.evaluation, name='home'),
     url(r'^detail$', Evaluation.views.detail, name='detail'),
-    url(r'^$', Evaluation.views.back, name='back'),
     url(r'^stack/$', Evaluation.views.stack, name='tasks'),
     url(r'^others/$', Evaluation.views.others, name='others'),
     url(r'^challenge_txt/$', Evaluation.views.challenge_txt, name='task_description'),
-    url(r'^similarities/$', Evaluation.views.similarities, name='similarities'),
     url(r'^user-detail$', Evaluation.views.user_detail, name='user-detail'),
     url(r'^reviewlist/$', Evaluation.views.reviewlist, name='reviews'),
     url(r'^missing_reviews$', Evaluation.views.missing_reviews, name='missing_reviews'),
@@ -22,7 +20,6 @@ urlpatterns = patterns('',
 
     url(r'^autocomplete_challenge/$', Evaluation.views.autocomplete_challenge),
     url(r'^autocomplete_user/$', Evaluation.views.autocomplete_user),
-    url(r'^autocomplete_tag/$', Evaluation.views.autocomplete_tag),
     url(r'^search/$', Evaluation.views.search),
     url(r'^sort$', Evaluation.views.sort),
     url(r'^set_appraisal/$', Evaluation.views.set_appraisal),
@@ -34,10 +31,8 @@ urlpatterns = patterns('',
     url(r'^save_evaluation/$', Evaluation.views.save_evaluation),
     url(r'^submit_evaluation/$', Evaluation.views.submit_evaluation),
     url(r'^reopen_evaluation/$', Evaluation.views.reopen_evaluation),
-    url(r'^add_tags/$', Evaluation.views.add_tags),
-    url(r'^remove_tag/$', Evaluation.views.remove_tag),
 
-    url(r'^plagcheck/$', Evaluation.views.plagcheck_suspects, name='plagcheck_suspects'),
-    url(r'^plagcheck/(?P<suspect_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
-    url(r'^plagcheck/(?P<suspect_id>\d+)/save_state/$', Evaluation.views.plagcheck_compare_save_state, name='plagcheck_compare_save_state'),
-)
+    url(r'^plagcheck/$', Evaluation.views.plagcheck_suspicions, name='plagcheck_suspicions'),
+    url(r'^plagcheck/(?P<suspicion_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
+    url(r'^plagcheck/(?P<suspicion_id>\d+)/save_state/$', Evaluation.views.plagcheck_compare_save_state, name='plagcheck_compare_save_state'),
+]

@@ -18,6 +18,7 @@
   - apt: pkg=python-psycopg2
 #  - apt: pkg=postgresql-server-dev-9.1
   - apt: pkg=libpq-dev
+  - apt: pkg=python3-dev
 
   - name: throw away postgres cluster
     command: pg_dropcluster --stop 9.3 main
@@ -68,8 +69,26 @@
          virtualenv={{ py3env }}
     sudo: yes
     sudo_user: vagrant
+  - name: install invoke into virtualenv
+    pip: name=invoke
+         virtualenv={{ py3env }}
+    sudo: yes
+    sudo_user: vagrant
   - name: install project requirements
     pip: requirements=/vagrant/requirements_dev.txt
+         virtualenv={{ py3env }}
+    sudo: yes
+    sudo_user: vagrant
+
+  - name: build sherlock
+    shell: python3 setup.py sdist
+    args:
+      chdir: /vagrant/PlagCheck/hashing/sherlock
+    sudo: yes
+    sudo_user: vagrant
+
+  - name: install sherlock into virtualenv
+    pip: name=/vagrant/PlagCheck/hashing/sherlock/dist/sherlock-1.0.tar.gz
          virtualenv={{ py3env }}
     sudo: yes
     sudo_user: vagrant

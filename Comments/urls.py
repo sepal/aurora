@@ -1,8 +1,7 @@
 from django.conf.urls import url, patterns
 from Comments import views
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^feed/$', views.feed, name='feed'),
     url(r'^bookmarks/$', views.bookmarks, name='bookmarks'),
     url(r'^post/$', views.post_comment, name='post'),
@@ -16,4 +15,4 @@ urlpatterns = patterns(
     url(r'^list_page/$', views.comment_list_page, name='list_page'),
     url(r'^mark_seen/$', views.mark_seen, name='mark_seen'),
     url(r'^lecturer_post/$', views.lecturer_post, name='lecturer_post'),
-)
+]

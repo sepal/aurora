@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,13 +10,13 @@
   <script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.3.custom.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
 
   {% block additional_headers %}
   {% endblock %}
 
 </head>
-<body>
+<body content="text/html">
 
 <script>
 	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});

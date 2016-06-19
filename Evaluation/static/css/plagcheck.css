@@ -1,0 +1,70 @@
+.plagcheck_compare {
+    width: 99%;
+    background-color: #E7FFCF;
+    padding: 10px;
+    float:left;
+    box-sizing: border-box;
+    border-radius: 9px;
+}
+
+.plagcheck_info_left {
+    width: 49%;
+    float: left;
+    margin-right: 5px;
+}
+
+.plagcheck_info_right {
+    width: 49%;
+    float: left;
+    margin-left: 5px;
+}
+
+.plagcheck_text_left {
+    width: 49%;
+    float: left;
+    margin-right: 5px;
+}
+
+.plagcheck_text_right {
+    width: 49%;
+    float: left;
+    margin-left: 5px;
+}
+
+.plagcheck_text {
+    width: 100%;
+}
+
+
+.plagcheck_compare_label {
+    font-weight: bold;
+    text-align: center;
+}
+
+.plagcheck_verification_info {
+    width: 89%;
+    text-align: center;
+}
+
+
+.info label {
+    font-weight: bold;
+}
+
+.plagcheck_compare_text .diff_part {
+    background-color: yellow;
+    display: inline !important;
+}
+
+.diff_part, .diff_part p, .diff_part li {
+    background-color: yellow;
+    display: inline;
+}
+
+.diff_part_hightlight, .diff_part_hightlight p, .diff_part_hightlight ul li, .diff_part_hightlight li {
+    background-color: orange !important;
+}
+
+.text_disabled {
+    display: none;
+}

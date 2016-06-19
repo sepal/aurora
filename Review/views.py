@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def create_context_review(request):
     data = {}
     if 'id' in request.GET:
-        user = RequestContext(request)['user']
+        user = request.user
         challenge = Challenge.objects.get(pk=request.GET.get('id'))
         if not challenge.is_enabled_for_user(user):
             raise Http404
@@ -82,7 +82,7 @@ def extra_review(request, course_short_title):
 
 @aurora_login_required()
 def review_answer(request, course_short_title):
-    user = RequestContext(request)['user']
+    user = request.user
     if request.POST:
         data = request.body.decode(encoding='UTF-8')
         data = json.loads(data)
@@ -133,7 +133,7 @@ def review_answer(request, course_short_title):
 
 @aurora_login_required()
 def evaluate(request, course_short_title):
-    user = RequestContext(request)['user']
+    user = request.user
     if not request.GET:
         raise Http404
     if not 'appraisal' in request.GET:

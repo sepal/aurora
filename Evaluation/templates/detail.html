@@ -13,45 +13,29 @@
 
 {% block content %}
 
-   <h1>
-       <a href="{% url 'Evaluation:back' course.short_title %}"><div class="back"  title="Back to evaluation overview" id="{{ selection }}"><i class="fa fa-angle-double-up"></i> go back</div> <b>&nbsp;{{ selection|title }}&nbsp;</b></a>
-   </h1>
+    <h1>
+        <a href="{% url 'Evaluation:home' course.short_title %}"><div class="back"  title="Back to evaluation overview" id="{{ selection }}"><i class="fa fa-angle-double-up"></i> go back</div> <b>&nbsp;{{ selection|title }}&nbsp;</b></a>
+    </h1>
 
-  <div class="detail_left">
-	  <div class="pagination">
-	     {% if prev %}
-             <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ prev }}">
-                 <div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev ({{ count_prev }})</div>
-             </a>
-         {% else %}
-             <div class="no-paginator prev">no prev</div>
-         {% endif %}
-	     {% if next %}
-             <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ next }}">
-                 <div class="paginator next">({{ count_next }}) next <i class="fa fa-angle-double-right"></i></div>
-             </a>
-         {% else %}
-             <div class="no-paginator next">no next</div>
-         {% endif %}
-	 </div>
-     <div class="spacer"></div>
-	 <div class="elab_title">{{elaboration.challenge.title|safe}}</div>
-        <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle" onclick="$('.author_detail').addClass('hidden_detail');$('#top_detail').toggleClass('hidden_detail')">
-        {{ elaboration.user.nickname }} ({{ elaboration.user.first_name }} {{ elaboration.user.last_name }}/{{ elaboration.user.username }}) @ <span title="{{elaboration.submission_time}}">{{elaboration.submission_time|naturaltime}}</span>:
-		 <div class="author_detail staff_detail" id="top_detail" style="overflow:auto; height:auto;">
-			 <img src='{{elaboration.user.avatar.url}}'>
-			 <span class="nick">{{elaboration.user.nickname}}</span><br>
-			 &quot;{{elaboration.user.statement|urlizetrunc:50}}&quot;<br>
-			 {{elaboration.user.matriculation_number}} - {{elaboration.user.first_name}} {{elaboration.user.last_name}}<br>
-			 <a href="mailto:{{elaboration.user.email}}">{{elaboration.user.email}}</a> &mdash;
-       	  	{% with notification_user_id=elaboration.user.id course_short_title=course.short_title  %}
-        	 	{% include "send_notification_button.html" %}
-       		 {% endwith %}
-  	 		&mdash;   <a href="user?id={{elaboration.user.id}}">{{elaboration.user.nickname}}'s work</a>
-            <div class="tags tags-{{ elaboration.user.get_content_type_id }}-{{ elaboration.user.id }}">
-                {% include 'tags.html' with tagged_object=elaboration.user %}
-            </div>
-		 </div>
+    <div class="detail_left">
+        <div class="pagination">
+            {% if prev %}
+                <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ prev }}">
+                    <div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev ({{ count_prev }})</div>
+                </a>
+            {% else %}
+                <div class="no-paginator prev">no prev</div>
+            {% endif %}
+            {% if next %}
+                <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ next }}">
+                    <div class="paginator next">({{ count_next }}) next <i class="fa fa-angle-double-right"></i></div>
+                </a>
+            {% else %}
+                <div class="no-paginator next">no next</div>
+            {% endif %}
+        </div>
+        <div class="spacer"></div>
+        {% include 'elaboration_info.html' with elaboration=elaboration %}
         <div class="spacer"></div>
 
         {% render_original_uploads elaboration %}
@@ -59,17 +43,18 @@
         {% if elaboration.elaboration_text  %}
             <textarea id="editor_detail">{{ elaboration.elaboration_text}}</textarea>
 		{% endif %}<br>
-         <br /><h1>Revised Work</h1>
+        <br /><h1>Revised Work</h1>
+
   	   	{% if elaboration.revised_elaboration_changelog %}
-		<br><B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
-		most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
+		    <br><B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
+		    most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
 		{% endif %}
-         {% render_revised_uploads elaboration %}
-		 {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
-        	 <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
-		 {% endif %}
+        {% render_revised_uploads elaboration %}
+        {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
+            <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
+        {% endif %}
         <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
-          {% include 'tags.html' with tagged_object=elaboration %}
+            {% include 'tags.html' with tagged_object=elaboration %}
         </div><br><br><br><br>
         <div class="spacer"></div>
 
@@ -113,12 +98,7 @@
        <div class="spacer"></div>
 
 
-        {% if elaboration %}
-		<div class="comments">
-			<b>Discuss this work with {{ elaboration.user.first_name }} {{ elaboration.user.last_name }} ({{ elaboration.user.nickname }})</b>
-            {% render_multi_comment_list for elaboration %}
-		</div>
-        {% endif %}
+        {% include "elaboration_comments.html" with elaboration=elaboration %}
 
         {% if reviews %}
             <div class="spacer"></div>
