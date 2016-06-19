@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from taggit.models import TaggedItem
 from django.views.decorators.http import require_POST
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import redirect
 
 from AuroraProject.decorators import aurora_login_required
@@ -288,8 +288,8 @@ def detail(request, course_short_title=None):
         elaborations.append(serialized_elaboration.object)
     selection = request.session.get('selection', 'error')
 
-    if not 'elaboration_id' in request.GET:
-        return False;
+    if 'elaboration_id' not in request.GET:
+        raise Http404
 
     elaboration = Elaboration.objects.get(pk=request.GET.get('elaboration_id', ''))
     # store selected elaboration_id in session
