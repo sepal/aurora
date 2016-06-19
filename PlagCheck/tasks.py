@@ -12,8 +12,7 @@ from django.db.utils import OperationalError
 
 from PlagCheck.models import Reference, Result, Suspicion, Document
 
-from PlagCheck.util.filter import filter_suspicion
-from PlagCheck.filters import suspicion_filters
+from PlagCheck.util.filter import filter_suspicion, load_suspicion_filters
 import sherlock
 
 app = Celery('AuroraProject')
@@ -22,6 +21,8 @@ app = Celery('AuroraProject')
 # pickle the object when using Windows.
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
+suspicion_filters = load_suspicion_filters()
 
 
 class PlagcheckError(Exception):

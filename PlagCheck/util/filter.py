@@ -1,4 +1,7 @@
+from pydoc import locate
+
 from PlagCheck.models import Suspicion
+from PlagCheck.util.settings import PlagCheckSettings
 
 
 class SuspicionFilter(object):
@@ -27,3 +30,13 @@ def filter_suspicion(suspicion, suspicion_filters=[]):
             reason = suspicion_filter
 
     return suspicion_state, reason
+
+
+def load_suspicion_filters():
+    suspicion_filters = []
+
+    for filter_str in PlagCheckSettings.suspicion_filters:
+        filter_class = locate(filter_str)
+        suspicion_filters.append(filter_class)
+
+    return suspicion_filters

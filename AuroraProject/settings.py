@@ -334,7 +334,15 @@ PLAGCHECK = {
     'minimal_match_count': 10,
 
     # connection name for separation from default database
-    'database': 'plagcheck'
+    'database': 'plagcheck',
+
+    'suspicion_filters': [
+        'PlagCheck.filters.SimilarityThresholdFilter',
+        'PlagCheck.filters.MinimalMatchCountFilter',
+        'PlagCheck.filters.RevisedElaborationFilter',
+        'PlagCheck.filters.SelfPlagiarismFilter',
+        'PlagCheck.filters.DummyUserFilter',
+    ]
 }
 
 CELERY_ALWAYS_EAGER=False # set to True by unit tests

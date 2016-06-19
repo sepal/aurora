@@ -1,9 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 
 from PlagCheck.models import Document, Suspicion, SuspicionState
-from PlagCheck.util.filter import filter_suspicion
+from PlagCheck.util.filter import filter_suspicion, load_suspicion_filters
 from PlagCheck import tasks as plagcheck_tasks
-from PlagCheck.filters import suspicion_filters
 
 
 def plagcheck_store_and_verify(store_only=False, dry=False, **kwargs):
@@ -96,6 +95,8 @@ def plagcheck_elaboration(elaboration, store_only=False):
 
 def plagcheck_filter_existing_suspicions(dry_run=False):
     suspicions = Suspicion.objects.filter(state__exact=SuspicionState.SUSPECTED.value)
+
+    suspicion_filters = load_suspicion_filters()
 
     for suspicion in suspicions:
         (new_state, reason) = filter_suspicion(suspicion, suspicion_filters)

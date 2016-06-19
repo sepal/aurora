@@ -1,3 +1,5 @@
+import re
+
 from PlagCheck.util.filter import SuspicionFilter
 from PlagCheck.util.state import SuspicionState
 from PlagCheck.util.settings import PlagCheckSettings
@@ -38,9 +40,9 @@ class SelfPlagiarismFilter(SuspicionFilter):
         return SuspicionState.SUSPECTED
 
 
-suspicion_filters = [
-    SimilarityThresholdFilter,
-    MinimalMatchCountFilter,
-    RevisedElaborationFilter,
-    SelfPlagiarismFilter,
-]
+class DummyUserFilter(SuspicionFilter):
+    @staticmethod
+    def filter(suspicion):
+        if re.match('^[ds]\d+$', suspicion.suspect_doc.user_name):
+            return None
+        return SuspicionState.SUSPECTED
