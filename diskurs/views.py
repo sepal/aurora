@@ -771,20 +771,25 @@ def choose_group(request, course_short_title, thread_id):
     if thread_object.course != course:
         raise Http404("Thread does not exist")
 
-    if not UserGroup.objects.filter(group__thread_id=thread_id, user_id=request.user).exists():
+    groups = Group.objects.filter(thread_id=thread_id).order_by('id')
+
+    if groups.count() == 0 or groups.last().usergroup_set.count() >= thread_object.members_in_group:
+
+        group = Group()
+        group.thread_id = thread_id
+        group.save()
 
         groups = Group.objects.filter(thread_id=thread_id).order_by('id')
 
-        if groups.count() == 0 or \
-                groups.count() > 0 and groups.last().usergroup_set.count() > 0:
-            group = Group()
-            group.thread_id = thread_id
-            group.save()
+    if request.user.is_superuser:
+        return render(request, 'diskurs/thread/choose_group.html', {'groups': groups, 'thread': thread_object, 'course': course})
 
-            groups = Group.objects.filter(thread_id=thread_id).order_by('id')
+    if not UserGroup.objects.filter(group__thread_id=thread_id, user_id=request.user).exists():
 
-        return render(request, 'diskurs/thread/choose_group.html', {'groups': groups, 'thread': thread_object,
-                                                                    'course': course})
+        user_group = UserGroup()
+        user_group.group_id = groups.last().id
+        user_group.user_id = request.user.id
+        user_group.save()
 
     return redirect('diskurs:thread', course_short_title=course_short_title, thread_id=thread_id)
 
@@ -802,16 +807,6 @@ def choose_group_set(request, course_short_title, thread_id, group_id):
 
         if request.user.is_superuser:
             return redirect('diskurs:thread_group', course_short_title=course_short_title, thread_id=thread_id, group_id=group_id)
-
-        elif group_object.size < group_object.thread.members_in_group:
-
-            if not UserGroup.objects.filter(group__thread_id=thread_id, user_id=request.user.id).exists():
-                user_group = UserGroup()
-                user_group.group_id = group_id
-                user_group.user_id = request.user.id
-                user_group.save()
-
-            return redirect('diskurs:thread', course_short_title=course_short_title, thread_id=thread_id)
 
         return redirect('diskurs:choose_group', course_short_title=course_short_title, thread_id=thread_id)
 
