@@ -49,9 +49,9 @@ def thread(request, course_short_title, thread_id):
     else:
         viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
 
-        for post in thread_object.filtered_first_post.post_set.all():
-            if post.id not in viewed_posts:
-                user_history.add_post_id_to_history(post.id)
+    for post in thread_object.filtered_first_post.post_set.all():
+        if post.id not in viewed_posts:
+            user_history.add_post_id_to_history(post.id)
 
     return render(request, 'diskurs/thread.html', {'thread': thread_object,
                                                    'expanded_posts': [thread_object.filtered_first_post.id],
