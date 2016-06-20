@@ -7,6 +7,7 @@ from django.http import Http404
 from .models import Thread, Post, PostVote, Group, UserGroup, UserHistory, UserHistoryPost
 from Course.models import Course
 from .utils import get_rendered_votes_sum
+from django_markup.markup import formatter
 
 
 @login_required
@@ -582,6 +583,28 @@ def new_group_post(request, course_short_title, thread_id, group_id):
                     'error': True,
                     'message': 'Invalid post ID provided!'
                 })
+        else:
+            return JsonResponse({
+                'error': True,
+                'message': 'No content provided!'
+            })
+    except ValueError:
+        return JsonResponse({
+                'error': True,
+                'message': 'Invalid post ID provided!'
+            })
+
+
+@login_required
+def preview_post(request, course_short_title):
+    try:
+        content = request.POST.get('content', '')
+
+        if len(content) > 0:
+            return JsonResponse({
+                'success': True,
+                'content': formatter(content, filter_name='markdown_giffer'),
+            })
         else:
             return JsonResponse({
                 'error': True,
