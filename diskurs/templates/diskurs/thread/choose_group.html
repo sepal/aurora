@@ -1,11 +1,12 @@
 {% extends "diskurs/base.html" %}
+{% load tags %}
 
 {% block content %}
 <div id="diskurs">
     <h1 style="padding:0.5em">Choose group</h1>
     <ul>
         {% for group in groups %}
-            <li><a href="{% url 'diskurs:choose_group_set' course.short_title thread.id group.id %}">Group {{ forloop.counter }} ({{ group.size }}/{{ thread.members_in_group }})</a></li>
+            <li><a href="{% url 'diskurs:choose_group_set' course.short_title thread.id group.id %}">Group {{ forloop.counter }} ({{ group.size }}/{{ thread.members_in_group }})</a> <span class="new_posts">{% count_new_group_posts group request.user %}</span></li>
         {% endfor %}
     </ul>
 </div>

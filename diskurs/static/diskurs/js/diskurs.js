@@ -11,6 +11,7 @@ function diskursReply() {
     }
 
     $('.show_reply').removeClass('show_reply');
+    $('.post_preview').html('');
     parent.addClass('show_reply');
 
     if (!parent.hasClass('show_child')) {
@@ -211,6 +212,26 @@ $(document).ready(function() {
         } else {
 
         }
+    });
+    $('#diskurs').on('click', '.preview_reply', function() {
+        var preview_content = $(this).parent().children('textarea').val();
+        var csfr = $(this).parent().children('input[name="csrfmiddlewaretoken"]').val();
+        var $contentDiv = $(this).parent().prev();
+
+        $.ajax({
+            url: diskurs_preview_url,
+            method: "POST",
+            data: {content : preview_content, csrfmiddlewaretoken : csfr},
+            success:function(data, textStatus, jqXHR)
+                {
+                    if (data.success) {
+                        $contentDiv.html(data.content);
+                        Gifffer();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+        });
     });
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
