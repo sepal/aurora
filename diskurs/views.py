@@ -45,11 +45,9 @@ def thread(request, course_short_title, thread_id):
         user_history.user = request.user
         user_history.save()
 
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
-    else:
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+    viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
 
-    for post in thread_object.filtered_first_post.post_set.all():
+    for post in thread_object.filtered_first_post.filtered_post_set.all():
         if post.id not in viewed_posts:
             user_history.add_post_id_to_history(post.id)
 
@@ -91,13 +89,11 @@ def thread_group(request, course_short_title, thread_id, group_id):
         user_history.user = request.user
         user_history.save()
 
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
-    else:
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+    viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
 
-        for post in thread_object.filtered_first_post.post_set.all():
-            if post.id not in viewed_posts:
-                user_history.add_post_id_to_history(post.id)
+    for post in thread_object.filtered_first_post.filtered_post_set.all():
+        if post.id not in viewed_posts:
+            user_history.add_post_id_to_history(post.id)
 
     return render(request, 'diskurs/thread.html', {'thread': thread_object,
                                                    'expanded_posts': [thread_object.filtered_first_post.id],
@@ -145,13 +141,11 @@ def thread_post(request, course_short_title, thread_id, post_id):
 
         user_history.add_post_to_history(thread_object.filtered_first_post, True)
 
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
-    else:
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+    viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
 
-        for rendered_post_id in rendered_posts:
-            if rendered_post_id not in viewed_posts:
-                user_history.add_post_id_to_history(rendered_post_id)
+    for rendered_post_id in rendered_posts:
+        if rendered_post_id not in viewed_posts:
+            user_history.add_post_id_to_history(rendered_post_id)
 
     return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': expanded_posts,
                                                    'last_post_id': last_post_id, 'viewed_posts': viewed_posts,
@@ -201,15 +195,11 @@ def thread_group_post(request, course_short_title, thread_id, post_id, group_id)
         user_history.user = request.user
         user_history.save()
 
-        user_history.add_post_to_history(thread_object.filtered_first_post, True)
+    viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
 
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
-    else:
-        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
-
-        for rendered_post_id in rendered_posts:
-            if rendered_post_id not in viewed_posts:
-                user_history.add_post_id_to_history(rendered_post_id)
+    for rendered_post_id in rendered_posts:
+        if rendered_post_id not in viewed_posts:
+            user_history.add_post_id_to_history(rendered_post_id)
 
     return render(request, 'diskurs/thread.html', {'thread': thread_object, 'expanded_posts': expanded_posts,
                                                    'last_post_id': last_post_id, 'viewed_posts': viewed_posts,
@@ -261,10 +251,6 @@ def post_list(request, course_short_title, thread_id, post_id):
         else:
             viewed_posts = list()
 
-        # post_statistics = {}
-        # for rendered_post in rendered_posts:
-        #    post_statistics.update({rendered_post.id : rendered_post.post_set.count()})
-
         if posts.count() > 0:
 
             depth = 1
@@ -285,13 +271,11 @@ def post_list(request, course_short_title, thread_id, post_id):
                 'success': True,
                 'posts': template.render(context),
                 'new_last_id': posts.last().id,
-                # 'post_statistics': post_statistics,
             })
         else:
             return JsonResponse({
                 'success': True,
                 'posts': '',
-                # 'post_statistics': post_statistics,
             })
 
     except ValueError:
@@ -348,10 +332,6 @@ def post_group_list(request, course_short_title, thread_id, post_id, group_id):
         else:
             viewed_posts = list()
 
-        # post_statistics = {}
-        # for rendered_post in rendered_posts:
-        #    post_statistics.update({rendered_post.id : rendered_post.post_set.count()})
-
         if posts.count() > 0:
 
             depth = 1
@@ -372,13 +352,11 @@ def post_group_list(request, course_short_title, thread_id, post_id, group_id):
                 'success': True,
                 'posts': template.render(context),
                 'new_last_id': posts.last().id,
-                # 'post_statistics': post_statistics,
             })
         else:
             return JsonResponse({
                 'success': True,
                 'posts': '',
-                # 'post_statistics': post_statistics,
             })
 
     except ValueError:
@@ -541,7 +519,6 @@ def new_group_post(request, course_short_title, thread_id, group_id):
                         posts = Post.objects\
                             .filter(parent_post_id=parent_post_id, id__gt=last_id, group_id=post.group_id)\
                             .order_by('id')
-
 
                     user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
 
@@ -772,8 +749,14 @@ def choose_group(request, course_short_title, thread_id):
         raise Http404("Thread does not exist")
 
     groups = Group.objects.filter(thread_id=thread_id).order_by('id')
+    empty_group_id = 0
 
-    if groups.count() == 0 or groups.last().usergroup_set.count() >= thread_object.members_in_group:
+    for group in groups:
+        if group.usergroup_set.count() < thread_object.members_in_group:
+            empty_group_id = group.id
+            break
+
+    if empty_group_id == 0:
 
         group = Group()
         group.thread_id = thread_id
@@ -781,13 +764,15 @@ def choose_group(request, course_short_title, thread_id):
 
         groups = Group.objects.filter(thread_id=thread_id).order_by('id')
 
+        empty_group_id = groups.last().id
+
     if request.user.is_superuser:
         return render(request, 'diskurs/thread/choose_group.html', {'groups': groups, 'thread': thread_object, 'course': course})
 
     if not UserGroup.objects.filter(group__thread_id=thread_id, user_id=request.user).exists():
 
         user_group = UserGroup()
-        user_group.group_id = groups.last().id
+        user_group.group_id = empty_group_id
         user_group.user_id = request.user.id
         user_group.save()
 
