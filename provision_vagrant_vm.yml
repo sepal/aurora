@@ -57,6 +57,12 @@
              creates={{ py3env }}
     sudo: yes
     sudo_user: vagrant
+
+  # nodejs is only used to compile the frontend code in the feedback app.
+  - get_url: url=https://deb.nodesource.com/setup_4.x dest=~/node_setup.sh mode=0775
+  - shell: ~/node_setup.sh
+  - apt: pkg=nodejs
+
 # ipython not working with python manage.py shell anymore :(
   - name: install ipython into virtualenv
     pip: name=ipython

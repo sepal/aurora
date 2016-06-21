@@ -20,7 +20,12 @@ npm update -g npm
 ```
 
 The provided vagrant box comes with nodejs, so you also should be able
-to compile the frontend code with the provided tools there.
+to compile the frontend code with the provided tools there. You still
+need to install the dependencies:
+```
+cd Feedback/static/frontend
+npm install
+```
 
 ## Developing
 
