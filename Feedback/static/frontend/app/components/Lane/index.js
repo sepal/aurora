@@ -3,12 +3,11 @@ import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
 import IssueTeaser from '../IssueList';
-import IssueMockup from '../../mockup/issues';
 
 class Lane extends React.Component {
   constructor(props) {
     super(props);
-    const issues = IssueMockup.filter(issue => {
+    const issues = issue_list.filter(issue => {
       return issue.lane == this.props.id
     });
 
