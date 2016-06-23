@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('AuroraUser', '0003_aurorauser_tags'),
         ('Course', '0004_courseuserrelation_active'),
+        ('AuroraUser', '0003_aurorauser_tags'),
         ('Feedback', '0002_auto_20160619_0914'),
     ]
 
@@ -16,8 +16,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Issue',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
-                ('post_date', models.DateField()),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('post_date', models.DateTimeField(auto_now_add=True)),
+                ('type', models.CharField(max_length=25, choices=[('bug', 'Bug'), ('feature_request', 'Feature Request'), ('feedback', 'Feedback'), ('security', 'Security')])),
                 ('title', models.CharField(max_length=100)),
                 ('body', models.TextField()),
                 ('author', models.ForeignKey(to='AuroraUser.AuroraUser')),
