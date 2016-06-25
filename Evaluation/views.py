@@ -862,9 +862,6 @@ def similarities(request, course_short_title=None):
 
     suspicion_list = Suspicion.objects\
         .filter(suspect_doc__elaboration_id=elaboration_id)\
-        .filter(
-            Q(state=SuspicionState.SUSPECTED.value) | Q(state=SuspicionState.SUSPECTED_SELF_PLAGIARISM.value)
-        )
 
     context = {
         'course': course,
