@@ -3,10 +3,11 @@ from django.core import serializers
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.utils.safestring import mark_safe
 from Course.models import Course
 from .models import Lane, Issue
+
 
 @login_required
 def index(request, course_short_title):
@@ -29,3 +30,24 @@ def index(request, course_short_title):
             'issues': json.dumps(issues)
         }
     )
+
+
+@login_required
+def issue(request, course_short_title, issue_id):
+    issue = Issue.objects.get(pk=1)
+    return JsonResponse({
+        'id': issue.pk,
+        'course': {
+            'id': issue.course.pk,
+            'name': issue.course.title
+        },
+        'lane': {
+            'id': issue.lane.pk,
+            'name': issue.lane.name
+        },
+        'type': issue.type,
+        'post_date': issue.post_date,
+        'title': issue.title,
+        'body': issue.body,
+
+    })
