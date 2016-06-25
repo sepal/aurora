@@ -852,6 +852,31 @@ def get_points(request, user, course):
 
     return data
 
+
+@csrf_exempt
+@staff_member_required
+def similarities(request, course_short_title=None):
+    course = Course.get_or_raise_404(short_title=course_short_title)
+
+    elaboration_id = request.session.get('elaboration_id', '')
+
+    suspicion_list = Suspicion.objects\
+        .filter(suspect_doc__elaboration_id=elaboration_id)\
+        .filter(
+            Q(state=SuspicionState.SUSPECTED.value) | Q(state=SuspicionState.SUSPECTED_SELF_PLAGIARISM.value)
+        )
+
+    context = {
+        'course': course,
+        'suspicions': suspicion_list,
+        'suspicion_states': SuspicionState.choices(),
+        'suspicions_count': suspicion_list.count(),
+    }
+
+    return render_to_response('plagcheck_suspicions.html', context, RequestContext(request))
+
+
+
 @csrf_exempt
 @staff_member_required
 def plagcheck_suspicions(request, course_short_title=None):

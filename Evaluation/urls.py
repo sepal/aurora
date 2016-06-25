@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^questions$', Evaluation.views.questions, name='questions'),
     url(r'^awesome$', Evaluation.views.awesome, name='awesome'),
     url(r'^user$', Evaluation.views.search_user, name='search_user'),
+    url(r'^similarities', Evaluation.views.similarities, name='similarities'),
 
     url(r'^autocomplete_challenge/$', Evaluation.views.autocomplete_challenge),
     url(r'^autocomplete_user/$', Evaluation.views.autocomplete_user),
