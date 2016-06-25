@@ -868,6 +868,7 @@ def similarities(request, course_short_title=None):
         'suspicions': suspicion_list,
         'suspicion_states': SuspicionState.choices(),
         'suspicions_count': suspicion_list.count(),
+        'open_new_window': True,
     }
 
     return render_to_response('plagcheck_suspicions.html', context, RequestContext(request))
@@ -892,6 +893,7 @@ def plagcheck_suspicions(request, course_short_title=None):
         'suspicions': suspicion_list,
         'suspicion_states': SuspicionState.choices(),
         'suspicions_count': count,
+        'open_new_window': False,
     }
 
     request.session['selection'] = 'plagcheck_suspicions'
