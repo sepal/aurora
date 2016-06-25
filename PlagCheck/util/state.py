@@ -22,7 +22,7 @@ class SuspicionState(IntEnum):
 
     @staticmethod
     def choices():
-        choices = []
+        choices = ()
         for state in SuspicionState:
-            choices.append((state.value, state.name))
+            choices += ((state.value, state.name),)
         return choices
