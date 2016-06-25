@@ -860,15 +860,18 @@ def similarities(request, course_short_title=None):
 
     elaboration_id = request.session.get('elaboration_id', '')
 
-    suspicion_list = Suspicion.objects\
-        .filter(suspect_doc__elaboration_id=elaboration_id)\
+    suspicion_list = Suspicion.suspicion_list_by_request(request, course)\
+        .filter(suspect_doc__elaboration_id=elaboration_id)
+
+    count = suspicion_list.count()
 
     context = {
         'course': course,
         'suspicions': suspicion_list,
         'suspicion_states': SuspicionState.choices(),
-        'suspicions_count': suspicion_list.count(),
-        'open_new_window': True,
+        'current_suspicion_state_filter': int(request.GET.get('state', -1)),
+        'suspicions_count': count,
+        'open_new_window': False,
     }
 
     return render_to_response('plagcheck_suspicions.html', context, RequestContext(request))
@@ -880,11 +883,7 @@ def similarities(request, course_short_title=None):
 def plagcheck_suspicions(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    suspicion_list = Suspicion.objects.filter(
-        state=SuspicionState.SUSPECTED.value,
-        #suspect_doc__submission_time__range=(course.start_date, course.end_date),
-        suspect_doc__submission_time__gt=course.start_date,
-    )
+    suspicion_list = Suspicion.suspicion_list_by_request(request, course)
 
     count = suspicion_list.count()
 
@@ -892,6 +891,7 @@ def plagcheck_suspicions(request, course_short_title=None):
         'course': course,
         'suspicions': suspicion_list,
         'suspicion_states': SuspicionState.choices(),
+        'current_suspicion_state_filter': int(request.GET.get('state', -1)),
         'suspicions_count': count,
         'open_new_window': False,
     }
