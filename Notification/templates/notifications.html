@@ -19,7 +19,7 @@
 
 {% if feed_token %}
     <div>
-    <a rel="alternate" type="application/rss+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button>Get your notifications as a RSS feed.</button></a>
+    <a rel="alternate" type="application/atom+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button>Get your notifications as a RSS feed.</button></a>
     </div>
 {% endif %}
 
