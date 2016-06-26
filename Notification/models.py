@@ -1,8 +1,12 @@
 import os
+import uuid
+
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.http.response import Http404
 
 from AuroraProject.settings import STATIC_URL
+from AuroraUser.models import AuroraUser
 
 
 class Notification(models.Model):
@@ -55,3 +59,22 @@ class Notification(models.Model):
             text = text[0:96]
             text += "..."
         return text
+
+
+class FeedToken(models.Model):
+    user = models.ForeignKey('AuroraUser.AuroraUser')
+    token = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
+
+    @staticmethod
+    def create_new_token(user):
+        FeedToken.objects.filter(user=user).delete()
+
+        return FeedToken.objects.create(user=user)
+
+    @staticmethod
+    def get_user_by_token_or_raise_404(token):
+        try:
+            feed_token = FeedToken.objects.get(token=token)
+            return AuroraUser.objects.get(pk=feed_token.user_id)
+        except (AuroraUser.DoesNotExist, FeedToken.DoesNotExist):
+            raise Http404

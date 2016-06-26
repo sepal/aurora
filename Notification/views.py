@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.admin.views.decorators import staff_member_required
 
 from AuroraProject.decorators import aurora_login_required
-from Notification.models import Notification
+from Notification.models import Notification, FeedToken
 from AuroraUser.models import AuroraUser
 from Course.models import Course, CourseUserRelation
 
@@ -34,6 +34,12 @@ def notifications(request, course_short_title=None):
     notifications = Notification.objects.filter(user=user, course=course).order_by('-creation_time')
     data['notifications'] = notifications
     data['course'] = course
+
+    try:
+        data['feed_token'] = FeedToken.objects.get(user=request.user)
+    except FeedToken.DoesNotExist:
+        data['feed_token'] = None
+
     return render_to_response('notifications.html', data, context_instance=RequestContext(request))
 
 

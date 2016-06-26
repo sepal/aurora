@@ -6,10 +6,23 @@
   <script type="text/javascript">
     var READ_URL = "{% url 'Notification:read' course.short_title %}";
   </script>
+    {% if feed_token %}
+      <link rel="alternate" type="application/rss+xml"
+            href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"
+            title="Your notifications feed">
+    {% endif %}
 {% endblock %}
 
 {% block content %}
 {% load humanize %}
+{% load static %}
+
+{% if feed_token %}
+    <div>
+    <a rel="alternate" type="application/rss+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button>Get your notifications as a RSS feed.</button></a>
+    </div>
+{% endif %}
+
   {% if notifications|length > 0 %}<button id="read_all_button" class="irrelevant">Mark all as read</button>{% else %} <button class="irrelevant" style="color:black">nothing here</button> {% endif %}
   <div class="notificationList">
   {% for notification in notifications %}
