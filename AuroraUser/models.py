@@ -14,6 +14,8 @@ from Review.models import Review, ReviewEvaluation
 from Course.models import Course, CourseUserRelation
 from Challenge.models import Challenge
 import logging
+from Comments.models import *
+from Slides.models import *
 
 def avatar_path(instance, filename):
     name = 'avatar_%s' % instance.id
@@ -107,6 +109,50 @@ class AuroraUser(User):
 
     def extra_points_earned_with_reviews(self, course):
         return self.number_of_extra_reviews(course) // 3
+
+    def extra_points_earned_with_comments(self, course):
+        extra_points = 0
+        for promoted_comment in  Comment.objects.filter(author=self, promoted=True):
+            referenced_object = promoted_comment.content_object
+            if isinstance(referenced_object, Course):
+                if referenced_object.short_title == course.short_title:
+                    extra_points += 1
+            elif isinstance(referenced_object, Slide):
+                if referenced_object.lecture.course.short_title == course.short_title:
+                    extra_points += 1
+            elif isinstance(referenced_object, Elaboration):
+                if referenced_object.challenge.course.short_title == course.short_title:
+                    extra_points += 1
+            elif referenced_object.course.short_title == course.short_title:
+                extra_points += 1
+
+        return extra_points
+
+    def extra_points_earned_by_rating_reviews(self, course):
+        if self.has_rated_most_reviews(course):
+            return 1
+        return 0
+
+    def has_rated_most_reviews(self, course):
+        rated = self.number_of_reviews_rated(course)
+        received = self.number_of_reviews_received(course)
+
+        if received == 0:
+            return False
+
+        if  rated / received >= 0.8:
+            return True
+            
+        return False
+
+    def number_of_reviews_rated(self, course):
+        return ReviewEvaluation.objects.filter(review__elaboration__user=self).count()
+
+    def number_of_reviews_received(self, course):
+        return Review.objects.filter(elaboration__user=self).count()
+
+    def total_extra_points_earned(self, course):
+        return self.extra_points_earned_by_rating_reviews(course) + self.extra_points_earned_with_comments(course) + self.extra_points_earned_with_reviews(course)
 
     def has_enough_special_reviews(self, challenge):
         return Review.objects.filter(elaboration__challenge=challenge).exclude(chosen_by='random').count() == 2

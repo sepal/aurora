@@ -5,7 +5,6 @@ from django.db.models import Q, Count, Max
 import re
 from taggit.managers import TaggableManager
 
-
 class CommentList(models.Model):
     """
     currently Comments are associated with CommentList only by having the same reference object

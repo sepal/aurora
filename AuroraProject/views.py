@@ -72,12 +72,20 @@ def home(request, course_short_title=None):
     data = get_points(request, user, course)
     data = create_stat_data(course,data)
     data['user_is_top_reviewer'] = False
+    data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
+    data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
+    data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
     if user.is_top_reviewer(course):
-        data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
-        data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
-        data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
+        # data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
+        # data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
+        # data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
         data['user_is_top_reviewer'] = True
+        # Expensive function, therefor only execute if user is top reviewer
         data = get_extra_review_data(user, course, data)
+
+    data['extra_points_earned_with_comments'] = user.extra_points_earned_with_comments(course)
+    data['extra_points_earned_by_rating_reviews'] = user.extra_points_earned_by_rating_reviews(course)
+    data['total_extra_points_earned'] = user.total_extra_points_earned(course)
     faq_list = Faq.get_faqs(course_short_title)
     context = RequestContext(request, {'newsfeed': data['course'], 'faq_list': faq_list})
 
