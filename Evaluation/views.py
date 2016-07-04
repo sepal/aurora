@@ -186,6 +186,33 @@ def top_level_tasks(request, course_short_title=None):
                               },
                               context_instance=RequestContext(request))
 
+@aurora_login_required()
+@staff_member_required
+def final_evaluation_top_level_tasks(request, course_short_title=None):
+    course = Course.get_or_raise_404(short_title=course_short_title)
+    elaborations = Elaboration.get_final_evaluation_top_level_tasks(course)
+
+    # sort elaborations by submission time
+    if type(elaborations) == list:
+        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
+    else:
+        elaborations = elaborations.order_by('submission_time')
+
+    # store selected elaborations in session
+    request.session['final_evaluation_elaborations'] = serializers.serialize('json', elaborations)
+    request.session['selection'] = 'final_evaluation_top_level_tasks'
+    request.session['final_evaluation_count'] = len(elaborations)
+
+    return render_to_response('evaluation.html',
+                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
+                                                            RequestContext(request)),
+                               'count_final_evaluation_top_level_tasks': request.session.get('final_evaluation_count', '0'),
+                               'stabilosiert_final_evaluation_top_level_tasks': 'stabilosiert',
+                               'selection': request.session['selection'],
+                               'course': course
+                              },
+                              context_instance=RequestContext(request))
+
 
 @aurora_login_required()
 @staff_member_required
@@ -684,7 +711,7 @@ def review_answer(request, course_short_title=None):
     user = request.user
     answers = data['answers']
     elab_id_from_client = data['elab']
-    
+
     review = Review.objects.create(elaboration_id=elab_id_from_client, reviewer_id=user.id)
 
     review.appraisal = data['appraisal']

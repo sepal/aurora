@@ -16,6 +16,7 @@ from Challenge.models import Challenge
 import logging
 from Comments.models import *
 from Slides.models import *
+from Stack.models import *
 
 def avatar_path(instance, filename):
     name = 'avatar_%s' % instance.id
@@ -142,8 +143,18 @@ class AuroraUser(User):
 
         if  rated / received >= 0.8:
             return True
-            
+
         return False
+
+    def total_points_submitted(self, course):
+        submitted_points = 0
+
+        for stack in Stack.objects.all().filter(course=course):
+            if stack.get_final_challenge().submitted_by_user(self):
+                submitted_points += stack.get_points_available()
+
+        return submitted_points
+
 
     def number_of_reviews_rated(self, course):
         return ReviewEvaluation.objects.filter(review__elaboration__user=self).count()

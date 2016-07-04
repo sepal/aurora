@@ -246,6 +246,15 @@ class Elaboration(models.Model):
         return top_level_challenges
 
     @staticmethod
+    def get_final_evaluation_top_level_tasks(course):
+        final_top_level_tasks = []
+        for elaboration in Elaboration.get_top_level_tasks(course):
+            if elaboration.user.total_points_submitted(course) >= 57:
+                final_top_level_tasks.append(elaboration)
+
+        return final_top_level_tasks
+
+    @staticmethod
     def get_non_adequate_elaborations(course):
         nothing_reviews = (
             Review.objects
