@@ -326,7 +326,7 @@ def detail(request, course_short_title=None):
     if selection == "missing_reviews":
         questions = ReviewQuestion.objects.filter(challenge=elaboration.challenge).order_by("order")
         params = {'questions': questions, 'selection': 'missing reviews'}
-    if selection == "top_level_tasks":
+    if selection == "top_level_tasks" or selection == 'final_evaluation_top_level_tasks':
         evaluation = None
         user = request.user
         lock = False
