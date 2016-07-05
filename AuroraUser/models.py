@@ -168,9 +168,6 @@ class AuroraUser(User):
                 # print(chapter_final_challenge_ids)
                 completed_for_chapter = Elaboration.objects.filter(challenge_id__in=chapter_final_challenge_ids, user=self, submission_time__isnull=False).count()
 
-                if(chapter.id == 8 and self.id == 823):
-                    print(completed_for_chapter)
-
                 if completed_for_chapter == 0:
                     check = False
 
