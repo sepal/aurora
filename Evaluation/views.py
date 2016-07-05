@@ -14,6 +14,7 @@ from taggit.models import TaggedItem
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import redirect
+from django.views.decorators.cache import cache_page
 
 from AuroraProject.decorators import aurora_login_required
 from Challenge.models import Challenge

@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models import Count, Min
 from django.contrib.contenttypes.models import ContentType
 from random import randint
+from django.core.cache import cache
 
 from Comments.models import Comment
 from Evaluation.models import Evaluation
@@ -249,7 +250,15 @@ class Elaboration(models.Model):
     def get_final_evaluation_top_level_tasks(course):
         final_top_level_tasks = []
         for elaboration in Elaboration.get_top_level_tasks(course):
-            if elaboration.user.total_points_submitted(course) >= 57:
+            
+            cache_key = str(elaboration.user.id) + '_submitted_points'
+            if (cache.has_key(cache_key)):
+                submitted_points = cache.get(cache_key)
+            else:
+                submitted_points = elaboration.user.total_points_submitted(course)
+                cache.set(cache_key, submitted_points, 60*30)
+
+            if submitted_points >= 57:
                 final_top_level_tasks.append(elaboration)
 
         return final_top_level_tasks
