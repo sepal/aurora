@@ -30,7 +30,7 @@ def set_positive_completion_possible():
 
                 relation.save()
             except:
-                print("User" + user.nickname + "is not registerned in any courses, skipping.")
+                print("User " + user.nickname + " is not registerned in any courses, skipping.")
 
     # print(user.number_of_reviews_received(course))
     # print(user.number_of_reviews_rated(course))
