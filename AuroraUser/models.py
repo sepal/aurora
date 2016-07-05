@@ -155,6 +155,27 @@ class AuroraUser(User):
 
         return submitted_points
 
+    def has_submitted_one_challenge_of_each_chapter(self, course):
+        check = True
+
+        for chapter in Chapter.objects.all():
+            chapter_final_challenge_ids = []
+            # print(chapter.id)
+            for stack in Stack.objects.filter(course=course, chapter=chapter):
+                chapter_final_challenge_ids.append(stack.get_final_challenge().id)
+
+            if len(chapter_final_challenge_ids) > 0:
+                # print(chapter_final_challenge_ids)
+                completed_for_chapter = Elaboration.objects.filter(challenge_id__in=chapter_final_challenge_ids, user=self, submission_time__isnull=False).count()
+
+                if(chapter.id == 8 and self.id == 823):
+                    print(completed_for_chapter)
+
+                if completed_for_chapter == 0:
+                    check = False
+
+        return check
+
 
     def number_of_reviews_rated(self, course):
         return ReviewEvaluation.objects.filter(review__elaboration__user=self).count()

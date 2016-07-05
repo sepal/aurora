@@ -19,21 +19,16 @@ def set_positive_completion_possible():
         for user in AuroraUser.objects.filter(is_staff=False, is_superuser=False):
 
             submitted_points = user.total_points_submitted(course)
+            completed_at_least_one = user.has_submitted_one_challenge_of_each_chapter(course)
 
             try:
-                relation = CourseUserRelation.objects.get(
-                    user=user, course=course)
-                if submitted_points >= 57:
+                relation = CourseUserRelation.objects.get(user=user, course=course)
+
+                if submitted_points >= 57 and completed_at_least_one:
                     relation.positive_completion_possible = True
                 else:
                     relation.positive_completion_possible = False
 
                 relation.save()
             except:
-                print("User " + user.nickname + " is not registered in any courses, skipping.")
-
-    # print(user.number_of_reviews_received(course))
-    # print(user.number_of_reviews_rated(course))
-    #
-    # print(user.extra_points_earned_with_comments(course))
-    # print(user.extra_points_earned_by_rating_reviews(course))
+                print("User " + user.nickname + " is not registered for any coures, skipping.")
