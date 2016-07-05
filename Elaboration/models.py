@@ -249,8 +249,9 @@ class Elaboration(models.Model):
     @staticmethod
     def get_final_evaluation_top_level_tasks(course):
         final_top_level_tasks = []
-        for elaboration in Elaboration.get_top_level_tasks(course):
-            
+        top_level_tasks = Elaboration.get_top_level_tasks(course)
+        for elaboration in top_level_tasks:
+
             cache_key = str(elaboration.user.id) + '_submitted_points'
             if (cache.has_key(cache_key)):
                 submitted_points = cache.get(cache_key)
