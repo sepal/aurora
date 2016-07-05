@@ -248,21 +248,36 @@ class Elaboration(models.Model):
 
     @staticmethod
     def get_final_evaluation_top_level_tasks(course):
-        final_top_level_tasks = []
-        top_level_tasks = Elaboration.get_top_level_tasks(course)
-        for elaboration in top_level_tasks:
+        # final_top_level_tasks = []
+        # top_level_tasks = Elaboration.get_top_level_tasks(course)
+        # for elaboration in top_level_tasks:
+        #
+        #     cache_key = str(elaboration.user.id) + '_submitted_points'
+        #     if (cache.has_key(cache_key)):
+        #         submitted_points = cache.get(cache_key)
+        #     else:
+        #         submitted_points = elaboration.user.total_points_submitted(course)
+        #         cache.set(cache_key, submitted_points, 60*30)
+        #
+        #     if submitted_points >= 57:
+        #         final_top_level_tasks.append(elaboration)
+        #
+        # return final_top_level_tasks
 
-            cache_key = str(elaboration.user.id) + '_submitted_points'
-            if (cache.has_key(cache_key)):
-                submitted_points = cache.get(cache_key)
-            else:
-                submitted_points = elaboration.user.total_points_submitted(course)
-                cache.set(cache_key, submitted_points, 60*30)
+        from Challenge.models import Challenge
 
-            if submitted_points >= 57:
-                final_top_level_tasks.append(elaboration)
+        final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
+        possible_user_ids = CourseUserRelation.objects.filter(course=course, positive_completion_possible=True).values_list('user_id', flat=True)
 
-        return final_top_level_tasks
+        final_top_level_challenges = (
+            Elaboration.objects
+            .filter(challenge__id__in=final_challenge_ids, submission_time__isnull=False, user__is_staff=False, user_id__in=possible_user_ids)
+            .annotate(evaluated=Min('evaluation__submission_time'))
+            .filter(evaluated=None)
+            .order_by('-submission_time')
+        )
+
+        return final_top_level_challenges
 
     @staticmethod
     def get_non_adequate_elaborations(course):
