@@ -200,7 +200,7 @@ def final_evaluation_top_level_tasks(request, course_short_title=None):
         elaborations = elaborations.order_by('submission_time')
 
     # store selected elaborations in session
-    request.session['final_evaluation_elaborations'] = serializers.serialize('json', elaborations)
+    request.session['elaborations'] = serializers.serialize('json', elaborations)
     request.session['selection'] = 'final_evaluation_top_level_tasks'
     request.session['final_evaluation_count'] = len(elaborations)
 
