@@ -226,6 +226,11 @@ h1 {
 	cursor:default;
 }
 
+.allowedfruit .stack_action {
+	color:rgba(58,201,88,1)!important;
+	cursor:pointer;	
+}
+
 .stack_next {
 	z-index:192;
 	position:relative;
