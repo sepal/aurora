@@ -291,7 +291,7 @@ h1 {
 
 .allowedfruit div {
 	opacity:1!important;
-	cursor:default;
+	cursor:pointer;
 }
 
 .forbiddenfruit {
