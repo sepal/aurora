@@ -221,7 +221,7 @@ h1 {
 	z-index:3000;
 }
 
-.forbiddenfruit:not(allowedfruit) .stack_action {
+.forbiddenfruit .stack_action {
 	color:gray!important;
 	cursor:default;
 }
@@ -284,14 +284,24 @@ h1 {
 	border-top:1px solid #e8e8e8;
 }
 
-.forbiddenfruit:not(allowedfruit) div {
+.forbiddenfruit div {
 	opacity:0.4;
 	cursor:default;
 }
 
-.forbiddenfruit:not(allowedfruit){
+.allowedfruit div {
+	opacity:1!important;
 	cursor:default;
 }
+
+.forbiddenfruit {
+	cursor:default;
+}
+
+.allowedfruit {
+	cursor:pointer;
+}
+
 
 .finished {
 	background:rgba(252,252,252,1)!important;
