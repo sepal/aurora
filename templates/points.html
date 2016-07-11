@@ -10,7 +10,7 @@
 {% for stack_data in stacks %}
   {% if stack_data.course_title == course.title %}
   <div class="points_table">
-  
+
 
       <table>
         <tr>
@@ -61,7 +61,35 @@
           <td>Slide Special Points</td>
           <td class="punkte">(inactive)</td>
         </tr>
-		</table></div><table>
+		</table></div>
+
+    <table>
+      <tr class="sum">
+          <td class="letztezeile sum">
+              <a href="javascript:tggle('.extra_list');void(0);" style="color:black;text-decoration:none">
+                  <i style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Extra Points</td>
+          <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden">XX</span></td>
+      </tr>
+    </table>
+    <div class="extra_list" style="display:none">
+      <table>
+        <tr class="pZeile1">
+          <td>Writing Reviews</td>
+          <td class="punkte">{{ stack_data.extra_points_earned_with_reviews }}</td>
+        </tr>
+        <tr class="pZeile1">
+          <td>Comments</td>
+          <td class="punkte">{{ stack_data.extra_points_earned_with_comments }}</td>
+        </tr>
+        <tr class="pZeile1">
+          <td>Rating Reviews</td>
+          <td class="punkte">{{ stack_data.extra_points_earned_by_rating_reviews }}</td>
+        </tr>
+      </table>
+    </div>
+
+
+    <table>
 
 		{% if stack_data.submitted_points_available_total == 0 %}
 	        <tr class="sum">
@@ -170,8 +198,8 @@
 		  <script>
 			  	var a = {{ review_evaluation_data.positive_review_evaluations }} ;
 		 	  	var b= {{ review_evaluation_data.default_review_evaluations }} ;
-		  		var c = {{ review_evaluation_data.negative_review_evaluations }} ; 
-				var ar = a==0?0:Math.round(a/(a+b+c)*100); 
+		  		var c = {{ review_evaluation_data.negative_review_evaluations }} ;
+				var ar = a==0?0:Math.round(a/(a+b+c)*100);
 				var br = b==0?0:Math.round(b/(a+b+c)*100);
 				var cr = c==0?0:Math.round(c/(a+b+c)*100);
 		  </script>
@@ -189,7 +217,7 @@
                       1
                     {% endif %}
                     )">
-              <script>document.write(ar)</script>% 
+              <script>document.write(ar)</script>%
               as »Helpful« (&empty; is {{review_evaluations_positive_ratio|floatformat:"0"}}%)
             </span>
             <br>
@@ -201,7 +229,7 @@
                       1
                     {% endif %}
                     )">
-              <script>document.write(br)</script>% 
+              <script>document.write(br)</script>%
               as »Average« (&empty; is {{review_evaluations_default_ratio|floatformat:"0"}}%)
             </span>
             <br>
@@ -213,7 +241,7 @@
                       1
                     {% endif %}
                     )">
-              <script>document.write(cr)</script>% 
+              <script>document.write(cr)</script>%
               as »Meaningless or Offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
             </span>
           </td>
@@ -233,4 +261,4 @@
       </table>
     </div>
   {% endif %}
-{% endfor %} 
+{% endfor %}
