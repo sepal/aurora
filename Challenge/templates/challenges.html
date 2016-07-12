@@ -23,7 +23,7 @@
 	  <div id="detail_area" class="grid" >
 
     {% for stack in course_stacks|dictsort:"stack.title" %}
-      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
+      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
 		<div class="stack_icon" style="float:right">
 		   	{% if stack.submitted %}
 		   		{% if stack.status.status == 7 %}
