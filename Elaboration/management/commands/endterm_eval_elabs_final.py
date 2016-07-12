@@ -12,15 +12,28 @@ class Command(NoArgsCommand):
 
         evals = Evaluation.objects.all().prefetch_related()
 
+        header = ['username', 'elaboration_id', 'challenge_title', 'elaboration_challenge_id', 'elaboration_creation_time', \
+                  'elaboration_submission_time', 'elaboration_changelog', 'most_helpful_other_user',  \
+                  'evaluation_id', 'tutor_name', 'evaluation_creation_timte', 'evaluation_submission_time', 'evaluation_points']
+
+        print("\t".join(header))
+
         for eval in evals:
             elab = eval.submission
+            if elab.most_helpful_other_user == None:
+                most_helfpul = '/'
+            else:
+                most_helfpul = elab.most_helpful_other_user.matriculation_number
+
             s = "\t".join(["{}"] * 11).format(
-                elab.user.username + " (" + str(elab.user.matriculation_number) + ")",
+                elab.user.nickname + " (" + str(elab.user.matriculation_number) + ")",
                 str(elab.id),
                 elab.challenge.title,
                 str(elab.challenge.id),
                 str(elab.creation_time),
                 str(elab.submission_time),
+                elab.revised_elaboration_changelog,
+                most_helfpul,
                 eval.id,
                 eval.tutor.display_name,
                 str(eval.creation_date),
