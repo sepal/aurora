@@ -2,6 +2,7 @@ __author__ = 'queltos'
 
 from django.core.management.base import NoArgsCommand
 from Evaluation.models import Evaluation
+from Stack.models import StackChallengeRelation
 
 class Command(NoArgsCommand):
     def handle_noargs(self, **options):
@@ -12,7 +13,7 @@ class Command(NoArgsCommand):
 
         evals = Evaluation.objects.all().prefetch_related()
 
-        header = ['username', 'elaboration_id', 'challenge_title', 'elaboration_challenge_id', 'elaboration_creation_time', \
+        header = ['username', 'elaboration_id', 'challenge_title', 'chapter_id', 'course_id', 'elaboration_challenge_id', 'elaboration_creation_time', \
                   'elaboration_submission_time', 'elaboration_changelog', 'most_helpful_other_user',  \
                   'evaluation_id', 'tutor_name', 'evaluation_creation_timte', 'evaluation_submission_time', 'evaluation_points']
 
@@ -29,6 +30,8 @@ class Command(NoArgsCommand):
                 elab.user.nickname + " (" + str(elab.user.matriculation_number) + ")",
                 str(elab.id),
                 elab.challenge.title,
+                StackChallengeRelation.objects.get(challenge=elab.challenge).stack.chapter.id,
+                elab.challenge.course_id,
                 str(elab.challenge.id),
                 str(elab.creation_time),
                 str(elab.submission_time),
