@@ -26,7 +26,7 @@ class Command(NoArgsCommand):
             else:
                 most_helfpul = elab.most_helpful_other_user.matriculation_number
 
-            s = "\t".join(["{}"] * 11).format(
+            s = "\t".join(["{}"] * 15).format(
                 elab.user.nickname + " (" + str(elab.user.matriculation_number) + ")",
                 str(elab.id),
                 elab.challenge.title,
