@@ -31,7 +31,7 @@ class IssueDetail extends React.Component {
   }
 
   renderComments() {
-    if (this.state.comments.length > 1) {
+    if (this.state.comments !== undefined && this.state.comments.length > 1) {
       return <CommentList comments={this.state.comments} />
     }
   }
