@@ -34,6 +34,10 @@ def index(request, course_short_title):
 
 @login_required
 def issue(request, course_short_title, issue_id):
+    return index(request, course_short_title)
+
+@login_required
+def api_issue(request, course_short_title, issue_id):
     issue = Issue.objects.get(pk=1)
     return JsonResponse({
         'id': issue.pk,
@@ -49,5 +53,4 @@ def issue(request, course_short_title, issue_id):
         'post_date': issue.post_date,
         'title': issue.title,
         'body': issue.body,
-
     })
