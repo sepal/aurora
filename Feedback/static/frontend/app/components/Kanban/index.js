@@ -2,7 +2,7 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
-import LaneList from '../LaneList';
+import {LaneList} from '../Lanes';
 
 class Feedback extends React.Component {
   render() {

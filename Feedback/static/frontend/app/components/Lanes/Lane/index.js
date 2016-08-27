@@ -2,7 +2,7 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
-import IssueTeaser from '../IssueList';
+import {IssueList} from '../../Issue';
 
 class Lane extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class Lane extends React.Component {
     }
   }
   renderIssueTeaser() {
-    return <IssueTeaser issues={this.state.issues} />
+    return <IssueList issues={this.state.issues} />
   }
   render() {
     let content;

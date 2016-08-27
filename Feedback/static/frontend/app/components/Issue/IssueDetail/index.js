@@ -3,10 +3,10 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import {observer} from 'mobx-react';
 
-import IssueModel from '../../models/issue'
+import IssueModel from '../../../models/issue'
 
 import styles from './style.scss';
-import CommentList from '../CommentList';
+import {CommentList} from '../../Comments';
 
 @observer
 class IssueDetail extends React.Component {
@@ -55,7 +55,7 @@ class IssueDetail extends React.Component {
 
   render() {
     const upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
-    const date = Moment(this.state.post_date).locale('en').calendar();
+    const date = Moment(this.state.post_date).calendar();
 
     return (
       <div styleName='issueDetail'>
