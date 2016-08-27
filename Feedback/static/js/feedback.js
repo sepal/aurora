@@ -30762,6 +30762,7 @@
 	      this.course = data['course']['name'];
 	      this.post_date = data['post_date'];
 	      this.lane = data['lane']['name'];
+	      this.author = data['author']['name'];
 	      this.type = data['type'];
 	      this.title = data['title'];
 	      this.body = data['body'];

@@ -39,6 +39,7 @@ def issue(request, course_short_title, issue_id):
 @login_required
 def api_issue(request, course_short_title, issue_id):
     issue = Issue.objects.get(pk=issue_id)
+
     return JsonResponse({
         'id': issue.pk,
         'course': {
@@ -48,6 +49,10 @@ def api_issue(request, course_short_title, issue_id):
         'lane': {
             'id': issue.lane.pk,
             'name': issue.lane.name
+        },
+        'author': {
+            'id': issue.author.pk,
+            'name': issue.author.nickname
         },
         'type': issue.type,
         'post_date': issue.post_date,
