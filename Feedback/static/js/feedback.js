@@ -30772,7 +30772,7 @@
 	      var _this = this;
 	
 	      $.ajax({
-	        url: '/gsi/feedback/api/issue/1'
+	        url: '/gsi/feedback/api/issue/' + id
 	      }).done(function (resp) {
 	        _this.loadFromJSON(resp);
 	      });

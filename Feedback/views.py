@@ -38,7 +38,7 @@ def issue(request, course_short_title, issue_id):
 
 @login_required
 def api_issue(request, course_short_title, issue_id):
-    issue = Issue.objects.get(pk=1)
+    issue = Issue.objects.get(pk=issue_id)
     return JsonResponse({
         'id': issue.pk,
         'course': {

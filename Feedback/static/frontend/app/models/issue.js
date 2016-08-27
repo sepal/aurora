@@ -25,7 +25,7 @@ export default class Todo {
 
   @action loadFromAJAX(id) {
     $.ajax({
-      url: '/gsi/feedback/api/issue/1'
+      url: `/gsi/feedback/api/issue/${id}`
     }).done((resp) => {
       this.loadFromJSON(resp);
     });
