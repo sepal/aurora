@@ -3,6 +3,8 @@ import {Link} from 'react-router';
 import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
+import IssueLabel from '../IssueLabel';
+
 function IssueTeaser(props) {
   let upvote_label = props.upvotes == 1 ? "upvote" : "upvotes";
   let comment_label = props.comments == 1 ? "comment" : "comments";
@@ -15,7 +17,7 @@ function IssueTeaser(props) {
       }}
       styleName="issueTeaser"
     >
-      <div><span styleName="type">[{props.type}]</span> {props.title}</div>
+      <IssueLabel type={props.type} title={props.title}/>
       <div styleName="footer">
         <span styleName="upvotes">
           <i className="fa fa-thumbs-up"></i> {props.upvotes} {upvote_label}

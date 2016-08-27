@@ -6,6 +6,9 @@ import {observer} from 'mobx-react';
 import IssueModel from '../../../models/issue'
 
 import styles from './style.scss';
+import IssueLabel from '../IssueLabel'
+import IssueIcon from '../IssueIcon'
+
 import {CommentList} from '../../Comments';
 
 @observer
@@ -16,17 +19,6 @@ class IssueDetail extends React.Component {
     issue.loadFromAJAX(props.params.id);
 
     this.state = issue;
-  }
-
-  renderIcon() {
-    switch (this.state.type) {
-      case 'feature_request':
-        return <i className="fa fa-lightbulb-o"></i>;
-      case 'bug':
-        return <i className="fa fa-bug"></i>;
-      case 'feedback':
-        return <i className="fa fa-commenting-o"></i>;
-    }
   }
 
   renderComments() {
@@ -62,9 +54,9 @@ class IssueDetail extends React.Component {
         <div>
           <div styleName="title">
             <span styleName="icon">
-            {this.renderIcon()}
+              <IssueIcon type={this.state.type} />
             </span>
-            <span styleName="type">[{this.state.type}]</span> {this.state.title}
+            <IssueLabel type={this.state.type} title={this.state.title} />
           </div>
           <div styleName="subtitle">
             <span>by {this.state.author}</span>&nbsp;
