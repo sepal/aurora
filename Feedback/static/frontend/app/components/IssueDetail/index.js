@@ -1,31 +1,30 @@
 import Moment from 'moment';
 import React from 'react';
 import CSSModules from 'react-css-modules';
+import {observer} from 'mobx-react';
+
+import IssueModel from '../../models/issue'
+
 import styles from './style.scss';
 import CommentList from '../CommentList';
 
-import IssueMockup from '../../mockup/issues';
-
+@observer
 class IssueDetail extends React.Component {
   constructor(props) {
     super(props);
-    const issues = IssueMockup.filter(issue => {
-      return issue.id == props.params.id
-    });
+    const issue = new IssueModel();
+    issue.loadFromAJAX(props.params.id);
 
-    if (issues.length != 0) {
-      this.state = issues[0]
-    }
-
+    this.state = issue;
   }
 
   renderIcon() {
     switch (this.state.type) {
-      case 'Feature Request':
+      case 'feature_request':
         return <i className="fa fa-lightbulb-o"></i>;
-      case 'Bug':
+      case 'bug':
         return <i className="fa fa-bug"></i>;
-      case 'Feedback':
+      case 'feedback':
         return <i className="fa fa-commenting-o"></i>;
     }
   }
@@ -56,7 +55,7 @@ class IssueDetail extends React.Component {
 
   render() {
     const upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
-    const date = Moment.unix(this.state.post_date).calendar();
+    const date = Moment(this.state.post_date).locale('en').calendar();
 
     return (
       <div styleName='issueDetail'>
