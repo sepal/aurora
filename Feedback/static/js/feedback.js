@@ -31394,7 +31394,7 @@
 	      });
 	
 	      data.issues.forEach(function (issue_data) {
-	        var lane = _this.getLane(issue_data['lane']);
+	        var lane = _this.getLane(issue_data['lane']['id']);
 	        lane.addIssue(new _issue2.default(issue_data));
 	      });
 	    }

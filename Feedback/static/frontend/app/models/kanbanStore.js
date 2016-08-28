@@ -21,7 +21,7 @@ class KanbanStore {
     });
 
     data.issues.forEach((issue_data) => {
-      let lane = this.getLane(issue_data['lane']);
+      let lane = this.getLane(issue_data['lane']['id']);
       lane.addIssue(new Issue(issue_data));
     });
   }

@@ -20,7 +20,7 @@ def index(request, course_short_title):
     lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name}, lanes))
 
     issues = Issue.objects.all().only('title', 'lane', 'type', 'title')
-    issues = list(map(lambda issue: {'id': issue.pk, 'title': issue.title, 'lane': issue.lane.id, 'type': issue.type}, issues))
+    issues = list(map(lambda issue: issue.serializable_teaser, issues))
 
     data = {
         'course': {
@@ -29,7 +29,7 @@ def index(request, course_short_title):
         },
         'lanes': lanes,
         'issues': issues
-    };
+    }
 
     return render(
         request, 'Feedback/index.html',
@@ -48,22 +48,4 @@ def issue(request, course_short_title, issue_id):
 def api_issue(request, course_short_title, issue_id):
     issue = Issue.objects.get(pk=issue_id)
 
-    return JsonResponse({
-        'id': issue.pk,
-        'course': {
-            'id': issue.course.pk,
-            'name': issue.course.title
-        },
-        'lane': {
-            'id': issue.lane.pk,
-            'name': issue.lane.name
-        },
-        'author': {
-            'id': issue.author.pk,
-            'name': issue.author.nickname
-        },
-        'type': issue.type,
-        'post_date': issue.post_date,
-        'title': issue.title,
-        'body': issue.body,
-    })
+    return JsonResponse(issue.serializable)
