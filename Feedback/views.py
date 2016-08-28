@@ -22,12 +22,20 @@ def index(request, course_short_title):
     issues = Issue.objects.all().only('title', 'lane', 'type', 'title')
     issues = list(map(lambda issue: {'id': issue.pk, 'title': issue.title, 'lane': issue.lane.id, 'type': issue.type}, issues))
 
+    data = {
+        'course': {
+            'id': course.pk,
+            'title': course.title,
+        },
+        'lanes': lanes,
+        'issues': issues
+    };
+
     return render(
         request, 'Feedback/index.html',
         {
             'course': course,
-            'lanes': json.dumps(lanes),
-            'issues': json.dumps(issues)
+            'data': json.dumps(data)
         }
     )
 

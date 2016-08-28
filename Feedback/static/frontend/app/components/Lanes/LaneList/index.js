@@ -8,7 +8,7 @@ function LaneList(props) {
   var lanes = props.lanes.map(lane => {
     return (
       <li styleName="item" key={lane.id}>
-        <Lane title={lane.name} id={lane.id} />
+        <Lane {...lane} />
       </li>
     )
   });

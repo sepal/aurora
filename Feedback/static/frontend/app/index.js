@@ -1,7 +1,8 @@
 import Moment from 'moment';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, IndexRoute, browserHistory} from 'react-router'
+import {Router, Route, IndexRoute, browserHistory} from 'react-router';
+import kanbanStore from './models/kanbanStore';
 
 import Feedback from './components/Feedback';
 import Kanban from './components/Kanban';
@@ -10,6 +11,9 @@ import {IssueDetail} from './components/Issue';
 
 document.addEventListener("DOMContentLoaded", function (event) {
   Moment.locale('en');
+
+  let str = document.getElementById('data').innerHTML;
+  kanbanStore.loadFromJSONString(str);
 
   var node = document.getElementById('test');
   ReactDOM.render(
@@ -22,3 +26,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
       </Router>
     ), node);
 });
+

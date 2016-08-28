@@ -1,22 +1,14 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
+import {observer} from 'mobx-react';
 import styles from './style.scss';
 
 import {IssueList} from '../../Issue';
 
+@observer
 class Lane extends React.Component {
-  constructor(props) {
-    super(props);
-    const issues = issue_list.filter(issue => {
-      return issue.lane == this.props.id
-    });
-
-    this.state = {
-      issues: issues
-    }
-  }
   renderIssueTeaser() {
-    return <IssueList issues={this.state.issues} />
+    return <IssueList issues={this.props.issues} />
   }
   render() {
     let content;
@@ -30,7 +22,7 @@ class Lane extends React.Component {
 
     return (
       <div styleName='lane'>
-        <h2 styleName="title">{this.props.title}</h2>
+        <h2 styleName="title">{this.props.name}</h2>
         <div styleName="content">
           {content}
         </div>

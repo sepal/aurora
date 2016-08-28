@@ -10,25 +10,39 @@ export default class Todo {
   @observable title;
   @observable body;
 
-  constructor() {
+  constructor(data) {
+    if (data != undefined) {
+      this.fromJSON(data);
+    }
   }
 
-  @action loadFromJSON(data) {
+  @action fromJSON(data) {
+    // Required data.
     this.id = data['id'];
-    this.course = data['course']['name'];
-    this.post_date = data['post_date'];
-    this.lane = data['lane']['name'];
-    this.author = data['author']['name'];
-    this.type = data['type'];
     this.title = data['title'];
-    this.body = data['body'];
+    this.type = data['type'];
+    this.lane = data['lane'];
+
+    // Optional data, for detail view only.
+    if ('course' in data)
+      this.course = data['course']['name'];
+
+    if ('post_date' in data)
+      this.course = data['post_date'];
+
+    if ('author' in data)
+      this.course = data['author'];
+
+    if ('body' in data)
+      this.course = data['body'];
+
   }
 
   @action loadFromAJAX(id) {
     $.ajax({
       url: `/gsi/feedback/api/issue/${id}`
     }).done((resp) => {
-      this.loadFromJSON(resp);
+      this.fromJSON(resp);
     });
   }
 }
