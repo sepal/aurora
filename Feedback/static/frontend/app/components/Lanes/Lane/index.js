@@ -13,7 +13,7 @@ class Lane extends React.Component {
   render() {
     let content;
 
-    if (this.state.issues == 0) {
+    if (this.props.issues.length  == 0) {
       content = <div styleName="empty">No issues here yet.</div>
     }
     else {

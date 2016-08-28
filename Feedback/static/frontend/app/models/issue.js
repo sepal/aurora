@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx';
+import {observable, action, computed} from 'mobx';
 
 export default class Todo {
   @observable id;
@@ -25,16 +25,16 @@ export default class Todo {
 
     // Optional data, for detail view only.
     if ('course' in data)
-      this.course = data['course']['name'];
+      this.course = data['course'];
 
     if ('post_date' in data)
-      this.course = data['post_date'];
+      this.post_date = data['post_date'];
 
     if ('author' in data)
-      this.course = data['author'];
+      this.author = data['author']['name'];
 
     if ('body' in data)
-      this.course = data['body'];
+      this.body = data['body'];
 
   }
 

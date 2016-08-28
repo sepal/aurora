@@ -16,9 +16,11 @@ class IssueDetail extends React.Component {
   constructor(props) {
     super(props);
     const issue = new IssueModel();
-    issue.loadFromAJAX(props.params.id);
-
     this.state = issue;
+  }
+
+  componentDidMount() {
+    this.state.loadFromAJAX(this.props.params.id);
   }
 
   renderComments() {
@@ -48,7 +50,6 @@ class IssueDetail extends React.Component {
   render() {
     const upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
     const date = Moment(this.state.post_date).calendar();
-
     return (
       <div styleName='issueDetail'>
         <div>

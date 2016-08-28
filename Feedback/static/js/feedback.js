@@ -27649,7 +27649,7 @@
 	    value: function render() {
 	      var content = void 0;
 	
-	      if (this.state.issues == 0) {
+	      if (this.props.issues.length == 0) {
 	        content = _react2.default.createElement(
 	          'div',
 	          { styleName: 'empty' },
@@ -27781,13 +27781,16 @@
 	    var _this = _possibleConstructorReturn(this, (IssueDetail.__proto__ || Object.getPrototypeOf(IssueDetail)).call(this, props));
 	
 	    var issue = new _issue2.default();
-	    issue.loadFromAJAX(props.params.id);
-	
 	    _this.state = issue;
 	    return _this;
 	  }
 	
 	  _createClass(IssueDetail, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.state.loadFromAJAX(this.props.params.id);
+	    }
+	  }, {
 	    key: 'renderComments',
 	    value: function renderComments() {
 	      if (this.state.comments !== undefined && this.state.comments.length > 1) {
@@ -27822,7 +27825,6 @@
 	    value: function render() {
 	      var upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
 	      var date = (0, _moment2.default)(this.state.post_date).calendar();
-	
 	      return _react2.default.createElement(
 	        'div',
 	        { styleName: 'issueDetail' },
@@ -30606,13 +30608,13 @@
 	      this.lane = data['lane'];
 	
 	      // Optional data, for detail view only.
-	      if ('course' in data) this.course = data['course']['name'];
+	      if ('course' in data) this.course = data['course'];
 	
-	      if ('post_date' in data) this.course = data['post_date'];
+	      if ('post_date' in data) this.post_date = data['post_date'];
 	
-	      if ('author' in data) this.course = data['author'];
+	      if ('author' in data) this.author = data['author']['name'];
 	
-	      if ('body' in data) this.course = data['body'];
+	      if ('body' in data) this.body = data['body'];
 	    }
 	  }, {
 	    key: 'loadFromAJAX',
