@@ -1,16 +1,15 @@
 import React from 'react';
 import {Link} from 'react-router';
-import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
-class Modal extends React.Component {
+export default class Modal extends React.Component {
   render() {
     return (
-      <div styleName='modal'>
-        <div styleName="window">
-          <div styleName="header">
+      <div className={styles.modal}>
+        <div className={styles.window}>
+          <div className={styles.header}>
             <Link to={this.props.returnTo}>
-              <button styleName="close">
+              <button className={styles.close}>
                 <i className="fa fa-times-circle"></i>
               </button>
             </Link>
@@ -23,5 +22,3 @@ class Modal extends React.Component {
     );
   }
 }
-
-export default CSSModules(Modal, styles)

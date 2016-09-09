@@ -1,8 +1,7 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
-function IssueLabel(props) {
+export default function IssueLabel(props) {
   var label = '';
   switch (props.type) {
     case 'bug':
@@ -21,9 +20,7 @@ function IssueLabel(props) {
 
   return (
     <div>
-      <span styleName='issueTypeLabel'>[{label}]</span> {props.title}
+      <span className={styles.issueTypeLabel}>[{label}]</span> {props.title}
     </div>
   );
 }
-
-export default CSSModules(IssueLabel, styles)

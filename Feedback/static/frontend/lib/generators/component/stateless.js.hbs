@@ -1,13 +1,12 @@
 import React from 'react';
 {{#if addStylesheet}}
-import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 {{/if}}
 
 function {{ properCase name }}(props) {
   return (
 {{#if addStylesheet}}
-    <div styleName='{{ camelCase name }}'>
+    <div className=\{style.{{ camelCase name }}\}>
 {{else}}
     <div>
 {{/if}}
@@ -15,8 +14,4 @@ function {{ properCase name }}(props) {
   );
 }
 
-{{#if addStylesheet}}
-export default CSSModules({{ properCase name }}, styles)
-{{else}}
 export default {{ properCase name }}
-{{/if}}

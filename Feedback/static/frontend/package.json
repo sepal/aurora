@@ -35,7 +35,6 @@
     "mobx-react": "^3.5.5",
     "mobx-react-devtools": "^4.2.5",
     "moment": "^2.13.0",
-    "react-css-modules": "^3.7.6",
     "react-lite": "^0.15.14",
     "react-router": "^2.4.1"
   }

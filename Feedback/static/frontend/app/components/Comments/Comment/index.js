@@ -1,11 +1,10 @@
 import Moment from 'moment';
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
 const url_regex = /(https?:\/\/[^\s]+)/g;
 
-function Comment(props) {
+export default function Comment(props) {
   let comments = props.comment;
   comments = comments.replace(url_regex, url => {
     return `<a href="${url}">${url}</a>`;
@@ -14,16 +13,14 @@ function Comment(props) {
   const date = Moment.unix(props.post_date).calendar();
 
   return (
-    <div styleName='comment'>
-      <div styleName="header">
-        <img styleName="pic" src={props.pic} />
+    <div className={styles.comment}>
+      <div className={styles.header}>
+        <img className={styles.pic} src={props.pic} />
         <span>{props.author}</span>&nbsp;
-        <span styleName="date">on {date}</span>
+        <span className={styles.date}>on {date}</span>
       </div>
-      <div styleName="body"
+      <div className={styles.body}
            dangerouslySetInnerHTML={{__html: comments}}></div>
     </div>
   );
 }
-
-export default CSSModules(Comment, styles)

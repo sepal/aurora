@@ -1,6 +1,5 @@
 import Moment from 'moment';
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import {observer} from 'mobx-react';
 
 import IssueModel from '../../../models/issue'
@@ -12,7 +11,7 @@ import IssueIcon from '../IssueIcon'
 import {CommentList} from '../../Comments';
 
 @observer
-class IssueDetail extends React.Component {
+export default class IssueDetail extends React.Component {
   constructor(props) {
     super(props);
     const issue = new IssueModel();
@@ -40,7 +39,7 @@ class IssueDetail extends React.Component {
       });
 
       return (
-        <ul styleName="images">
+        <ul className={styles.images}>
           {images}
         </ul>
       )
@@ -51,23 +50,23 @@ class IssueDetail extends React.Component {
     const upvote_label = this.state.upvotes > 1 ? "upvotes" : "upvote";
     const date = Moment(this.state.post_date).calendar();
     return (
-      <div styleName='issueDetail'>
+      <div className={styles.issueDetail}>
         <div>
-          <div styleName="title">
-            <span styleName="icon">
+          <div className={styles.title}>
+            <span className={styles.icon}>
               <IssueIcon type={this.state.type} />
             </span>
             <IssueLabel type={this.state.type} title={this.state.title} />
           </div>
-          <div styleName="subtitle">
+          <div className={styles.subtitle}>
             <span>by {this.state.author}</span>&nbsp;
             <span>on {date}</span>,&nbsp;
             <span>{this.state.upvotes} {upvote_label}</span>
           </div>
         </div>
-        <div styleName="content">
-          <div styleName="body">{this.state.body}</div>
-          <ul styleName="actions">
+        <div className={styles.content}>
+          <div className={styles.body}>{this.state.body}</div>
+          <ul className={styles.actions}>
             <li>
               <button><i className="fa fa-thumbs-up"></i> upvote</button>
             </li>
@@ -77,13 +76,13 @@ class IssueDetail extends React.Component {
           </ul>
         </div>
         {this.renderImages()}
-        <div styleName="comments">
+        <div className={styles.comments}>
           <h2>Comments:</h2>
-          <div styleName="new-comment">
-            <div styleName="pic">
+          <div className={styles.new-comment}>
+            <div className={styles.pic}>
               <img src="/static/img/8.png" />
             </div>
-            <div styleName="textarea">
+            <div className={styles.textarea}>
               <textarea rows="3" placeholder="Create a new comment"></textarea>
             </div>
             <button>Submit</button>
@@ -94,5 +93,3 @@ class IssueDetail extends React.Component {
     );
   }
 }
-
-export default CSSModules(IssueDetail, styles)

@@ -1,22 +1,19 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
 import Lane from '../Lane';
 
-function LaneList(props) {
+export default function LaneList(props) {
   var lanes = props.lanes.map(lane => {
     return (
-      <li styleName="item" key={lane.id}>
+      <li className={styles.item} key={lane.id}>
         <Lane {...lane} />
       </li>
     )
   });
   return (
-    <ul styleName='laneList'>
+    <ul className={styles.laneList}>
       {lanes}
     </ul>
   );
 }
-
-export default CSSModules(LaneList, styles)

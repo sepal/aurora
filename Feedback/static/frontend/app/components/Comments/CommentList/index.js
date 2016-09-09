@@ -1,11 +1,10 @@
 import React from 'react';
-import CSSModules from 'react-css-modules';
 import styles from './style.scss';
 
 import Comment from "../Comment";
 
 
-function CommentList(props) {
+export default function CommentList(props) {
   const comments = props.comments.map(comment => {
     return (
       <li key="comment.id">
@@ -23,5 +22,3 @@ function CommentList(props) {
     </ul>
   );
 }
-
-export default CSSModules(CommentList, styles)
