@@ -76,19 +76,6 @@ export default class IssueDetail extends React.Component {
           </ul>
         </div>
         {this.renderImages()}
-        <div className={styles.comments}>
-          <h2>Comments:</h2>
-          <div className={styles.new-comment}>
-            <div className={styles.pic}>
-              <img src="/static/img/8.png" />
-            </div>
-            <div className={styles.textarea}>
-              <textarea rows="3" placeholder="Create a new comment"></textarea>
-            </div>
-            <button>Submit</button>
-          </div>
-          {this.renderComments()}
-        </div>
       </div>
     );
   }
