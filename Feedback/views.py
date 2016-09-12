@@ -45,6 +45,10 @@ def issue(request, course_short_title, issue_id):
     return index(request, course_short_title)
 
 @login_required
+def issue_edit(request, course_short_title, issue_id):
+    return index(request, course_short_title)
+
+@login_required
 def api_issue(request, course_short_title, issue_id):
     issue = Issue.objects.get(pk=issue_id)
 

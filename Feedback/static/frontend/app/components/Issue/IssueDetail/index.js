@@ -2,11 +2,11 @@ import Moment from 'moment';
 import React from 'react';
 import {observer} from 'mobx-react';
 
-import IssueModel from '../../../models/issue'
+import IssueModel from '../../../models/issue';
 
 import styles from './style.scss';
 import IssueLabel from '../IssueLabel'
-import IssueIcon from '../IssueIcon'
+import IssueIcon from '../IssueIcon';
 
 import {CommentList} from '../../Comments';
 

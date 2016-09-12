@@ -1,0 +1,14 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+
+.text_area {
+  margin: $spacing;
+  label {
+    display: block;
+  }
+  textarea {
+    border: 1px solid $gray--light;
+    margin-top: $spacing--small;
+    width: 100%;
+  }
+}

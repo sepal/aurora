@@ -1,5 +1,6 @@
 import {observable, action, computed} from 'mobx';
 
+
 export default class Todo {
   @observable id;
   @observable post_date;
@@ -45,4 +46,14 @@ export default class Todo {
       this.fromJSON(resp);
     });
   }
+
+  // Should contain the same as Issue model in python.
+  options() {
+    return {
+      bug: 'Bug',
+      feature_request: 'Feature Request',
+      feedback: 'Feedback',
+      security: 'Security'
+    };
+  };
 }

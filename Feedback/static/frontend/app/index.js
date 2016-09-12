@@ -6,7 +6,7 @@ import kanbanStore from './models/kanbanStore';
 
 import Feedback from './components/Feedback';
 import Kanban from './components/Kanban';
-import {IssueDetail} from './components/Issue';
+import {IssueDetail, IssueForm} from './components/Issue';
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         <Route path="/gsi/feedback" component={Feedback}>
           <IndexRoute component={Kanban} />
           <Route path="/gsi/feedback/issue/:id" component={IssueDetail} />
+          <Route path="/gsi/feedback/issue/:id/edit" component={IssueForm} />
         </Route>
       </Router>
     ), node);
