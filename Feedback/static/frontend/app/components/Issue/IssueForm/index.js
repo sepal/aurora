@@ -10,6 +10,8 @@ class IssueForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = new IssueModel();
+
+    this.updateChange = this.updateChange.bind(this);
   }
 
   componentDidMount() {
@@ -22,13 +24,27 @@ class IssueForm extends React.Component {
     event.preventDefault();
   }
 
+  updateChange(key, value) {
+    let state = this.state;
+    state[key] = value;
+    this.setState(state);
+  }
+
   render() {
     return (
       <div className={styles.issueForm}>
         <form>
-          <TextInput label="Title" value={this.state.title} onChange={this.state.} />
-          <Select label="Issue type" options={this.state.options()} />
-          <TextArea label="Description" value={this.state.body} />
+          <TextInput label="Title" value={this.state.title}
+                     onChange={this.updateChange} name="title" />
+          <Select label="Issue type" options={{
+            bug: 'Bug',
+            feature_request: 'Feature Request',
+            feedback: 'Feedback',
+            security: 'Security'
+          }}
+                  onChange={this.updateChange} name="type" />
+          <TextArea label="Description" value={this.state.body}
+                    onChange={this.updateChange} name="body" />
           <Submit onClick={this.handleClick} />
         </form>
       </div>

@@ -169,6 +169,29 @@
 .style__date___TxFj4 {
   color: #aaa;
   font-size: 0.9em; }
+.style__select___12K_d {
+  margin: 14px; }
+  .style__select___12K_d label {
+    display: block; }
+  .style__select___12K_d select {
+    margin-top: 7px; }
+.style__submit___3AEKx {
+  margin: 14px;
+  text-align: right; }
+.style__text_area___2cwnc {
+  margin: 14px; }
+  .style__text_area___2cwnc label {
+    display: block; }
+  .style__text_area___2cwnc textarea {
+    border: 1px solid #cbcbcb;
+    margin-top: 7px;
+    width: 100%; }
+.style__text_input___2S6cK {
+  margin: 14px; }
+  .style__text_input___2S6cK label {
+    display: block; }
+  .style__text_input___2S6cK input {
+    margin-top: 7px; }
 .style__item___3g1r5 {
   margin-top: 21px; }
   .style__item___3g1r5:nth-child(1) {
