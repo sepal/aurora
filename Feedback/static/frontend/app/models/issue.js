@@ -1,5 +1,5 @@
 import {observable, action, computed} from 'mobx';
-
+import {getCookieSetting} from '../utilities';
 
 export default class Todo {
   @observable id;
@@ -44,6 +44,32 @@ export default class Todo {
       url: `/gsi/feedback/api/issue/${id}`
     }).done((resp) => {
       this.fromJSON(resp);
+    });
+  }
+
+  @action update() {
+    const data = JSON.stringify({
+      lane: this.lane,
+      type: this.type,
+      title: this.title,
+      body: this.body,
+      course: this.course
+    });
+
+    console.log(data);
+
+    $.ajax({
+      method: 'PUT',
+      headers: {
+        'X-CSRFToken': getCookieSetting('csrftoken'),
+        'Content-Type': 'application/json'
+      },
+      data: data,
+      url: `/gsi/feedback/api/issue/${this.id}`
+    }).done((resp) => {
+      console.log(resp);
+    }).fail((err) => {
+      console.log(err)
     });
   }
 

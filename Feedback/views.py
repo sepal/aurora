@@ -44,12 +44,31 @@ def index(request, course_short_title):
 def issue(request, course_short_title, issue_id):
     return index(request, course_short_title)
 
+
 @login_required
 def issue_edit(request, course_short_title, issue_id):
     return index(request, course_short_title)
 
+
 @login_required
 def api_issue(request, course_short_title, issue_id):
     issue = Issue.objects.get(pk=issue_id)
+    if request.method == 'GET':
+        return JsonResponse(issue.serializable)
+    elif request.method == 'PUT':
+        # todo: Check how to safely save user strings and so on.
+        print(request.body)
+        data = json.loads(request.body.decode('utf-8'))
 
-    return JsonResponse(issue.serializable)
+        if issue.lane.pk != data['lane']['id']:
+            new_lane = Lane.objects.get(pk=data['lane']['id'])
+            issue.lane = new_lane
+
+        issue.type = data['type']
+        issue.title = data['title']
+        issue.body = data['body']
+
+        issue.save()
+
+        return JsonResponse(issue.serializable)
+    return JsonResponse([])

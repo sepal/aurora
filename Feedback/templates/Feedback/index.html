@@ -15,6 +15,7 @@
   <script id="data" type="application/json">
     {{ data|safe }}
   </script>
+  <input value="{% csrf_token %}" id="token" type="hidden" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/feedback.css' %}" />
 
 {% endblock %}

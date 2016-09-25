@@ -9,24 +9,29 @@ import {TextInput, TextArea, Select, Submit} from '../../forms';
 class IssueForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = new IssueModel();
+    this.state = {
+      issue: new IssueModel()
+    };
 
     this.updateChange = this.updateChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     if (this.props.params) {
-      this.state.loadFromAJAX(this.props.params.id);
+      this.state.issue .loadFromAJAX(this.props.params.id);
     }
   }
 
   handleClick(event) {
     event.preventDefault();
+    this.state.issue .update();
   }
 
   updateChange(key, value) {
     let state = this.state;
-    state[key] = value;
+    state.issue [key] = value;
+    console.log(state);
     this.setState(state);
   }
 
@@ -34,7 +39,7 @@ class IssueForm extends React.Component {
     return (
       <div className={styles.issueForm}>
         <form>
-          <TextInput label="Title" value={this.state.title}
+          <TextInput label="Title" value={this.state.issue.title}
                      onChange={this.updateChange} name="title" />
           <Select label="Issue type" options={{
             bug: 'Bug',
@@ -43,7 +48,7 @@ class IssueForm extends React.Component {
             security: 'Security'
           }}
                   onChange={this.updateChange} name="type" />
-          <TextArea label="Description" value={this.state.body}
+          <TextArea label="Description" value={this.state.issue.body}
                     onChange={this.updateChange} name="body" />
           <Submit onClick={this.handleClick} />
         </form>
