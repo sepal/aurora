@@ -65,9 +65,9 @@ export default class Todo {
       data: data,
       url: `/gsi/feedback/api/issue/${this.id}`
     }).done((resp) => {
-      console.log(resp);
+      // todo: Do something here.
     }).fail((err) => {
-      console.log(err)
+      console.error(`Couldn't not subit form due to: ${err}`)
     });
   }
 

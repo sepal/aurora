@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './style.scss';
 import {observer} from 'mobx-react';
+import {withRouter} from 'react-router';
 
 import IssueModel from '../../../models/issue';
 import {TextInput, TextArea, Select, Submit} from '../../forms';
@@ -19,24 +20,23 @@ class IssueForm extends React.Component {
 
   componentDidMount() {
     if (this.props.params) {
-      this.state.issue .loadFromAJAX(this.props.params.id);
+      this.state.issue.loadFromAJAX(this.props.params.id);
     }
   }
 
   handleClick(event) {
     event.preventDefault();
-    this.state.issue .update();
+    this.state.issue.update();
+    this.props.router.push(`/gsi/feedback/issue/${this.state.issue.id}`);
   }
 
   updateChange(key, value) {
     let state = this.state;
     state.issue [key] = value;
-    console.log(state);
     this.setState(state);
   }
 
   render() {
-    console.log(this.state.issue.type);
     return (
       <div className={styles.issueForm}>
         <form>
@@ -59,4 +59,4 @@ class IssueForm extends React.Component {
   }
 }
 
-export default IssueForm
+export default withRouter(IssueForm);

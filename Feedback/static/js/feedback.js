@@ -25223,9 +25223,9 @@
 	        data: data,
 	        url: '/gsi/feedback/api/issue/' + this.id
 	      }).done(function (resp) {
-	        console.log(resp);
+	        // todo: Do something here.
 	      }).fail(function (err) {
-	        console.log(err);
+	        console.error('Couldn\'t not subit form due to: ' + err);
 	      });
 	    }
 	
@@ -26202,6 +26202,8 @@
 	
 	var _mobxReact = __webpack_require__(181);
 	
+	var _reactRouter = __webpack_require__(106);
+	
 	var _issue = __webpack_require__(173);
 	
 	var _issue2 = _interopRequireDefault(_issue);
@@ -26245,19 +26247,18 @@
 	    value: function handleClick(event) {
 	      event.preventDefault();
 	      this.state.issue.update();
+	      this.props.router.push('/gsi/feedback/issue/' + this.state.issue.id);
 	    }
 	  }, {
 	    key: 'updateChange',
 	    value: function updateChange(key, value) {
 	      var state = this.state;
 	      state.issue[key] = value;
-	      console.log(state);
 	      this.setState(state);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.state.issue.type);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _style2.default.issueForm },
@@ -26285,7 +26286,7 @@
 	  return IssueForm;
 	}(_react2.default.Component)) || _class;
 	
-	exports.default = IssueForm;
+	exports.default = (0, _reactRouter.withRouter)(IssueForm);
 
 /***/ },
 /* 199 */
