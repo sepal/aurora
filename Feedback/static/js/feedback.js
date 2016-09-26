@@ -25214,8 +25214,6 @@
 	        course: this.course
 	      });
 	
-	      console.log(data);
-	
 	      $.ajax({
 	        method: 'PUT',
 	        headers: {
@@ -25285,7 +25283,7 @@
 	});
 	exports.getCookieSetting = undefined;
 	
-	var _getCookieSetting2 = __webpack_require__(216);
+	var _getCookieSetting2 = __webpack_require__(175);
 	
 	var _getCookieSetting3 = _interopRequireDefault(_getCookieSetting2);
 	
@@ -25294,7 +25292,35 @@
 	exports.getCookieSetting = _getCookieSetting3.default;
 
 /***/ },
-/* 175 */,
+/* 175 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	/**
+	 * Returns the token from the cookie.
+	 */
+	exports.default = function (name) {
+	  var cookieValue = null;
+	  if (document.cookie && document.cookie != '') {
+	    var cookies = document.cookie.split(';');
+	    for (var i = 0; i < cookies.length; i++) {
+	      var cookie = jQuery.trim(cookies[i]);
+	      // Does this cookie string begin with the name we want?
+	      if (cookie.substring(0, name.length + 1) == name + '=') {
+	        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	        break;
+	      }
+	    }
+	  }
+	  return cookieValue;
+	};
+
+/***/ },
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -26231,6 +26257,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log(this.state.issue.type);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _style2.default.issueForm },
@@ -26245,6 +26272,7 @@
 	              feedback: 'Feedback',
 	              security: 'Security'
 	            },
+	            value: this.state.issue.type,
 	            onChange: this.updateChange, name: 'type' }),
 	          _react2.default.createElement(_forms.TextArea, { label: 'Description', value: this.state.issue.body,
 	            onChange: this.updateChange, name: 'body' }),
@@ -26349,11 +26377,19 @@
 	    value: function render() {
 	      var options = [];
 	      for (var key in this.props.options) {
-	        options.push(_react2.default.createElement(
-	          'option',
-	          { value: key },
-	          this.props.options[key]
-	        ));
+	        if (this.props.value == key) {
+	          options.push(_react2.default.createElement(
+	            'option',
+	            { value: key, selected: true },
+	            this.props.options[key]
+	          ));
+	        } else {
+	          options.push(_react2.default.createElement(
+	            'option',
+	            { value: key },
+	            this.props.options[key]
+	          ));
+	        }
 	      }
 	
 	      return _react2.default.createElement(
@@ -26442,6 +26478,7 @@
 	}(_react2.default.Component), _class.propTypes = {
 	  label: _react2.default.PropTypes.string.isRequired(),
 	  name: _react2.default.PropTypes.string.isRequired(),
+	  value: _react2.default.PropTypes.string.isRequired(),
 	  onChange: _react2.default.PropTypes.func
 	}, _class.defaultProps = {
 	  onChange: function onChange() {}
@@ -26559,7 +26596,9 @@
 	        ),
 	        _react2.default.createElement(
 	          'textarea',
-	          { rows: this.props.rows, name: this.props.name, id: this.props.name,
+	          { rows: this.props.rows,
+	            name: this.props.name,
+	            id: this.props.name,
 	            onChange: this.onChange },
 	          this.props.value
 	        )
@@ -26571,7 +26610,6 @@
 	}(_InputElement3.default), _class.propTypes = {
 	  name: _react2.default.PropTypes.string,
 	  label: _react2.default.PropTypes.string,
-	  value: _react2.default.PropTypes.string,
 	  rows: _react2.default.PropTypes.number,
 	  onChange: _react2.default.PropTypes.func
 	}, _class.defaultProps = {
@@ -26658,7 +26696,6 @@
 	}(_InputElement3.default), _class.propTypes = {
 	  name: _react2.default.PropTypes.string.isRequired(),
 	  label: _react2.default.PropTypes.string.isRequired(),
-	  value: _react2.default.PropTypes.string.isRequired(),
 	  size: _react2.default.PropTypes.number,
 	  onChange: _react2.default.PropTypes.func
 	}, _class.defaultProps = {
@@ -26853,35 +26890,6 @@
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"laneList":"style__laneList___2Lc4I","item":"style__item___3aj6k"};
-
-/***/ },
-/* 216 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	/**
-	 * Returns the token from the cookie.
-	 */
-	exports.default = function (name) {
-	  var cookieValue = null;
-	  if (document.cookie && document.cookie != '') {
-	    var cookies = document.cookie.split(';');
-	    for (var i = 0; i < cookies.length; i++) {
-	      var cookie = jQuery.trim(cookies[i]);
-	      // Does this cookie string begin with the name we want?
-	      if (cookie.substring(0, name.length + 1) == name + '=') {
-	        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-	        break;
-	      }
-	    }
-	  }
-	  return cookieValue;
-	};
 
 /***/ }
 /******/ ]);

@@ -36,6 +36,7 @@ class IssueForm extends React.Component {
   }
 
   render() {
+    console.log(this.state.issue.type);
     return (
       <div className={styles.issueForm}>
         <form>
@@ -47,6 +48,7 @@ class IssueForm extends React.Component {
             feedback: 'Feedback',
             security: 'Security'
           }}
+                  value={this.state.issue.type}
                   onChange={this.updateChange} name="type" />
           <TextArea label="Description" value={this.state.issue.body}
                     onChange={this.updateChange} name="body" />

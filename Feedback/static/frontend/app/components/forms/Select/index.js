@@ -18,7 +18,11 @@ export default class Select extends InputElement {
   render() {
     let options = [];
     for (let key in this.props.options) {
-      options.push(<option value={key}>{this.props.options[key]}</option>);
+      if (this.props.value == key) {
+        options.push(<option value={key} selected>{this.props.options[key]}</option>);
+      } else {
+        options.push(<option value={key}>{this.props.options[key]}</option>);
+      }
     }
 
     return (

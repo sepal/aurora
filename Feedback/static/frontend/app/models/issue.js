@@ -56,8 +56,6 @@ export default class Todo {
       course: this.course
     });
 
-    console.log(data);
-
     $.ajax({
       method: 'PUT',
       headers: {
