@@ -1,7 +1,7 @@
 import {observable, action, computed} from 'mobx';
 import {getCookieSetting} from '../utilities';
 
-export default class Todo {
+export default class Issue {
   @observable id;
   @observable post_date;
   @observable course;
@@ -48,26 +48,35 @@ export default class Todo {
   }
 
   @action update() {
-    const data = JSON.stringify({
-      lane: this.lane,
-      type: this.type,
-      title: this.title,
-      body: this.body,
-      course: this.course
-    });
+    return new Promise((resolve, reject) => {
+      const data = JSON.stringify({
+        lane: this.lane,
+        type: this.type,
+        title: this.title,
+        body: this.body,
+        course: this.course
+      });
 
-    $.ajax({
-      method: 'PUT',
-      headers: {
-        'X-CSRFToken': getCookieSetting('csrftoken'),
-        'Content-Type': 'application/json'
-      },
-      data: data,
-      url: `/gsi/feedback/api/issue/${this.id}`
-    }).done((resp) => {
-      // todo: Do something here.
-    }).fail((err) => {
-      console.error(`Couldn't not subit form due to: ${err}`)
+      $.ajax({
+        method: 'PUT',
+        headers: {
+          'X-CSRFToken': getCookieSetting('csrftoken'),
+          'Content-Type': 'application/json'
+        },
+        data: data,
+        url: `/gsi/feedback/api/issue/${this.id}`
+      }).done((resp) => {
+        var updatedIssue = new Issue();
+        try {
+          updatedIssue.fromJSON(resp);
+        } catch (exception) {
+          reject(exception);
+          return;
+        }
+        resolve(updatedIssue);
+      }).fail((err) => {
+        reject(err);
+      });
     });
   }
 

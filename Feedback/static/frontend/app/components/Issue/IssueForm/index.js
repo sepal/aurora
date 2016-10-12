@@ -26,8 +26,9 @@ class IssueForm extends React.Component {
 
   handleClick(event) {
     event.preventDefault();
-    this.state.issue.update();
-    this.props.router.push(`/gsi/feedback/issue/${this.state.issue.id}`);
+    this.state.issue.update().then((issue) => {
+      this.props.router.push(`/gsi/feedback/issue/${issue.id}`);
+    });
   }
 
   updateChange(key, value) {

@@ -19235,8 +19235,6 @@
 	
 	var _routerWarning2 = _interopRequireDefault(_routerWarning);
 	
-	var _Actions = __webpack_require__(119);
-	
 	var _computeChangedRoutes2 = __webpack_require__(137);
 	
 	var _computeChangedRoutes3 = _interopRequireDefault(_computeChangedRoutes2);
@@ -19283,10 +19281,6 @@
 	    }
 	
 	    return (0, _isActive3.default)(location, indexOnly, state.location, state.routes, state.params);
-	  }
-	
-	  function createLocationFromRedirectInfo(location) {
-	    return history.createLocation(location, _Actions.REPLACE);
 	  }
 	
 	  var partialNextState = void 0;
@@ -19346,7 +19340,7 @@
 	    }
 	
 	    function handleErrorOrRedirect(error, redirectInfo) {
-	      if (error) callback(error);else callback(null, createLocationFromRedirectInfo(redirectInfo));
+	      if (error) callback(error);else callback(null, redirectInfo);
 	    }
 	  }
 	
@@ -19509,7 +19503,7 @@
 	          if (error) {
 	            listener(error);
 	          } else if (redirectLocation) {
-	            history.transitionTo(redirectLocation);
+	            history.replace(redirectLocation);
 	          } else if (nextState) {
 	            listener(null, nextState);
 	          } else {
@@ -20677,7 +20671,7 @@
 	  },
 	
 	  propTypes: {
-	    to: oneOfType([string, object]).isRequired,
+	    to: oneOfType([string, object]),
 	    query: object,
 	    hash: string,
 	    state: object,
@@ -20738,6 +20732,11 @@
 	
 	
 	    if (router) {
+	      // If user does not specify a `to` prop, return an empty anchor tag.
+	      if (to == null) {
+	        return _react2.default.createElement('a', props);
+	      }
+	
 	      var location = createLocationDescriptor(to, { query: query, hash: hash, state: state });
 	      props.href = router.createHref(location);
 	
@@ -21492,6 +21491,8 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
+	var _Actions = __webpack_require__(119);
+	
 	var _invariant = __webpack_require__(115);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
@@ -21550,7 +21551,7 @@
 	  history = (0, _RouterUtils.createRoutingHistory)(history, transitionManager);
 	
 	  transitionManager.match(location, function (error, redirectLocation, nextState) {
-	    callback(error, redirectLocation, nextState && _extends({}, nextState, {
+	    callback(error, redirectLocation && router.createLocation(redirectLocation, _Actions.REPLACE), nextState && _extends({}, nextState, {
 	      history: history,
 	      router: router,
 	      matchContext: { history: history, transitionManager: transitionManager, router: router }
@@ -25149,9 +25150,9 @@
 	  throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 	}
 	
-	var Todo = (_class = function () {
-	  function Todo(data) {
-	    _classCallCheck(this, Todo);
+	var Issue = (_class = function () {
+	  function Issue(data) {
+	    _classCallCheck(this, Issue);
 	
 	    _initDefineProp(this, 'id', _descriptor, this);
 	
@@ -25174,7 +25175,7 @@
 	    }
 	  }
 	
-	  _createClass(Todo, [{
+	  _createClass(Issue, [{
 	    key: 'fromJSON',
 	    value: function fromJSON(data) {
 	      // Required data.
@@ -25206,26 +25207,37 @@
 	  }, {
 	    key: 'update',
 	    value: function update() {
-	      var data = JSON.stringify({
-	        lane: this.lane,
-	        type: this.type,
-	        title: this.title,
-	        body: this.body,
-	        course: this.course
-	      });
+	      var _this2 = this;
 	
-	      $.ajax({
-	        method: 'PUT',
-	        headers: {
-	          'X-CSRFToken': (0, _utilities.getCookieSetting)('csrftoken'),
-	          'Content-Type': 'application/json'
-	        },
-	        data: data,
-	        url: '/gsi/feedback/api/issue/' + this.id
-	      }).done(function (resp) {
-	        // todo: Do something here.
-	      }).fail(function (err) {
-	        console.error('Couldn\'t not subit form due to: ' + err);
+	      return new Promise(function (resolve, reject) {
+	        var data = JSON.stringify({
+	          lane: _this2.lane,
+	          type: _this2.type,
+	          title: _this2.title,
+	          body: _this2.body,
+	          course: _this2.course
+	        });
+	
+	        $.ajax({
+	          method: 'PUT',
+	          headers: {
+	            'X-CSRFToken': (0, _utilities.getCookieSetting)('csrftoken'),
+	            'Content-Type': 'application/json'
+	          },
+	          data: data,
+	          url: '/gsi/feedback/api/issue/' + _this2.id
+	        }).done(function (resp) {
+	          var updatedIssue = new Issue();
+	          try {
+	            updatedIssue.fromJSON(resp);
+	          } catch (exception) {
+	            reject(exception);
+	            return;
+	          }
+	          resolve(updatedIssue);
+	        }).fail(function (err) {
+	          reject(err);
+	        });
 	      });
 	    }
 	
@@ -25243,7 +25255,7 @@
 	    }
 	  }]);
 	
-	  return Todo;
+	  return Issue;
 	}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'id', [_mobx.observable], {
 	  enumerable: true,
 	  initializer: null
@@ -25269,7 +25281,7 @@
 	  enumerable: true,
 	  initializer: null
 	}), _applyDecoratedDescriptor(_class.prototype, 'fromJSON', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'fromJSON'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'loadFromAJAX', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'loadFromAJAX'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'update', [_mobx.action], Object.getOwnPropertyDescriptor(_class.prototype, 'update'), _class.prototype)), _class);
-	exports.default = Todo;
+	exports.default = Issue;
 
 /***/ },
 /* 174 */
@@ -26245,9 +26257,12 @@
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(event) {
+	      var _this2 = this;
+	
 	      event.preventDefault();
-	      this.state.issue.update();
-	      this.props.router.push('/gsi/feedback/issue/' + this.state.issue.id);
+	      this.state.issue.update().then(function (issue) {
+	        _this2.props.router.push('/gsi/feedback/issue/' + issue.id);
+	      });
 	    }
 	  }, {
 	    key: 'updateChange',
