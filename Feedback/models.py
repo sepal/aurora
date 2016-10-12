@@ -82,3 +82,4 @@ class Issue(models.Model):
         return data
 
     serializable = property(_get_serializable)
+

@@ -1,12 +1,10 @@
 import json
-from django.core import serializers
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from django.utils.safestring import mark_safe
 from Course.models import Course
 from .models import Lane, Issue
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
 
 
 @login_required
@@ -52,12 +50,11 @@ def issue_edit(request, course_short_title, issue_id):
 
 @login_required
 def api_issue(request, course_short_title, issue_id):
-    issue = Issue.objects.get(pk=issue_id)
     if request.method == 'GET':
+        issue = Issue.objects.get(pk=issue_id)
         return JsonResponse(issue.serializable)
     elif request.method == 'PUT':
-        # todo: Check how to safely save user strings and so on.
-        print(request.body)
+        issue = Issue.objects.get(pk=issue_id)
         data = json.loads(request.body.decode('utf-8'))
 
         if issue.lane.pk != data['lane']['id']:
@@ -68,7 +65,28 @@ def api_issue(request, course_short_title, issue_id):
         issue.title = data['title']
         issue.body = data['body']
 
+        # todo: Check how to safely save user strings and so on.
+        issue.save()
+        return JsonResponse(issue.serializable)
+    elif request.method == 'POST':
+        course = Course.get_or_raise_404(course_short_title)
+        # todo: add special check for the security type.
+        lanes = Lane.objects.all().filter(hidden=False).order_by('order')
+
+        data = json.loads(request.body.decode('utf-8'))
+
+        if 'title' not in data or 'type' not in data or 'body' not in 'type':
+            raise HttpResponseBadRequest
+
+        issue = Issue(
+            author=request.user,
+            course=course,
+            lane=lanes[0],
+            type=data['type'],
+            title=data['title'],
+            body=data['body'],
+        )
+
         issue.save()
 
-        return JsonResponse(issue.serializable)
     return JsonResponse([])
