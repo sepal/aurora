@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       <Router history={browserHistory}>
         <Route path="/gsi/feedback" component={Feedback}>
           <IndexRoute component={Kanban} />
+          <Route path="/gsi/feedback/issue/add" component={IssueForm} />
           <Route path="/gsi/feedback/issue/:id" component={IssueDetail} />
           <Route path="/gsi/feedback/issue/:id/edit" component={IssueForm} />
         </Route>

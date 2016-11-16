@@ -2,6 +2,7 @@ import json
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.template import RequestContext
 from Course.models import Course
 from .models import Lane, Issue
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
@@ -68,18 +69,25 @@ def api_issue(request, course_short_title, issue_id):
         # todo: Check how to safely save user strings and so on.
         issue.save()
         return JsonResponse(issue.serializable)
-    elif request.method == 'POST':
+
+    return JsonResponse([])
+
+
+@login_required
+def api_new_issue(request, course_short_title):
+    if request.method == 'POST':
         course = Course.get_or_raise_404(course_short_title)
         # todo: add special check for the security type.
         lanes = Lane.objects.all().filter(hidden=False).order_by('order')
 
         data = json.loads(request.body.decode('utf-8'))
+        user = RequestContext(request)['user']
 
-        if 'title' not in data or 'type' not in data or 'body' not in 'type':
+        if 'title' not in data or 'type' not in data or 'body' not in data:
             raise HttpResponseBadRequest
 
         issue = Issue(
-            author=request.user,
+            author=user,
             course=course,
             lane=lanes[0],
             type=data['type'],
@@ -88,5 +96,6 @@ def api_issue(request, course_short_title, issue_id):
         )
 
         issue.save()
+        return JsonResponse(issue.serializable)
 
     return JsonResponse([])

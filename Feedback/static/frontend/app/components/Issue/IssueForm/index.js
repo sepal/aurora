@@ -19,7 +19,7 @@ class IssueForm extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.params) {
+    if (this.props.params && this.props.params.id) {
       this.state.issue.loadFromAJAX(this.props.params.id);
     }
   }

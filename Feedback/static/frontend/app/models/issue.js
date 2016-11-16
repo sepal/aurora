@@ -48,6 +48,14 @@ export default class Issue {
   }
 
   @action update() {
+    let url = `/gsi/feedback/api/issue`;
+    let method = 'POST';
+
+    if (this.id != undefined) {
+      url = `/gsi/feedback/api/issue/${this.id}`;
+      method = 'PUT';
+    }
+
     return new Promise((resolve, reject) => {
       const data = JSON.stringify({
         lane: this.lane,
@@ -58,13 +66,13 @@ export default class Issue {
       });
 
       $.ajax({
-        method: 'PUT',
+        method: method,
         headers: {
           'X-CSRFToken': getCookieSetting('csrftoken'),
           'Content-Type': 'application/json'
         },
         data: data,
-        url: `/gsi/feedback/api/issue/${this.id}`
+        url: url
       }).done((resp) => {
         var updatedIssue = new Issue();
         try {
