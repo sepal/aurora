@@ -24,6 +24,7 @@ from Challenge.models import Challenge
 from Statistics.views import create_stat_data
 from Elaboration.views import get_extra_review_data
 from Faq.models import Faq
+from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 import logging
 
@@ -67,11 +68,12 @@ def course_selection(request):
 @aurora_login_required()
 def home(request, course_short_title=None):
 
-    user = request.user
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     course = Course.get_or_raise_404(course_short_title)
     data = get_points(request, user, course)
     data = create_stat_data(course,data)
     data['user_is_top_reviewer'] = False
+
     data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
     data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
     data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)

@@ -110,12 +110,12 @@ def import_data():
 
     # create an admin user with password amanaman
     print('adding superuser')
-    username = "amanaman"
-    amanaman = AuroraUser(username=username)
-    amanaman.first_name = 'Firstname_%s' % username
-    amanaman.last_name = 'Lastname_%s' % username
-    amanaman.nickname = 'Nickname_%s' % username
-    amanaman.set_password(username)
+    #username = "amanaman"
+    amanaman = AuroraUser(username="amanaman")
+    amanaman.first_name = 'Firstname_%s' % "amanaman"
+    amanaman.last_name = 'Lastname_%s' % "amanaman"
+    amanaman.nickname = 'Nickname_%s' % "amanaman"
+    amanaman.set_password("amanaman")
     amanaman.is_staff = True
     amanaman.is_superuser = True
     amanaman.save()

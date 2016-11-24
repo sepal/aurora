@@ -14,7 +14,6 @@ from taggit.models import TaggedItem
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import redirect
-from django.views.decorators.cache import cache_page
 
 from AuroraProject.decorators import aurora_login_required
 from Challenge.models import Challenge
@@ -28,6 +27,7 @@ from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
 from PlagCheck.models import Suspicion, SuspicionState
+from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 
 @aurora_login_required()
@@ -870,6 +870,8 @@ def get_points(request, user, course):
                 continue
             if is_started and not is_blocked:
                 started_points_available_total += points_available
+
+        user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), user.id)
 
         stack_data['evaluated_points_earned_total'] = evaluated_points_earned_total
         stack_data['evaluated_points_available_total'] = evaluated_points_available_total

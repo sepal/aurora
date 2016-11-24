@@ -1,10 +1,10 @@
 from django.views.decorators.http import require_GET, require_POST
 import json
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login as django_login, logout
+from django.contrib.auth import login as django_login, logout, authenticate
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie
 from AuroraUser.models import AuroraUser
 from django.core.urlresolvers import reverse
 from Course.models import Course
@@ -47,6 +47,7 @@ def signin(request, course_short_title=None):
 
     response_data = {'success': True}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 
 def signout(request, course_short_title=None):

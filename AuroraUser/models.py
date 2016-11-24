@@ -1,10 +1,6 @@
 import os
 import hashlib
-import re
-from taggit.managers import TaggableManager
-from urllib.parse import urlparse
 import urllib.request
-from django.db import models
 from django.contrib.auth.models import User, UserManager
 from django.contrib.contenttypes.models import ContentType
 from AuroraProject.settings import STATIC_ROOT, MEDIA_ROOT
@@ -13,7 +9,6 @@ from django.core.files import File
 from Review.models import Review, ReviewEvaluation
 from Course.models import Course, CourseUserRelation
 from Challenge.models import Challenge
-import logging
 from Comments.models import *
 from Slides.models import *
 from Stack.models import *

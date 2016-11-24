@@ -1,7 +1,6 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import Http404
-import pprint
 from Course.models import Course
 
 from AuroraProject.decorators import aurora_login_required
@@ -12,6 +11,8 @@ from Elaboration.models import Elaboration
 from Challenge.models import Challenge
 from ReviewQuestion.models import ReviewQuestion
 from ReviewAnswer.models import ReviewAnswer
+
+from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 @aurora_login_required()
 def stack(request, course_short_title=None):
@@ -124,7 +125,7 @@ def challenges(request, course_short_title=None):
 
     course = Course.get_or_raise_404(short_title=course_short_title)
     data['course'] = course
-    user = request.user
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
 
     course_stacks = Stack.objects.all().filter(course=course)

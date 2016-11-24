@@ -138,6 +138,7 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     'middleware.AuroraAuthenticationBackend.AuroraAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 ROOT_URLCONF = 'AuroraProject.urls'
