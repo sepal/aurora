@@ -41,7 +41,3 @@ diskurs/static/diskurs/sass/.sass-cache
 database-mine.db
 
 AuroraUser/management/commands/create_admin.py
-
-
-
-Stack/
