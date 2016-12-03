@@ -30,7 +30,7 @@ def create_context_myreview(request, course_short_title):
         if 'id' not in request.GET:
             return data
 
-        user = request.user
+        user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
         data['challenge'] = Challenge.objects.get(pk= request.GET.get('id'))
         challenge = Challenge.objects.get(pk= request.GET.get('id'))
@@ -57,7 +57,7 @@ def create_context_stack(request, course_short_title):
     if 'id' not in request.GET:
         return data
 
-    user = request.user
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     context_stack = Stack.objects.get(pk=request.GET.get('id'))
     data['stack'] = context_stack
     data['stack_blocked'] = context_stack.is_blocked(user)
@@ -160,7 +160,7 @@ def create_context_challenge(request, course_short_title):
             challenge = Challenge.objects.get(pk=request.GET.get('id'))
         except:
             raise Http404
-        user = request.user
+        user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
         data['challenge'] = challenge
         data['review_questions'] = []
         for review_question in ReviewQuestion.objects.filter(challenge=challenge, visible_to_author=True).order_by("order"):
@@ -194,7 +194,7 @@ def create_context_challenge(request, course_short_title):
 @aurora_login_required()
 def challenge(request, course_short_title=None):
     data = create_context_challenge(request, course_short_title)
-    user = request.user
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     course = data['course']
     data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
     challenge = data['challenge']
@@ -216,7 +216,7 @@ def challenge(request, course_short_title=None):
 
 def create_context_view_review(request, data):
     if 'id' in request.GET:
-        user = request.user
+        user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
         challenge = Challenge.objects.get(pk=request.GET.get('id'))
         elaboration = Elaboration.objects.filter(challenge=challenge, user=user)[0]
         #TODO: use select related

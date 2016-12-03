@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from datetime import datetime, date
-# from Challenge.models import Challenge
+#from Challenge.models import Challenge
 import logging
 
 class Course(models.Model):
