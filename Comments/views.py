@@ -19,7 +19,7 @@ from AuroraUser.models import AuroraUser
 from Comments.models import Comment, CommentsConfig, CommentList, Vote, CommentReferenceObject
 from Course.models import Course
 from Notification.models import Notification
-from Slides.models import Slide
+#from Slides.models import Slide
 from AuroraProject.settings import SECRET_KEY, LECTURER_USERNAME
 from local_settings import LECTURER_SECRET
 
@@ -115,21 +115,22 @@ def edit_comment(request):
 
 @csrf_exempt
 def lecturer_post(request):
-    data = request.POST
-    if data['secret'] != LECTURER_SECRET:
-        return HttpResponseForbidden('You shall not pass!')
-
-    user = AuroraUser.objects.get(username=LECTURER_USERNAME)
-    ref_obj = Slide.objects.get(filename=data['filename'])
-
-    rtrn = Comment.objects.create(text=data['text'],
-                           author=user,
-                           content_object=ref_obj,
-                           parent=None,
-                           post_date=timezone.now(),
-                           visibility=Comment.PUBLIC)
-
-    return HttpResponse('comment posted to slide ' + ref_obj.title + '<br>text was ' + rtrn.text)
+    pass
+#     data = request.POST
+#     if data['secret'] != LECTURER_SECRET:
+#         return HttpResponseForbidden('You shall not pass!')
+#
+#     user = AuroraUser.objects.get(username=LECTURER_USERNAME)
+#     ref_obj = Slide.objects.get(filename=data['filename'])
+#
+#     rtrn = Comment.objects.create(text=data['text'],
+#                            author=user,
+#                            content_object=ref_obj,
+#                            parent=None,
+#                            post_date=timezone.now(),
+#                            visibility=Comment.PUBLIC)
+#
+#     return HttpResponse('comment posted to slide ' + ref_obj.title + '<br>text was ' + rtrn.text)
 
 
 def create_comment(form, request):
