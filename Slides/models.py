@@ -5,10 +5,6 @@ import re
 from Course.models import Course
 
 
-def upload_location(instance, filename):
-    return "slides/%s/%s/%s" %(instance.chapter.topic.course.short_title, instance.chapter.slug, filename)
-
-
 class Topic(models.Model):
     title           = models.CharField(max_length=120)
     slug            = models.SlugField(unique=True, blank=True)
@@ -39,8 +35,10 @@ class Chapter(models.Model):
 
 
 class Slide(models.Model):
+    def upload_location(instance, filename):
+        return "slides/%s/%s/%s" % (instance.chapter.topic.course.short_title, instance.chapter.slug, filename)
+
     title           = models.CharField(max_length=120)
-    slug            = models.SlugField(unique=True, blank=True)
     image           = models.ImageField(upload_to=upload_location)
     text_content    = models.TextField(blank=True, null=True)
     tags            = models.CharField(max_length=240, blank=True)
@@ -48,10 +46,6 @@ class Slide(models.Model):
 
     def __str__(self):
         return self.title
-
-    def save(self, **kwargs):
-        unique_slugify(self, self.title)
-        super(Slide, self).save(**kwargs)
 
 
 def unique_slugify(instance, value, slug_field_name='slug', queryset=None,
