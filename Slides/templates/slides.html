@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% load thumbnail %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+
+{% for obj in qs %}
+
+<img src="{{ obj.image.url }}"/>
+
+{% thumbnail obj.image "150x100" crop="center" as im %}
+    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+{% endthumbnail %}
+
+{% endfor %}
+
+</body>
+</html>

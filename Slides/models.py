@@ -1,11 +1,8 @@
-import re
-
 from django.db import models
 from django.utils.text import slugify
+import re
 
 from Course.models import Course
-
-
 
 
 def upload_location(instance, filename):
