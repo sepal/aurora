@@ -9,7 +9,6 @@ from AuroraUser.models import AuroraUser
 from django.core.urlresolvers import reverse
 from Course.models import Course
 from django.conf import settings
-from django.http import Http404
 
 from AuroraProject.decorators import aurora_login_required
 

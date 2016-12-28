@@ -40,7 +40,7 @@ def index(request, course_short_title):
 
 
 @login_required
-def issue(request, course_short_title, issue_id):
+def issue_display(request, course_short_title, issue_id):
     return index(request, course_short_title)
 
 
@@ -51,20 +51,21 @@ def issue_edit(request, course_short_title, issue_id):
 
 @login_required
 def api_issue(request, course_short_title, issue_id):
+    issue = Issue.objects.get(pk=issue_id)
     if request.method == 'GET':
-        issue = Issue.objects.get(pk=issue_id)
         return JsonResponse(issue.serializable)
     elif request.method == 'PUT':
-        issue = Issue.objects.get(pk=issue_id)
         data = json.loads(request.body.decode('utf-8'))
 
-        if issue.lane.pk != data['lane']['id']:
-            new_lane = Lane.objects.get(pk=data['lane']['id'])
+        if issue.lane.pk != data['lane']:
+            new_lane = Lane.objects.get(pk=data['lane'])
             issue.lane = new_lane
 
         issue.type = data['type']
         issue.title = data['title']
-        issue.body = data['body']
+
+        if 'body' in data:
+            issue.body = data['body']
 
         # todo: Check how to safely save user strings and so on.
         issue.save()

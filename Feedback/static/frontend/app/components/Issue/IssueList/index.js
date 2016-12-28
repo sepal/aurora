@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './style.scss';
 
+import styles from './style.scss';
 import IssueTeaser from '../IssueTeaser';
 
 export default function IssueList(props) {
@@ -19,7 +19,8 @@ export default function IssueList(props) {
     return (
       <li key={issue.id} className={styles.item}>
         <IssueTeaser title={issue.title} upvotes={upvotes}
-                     comments={number_comments} id={issue.id} type={issue.type} />
+                     comments={number_comments} id={issue.id} type={issue.type}
+                     lane={issue.lane.id} />
       </li>
     );
   });

@@ -23,6 +23,7 @@ export default class Issue {
     this.title = data['title'];
     this.type = data['type'];
     this.lane = data['lane'];
+    console.log(data['lane']);
 
     // Optional data, for detail view only.
     if ('course' in data)
@@ -58,7 +59,7 @@ export default class Issue {
 
     return new Promise((resolve, reject) => {
       const data = JSON.stringify({
-        lane: this.lane,
+        lane: this.lane.id,
         type: this.type,
         title: this.title,
         body: this.body,

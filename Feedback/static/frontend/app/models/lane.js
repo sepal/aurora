@@ -13,6 +13,7 @@ export default class Lane {
   }
 
   @action addIssue(issue) {
+    issue.lane = this;
     this.issues.push(issue);
   }
 
@@ -28,6 +29,14 @@ export default class Lane {
     this.id = object['id'];
     this.name = object['name'];
     this.weight = object['weight'];
+  }
+
+  getIssue(issue_id) {
+    let issues = this.issues.filter((issue) => {
+      return issue.id == issue_id
+    });
+
+    return issues[0];
   }
 }
 
