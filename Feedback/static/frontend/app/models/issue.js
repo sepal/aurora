@@ -23,7 +23,6 @@ export default class Issue {
     this.title = data['title'];
     this.type = data['type'];
     this.lane = data['lane'];
-    console.log(data['lane']);
 
     // Optional data, for detail view only.
     if ('course' in data)

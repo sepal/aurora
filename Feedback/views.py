@@ -18,7 +18,7 @@ def index(request, course_short_title):
     lanes = Lane.objects.all().filter(hidden=False).order_by('order')
     lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name}, lanes))
 
-    issues = Issue.objects.all().only('title', 'lane', 'type', 'title')
+    issues = Issue.objects.all()
     issues = list(map(lambda issue: issue.serializable_teaser, issues))
 
     data = {
@@ -67,7 +67,6 @@ def api_issue(request, course_short_title, issue_id):
         if 'body' in data:
             issue.body = data['body']
 
-        # todo: Check how to safely save user strings and so on.
         issue.save()
         return JsonResponse(issue.serializable)
 
