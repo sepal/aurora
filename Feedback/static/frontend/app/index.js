@@ -7,6 +7,7 @@ import kanbanStore from './models/kanbanStore';
 import Feedback from './components/Feedback';
 import Kanban from './components/Kanban';
 import {IssueDetail, IssueForm} from './components/Issue';
+import * as api from './api';
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
