@@ -27,29 +27,6 @@
     background: none !important;
     text-shadow: none !important;
     color: #ff6666 !important; }
-.style__lane___2mnz9 {
-  border: 1px solid #cbcbcb;
-  border-radius: 5px;
-  background: #cbcbcb;
-  padding: 14px 0;
-  width: 270px; }
-
-.style__title___LFTjf {
-  font-size: 1em;
-  font-weight: bold;
-  padding: 0 14px; }
-
-.style__content___10tMi {
-  padding-top: 14px;
-  padding-left: 14px;
-  padding-right: 14px; }
-
-.style__empty___6D72U {
-  color: #aaa;
-  background: white;
-  padding: 14px;
-  text-align: center;
-  border-radius: 3px; }
 .style__title___HmgoS {
   position: relative; }
 
@@ -183,10 +160,17 @@
     display: block; }
   .style__text_input___2S6cK input {
     margin-top: 7px; }
-.style__item___3g1r5 {
+.style__item___3g1r5, .style__empty___lISp5 {
   margin-top: 21px; }
-  .style__item___3g1r5:nth-child(1) {
+  .style__item___3g1r5:nth-child(1), .style__empty___lISp5:nth-child(1) {
     margin-top: 0; }
+
+.style__empty___lISp5 {
+  color: #aaa;
+  background: white;
+  padding: 14px;
+  text-align: center;
+  border-radius: 3px; }
 .style__issueTeaser___30IcU {
   display: block;
   padding: 14px;
@@ -208,6 +192,22 @@
 
 .style__type___3m7OY {
   color: #aaa; }
+.style__lane___2mnz9 {
+  border: 1px solid #cbcbcb;
+  border-radius: 5px;
+  background: #cbcbcb;
+  padding: 14px 0;
+  width: 270px; }
+
+.style__title___LFTjf {
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0 14px; }
+
+.style__content___10tMi {
+  padding-top: 14px;
+  padding-left: 14px;
+  padding-right: 14px; }
 .style__laneList___2Lc4I {
   margin-top: 21px;
   margin-left: 0;

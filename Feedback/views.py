@@ -16,16 +16,16 @@ def index(request, course_short_title):
     # has to make additional requests.
     course = Course.get_or_raise_404(course_short_title)
     lanes = Lane.objects.all().filter(hidden=False).order_by('order')
-    lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name}, lanes))
+    lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name, 'issues': []}, lanes))
 
-    issues = Issue.objects.all().only('title', 'lane', 'type', 'title')
-    issues = list(map(lambda issue: issue.serializable_teaser, issues))
+    issues = Issue.objects.all()
+    issues = list(map(lambda issue: issue.serializable, issues))
 
     data = {
-        'course': {
-            'id': course.pk,
-            'title': course.title,
-        },
+        # 'course': {
+        #     'id': course.pk,
+        #     'title': course.title,
+        # },
         'lanes': lanes,
         'issues': issues
     }

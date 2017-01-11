@@ -24,9 +24,14 @@ export default function IssueList(props) {
       </li>
     );
   });
+  const msg = (
+    <li className={styles.empty}>
+    No issues here yet.
+    </li>
+  );
   return (
     <ul>
-      {issues}
+      { issues.length > 0 ? issues : msg }
     </ul>
   );
 }
