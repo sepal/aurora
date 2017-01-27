@@ -302,7 +302,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
     font-size: 30px;
 	text-shadow: 0 0 5px rgba(255,255,255,1);
 	cursor:pointer;
-	z-index:4201;
+	/*z-index:4201;*/
 	display:inline;
 	position:relative;
 	top:8px;

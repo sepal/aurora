@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "slides_base.html" %}
 {% load thumbnail %}
 {% block content %}
 
@@ -20,7 +20,7 @@
 
   <div class="col-xs-12 col-md-6 col-xl-4">
     <div class="card card-block">
-    <a href="{% url 'slides:slidestack' topic='none' slug=slide_stack.slug %}">
+    <a href="{% url 'Slides:slidestack' topic='none' slug=slide_stack.slug course_short_title=course.short_title %}">
         <div id="fs{{ forloop.counter }}" class="fs" style="width:100%;height:100px;overflow:hidden;">
 
             <img class="card-img-top" src="{{ slide_stack.slides.0.image|thumbnail_url:'preview' }}" id="firstImage" />
@@ -36,7 +36,7 @@
 
         <p></p>
         <h3 class="card-title">{{ slide_stack.title }}</h3>
-        <a href="{% url 'slides:slidestack' topic='none' slug=slide_stack.slug %}" class="btn btn-primary">View Slides</a>
+        <a href="{% url 'Slides:slidestack' topic='none' slug=slide_stack.slug course_short_title=course.short_title %}" class="btn btn-primary">View Slides</a>
 
 
     </div>

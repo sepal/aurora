@@ -46,7 +46,7 @@ def slide_topics(request, topic=None, course_short_title=None):
             if i > 0:
                 prev = '../' + chapt + '_' + lst[i - 1]
             if len(lst) > i + 1:
-                nxt =  '../' + chapt + '_' + lst[i + 1]
+                nxt = '../' + chapt + '_' + lst[i + 1]
             lst.insert(0, chapt)
 
     context = {

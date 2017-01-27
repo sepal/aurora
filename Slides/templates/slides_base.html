@@ -3,17 +3,22 @@
 <html>
 <head>
 
-<title>{% block head_title %}Aurora Lite{% endblock head_title %}</title>
+<title>{% block head_title %}Aurora: Slides{% endblock head_title %}</title>
 <!-- Bootstrap 4 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-<link rel='stylesheet' href='{% static "css/custom.css" %}' />
 <!-- Lightbox -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.0.0/ekko-lightbox.min.css" integrity="sha256-8aNQFtmxcOMVoOhLD4mrHqaKC2Ui++LmlQsoKTqxwIE=" crossorigin="anonymous" />
 <!--FrameScrub -->
 <link rel='stylesheet' href='{% static "css/frameScrub.css" %}' />
+
+<link rel='stylesheet' href='{% static "css/custom-slides.css" %}' />
+<link rel="stylesheet" href='{% static "css/base.css" %}' />
 </head>
 <body>
 
+{% block navigation %}
+  {% include "navigation.html" %}
+{% endblock %}
 
 <div class='container'>
     {% block content %}{% endblock content %}

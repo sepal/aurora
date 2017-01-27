@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "slides_base.html" %}
 {% load thumbnail %}
 {% block content %}
 
@@ -7,7 +7,7 @@
 <h1>{{ title }}</h1>
     <p>this slides are found in:
         {% for topic in other_topics %}
-            <a href="/{{ topic.0 }}_{{ topic.1 }}">{{ topic.0 }}: {{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
+            <a href="../../{{ topic.0 }}_{{ topic.1 }}">{{ topic.0 }}: {{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
     </p>
 <hr />
