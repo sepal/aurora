@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block content %}
+
+
+
+<h1>{{ title }}</h1>
+    <p>this slides are found in:
+        {% for topic in other_topics %}
+            <a href="/{{ topic.0 }}_{{ topic.1 }}">{{ topic.0 }}: {{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    </p>
+<hr />
+
+<div class="row">
+{% for slide in slides %}
+
+<div class="col-xs-12 col-md-6 col-xl-4">
+    <div class="card card-block">
+        <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="example-gallery">
+        <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
+        </a>
+        <p></p>
+        <h3 class="card-title">{{ slide.title }}</h3>
+    </div>
+</div>
+{% endfor %}
+</div>
+    <hr />
+
+<div class="row">
+    <div class="col-xs-6">
+    <p class="text-xs-left"><a href="{{ prev }}" class="btn-prev">prev</a></p>
+        </div>
+    <div class="col-xs-6">
+    <p class="text-xs-right"><a href="{{ nxt }}" class="btn-next">next</a></p>
+    </div>
+</div>
+
+
+
+{% endblock content %}

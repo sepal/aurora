@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block content %}
+
+
+<div class="row">
+<div class="col-xs-12">
+    <form method="GET" action="" class="text-xs-right">
+    <input type="text" name="q" placeholder="Search slides" value="{{ request.GET.q }}"/>
+    <input type="submit" value="Search" />
+    </form>
+</div>
+</div>
+
+<h3>{{ title }}</h3>
+<hr />
+
+<div class="row">
+{% for slide_stack in found_slides %}
+
+  <div class="col-xs-12 col-md-6 col-xl-4">
+    <div class="card card-block">
+    <a href="{% url 'slides:slidestack' topic='none' slug=slide_stack.slug %}">
+        <div id="fs{{ forloop.counter }}" class="fs" style="width:100%;height:100px;overflow:hidden;">
+
+            <img class="card-img-top" src="{{ slide_stack.slides.0.image|thumbnail_url:'preview' }}" id="firstImage" />
+            {% for slide in slide_stack.slides %}
+                {% if not forloop.first %}
+
+                    <img class="card-img-top img-fluid" src="{{ slide.image|thumbnail_url:'preview' }}" />
+
+                {% endif %}
+            {% endfor %}
+        </div>
+    </a>
+
+        <p></p>
+        <h3 class="card-title">{{ slide_stack.title }}</h3>
+        <a href="{% url 'slides:slidestack' topic='none' slug=slide_stack.slug %}" class="btn btn-primary">View Slides</a>
+
+
+    </div>
+  </div>
+
+{%  endfor %}
+</div>
+
+
+{% endblock content %}
