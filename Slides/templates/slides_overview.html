@@ -22,7 +22,7 @@
     {% for topic in category.1 %}
         <div class="col-xs-12 col-md-6 col-xl-4">
             <div class="card card-block">
-              <a href="/{{ category.0 }}_{{ topic.0 }}">
+              <a href="{{ category.0 }}_{{ topic.0 }}">
               <div id="fs{{ forloop.counter }}" class="fs" style="width:100%;height:50px;overflow:hidden;">
 
                 <img class="card-img-top" src="{{ topic.1.0.slides.0.image|thumbnail_url:'preview' }}" id="firstImage" />
@@ -36,7 +36,7 @@
               <p></p>
               <h3 class="card-title">{{ topic.0 }}</h3>
               <p class="card-text">{{ topic.1.0.image.src }}</p>
-              <a href="/{{ category.0 }}_{{ topic.0 }}" class="btn btn-primary">View Topic</a></p>
+              <a href="{{ category.0 }}_{{ topic.0 }}" class="btn btn-primary">View Topic</a></p>
             </div>
         </div>
     {% endfor %}

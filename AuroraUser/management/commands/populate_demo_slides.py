@@ -19,7 +19,7 @@ def populate_demo_slides():
         tit = 'Stack %s' % x
         ta = 'tag %s' % x
         cat = 'Chapter_Chapter %s, Chapter_Chapter %s, Chapter_Chapter %s, Topic_Topic %s, Topic_Topic %s' % (
-        x, x + 1, x + 2, x, x + 1)
+            x, x + 1, x + 2, x, x + 1)
         SlideStack.objects.create(title=tit, tags=ta, categories=cat)
         for y in range(1, 6):
             t = 'C%s, S%s' % (x, y)

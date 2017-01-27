@@ -23,7 +23,7 @@ def slides(request, course_short_title=None):
     return render(request, "slides_overview.html", context)
 
 
-def slide_topics(request, topic=None):
+def slide_topics(request, topic=None, course_short_title=None):
     """
     :param request:
     :param topic: the topic to be represented
@@ -44,9 +44,9 @@ def slide_topics(request, topic=None):
             chapt = lst.pop(0)
             i = lst.index(tup[1])
             if i > 0:
-                prev = '/' + chapt + '_' + lst[i - 1]
+                prev = '../' + chapt + '_' + lst[i - 1]
             if len(lst) > i + 1:
-                nxt = '/' + chapt + '_' + lst[i + 1]
+                nxt =  '../' + chapt + '_' + lst[i + 1]
             lst.insert(0, chapt)
 
     context = {
@@ -55,12 +55,13 @@ def slide_topics(request, topic=None):
         "prev": prev,
         "nxt": nxt,
         "top": topic,
+        "course": Course.get_or_raise_404(course_short_title),
     }
 
     return render(request, "slide_topics.html", context)
 
 
-def slide_stack(request, topic=None, slug=None):
+def slide_stack(request, topic=None, slug=None, course_short_title=None):
     """
     :param request:
     :param topic: defines the context. This is important for previous and next page functionality.
@@ -89,9 +90,11 @@ def slide_stack(request, topic=None, slug=None):
                     stop = True
 
         if ind > 0:
-            prev = reverse("slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind - 1].slug})
+            prev = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind - 1].slug,
+                                                        "course_short_title": course_short_title})
         if ind < len(used_slide_stacks) - 1:
-            nxt = reverse("slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind + 1].slug})
+            nxt = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind + 1].slug,
+                                                       "course_short_title": course_short_title})
 
     # find all other topics containing this SlideStack
     other_topics = []
@@ -105,6 +108,7 @@ def slide_stack(request, topic=None, slug=None):
         "slides": this_ss.slides,
         "prev": prev,
         "nxt": nxt,
+        "course": Course.get_or_raise_404(course_short_title),
     }
 
     return render(request, "slide_stack.html", context)
@@ -146,6 +150,7 @@ def search(request, course_short_title=None):
     context = {
         "title": title,
         "found_slides": complete_list,
+        "course": Course.get_or_raise_404(course_short_title),
     }
 
     return render(request, "search.html", context)
