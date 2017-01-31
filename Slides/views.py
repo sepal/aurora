@@ -6,10 +6,12 @@ from operator import attrgetter
 
 
 # Create your views here.
+from AuroraProject.decorators import aurora_login_required
 from .models import Slide, SlideStack, Structure, DataStructure
 from Course.models import Course
 
 
+@aurora_login_required()
 def slides(request, course_short_title=None):
     """
     :param request:
@@ -23,6 +25,7 @@ def slides(request, course_short_title=None):
     return render(request, "slides_overview.html", context)
 
 
+@aurora_login_required()
 def slide_topics(request, topic=None, course_short_title=None):
     """
     :param request:
@@ -61,6 +64,7 @@ def slide_topics(request, topic=None, course_short_title=None):
     return render(request, "slide_topics.html", context)
 
 
+@aurora_login_required()
 def slide_stack(request, topic=None, slug=None, course_short_title=None):
     """
     :param request:
@@ -114,6 +118,7 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
     return render(request, "slide_stack.html", context)
 
 
+@aurora_login_required()
 def search(request, course_short_title=None):
     """
     Searches all SlideStacks and Slides for the given text
