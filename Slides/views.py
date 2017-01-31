@@ -7,7 +7,8 @@ from operator import attrgetter
 
 # Create your views here.
 from AuroraProject.decorators import aurora_login_required
-from .models import Slide, SlideStack, Structure, DataStructure
+from .models import Slide, SlideStack
+from .structures import GsiStructure, GsiDataStructure, HciStructure, HciDataStructure
 from Course.models import Course
 
 
@@ -17,9 +18,14 @@ def slides(request, course_short_title=None):
     :param request:
     :return: a view of all categories and their assigned topics.
     """
+    data_structure = []
+    if course_short_title == 'gsi':
+        data_structure = GsiDataStructure.data_structure
+    elif course_short_title == 'hci':
+        data_structure = HciDataStructure.data_structure
 
     context = {
-        "structure": DataStructure.data_structure,
+        "structure": data_structure,
         "course": Course.get_or_raise_404(course_short_title),
     }
     return render(request, "slides_overview.html", context)
@@ -34,15 +40,21 @@ def slide_topics(request, topic=None, course_short_title=None):
     """
 
     used_slide_stacks = []
-    for ss in SlideStack.objects.all():
+    for ss in SlideStack.objects.filter(course=Course.objects.get(short_title=course_short_title)):
         if topic.lower() in (x.lower() for x in ss.list_categories):
             used_slide_stacks.append(ss)
 
     # create next and previous link
+    structure = []
+    if course_short_title == 'gsi':
+        structure = GsiStructure.structure
+    elif course_short_title == 'hci':
+        structure = HciStructure.structure
+
     tup = topic.split('_')
     prev = ''
     nxt = ''
-    for lst in Structure.structure:
+    for lst in structure:
         if lst[0] == tup[0]:
             chapt = lst.pop(0)
             i = lst.index(tup[1])
@@ -82,7 +94,7 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
         ind = -1
         stop = False
         used_slide_stacks = []
-        for ss in SlideStack.objects.all():
+        for ss in SlideStack.objects.filter(course=Course.objects.get(short_title=course_short_title)):
             if topic.lower() in (x.lower() for x in ss.list_categories):
                 used_slide_stacks.append(ss)
 
@@ -150,7 +162,13 @@ def search(request, course_short_title=None):
         for slide in queryset_slides:
             complete_set.add(slide.slide_stack)
 
-        complete_list = sorted(complete_set, key=attrgetter('id'), reverse=False)
+        # filter for course
+        course_filtered_set = set()
+        for item in complete_set:
+            if item.course.short_title == course_short_title:
+                course_filtered_set.add(item)
+
+        complete_list = sorted(course_filtered_set, key=attrgetter('id'), reverse=False)
 
     context = {
         "title": title,
