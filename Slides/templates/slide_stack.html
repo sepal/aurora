@@ -1,19 +1,25 @@
 {% extends "slides_base.html" %}
 {% load thumbnail %}
+{% load comments %}
 {% block content %}
 
+<link rel="stylesheet" href="{{ STATIC_URL }}Comments/comments.css" type="text/css" media="screen"/>
+{% comments_boilerplate %}
 
 
-<h1>{{ title }}</h1>
-    <p>this slides are found in:
+
+<!--title and other chapters-->
+<h1>{{ slide_stack.title }}</h1>
+    <p>this slides as well are found in:
         {% for topic in other_topics %}
             <a href="../../{{ topic.0 }}_{{ topic.1 }}">{{ topic.0 }}: {{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
     </p>
 <hr />
 
+<!--listing of slides-->
 <div class="row">
-{% for slide in slides %}
+{% for slide in slide_stack.slides %}
 
 <div class="col-xs-12 col-md-6 col-xl-4">
     <div class="card card-block">
@@ -26,8 +32,9 @@
 </div>
 {% endfor %}
 </div>
-    <hr />
+<hr />
 
+<!--Next and Previous-->
 <div class="row">
     <div class="col-xs-6">
     <p class="text-xs-left"><a href="{{ prev }}" class="btn-prev">prev</a></p>
@@ -35,6 +42,15 @@
     <div class="col-xs-6">
     <p class="text-xs-right"><a href="{{ nxt }}" class="btn-next">next</a></p>
     </div>
+</div>
+
+<!--Comments-->
+<div class="row">
+    <div class="col-xs-0 col-md-1 col-xl-2"></div>
+    <div class="col-xs-12 col-md-10 col-xl-8" id="comments_{{slide_stack.id}}">
+        {% render_multi_comment_list for slide_stack newest_last endless %}
+    </div>
+    <div class="col-xs-0 col-md-1 col-xl-2"></div>
 </div>
 
 

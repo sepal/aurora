@@ -119,9 +119,8 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
             other_topics.append(cat)
 
     context = {
-        "title": this_ss.title,
+        "slide_stack": this_ss,
         "other_topics": other_topics,
-        "slides": this_ss.slides,
         "prev": prev,
         "nxt": nxt,
         "course": Course.get_or_raise_404(course_short_title),
