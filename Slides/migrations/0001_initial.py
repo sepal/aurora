@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Slide',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
                 ('title', models.CharField(max_length=120)),
                 ('image', models.ImageField(upload_to=Slides.models.Slide.upload_location)),
-                ('text_content', models.TextField(blank=True, null=True)),
-                ('tags', models.CharField(max_length=240, blank=True, null=True)),
+                ('text_content', models.TextField(null=True, blank=True)),
+                ('tags', models.CharField(max_length=240, null=True, blank=True)),
             ],
             options={
             },
@@ -28,21 +28,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SlideStack',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
                 ('title', models.CharField(max_length=120)),
-                ('slug', models.SlugField(blank=True, unique=True)),
+                ('slug', models.SlugField(unique=True, blank=True)),
                 ('pub_date', models.DateTimeField(default=django.utils.timezone.now)),
-                ('tags', models.CharField(max_length=240, blank=True, null=True)),
-                ('categories', models.TextField(max_length=500, blank=True, null=True)),
+                ('tags', models.CharField(max_length=240, null=True, blank=True)),
+                ('categories', models.TextField(max_length=500, null=True, blank=True)),
             ],
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='slide',
-            name='slide_stack',
-            field=models.ForeignKey(to='Slides.SlideStack'),
-            preserve_default=True,
         ),
     ]

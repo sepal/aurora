@@ -15,7 +15,7 @@ class SlideStack(models.Model):
     pub_date        = models.DateTimeField(default=timezone.now)
     tags            = models.CharField(max_length=240, blank=True, null=True)
     categories      = models.TextField(max_length=500, blank=True, null=True)
-    course          = models.ForeignKey(Course, default=Course.objects.get(short_title='gsi'))
+    course          = models.ForeignKey(Course)
 
     @property
     def slides(self):

@@ -162,7 +162,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django.contrib.humanize',
-# third party apps
+    # third party apps
     'easy_thumbnails',
     # own apps
     'AuroraUser',
