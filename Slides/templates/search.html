@@ -3,6 +3,7 @@
 {% block content %}
 
 
+<!--search form-->
 <div class="row">
 <div class="col-xs-12">
     <form method="GET" action="" class="text-xs-right">
@@ -15,6 +16,8 @@
 <h3>{{ title }}</h3>
 <hr />
 
+
+<!--results listing-->
 <div class="row">
 {% for slide_stack in found_slides %}
 
@@ -37,7 +40,6 @@
         <p></p>
         <h3 class="card-title">{{ slide_stack.title }}</h3>
         <a href="{% url 'Slides:slidestack' topic='none' slug=slide_stack.slug course_short_title=course.short_title %}" class="btn btn-primary">View Slides</a>
-
 
     </div>
   </div>

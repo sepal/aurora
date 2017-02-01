@@ -3,7 +3,7 @@
 {% block content %}
 
 
-
+<!--search form-->
 <div class="row">
 <div class="col-xs-12">
     <form method="GET" action="{% url 'Slides:search' course.short_title %}" class="text-xs-right">
@@ -13,6 +13,8 @@
 </div>
 </div>
 
+
+<!--enlisting of topics-->
 {% for category in structure %}
     <h1>{{ category.0 }}</h1>
     <hr />
