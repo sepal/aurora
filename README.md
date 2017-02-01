@@ -22,7 +22,7 @@ next generation of the portfolio
 - populate the database with some test slides `python manage.py populate_demo_slides`
 
 - install PlagCheck 
-    cd Plagcheck/hashing/sherlock`
+    `cd Plagcheck/hashing/sherlock`
     `python setup.py install`
     
 - return to base directory `cd ../../../`
@@ -61,4 +61,3 @@ play button.
 - Setup databases: `invoke clean -p`
 - Run celery: `invoke celery`
 - Run server: `python manage.py runserver`
-
