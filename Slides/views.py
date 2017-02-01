@@ -47,11 +47,9 @@ def slide_topics(request, topic=None, course_short_title=None):
             used_slide_stacks.append(ss)
 
     # check date
-    for ss in used_slide_stacks:
-        if ss.pub_date > timezone.now():
-            used_slide_stacks.remove(ss)
+    filter_future_dates(used_slide_stacks)
 
-    complete_list = sorted(used_slide_stacks, key=attrgetter('id'), reverse=False)
+    complete_list = sort_list_by_id(used_slide_stacks)
 
     # create next and previous link
     structure = list()
@@ -176,11 +174,9 @@ def search(request, course_short_title=None):
                 course_filtered_list.append(item)
 
         # check date
-        for ss in course_filtered_list:
-            if ss.pub_date > timezone.now():
-                course_filtered_list.remove(ss)
+        filter_future_dates(course_filtered_list)
 
-        complete_list = sorted(course_filtered_list, key=attrgetter('id'), reverse=False)
+        complete_list = sort_list_by_id(course_filtered_list)
 
         title = 'nothing found'
         if len(complete_list) != 0:
@@ -193,3 +189,27 @@ def search(request, course_short_title=None):
     }
 
     return render(request, "search.html", context)
+
+
+def filter_future_dates(slide_stack_list):
+    """
+    filters the SlideStack list for entries not published yet
+    :param slide_stack_list: list of SlideStacks to be filtered
+    :return: filtered list
+    """
+    for ss in slide_stack_list:
+        if ss.pub_date > timezone.now():
+            slide_stack_list.remove(ss)
+
+    return slide_stack_list
+
+
+def sort_list_by_id(slide_stack_list):
+    """
+    orders the SlideStack list by id
+    :param slide_stack_list: list to be ordered
+    :return: ordered list by id
+    """
+    sorted_list = sorted(slide_stack_list, key=attrgetter('id'), reverse=False)
+
+    return sorted_list
