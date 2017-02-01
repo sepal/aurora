@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.http import Http404
 
 from operator import attrgetter
-
+from django.utils import timezone
 
 # Create your views here.
 from AuroraProject.decorators import aurora_login_required
@@ -39,13 +40,21 @@ def slide_topics(request, topic=None, course_short_title=None):
     :return: shows all SlideStacks, which are assigned to the given topic.
     """
 
-    used_slide_stacks = []
+    # search for all slideStacks assigned to the topic
+    used_slide_stacks = list()
     for ss in SlideStack.objects.filter(course=Course.objects.get(short_title=course_short_title)):
         if topic.lower() in (x.lower() for x in ss.list_categories):
             used_slide_stacks.append(ss)
 
+    # check date
+    for ss in used_slide_stacks:
+        if ss.pub_date > timezone.now():
+            used_slide_stacks.remove(ss)
+
+    complete_list = sorted(used_slide_stacks, key=attrgetter('id'), reverse=False)
+
     # create next and previous link
-    structure = []
+    structure = list()
     if course_short_title == 'gsi':
         structure = GsiStructure.structure
     elif course_short_title == 'hci':
@@ -66,7 +75,7 @@ def slide_topics(request, topic=None, course_short_title=None):
 
     context = {
         "title": tup[1],
-        "used_slide_stacks": used_slide_stacks,
+        "used_slide_stacks": complete_list,
         "prev": prev,
         "nxt": nxt,
         "top": topic,
@@ -87,13 +96,17 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
 
     this_ss = get_object_or_404(SlideStack, slug=slug)
 
+    # check date
+    if this_ss.pub_date > timezone.now():
+        raise Http404("No such slide collection exists, or is published yet")
+
     # create next and previous link
     prev = ''
     nxt = ''
     if topic != 'none':
         ind = -1
         stop = False
-        used_slide_stacks = []
+        used_slide_stacks = list()
         for ss in SlideStack.objects.filter(course=Course.objects.get(short_title=course_short_title)):
             if topic.lower() in (x.lower() for x in ss.list_categories):
                 used_slide_stacks.append(ss)
@@ -138,8 +151,6 @@ def search(request, course_short_title=None):
     in a variable, or has a Slide assigned that fits the search criteria.
     """
 
-    title = 'nothing found'
-
     query = request.GET.get("q")
     if query:
         queryset_ss = SlideStack.objects.filter(
@@ -154,20 +165,26 @@ def search(request, course_short_title=None):
             Q(tags__icontains=query)
         ).distinct()
 
-        if queryset_slides or queryset_ss:
-            title = 'results found:'
-
         complete_set = set(queryset_ss)
         for slide in queryset_slides:
             complete_set.add(slide.slide_stack)
 
         # filter for course
-        course_filtered_set = set()
+        course_filtered_list = []
         for item in complete_set:
             if item.course.short_title == course_short_title:
-                course_filtered_set.add(item)
+                course_filtered_list.append(item)
 
-        complete_list = sorted(course_filtered_set, key=attrgetter('id'), reverse=False)
+        # check date
+        for ss in course_filtered_list:
+            if ss.pub_date > timezone.now():
+                course_filtered_list.remove(ss)
+
+        complete_list = sorted(course_filtered_list, key=attrgetter('id'), reverse=False)
+
+        title = 'nothing found'
+        if len(complete_list) != 0:
+            title = 'results found:'
 
     context = {
         "title": title,
