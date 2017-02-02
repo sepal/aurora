@@ -38,7 +38,7 @@ class GsiStructure:
         Refreshes Structure.structure after slides were added to the system.
         Should not be used, use DataStructure.redefine_data_structure() instead!
         """
-        __class__.structure = __class__.create_structure()
+        GsiStructure.structure = GsiStructure.create_structure()
 
 
 class GsiDataStructure:
@@ -78,7 +78,7 @@ class GsiDataStructure:
         Use this method after adding slides to the system.
         :return:
         """
-        __class__.data_structure = __class__.create_data_structure()
+        GsiDataStructure.data_structure = GsiDataStructure.create_data_structure()
         GsiStructure.redefine_structure()
 
 
