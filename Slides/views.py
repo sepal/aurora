@@ -151,6 +151,9 @@ def search(request, course_short_title=None):
 
     query = request.GET.get("q")
     if query:
+
+        # if query == 'register new slides'
+
         queryset_ss = SlideStack.objects.filter(
             Q(title__icontains=query) |
             Q(tags__icontains=query) |
@@ -191,6 +194,28 @@ def search(request, course_short_title=None):
     return render(request, "search.html", context)
 
 
+@aurora_login_required()
+def refresh_structure(request, course_short_title=None):
+    """
+    This view refreshes the data structure for slide stacks.
+    Can only be performed by authorized staff.
+    :param request:
+    :param course_short_title:
+    :return:
+    """
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404("You are not authorized for this action!")
+
+    print('data structure will be redefined')
+    GsiDataStructure.redefine_data_structure()
+    HciDataStructure.redefine_data_structure()
+
+    return slides(request, course_short_title=course_short_title)
+
+    # # not working ?!?
+    # return render(request, "redefine_data_structure.html", {"course": Course.get_or_raise_404(course_short_title),})
+
+
 def filter_future_dates(slide_stack_list):
     """
     filters the SlideStack list for entries not published yet
@@ -213,3 +238,4 @@ def sort_list_by_id(slide_stack_list):
     sorted_list = sorted(slide_stack_list, key=attrgetter('id'), reverse=False)
 
     return sorted_list
+
