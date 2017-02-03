@@ -36,6 +36,7 @@
   <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
 
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
+		<script> window.document.title = "Task: {{challenge.title|safe}}";</script>
 	{{ challenge.title|safe }}
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
