@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from Slides.models import SlideStack, Slide
 from Course.models import Course
@@ -22,7 +22,7 @@ def populate_demo_slides():
         cat = 'Chapter_Chapter %s, Chapter_Chapter %s, Chapter_Chapter %s, Topic_Topic %s, Topic_Topic %s' % (
             x, x + 1, x + 2, x, x + 1)
         co = Course.objects.get(short_title='gsi')
-        SlideStack.objects.create(title=tit, tags=ta, categories=cat, course=co)
+        SlideStack.objects.create(title=tit, tags=ta, categories=cat, pub_date='2016-01-23 11:35', course=co)
         for y in range(1, 6):
             t = 'C%s, S%s' % (x, y)
             im = '%s.jpg' % random.randint(1, 9)

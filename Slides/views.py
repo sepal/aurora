@@ -25,6 +25,7 @@ def slides(request, course_short_title=None):
     elif course_short_title == 'hci':
         data_structure = HciDataStructure.data_structure
 
+    print(timezone.now())
     context = {
         "structure": data_structure,
         "course": Course.get_or_raise_404(course_short_title),
