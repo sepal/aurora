@@ -13,13 +13,14 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidde
 from django.contrib.contenttypes.models import ContentType
 import json
 from AuroraUser.models import AuroraUser
+from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 #TODO @aurora_login_required() cannot be used here, change urls.py
 #from AuroraProject.decorators import aurora_login_required
 from Comments.models import Comment, CommentsConfig, CommentList, Vote, CommentReferenceObject
 from Course.models import Course
 from Notification.models import Notification
-from Slides.models import Slide
+#from Slides.models import Slide
 from AuroraProject.settings import SECRET_KEY, LECTURER_USERNAME
 from local_settings import LECTURER_SECRET
 
@@ -58,7 +59,7 @@ def post_comment(request):
 @login_required()
 def delete_comment(request):
     comment_id = request.POST['comment_id']
-    deleter = request.user
+    deleter = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
     comment = Comment.objects.filter(id=comment_id).select_related('parent__children')[0]
 
@@ -115,21 +116,22 @@ def edit_comment(request):
 
 @csrf_exempt
 def lecturer_post(request):
-    data = request.POST
-    if data['secret'] != LECTURER_SECRET:
-        return HttpResponseForbidden('You shall not pass!')
-
-    user = AuroraUser.objects.get(username=LECTURER_USERNAME)
-    ref_obj = Slide.objects.get(filename=data['filename'])
-
-    rtrn = Comment.objects.create(text=data['text'],
-                           author=user,
-                           content_object=ref_obj,
-                           parent=None,
-                           post_date=timezone.now(),
-                           visibility=Comment.PUBLIC)
-
-    return HttpResponse('comment posted to slide ' + ref_obj.title + '<br>text was ' + rtrn.text)
+    pass
+#     data = request.POST
+#     if data['secret'] != LECTURER_SECRET:
+#         return HttpResponseForbidden('You shall not pass!')
+#
+#     user = AuroraUser.objects.get(username=LECTURER_USERNAME)
+#     ref_obj = Slide.objects.get(filename=data['filename'])
+#
+#     rtrn = Comment.objects.create(text=data['text'],
+#                            author=user,
+#                            content_object=ref_obj,
+#                            parent=None,
+#                            post_date=timezone.now(),
+#                            visibility=Comment.PUBLIC)
+#
+#     return HttpResponse('comment posted to slide ' + ref_obj.title + '<br>text was ' + rtrn.text)
 
 
 def create_comment(form, request):
@@ -139,7 +141,7 @@ def create_comment(form, request):
     homeURL = form.cleaned_data['uri']
     
     context = RequestContext(request)
-    user = context['user']
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     ref_type_id = form.cleaned_data['reference_type_id']
     ref_obj_id = form.cleaned_data['reference_id']
     ref_obj_model = ContentType.objects.get_for_id(ref_type_id).model_class()
@@ -221,7 +223,7 @@ def vote_on_comment(request):
     data = request.POST
 
     comment = Comment.objects.get(id=data['comment_id'])
-    user = request.user
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
     if user == comment.author:
         return HttpResponseForbidden('')
@@ -265,7 +267,7 @@ def vote_down_on(comment, voter):
 def bookmark_comment(request):
     data = request.POST
 
-    requester = request.user
+    requester = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
     try:
         comment = Comment.objects.get(id=data['comment_id'])
@@ -286,7 +288,7 @@ def bookmark_comment(request):
 @require_POST
 @login_required()
 def mark_seen(request):
-    requester = request.user
+    requester = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
     if not requester.is_staff:
         return HttpResponseForbidden('Only staff may seen this!')
@@ -312,7 +314,7 @@ def mark_seen(request):
 def promote_comment(request):
     data = request.POST
 
-    requester = request.user
+    requester = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     if not requester.is_staff:
         return HttpResponseForbidden('You shall not promote!')
 
@@ -366,7 +368,7 @@ def comment_list_page(request):
 def get_comment_list_update(request, client_revision, template='Comments/comment_list.html'):
     ref_type = client_revision['ref_type']
     ref_id = client_revision['ref_id']
-    user = request.user
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
     revision = CommentList.get_by_ref_numbers(ref_id, ref_type).revision
 
@@ -423,7 +425,7 @@ def feed(request):
 
 @login_required()
 def bookmarks(request):
-    requester = request.user
+    requester = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     comment_list = Comment.query_bookmarks(requester)
     template = 'Comments/bookmarks_list.html'
     return render_to_response(template, {'comment_list': comment_list}, context_instance=RequestContext(request))

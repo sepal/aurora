@@ -87,7 +87,7 @@ MEDIA_URL = ''
 
 if DEBUG:
     MEDIA_ROOT = os.path.curdir
-    MEDIA_URL = '/media'
+    MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -162,6 +162,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django.contrib.humanize',
+    # third party apps
+    'easy_thumbnails',
+    # own apps
     'AuroraUser',
     'Challenge',
     'Course',
@@ -414,6 +417,13 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
         'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
+    }
+
+    THUMBNAIL_ALIASES = {
+        '': {
+            'preview': {'size': (450, 300)},
+            'full-res': {'size': (1200, 800)},
+        },
     }
 
 try:

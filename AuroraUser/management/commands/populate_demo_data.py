@@ -283,425 +283,267 @@ def import_data():
         Notification(user=user, course=hci, text="Welcome to HCI!").save()
 
 
-    # create challenges
-    print('adding challenges')
-    challenge_1 = Challenge(title='meine meinung',
-                            subtitle='meine meinung',
-                            description='Gehen Sie nach derstandard.at, suchen Sie einen beliebigen Artikel und posten Sie den Text dieses Artikels hier.',
-                            accepted_files='',
-                            course=gsi,
-                            points=15,
-    )
-    challenge_1.image.save('1.png', File(open(os.path.join(STATIC_ROOT, 'img', '1.png'), 'rb')))
-    challenge_1.save()
+    # # create challenges
+    # print('adding challenges')
+    # challenge_1 = Challenge(title='meine meinung',
+    #                         subtitle='meine meinung',
+    #                         description='Gehen Sie nach derstandard.at, suchen Sie einen beliebigen Artikel und posten Sie den Text dieses Artikels hier.',
+    #                         accepted_files='',
+    #                         course=gsi,
+    #                         points=15,
+    # )
+    # challenge_1.image.save('1.png', File(open(os.path.join(STATIC_ROOT, 'img', '1.png'), 'rb')))
+    # challenge_1.save()
+    #
+    # ReviewQuestion(challenge=challenge_1, order=1, text='In wie fern stellt der gepostete Artikel einen Beitrag zur Entwicklung der Gesellschaft dar?').save()
+    # ReviewQuestion(challenge=challenge_1, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    # ReviewQuestion(challenge=challenge_1, order=3, text="Anmerkungen an das LVA-Team:", visible_to_author=False).save()
+    #
+    # challenge_2 = Challenge(title='rage-comic',
+    #                         subtitle='rage-comic',
+    #                         prerequisite=challenge_1,
+    #                         description='Finden Sie einen Webcomic, den Sie lustig finden und laden Sie ihn hier hoch. Beschreiben Sie kurz, wie lange Sie diesen Webcomic schon lesen.',
+    #                         accepted_files='image/*',
+    #                         course=gsi,
+    #                         points=10,
+    # )
+    # challenge_2.image.save('2.png', File(open(os.path.join(STATIC_ROOT, 'img', '2.png'), 'rb')))
+    # challenge_2.save()
+    #
+    # ReviewQuestion(challenge=challenge_2, order=1, text="Empfinden Sie den Webcomic als lustig? Begründen Sie Ihre Antwort.").save()
+    # ReviewQuestion(challenge=challenge_2, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    # ReviewQuestion(challenge=challenge_2, order=3, text="Anmerkungen an das LVA-Team:",
+    #                visible_to_author=False).save()
+    #
+    # challenge_3 = Challenge(title='wikipedia',
+    #                         subtitle='wikipedia',
+    #                         prerequisite=challenge_2,
+    #                         description='Kopieren Sie 4 Absätze aus einem Wikipedia-Artikel und geben Sie sie ab! Setzen Sie ans Ende der arbeit den Link auf den Wikipedia-Artikel!',
+    #                         accepted_files='',
+    #                         course=gsi,
+    #                         points=8,
+    # )
+    # challenge_3.image.save('3.png', File(open(os.path.join(STATIC_ROOT, 'img', '3.png'), 'rb')))
+    # challenge_3.save()
+    #
+    # ReviewQuestion(challenge=challenge_3, order=1, text="Was möchte die Autorin bzw. der Autor mit den 4 Absätzen ausdrücken?").save()
+    # ReviewQuestion(challenge=challenge_3, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    # ReviewQuestion(challenge=challenge_3, order=3, text="Anmerkungen an das LVA-Team:",
+    #                visible_to_author=False).save()
+    #
+    # challenge_4 = Challenge(title='wissenschaft',
+    #                         subtitle='wissenschaft',
+    #                         prerequisite=challenge_3,
+    #                         description='Finden Sie einen pseudowissenschaftlichen Artikel und laden Sie ihn hier hoch.',
+    #                         accepted_files='application/pdf',
+    #                         course=gsi,
+    #                         points=9,
+    # )
+    # challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
+    # challenge_4.save()
+    #
+    # challenge_5 = Challenge(title='ping',
+    #                         subtitle='ping',
+    #                         description='Laden Sie drei Bilder im png-Format hoch. Beschreiben Sie dann kurz, was auf diesen Bildern zu sehen ist.',
+    #                         accepted_files='image/png',
+    #                         course=gsi,
+    #                         points=10,
+    # )
+    # challenge_5.image.save('5.png', File(open(os.path.join(STATIC_ROOT, 'img', '5.png'), 'rb')))
+    # challenge_5.save()
+    # ReviewQuestion(challenge=challenge_5, order=1, text="In welchem Zusammenhang stehen die Bilder? Ist ein Muster erkennbar?").save()
+    # ReviewQuestion(challenge=challenge_5, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    # ReviewQuestion(challenge=challenge_5, order=3, text="Anmerkungen an das LVA-Team:",
+    #                visible_to_author=False).save()
+    #
+    # challenge_6 = Challenge(title='advice animal',
+    #                         subtitle='advice animal',
+    #                         prerequisite=challenge_5,
+    #                         description='Suchen Sie ein »advice animal« Bild und posten Sie es hier. Geben sie die Quelle dazu an.',
+    #                         accepted_files='image/*',
+    #                         course=gsi,
+    #                         points=12,
+    # )
+    # challenge_6.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
+    # challenge_6.save()
+    #
+    # ReviewQuestion(challenge=challenge_6, order=1, text="Was steckt hinter dem »advice«? Welche Probleme werden dadurch aufgezeigt?").save()
+    # ReviewQuestion(challenge=challenge_6, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    # ReviewQuestion(challenge=challenge_6, order=3, text="Anmerkungen an das LVA-Team:",
+    #                visible_to_author=False).save()
+    #
+    # challenge_7 = Challenge(title='animated gif',
+    #                         subtitle='animated gif',
+    #                         prerequisite=challenge_6,
+    #                         description='suchen sie ein animated gif und posten sie es. geben sie die quelle dazu an.',
+    #                         accepted_files='image/gif',
+    #                         course=gsi,
+    #                         points=14,
+    # )
+    # challenge_7.image.save('7.png', File(open(os.path.join(STATIC_ROOT, 'img', '7.png'), 'rb')))
+    # challenge_7.save()
+    # ReviewQuestion(challenge=challenge_7, order=1, text="Weshalb wurde das GIF animiert? Würde es auch ohne Animation funktionieren? Begründen Sie Ihre Antwort.").save()
+    # ReviewQuestion(challenge=challenge_7, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    # ReviewQuestion(challenge=challenge_7, order=3, text="Anmerkungen an das LVA-Team:",
+    #                visible_to_author=False).save()
+    #
+    # challenge_8 = Challenge(title='zwei menschen',
+    #                         subtitle='zwei menschen',
+    #                         prerequisite=challenge_7,
+    #                         description='Laden Sie zwei Bilder von zwei verschiedenen Menschen hoch. Erklären Sie dann, wer diese beiden Menschen sind. Vergessen Sie nicht auf die Quellenangabe!!11elf',
+    #                         accepted_files='image/*',
+    #                         course=gsi,
+    #                         points=5,
+    # )
+    # challenge_8.image.save('8.png', File(open(os.path.join(STATIC_ROOT, 'img', '8.png'), 'rb')))
+    # challenge_8.save()
+    #
+    # challenge_9 = Challenge(title='youtube',
+    #                         subtitle='youtube',
+    #                         description='Suchen Sie ein gutes YouTube-Video und posten Sie den Link hier. Wenn Sherlock Holmes darin vorkommt, dann können Sie auch einen Extrapunkt bekommen.',
+    #                         accepted_files='',
+    #                         course=gsi,
+    #                         points=25,
+    # )
+    # challenge_9.image.save('9.png', File(open(os.path.join(STATIC_ROOT, 'img', '9.png'), 'rb')))
+    # challenge_9.save()
+    # ReviewQuestion(challenge=challenge_9, order=1, text="Beschreiben Sie jemandem der Blind ist die Szene. Versuchen Sie dabei auch auf Details einzugehen, die für das Gesamtverständnis von Relevanz sein könnten.").save()
+    # ReviewQuestion(challenge=challenge_9, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
+    # ReviewQuestion(challenge=challenge_9, order=3, text="Kommt in dem Video Sherlock Holmes vor?",
+    #                visible_to_author=False, boolean_answer=True).save()
+    # ReviewQuestion(challenge=challenge_9, order=4, text="Anmerkungen an das LVA-Team:",
+    #                visible_to_author=False).save()
+    #
+    # challenge_10 = Challenge(title='schmetterling',
+    #                          subtitle='schmetterling',
+    #                          prerequisite=challenge_9,
+    #                          description='Suchen Sie in Google Image Search Schmetterlingsbilder und laden Sie diese hier hoch. Vergessen Sie nicht auf die Quellenangaben!',
+    #                          accepted_files='image/*',
+    #                          course=gsi,
+    #                          points=3,
+    # )
+    # challenge_10.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
+    # challenge_10.save()
 
-    ReviewQuestion(challenge=challenge_1, order=1, text='In wie fern stellt der gepostete Artikel einen Beitrag zur Entwicklung der Gesellschaft dar?').save()
-    ReviewQuestion(challenge=challenge_1, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_1, order=3, text="Anmerkungen an das LVA-Team:", visible_to_author=False).save()
-
-    challenge_2 = Challenge(title='rage-comic',
-                            subtitle='rage-comic',
-                            prerequisite=challenge_1,
-                            description='Finden Sie einen Webcomic, den Sie lustig finden und laden Sie ihn hier hoch. Beschreiben Sie kurz, wie lange Sie diesen Webcomic schon lesen.',
-                            accepted_files='image/*',
-                            course=gsi,
-                            points=10,
-    )
-    challenge_2.image.save('2.png', File(open(os.path.join(STATIC_ROOT, 'img', '2.png'), 'rb')))
-    challenge_2.save()
-
-    ReviewQuestion(challenge=challenge_2, order=1, text="Empfinden Sie den Webcomic als lustig? Begründen Sie Ihre Antwort.").save()
-    ReviewQuestion(challenge=challenge_2, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_2, order=3, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
-    challenge_3 = Challenge(title='wikipedia',
-                            subtitle='wikipedia',
-                            prerequisite=challenge_2,
-                            description='Kopieren Sie 4 Absätze aus einem Wikipedia-Artikel und geben Sie sie ab! Setzen Sie ans Ende der arbeit den Link auf den Wikipedia-Artikel!',
-                            accepted_files='',
-                            course=gsi,
-                            points=8,
-    )
-    challenge_3.image.save('3.png', File(open(os.path.join(STATIC_ROOT, 'img', '3.png'), 'rb')))
-    challenge_3.save()
-
-    ReviewQuestion(challenge=challenge_3, order=1, text="Was möchte die Autorin bzw. der Autor mit den 4 Absätzen ausdrücken?").save()
-    ReviewQuestion(challenge=challenge_3, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_3, order=3, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
-    challenge_4 = Challenge(title='wissenschaft',
-                            subtitle='wissenschaft',
-                            prerequisite=challenge_3,
-                            description='Finden Sie einen pseudowissenschaftlichen Artikel und laden Sie ihn hier hoch.',
-                            accepted_files='application/pdf',
-                            course=gsi,
-                            points=9,
-    )
-    challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
-    challenge_4.save()
-
-    challenge_5 = Challenge(title='ping',
-                            subtitle='ping',
-                            description='Laden Sie drei Bilder im png-Format hoch. Beschreiben Sie dann kurz, was auf diesen Bildern zu sehen ist.',
-                            accepted_files='image/png',
-                            course=gsi,
-                            points=10,
-    )
-    challenge_5.image.save('5.png', File(open(os.path.join(STATIC_ROOT, 'img', '5.png'), 'rb')))
-    challenge_5.save()
-    ReviewQuestion(challenge=challenge_5, order=1, text="In welchem Zusammenhang stehen die Bilder? Ist ein Muster erkennbar?").save()
-    ReviewQuestion(challenge=challenge_5, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_5, order=3, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
-    challenge_6 = Challenge(title='advice animal',
-                            subtitle='advice animal',
-                            prerequisite=challenge_5,
-                            description='Suchen Sie ein »advice animal« Bild und posten Sie es hier. Geben sie die Quelle dazu an.',
-                            accepted_files='image/*',
-                            course=gsi,
-                            points=12,
-    )
-    challenge_6.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
-    challenge_6.save()
-
-    ReviewQuestion(challenge=challenge_6, order=1, text="Was steckt hinter dem »advice«? Welche Probleme werden dadurch aufgezeigt?").save()
-    ReviewQuestion(challenge=challenge_6, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_6, order=3, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
-    challenge_7 = Challenge(title='animated gif',
-                            subtitle='animated gif',
-                            prerequisite=challenge_6,
-                            description='suchen sie ein animated gif und posten sie es. geben sie die quelle dazu an.',
-                            accepted_files='image/gif',
-                            course=gsi,
-                            points=14,
-    )
-    challenge_7.image.save('7.png', File(open(os.path.join(STATIC_ROOT, 'img', '7.png'), 'rb')))
-    challenge_7.save()
-    ReviewQuestion(challenge=challenge_7, order=1, text="Weshalb wurde das GIF animiert? Würde es auch ohne Animation funktionieren? Begründen Sie Ihre Antwort.").save()
-    ReviewQuestion(challenge=challenge_7, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_7, order=3, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
-    challenge_8 = Challenge(title='zwei menschen',
-                            subtitle='zwei menschen',
-                            prerequisite=challenge_7,
-                            description='Laden Sie zwei Bilder von zwei verschiedenen Menschen hoch. Erklären Sie dann, wer diese beiden Menschen sind. Vergessen Sie nicht auf die Quellenangabe!!11elf',
-                            accepted_files='image/*',
-                            course=gsi,
-                            points=5,
-    )
-    challenge_8.image.save('8.png', File(open(os.path.join(STATIC_ROOT, 'img', '8.png'), 'rb')))
-    challenge_8.save()
-
-    challenge_9 = Challenge(title='youtube',
-                            subtitle='youtube',
-                            description='Suchen Sie ein gutes YouTube-Video und posten Sie den Link hier. Wenn Sherlock Holmes darin vorkommt, dann können Sie auch einen Extrapunkt bekommen.',
-                            accepted_files='',
-                            course=gsi,
-                            points=25,
-    )
-    challenge_9.image.save('9.png', File(open(os.path.join(STATIC_ROOT, 'img', '9.png'), 'rb')))
-    challenge_9.save()
-    ReviewQuestion(challenge=challenge_9, order=1, text="Beschreiben Sie jemandem der Blind ist die Szene. Versuchen Sie dabei auch auf Details einzugehen, die für das Gesamtverständnis von Relevanz sein könnten.").save()
-    ReviewQuestion(challenge=challenge_9, order=2, text='Was würden Sie verbessern bzw. wo könnte die Autorin oder der Autor ansetzen, damit die Abgabe besser wird?').save()
-    ReviewQuestion(challenge=challenge_9, order=3, text="Kommt in dem Video Sherlock Holmes vor?",
-                   visible_to_author=False, boolean_answer=True).save()
-    ReviewQuestion(challenge=challenge_9, order=4, text="Anmerkungen an das LVA-Team:",
-                   visible_to_author=False).save()
-
-    challenge_10 = Challenge(title='schmetterling',
-                             subtitle='schmetterling',
-                             prerequisite=challenge_9,
-                             description='Suchen Sie in Google Image Search Schmetterlingsbilder und laden Sie diese hier hoch. Vergessen Sie nicht auf die Quellenangaben!',
-                             accepted_files='image/*',
-                             course=gsi,
-                             points=3,
-    )
-    challenge_10.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
-    challenge_10.save()
-
-    # create stacks
-    print('adding stack accessibility')
-    accessibility = Stack(
-        title='Universal Design',
-        description='In diesem Block setzen sie sich mit »Unversal Design« auseinander. Universal Design (Universelles Design) ist ein internationales Design-Konzept, das Produkte, Geräte, Umgebungen und Systeme derart gestaltet, dass sie für so viele Menschen wie möglich ohne weitere Anpassung oder Spezialisierung nutzbar sind. In der Informatik bedeutet das im allgemeinen, Systeme so zu gestalten, dass sie von Menschen mit Behinderungen, insbesondere blinde Menschen, auch benutzt werden können.',
-        course=gsi,
-        start_date=date.today() - timedelta(days=100),
-        end_date=date.today() + timedelta(days=100),
-    )
-    accessibility.save()
-
-    print('adding stack digital life')
-    digitallife = Stack(
-        title='Copyleft vs. Business',
-        description='In diesem Block geht es um die Suche nach neuen Business-Modellen für die geänderten Bedingngen, die durch neue Technologien geschaffen wurden. Viele traditionelel Business-Modelle gehen dabei den Bach runter, neue Ansätze sind gefragt.',
-        course=gsi,
-        start_date=date.today() - timedelta(days=100),
-        end_date=date.today() + timedelta(days=100),
-    )
-    digitallife.save()
-
-    print('adding stack gtav')
-    gtav = Stack(
-        title='Geschichte der Informatik',
-        description='Dieser Block führt sie in die Geschichte der Informatik, zurück zu den Anfängen des interaktiven Computers. Sie setzen sich damit auseinander, welche Vorstellungen von Interaktivität im Laufe der Geschichte entstanden, probiert und wieder verworfen wurden. Dabei werden Darstellungen in Film und Fernsehen ebenso aufgearbeitet wie die Visionen der Techniker und wissenschaftliche Diskussionen.',
-        course=gsi,
-        start_date=date.today() - timedelta(days=100),
-        end_date=date.today() + timedelta(days=100),
-    )
-    gtav.save()
-
-    # create dummy elaborations
-    challenges = Challenge.objects.all()
-    for challenge in challenges:
-        for dummy_user in dummy_users:
-            if not challenge.is_final_challenge():
-                Elaboration(challenge=challenge, user=dummy_user, elaboration_text=PlagcheckTestData.get_random_text(),
-                            submission_time='2013-11-01 10:00:00').save()
-
-    print('adding final elaboration 1 for challenge 10')
-    de4 = Elaboration(challenge=challenge_10, user=d1, elaboration_text="final submission user d1 " + PlagcheckTestData.get_random_text(),
-                      submission_time=datetime.now())
-    de4.save()
-
-    print('adding FAIL review for dummy user d1')
-    Review(elaboration=de4, reviewer=d3, appraisal='F', submission_time=datetime.now()).save()
-
-    print('adding final elaboration 2 for challenge 10')
-    de5 = Elaboration(challenge=challenge_10, user=d2, elaboration_text="final submission user d2 " + PlagcheckTestData.get_random_text(),
-                      submission_time=datetime.now())
-    de5.save()
-
-    print('adding final elaboration 1 for challenge 8')
-    de6 = Elaboration(challenge=challenge_8, user=d3, elaboration_text="final submission user d3 " + PlagcheckTestData.get_random_text(),
-                      submission_time=datetime.now())
-    de6.save()
-
-    # create elaboration for challenge 1 for s0
-    print('adding elaboration for challenge 1 for s0')
-    e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this elaboration text is from populate demo data " + PlagcheckTestData.get_random_text(),
-                     submission_time=datetime.now())
-    e1.save()
-
-    elaborations = Elaboration.objects.all()
-    e1 = elaborations[0]
-    e2 = elaborations[1]
-    e3 = elaborations[2]
-
-    # create review for elaboration
-    print('adding review 1 for elaboration for challenge 1 for s0')
-    r1 = Review(elaboration=e1, reviewer=s0, appraisal='N', submission_time=datetime.now())
-    r1.save()
-    print('adding review 2 for elaboration for challenge 1 for s0')
-    r2 = Review(elaboration=e2, reviewer=s0, appraisal='F', submission_time=datetime.now())
-    r2.save()
-    print('adding review 3 for elaboration for challenge 1 for s0')
-    Review(elaboration=e3, reviewer=s0, appraisal='A', submission_time=datetime.now()).save()
-    print('adding review 4 for elaboration for challenge 1 for s0')
-    Review(elaboration=e3, reviewer=d2, appraisal='F', submission_time=datetime.now()).save()
-
-
-    # create elaboration for challenge 2 for s0
-    print('adding elaboration for challenge 2 for s0')
-    e2 = Elaboration(challenge=challenge_2, user=s0, elaboration_text="this elaboration text is from populate demo data " + PlagcheckTestData.get_random_text(),
-                     submission_time=datetime.now())
-    e2.save()
-
-    # create review for elaboration
-    print('adding review 1 for elaboration for challenge 2 for s0')
-    Review(elaboration=de4, reviewer=s0, appraisal='N', submission_time=datetime.now()).save()
-
-    de5.save()
-    print('adding review 1 for elaboration for challenge 2 for s0')
-    Review(elaboration=de5, reviewer=d1, appraisal='A', submission_time=datetime.now()).save()
-    print('adding review 2 for elaboration for challenge 2 for s0')
-    Review(elaboration=de5, reviewer=d2, appraisal='S', submission_time=datetime.now()).save()
-
-    # create stack-challenge relations
-    print('adding stack challenge relations')
-    StackChallengeRelation(stack=accessibility, challenge=challenge_1).save()
-    StackChallengeRelation(stack=accessibility, challenge=challenge_2).save()
-    StackChallengeRelation(stack=accessibility, challenge=challenge_3).save()
-    StackChallengeRelation(stack=accessibility, challenge=challenge_4).save()
-
-    StackChallengeRelation(stack=digitallife, challenge=challenge_5).save()
-    StackChallengeRelation(stack=digitallife, challenge=challenge_6).save()
-    StackChallengeRelation(stack=digitallife, challenge=challenge_7).save()
-    StackChallengeRelation(stack=digitallife, challenge=challenge_8).save()
-
-    StackChallengeRelation(stack=gtav, challenge=challenge_9).save()
-    StackChallengeRelation(stack=gtav, challenge=challenge_10).save()
-
-    print('adding escalation for challenge 1 for s0')
-    com1 = Comment(text="escalation for review 1 for challenge 1 for d1", author=superuser, post_date=datetime.now(),
-                   content_type=ContentType.objects.get_for_model(Review), object_id=r1.id, visibility=Comment.STAFF)
-    com1.save()
-    com2 = Comment(text="escalation for review 2 for challenge 1 for d2", author=superuser, post_date=datetime.now(),
-                   content_type=ContentType.objects.get_for_model(Review), object_id=r2.id, visibility=Comment.PUBLIC)
-    com2.save()
-
-    print('Adding Sample Lectures')
-    Lecture(
-        course=gsi,
-        start=datetime(2013, 2, 15, 15, 00, 17, 345952),
-        end=datetime(2013, 2, 15, 17, 20, 17, 345952),
-        active=True,
-    ).save()
-    Lecture(
-        course=gsi,
-        start=datetime(2013, 2, 16, 15, 00, 17, 345952),
-        end=datetime(2013, 2, 16, 17, 20, 17, 345952),
-        active=True,
-    ).save()
-    Lecture(
-        course=gsi,
-        start=datetime(2013, 2, 17, 15, 00, 17, 345952),
-        end=datetime(2013, 2, 17, 17, 20, 17, 345952),
-        active=True,
-    ).save()
-#    Lecture(
-#        course=gsi,
-#        start=datetime(2013, 2, 24, 15, 00, 17, 345952),
-#        end=datetime(2014, 2, 24, 17, 20, 17, 345952),
-#        active=True,
-#    ).save()
-    Lecture(
-        course=hci,
-        start=datetime(2013, 1, 15, 15, 00, 17, 345952),
-        end=datetime(2013, 1, 15, 17, 20, 17, 345952),
-        active=True,
-    ).save()
-    Lecture(
-        course=hci,
-        start=datetime(2013, 1, 16, 15, 00, 17, 345952),
-        end=datetime(2013, 1, 16, 17, 20, 17, 345952),
-        active=True,
-    ).save()
-
-    print('Adding Sample Slides')
-    Slide(
-        lecture_id=1,
-        title="Preparation Slide #1 - Lecture 1",
-        pub_date=datetime(2013, 2, 10, 15, 21, 17, 345952),
-        filename="vo_10_02_13_1",
-        tags='.preparation',
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Preparation Slide #2 - Lecture 1",
-        pub_date=datetime(2013, 2, 10, 15, 22, 17, 345952),
-        filename="vo_10_02_13_2",
-        tags='.preparation',
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Preparation Slide #3 - Lecture 1",
-        pub_date=datetime(2013, 2, 10, 15, 23, 17, 345952),
-        filename="vo_10_02_13_3",
-        tags='.preparation',
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #1 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 20, 17, 345952),
-        filename="vo_15_02_13_1",
-        tags='.exercise',
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #2 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 22, 17, 345952),
-        filename="vo_15_02_13_2",
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #3 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 24, 17, 345952),
-        filename="vo_15_02_13_3",
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #4 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 26, 17, 345952),
-        filename="vo_15_02_13_4",
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #5 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 28, 17, 345952),
-        filename="vo_15_02_13_5",
-        tags='.exercise',
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #6 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 30, 17, 345952),
-        filename="vo_15_02_13_6",
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #7 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 32, 17, 345952),
-        filename="vo_15_02_13_7",
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #8 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 34, 17, 345952),
-        filename="vo_15_02_13_8",
-    ).save()
-    Slide(
-        lecture_id=1,
-        title="Super Sample Slide #9 - Lecture 1",
-        pub_date=datetime(2013, 2, 15, 15, 36, 17, 345952),
-        filename="vo_15_02_13_9",
-        tags='.exercise',
-    ).save()
-    Slide(
-        lecture_id=2,
-        title="Super Sample Slide #1 - Lecture 2",
-        pub_date=datetime(2013, 2, 16, 15, 20, 17, 345952),
-        filename="vo_16_02_13_1",
-    ).save()
-    Slide(
-        lecture_id=2,
-        title="Super Sample Slide #2 - Lecture 2",
-        pub_date=datetime(2013, 2, 16, 15, 22, 17, 345952),
-        filename="vo_16_02_13_2",
-    ).save()
-    Slide(
-        lecture_id=2,
-        title="Super Sample Slide #2 - Lecture 2",
-        pub_date=datetime(2013, 2, 16, 15, 24, 17, 345952),
-        filename="vo_16_02_13_3",
-    ).save()
-    Slide(
-        lecture_id=3,
-        title="Super Sample Slide #1 - Lecture 3",
-        pub_date=datetime(2013, 2, 17, 15, 20, 17, 345952),
-        filename="vo_17_02_13_1",
-    ).save()
-    Slide(
-        lecture_id=3,
-        title="Super Sample Slide #2 - Lecture 3",
-        pub_date=datetime(2013, 2, 17, 15, 22, 17, 345952),
-        filename="vo_17_02_13_2",
-        tags='.exercise',
-    ).save()
-
-    print("Adding sample stream")
-    Stream(
-        lecture_id=1,
-        url="rtmp://video.zserv.tuwien.ac.at/lecturetube_public",
-        type="rtmp",
-        clipname="gsiss13e10",
-        offset=-656,
-    ).save()
+    # # create stacks
+    # print('adding stack accessibility')
+    # accessibility = Stack(
+    #     title='Universal Design',
+    #     description='In diesem Block setzen sie sich mit »Unversal Design« auseinander. Universal Design (Universelles Design) ist ein internationales Design-Konzept, das Produkte, Geräte, Umgebungen und Systeme derart gestaltet, dass sie für so viele Menschen wie möglich ohne weitere Anpassung oder Spezialisierung nutzbar sind. In der Informatik bedeutet das im allgemeinen, Systeme so zu gestalten, dass sie von Menschen mit Behinderungen, insbesondere blinde Menschen, auch benutzt werden können.',
+    #     course=gsi,
+    #     start_date=date.today() - timedelta(days=100),
+    #     end_date=date.today() + timedelta(days=100),
+    # )
+    # accessibility.save()
+    #
+    # print('adding stack digital life')
+    # digitallife = Stack(
+    #     title='Copyleft vs. Business',
+    #     description='In diesem Block geht es um die Suche nach neuen Business-Modellen für die geänderten Bedingngen, die durch neue Technologien geschaffen wurden. Viele traditionelel Business-Modelle gehen dabei den Bach runter, neue Ansätze sind gefragt.',
+    #     course=gsi,
+    #     start_date=date.today() - timedelta(days=100),
+    #     end_date=date.today() + timedelta(days=100),
+    # )
+    # digitallife.save()
+    #
+    # print('adding stack gtav')
+    # gtav = Stack(
+    #     title='Geschichte der Informatik',
+    #     description='Dieser Block führt sie in die Geschichte der Informatik, zurück zu den Anfängen des interaktiven Computers. Sie setzen sich damit auseinander, welche Vorstellungen von Interaktivität im Laufe der Geschichte entstanden, probiert und wieder verworfen wurden. Dabei werden Darstellungen in Film und Fernsehen ebenso aufgearbeitet wie die Visionen der Techniker und wissenschaftliche Diskussionen.',
+    #     course=gsi,
+    #     start_date=date.today() - timedelta(days=100),
+    #     end_date=date.today() + timedelta(days=100),
+    # )
+    # gtav.save()
+    #
+    # # create dummy elaborations
+    # challenges = Challenge.objects.all()
+    # for challenge in challenges:
+    #     for dummy_user in dummy_users:
+    #         if not challenge.is_final_challenge():
+    #             Elaboration(challenge=challenge, user=dummy_user, elaboration_text=PlagcheckTestData.get_random_text(),
+    #                         submission_time='2013-11-01 10:00:00').save()
+    #
+    # print('adding final elaboration 1 for challenge 10')
+    # de4 = Elaboration(challenge=challenge_10, user=d1, elaboration_text="final submission user d1 " + PlagcheckTestData.get_random_text(),
+    #                   submission_time=datetime.now())
+    # de4.save()
+    #
+    # print('adding FAIL review for dummy user d1')
+    # Review(elaboration=de4, reviewer=d3, appraisal='F', submission_time=datetime.now()).save()
+    #
+    # print('adding final elaboration 2 for challenge 10')
+    # de5 = Elaboration(challenge=challenge_10, user=d2, elaboration_text="final submission user d2 " + PlagcheckTestData.get_random_text(),
+    #                   submission_time=datetime.now())
+    # de5.save()
+    #
+    # print('adding final elaboration 1 for challenge 8')
+    # de6 = Elaboration(challenge=challenge_8, user=d3, elaboration_text="final submission user d3 " + PlagcheckTestData.get_random_text(),
+    #                   submission_time=datetime.now())
+    # de6.save()
+    #
+    # # create elaboration for challenge 1 for s0
+    # print('adding elaboration for challenge 1 for s0')
+    # e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this elaboration text is from populate demo data " + PlagcheckTestData.get_random_text(),
+    #                  submission_time=datetime.now())
+    # e1.save()
+    #
+    # elaborations = Elaboration.objects.all()
+    # e1 = elaborations[0]
+    # e2 = elaborations[1]
+    # e3 = elaborations[2]
+    #
+    # # create review for elaboration
+    # print('adding review 1 for elaboration for challenge 1 for s0')
+    # r1 = Review(elaboration=e1, reviewer=s0, appraisal='N', submission_time=datetime.now())
+    # r1.save()
+    # print('adding review 2 for elaboration for challenge 1 for s0')
+    # r2 = Review(elaboration=e2, reviewer=s0, appraisal='F', submission_time=datetime.now())
+    # r2.save()
+    # print('adding review 3 for elaboration for challenge 1 for s0')
+    # Review(elaboration=e3, reviewer=s0, appraisal='A', submission_time=datetime.now()).save()
+    # print('adding review 4 for elaboration for challenge 1 for s0')
+    # Review(elaboration=e3, reviewer=d2, appraisal='F', submission_time=datetime.now()).save()
+    #
+    #
+    # # create elaboration for challenge 2 for s0
+    # print('adding elaboration for challenge 2 for s0')
+    # e2 = Elaboration(challenge=challenge_2, user=s0, elaboration_text="this elaboration text is from populate demo data " + PlagcheckTestData.get_random_text(),
+    #                  submission_time=datetime.now())
+    # e2.save()
+    #
+    # # create review for elaboration
+    # print('adding review 1 for elaboration for challenge 2 for s0')
+    # Review(elaboration=de4, reviewer=s0, appraisal='N', submission_time=datetime.now()).save()
+    #
+    # de5.save()
+    # print('adding review 1 for elaboration for challenge 2 for s0')
+    # Review(elaboration=de5, reviewer=d1, appraisal='A', submission_time=datetime.now()).save()
+    # print('adding review 2 for elaboration for challenge 2 for s0')
+    # Review(elaboration=de5, reviewer=d2, appraisal='S', submission_time=datetime.now()).save()
+    #
+    # # create stack-challenge relations
+    # print('adding stack challenge relations')
+    # StackChallengeRelation(stack=accessibility, challenge=challenge_1).save()
+    # StackChallengeRelation(stack=accessibility, challenge=challenge_2).save()
+    # StackChallengeRelation(stack=accessibility, challenge=challenge_3).save()
+    # StackChallengeRelation(stack=accessibility, challenge=challenge_4).save()
+    #
+    # StackChallengeRelation(stack=digitallife, challenge=challenge_5).save()
+    # StackChallengeRelation(stack=digitallife, challenge=challenge_6).save()
+    # StackChallengeRelation(stack=digitallife, challenge=challenge_7).save()
+    # StackChallengeRelation(stack=digitallife, challenge=challenge_8).save()
+    #
+    # StackChallengeRelation(stack=gtav, challenge=challenge_9).save()
+    # StackChallengeRelation(stack=gtav, challenge=challenge_10).save()
+    #
+    # print('adding escalation for challenge 1 for s0')
+    # com1 = Comment(text="escalation for review 1 for challenge 1 for d1", author=superuser, post_date=datetime.now(),
+    #                content_type=ContentType.objects.get_for_model(Review), object_id=r1.id, visibility=Comment.STAFF)
+    # com1.save()
+    # com2 = Comment(text="escalation for review 2 for challenge 1 for d2", author=superuser, post_date=datetime.now(),
+    #                content_type=ContentType.objects.get_for_model(Review), object_id=r2.id, visibility=Comment.PUBLIC)
+    # com2.save()
 
     for user in AuroraUser.objects.all():
         if not user.avatar:
