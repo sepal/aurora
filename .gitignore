@@ -5,7 +5,6 @@ local_settings.py
 database.db
 database-plagcheck.db
 .idea
-admin
 .vagrant
 .venv
 vagrant_ansible_inventory_default
