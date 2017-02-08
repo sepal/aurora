@@ -158,6 +158,5 @@ class HciDataStructure:
         Use this method after adding slides to the system.
         :return:
         """
-        print("doing the job!")
         HciDataStructure.data_structure = HciDataStructure.create_data_structure()
         HciStructure.redefine_structure()

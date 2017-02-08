@@ -8,12 +8,12 @@
 <!-- Bootstrap 4 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 <!-- Lightbox -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.0.0/ekko-lightbox.min.css" integrity="sha256-8aNQFtmxcOMVoOhLD4mrHqaKC2Ui++LmlQsoKTqxwIE=" crossorigin="anonymous" />
+<link rel="stylesheet" href="{% static 'css/ekko-lightbox.css' %}" />
 <!--FrameScrub -->
-<link rel='stylesheet' href='{% static "css/frameScrub.css" %}' />
+<link rel="stylesheet" href="{% static 'css/frameScrub.css' %}" />
 <!--Custom CSS-->
-<link rel='stylesheet' href='{% static "css/custom-slides.css" %}' />
-<link rel="stylesheet" href='{% static "css/base.css" %}' />
+<link rel="stylesheet" href="{% static 'css/custom-slides.css' %}" />
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
 
 
 </head>
@@ -24,7 +24,7 @@
   {% include "navigation.html" %}
 {% endblock %}
 
-<div class='container-fluid'>
+<div class="container-fluid">
     {% block content %}{% endblock content %}
 </div>
 
@@ -35,7 +35,7 @@
 <!-- Bootstrap 4 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
 <!-- Lightbox -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.0.0/ekko-lightbox.min.js" integrity="sha256-7Cjt+w+jZgmYnx3j2lZ7lOjbEHm4RdflVPClpK5+eHg=" crossorigin="anonymous"></script>
+<script src="{{ STATIC_URL }}js/ekko-lightbox.js"></script>
 <script type="text/javascript">
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();
@@ -45,8 +45,8 @@
 <!--Comments-->
 <script type="text/javascript" src="{{ STATIC_URL }}Comments/simple_functions.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}Comments/comments.js"></script>
-<!--FrameScrum = iPhoto functionality-->
-<script src="{% static "js/frameScrub.js" %}"></script>
+<!--FrameScrub = iPhoto functionality-->
+<script src="{% static 'js/frameScrub.js' %}"></script>
 <script>
     $(document).ready(function () {
         setFrameScrubHeight();
