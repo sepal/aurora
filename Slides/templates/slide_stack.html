@@ -24,7 +24,7 @@
 <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3">
     <div class="card card-block">
         <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="example-gallery">
-        <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
+            <img class="img-fluid" style="width:100%;" src="{{ slide.image|thumbnail_url:'preview' }}" />
         </a>
         <p></p>
         <h3 class="card-title">{{ slide.title }}</h3>
