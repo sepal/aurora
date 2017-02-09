@@ -150,11 +150,11 @@ function submit_revised_elaboration(challenge_id) {
     var review_id = $("#most_helpful_other_user").val();
 
     if (isNaN(review_id)) {
-        alert("please select something from the »most helpful« menu, thank you!");
+        alert("Please select something from the »most helpful« menu, thank you!");
         return false
     }
     if (changelog.length < 15) {
-        alert("please write a meaningful changelog, thank you!");
+        alert("Please write a meaningful changelog, thank you!");
         return false
     }
 
