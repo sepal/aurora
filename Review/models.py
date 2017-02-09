@@ -81,7 +81,7 @@ class ReviewEvaluation(models.Model):
                                                appraisal=ReviewEvaluation.NEGATIVE).count()
     @staticmethod
     def get_review_evaluation_percent(user, course):
-        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course).count()
+        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False).count()
         number_of_review_evaluations = ReviewEvaluation.objects.filter(user=user, review__elaboration__challenge__course=course).count()
         if number_of_reviews == 0:
             return 0
