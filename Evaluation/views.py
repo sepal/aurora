@@ -830,6 +830,7 @@ def get_points(request, user, course):
     data['review_evaluation_data']['positive_review_evaluations'] = ReviewEvaluation.get_positive_review_evaluations(user, course)
     data['review_evaluation_data']['negative_review_evaluations'] = ReviewEvaluation.get_negative_review_evaluations(user, course)
     data['review_evaluation_data']['review_evaluation_percent'] = ReviewEvaluation.get_review_evaluation_percent(user, course)
+    data['review_evaluation_data']['reviews_missing_evaluation'] = ReviewEvaluation.get_unevaluated_reviews(user, course)
 
     data['stacks'] = []
     for course in courses:
