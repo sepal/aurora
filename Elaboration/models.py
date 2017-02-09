@@ -108,6 +108,8 @@ class Elaboration(models.Model):
         return elaborations
 
     def can_be_revised(self):
+        return True
+
         if self.is_evaluated():
             return False
 

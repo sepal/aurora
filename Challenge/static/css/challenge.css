@@ -228,7 +228,7 @@ h1 {
 
 .allowedfruit .stack_action {
 	color:rgba(58,201,88,1)!important;
-	cursor:pointer;	
+	cursor:pointer;
 }
 
 .stack_next {
@@ -405,7 +405,7 @@ h1 {
 }
 
 .all_reviews {
-	
+
 }
 
 .show_review {
@@ -451,8 +451,21 @@ h1 {
 }
 
 .chapter {
-	border-bottom:1px 
+	border-bottom:1px
 	solid silver;
 	margin-bottom:3px;
 	width:410px;
+}
+
+.submitted-content > trix-toolbar {
+  display: none;
+  pointer-events: none;
+}
+
+.submitted-content > trix-editor {
+  pointer-events: none;
+}
+
+.submitted-content {
+  margin-bottom: 20px;
 }

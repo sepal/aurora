@@ -147,20 +147,27 @@
     {% endif %}
 {% else %}
 	{% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}Original h{% else %}H{% endif %}anded in <a style="color:black;text-decoration: none;" href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{elaboration.submission_time|naturaltime}}'); }, 3000);void(0);" title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i class="fa fa-calendar"></i></a> <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
-
-	{% if challenge.accepted_files %}
-	{% render_original_uploads elaboration %}
-	{% endif %}
-
+  <div class="submitted-content">
     {% if not elaboration.can_be_revised and elaboration.revised_elaboration_text != elaboration.elaboration_text%}
-     	 Revised text
-		<textarea id="editor_challenge">{{ elaboration.revised_elaboration_text }}</textarea>
+      <br><b>Revised text</b>
+      {% if challenge.accepted_files %}
+       {% render_uploads elaboration %}
+      {% endif %}
+  		<textarea id="editor_challenge" style="display: none;">{{ elaboration.revised_elaboration_text }}</textarea>
+      <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
 
-		<br>Original text
-		<textarea id="editor_challenge_orig">{{ elaboration.elaboration_text }}</textarea>
-	{% else %}
-		<textarea id="editor_challenge">{{ elaboration.elaboration_text }}</textarea>
-	{% endif %}
+  		<br><b>Original text</b>
+      {% if challenge.accepted_files %}
+       {% render_original_uploads elaboration %}
+      {% endif %}
+  		<textarea id="editor_challenge_orig" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+      <trix-editor class="trix-content" input="editor_challenge_orig"></trix-editor>
+	  {% else %}
+      {% render_uploads elaboration %}
+  		<textarea id="editor_challenge" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+      <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
+	  {% endif %}
+  </div>
 
 {% if evaluation %}
     <div class="comments">
@@ -239,7 +246,8 @@
 	        </div>
 	      {% endif %}
 	      <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
-	          <textarea id="editor">{{ elaboration.revised_elaboration_text }}</textarea>
+            <textarea id="revised-editor" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text }}</textarea>
+            <trix-editor class="trix-content" input="revised-editor"></trix-editor>
               <div class="changelog">
 				  Briefly describe the changes you made to your original elaboration<br><input type="text" value="{{ elaboration.revised_elaboration_changelog}}" id="changelog"  />
 				  <br><br>Which review was most helpful for this revision:

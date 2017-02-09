@@ -34,11 +34,13 @@ def save_elaboration(request, course_short_title):
                 elaboration.revised_elaboration_changelog = request.POST['revised_elaboration_changelog']
             if 'most_helpful_other_user' in request.POST:
                 review_id = request.POST['most_helpful_other_user']
-                if int(review_id) > 0:
-                    review_id = Review.objects.get(pk=review_id).reviewer.pk
-                elaboration.most_helpful_other_user = review_id
+                if review_id.isdigit():
+                    if int(review_id) > 0:
+                        review_id = Review.objects.get(pk=review_id).reviewer.pk
+                        elaboration.most_helpful_other_user = review_id
 
             elaboration.save()
+            return HttpResponse()
 
         # only save if it is unsubmitted (because of js raise condition)
         if not elaboration.is_submitted():
@@ -72,8 +74,8 @@ def submit_elaboration(request, course_short_title):
    if elaboration.is_submitted():
        return HttpResponse("elaboration already submitted", status=400)
 
-   elaboration.elaboration_text = request.POST['elaboration_text'] # sanitze here
-   elaboration.revised_elaboration_text = elaboration.elaboration_text
+   # elaboration.elaboration_text = request.POST['elaboration_text'] # sanitze here
+   # elaboration.revised_elaboration_text = elaboration.elaboration_text
 
    if elaboration.elaboration_text or UploadFile.objects.filter(elaboration=elaboration).exists():
        elaboration.submission_time = datetime.now()
