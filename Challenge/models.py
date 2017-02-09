@@ -11,6 +11,9 @@ from Review.models import Review
 from Elaboration.models import Elaboration
 from Course.models import Course, CourseUserRelation
 
+import logging
+logger = logging.getLogger(__name__)
+
 def challenge_image_path(instance, filename):
     name = 'challenge_%s' % instance.id
     fullname = os.path.join(instance.upload_path, name)
@@ -83,10 +86,16 @@ class Challenge(models.Model):
             return None
 
     def get_elaboration(self, user):
-        try:
-            return Elaboration.objects.get(challenge=self, user=user)
-        except Elaboration.DoesNotExist:
+        elaborations = Elaboration.objects.filter(challenge=self, user=user).order_by("-creation_time")
+
+        if len(elaborations) == 0:
             return None
+
+        if len(elaborations) > 1:
+            # TODO notify someone
+            logger.error("Found multiple elaborations")
+
+        return elaborations.first();
 
     def is_started(self, user):
         elaboration = self.get_elaboration(user)
