@@ -111,7 +111,8 @@
     		</div>
 			{% endif %}
     <form method="post">
-      <textarea id="editor">{{ elaboration.elaboration_text }}</textarea>
+      <textarea id="original-editor" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+      <trix-editor class="trix-content" input="original-editor"></trix-editor>
     </form>
 		<div class="status_under_MCE">
 	    	<button id="SagB" class="XL save_back">
