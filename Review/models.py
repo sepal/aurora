@@ -81,12 +81,20 @@ class ReviewEvaluation(models.Model):
                                                appraisal=ReviewEvaluation.NEGATIVE).count()
     @staticmethod
     def get_review_evaluation_percent(user, course):
-        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course).count()
+        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False).count()
         number_of_review_evaluations = ReviewEvaluation.objects.filter(user=user, review__elaboration__challenge__course=course).count()
         if number_of_reviews == 0:
             return 0
         else:
             return number_of_review_evaluations/number_of_reviews
+
+    @staticmethod
+    def get_unevaluated_reviews(user, course):
+        review_ids = Review.objects.values_list('id', flat=True).filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False)
+        rated_review_ids = ReviewEvaluation.objects.values_list('review_id', flat=True).filter(user=user, review__elaboration__challenge__course=course)
+        missing_ratings_ids = list(set(review_ids)-set(rated_review_ids))
+
+        return Review.objects.filter(id__in=missing_ratings_ids)
 
 class ReviewConfig(models.Model):
     # in hours
