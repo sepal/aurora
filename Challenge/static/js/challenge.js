@@ -1,7 +1,5 @@
 $(function() {
     $('#challenges-li').addClass('uRhere');
-    window.document.title = "Aurora: Challenges"
-
     $(".review_answer").each(function() {
         this.style.height = (this.scrollHeight + 5) + 'px';
     });
@@ -18,17 +16,16 @@ document.addEventListener("trix-file-accept", function(event) {
     return
 });
 
-$(challenge_loaded);
-
-function challenge_loaded() {
-    if ($('.elaboration_block').length) {
-        $('.submit').click(submit_clicked);
-        $('.save_back').click(go_back);
-        $('.real_submit').click(real_submit_clicked);
-        $('.real_submit_revised').click(real_submit_revised_clicked);
-    }
-}
-
+// $(challenge_loaded);
+//
+// function challenge_loaded() {
+//     if ($('.elaboration_block').length) {
+//         $('.submit').click(submit_clicked);
+//         $('.save_back').click(go_back);
+//         $('.real_submit').click(real_submit_clicked);
+//         $('.real_submit_revised').click(real_submit_revised_clicked);
+//     }
+// }
 
 function save_elaboration(challenge_id, submit) {
     var elaboration_text = $("#original-editor").editor.getDocument().toString();

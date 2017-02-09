@@ -1,10 +1,9 @@
 from django.conf.urls import patterns, include, url
-from django.contrib import staticfiles
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.conf.urls.static import static
-from AuroraProject.settings import MEDIA_ROOT, DEBUG
+from AuroraProject.settings import DEBUG
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 admin.autodiscover()
 

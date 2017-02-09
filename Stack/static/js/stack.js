@@ -6,7 +6,6 @@ $(function(){
 	    onlyFullWords: true
 	});
 	$('#challenges-li').addClass('uRhere');
-	window.document.title="Aurora: Challenges"
 });
 
 
