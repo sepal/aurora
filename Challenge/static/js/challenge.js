@@ -30,7 +30,6 @@ $(document).ready(function() {
     // Autosafe elaboration every x milliseconds
     var autosave_interval = 20000
     window.setInterval(function() {
-        console.log("Interval save");
         var challenge_id = $('.challenge').attr('id');
         save_elaboration(challenge_id);
     }, autosave_interval);
@@ -126,8 +125,8 @@ function save_revised_elaboration(challenge_id) {
     }
 
     var revised_elaboration_text = $("#revised-editor").val();
-    var changelog = $('#changelog').prop('value')
-    var review_id = $("#most_helpful_other_user").val()
+    var changelog = $('#changelog').prop('value');
+    var review_id = $("#most_helpful_other_user").val();
 
     var data = {
         challenge_id: challenge_id,

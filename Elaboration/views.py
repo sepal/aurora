@@ -34,10 +34,13 @@ def save_elaboration(request, course_short_title):
                 elaboration.revised_elaboration_changelog = request.POST['revised_elaboration_changelog']
             if 'most_helpful_other_user' in request.POST:
                 review_id = request.POST['most_helpful_other_user']
-                if review_id.isdigit():
+                try:
+                    review_id = int(review_id)
                     if int(review_id) > 0:
                         review_id = Review.objects.get(pk=review_id).reviewer.pk
-                        elaboration.most_helpful_other_user = review_id
+                    elaboration.most_helpful_other_user = review_id
+                except ValueError as verr:
+                    pass
 
             elaboration.save()
             return HttpResponse()
