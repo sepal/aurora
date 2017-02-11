@@ -13,7 +13,8 @@ from ReviewQuestion.models import ReviewQuestion
 from ReviewAnswer.models import ReviewAnswer
 
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
-
+import logging
+logger = logging.getLogger(__name__)
 
 @aurora_login_required()
 def stack(request, course_short_title=None):
@@ -169,19 +170,25 @@ def create_context_challenge(request, course_short_title):
         for review_question in ReviewQuestion.objects.filter(challenge=challenge, visible_to_author=True).order_by("order"):
             data['review_questions'].append(review_question.text)
 
-        # Create the elaboration to be able to upload files immediately
-        Elaboration.objects.get_or_create(challenge=challenge, user=user)
-
+        # Create of load Evaluation
         if Elaboration.objects.filter(challenge=challenge, user=user).exists():
-            elaboration = Elaboration.objects.get(challenge=challenge, user=user)
-            data['elaboration'] = elaboration
-            data['accepted'] = elaboration.is_started()
-            data['success'] = elaboration.get_success_reviews()
-            data['nothing'] = elaboration.get_nothing_reviews()
-            data['fail'] = elaboration.get_fail_reviews()
+            elaborations = Elaboration.objects.filter(challenge=challenge, user=user).order_by("-creation_time")
+            if len(elaborations) > 1:
+                # TODO notify someone
+                logger.error("Found multiple elaborations")
 
-            if Evaluation.objects.filter(submission=elaboration).exists():
-                data['evaluation'] = Evaluation.objects.filter(submission=elaboration)[0]
+            elaboration = elaborations.first();
+        else:
+            elaboration = Elaboration.objects.create(challenge=challenge, user=user)
+
+        data['elaboration'] = elaboration
+        data['accepted'] = elaboration.is_started()
+        data['success'] = elaboration.get_success_reviews()
+        data['nothing'] = elaboration.get_nothing_reviews()
+        data['fail'] = elaboration.get_fail_reviews()
+
+        if Evaluation.objects.filter(submission=elaboration).exists():
+            data['evaluation'] = Evaluation.objects.filter(submission=elaboration)[0]
 
         if challenge.is_final_challenge():
             data['blocked'] = not challenge.is_enabled_for_user(user)
