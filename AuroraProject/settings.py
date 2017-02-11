@@ -421,8 +421,8 @@ if DEBUG:
 
     THUMBNAIL_ALIASES = {
         '': {
-            'preview': {'size': (450, 300)},
-            'full-res': {'size': (1200, 800)},
+            'preview': {'size': (640, 480)},
+            'full-res': {'size': (1920, 1080)},
         },
     }
 
