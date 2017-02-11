@@ -4,7 +4,10 @@
 
 
 
-<h1>{{ title }}</h1>
+<h1 class="slide-stack-title">{{ title }}&nbsp;&nbsp;
+	{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
+	{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
+</h1>
 <hr />
 
 <!--SlideStack listing-->
@@ -28,7 +31,7 @@
     </a>
 
     <p></p>
-    <h3 class="card-title">{{ slide_stack.title }}</h3>
+    <h3 class="stack-title card-title">{{ slide_stack.title }}</h3>
     <a href="{% url 'Slides:slidestack' topic=top slug=slide_stack.slug course_short_title=course.short_title %}" class="btn btn-primary">View Slides</a>
 
     </div>
