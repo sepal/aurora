@@ -118,10 +118,10 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
                     stop = True
 
         if ind > 0:
-            prev = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind - 1].slug,
+            nxt = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind - 1].slug,
                                                         "course_short_title": course_short_title})
         if ind < len(used_slide_stacks) - 1:
-            nxt = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind + 1].slug,
+            prev = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind + 1].slug,
                                                        "course_short_title": course_short_title})
 
     # find all other topics containing this SlideStack
