@@ -27,8 +27,8 @@ const common = {
     alias: {
       // We're using react-lite since we don't need server side rendering. This
       // library is a lot smaller.
-      'react': 'react-lite',
-      'react-dom': 'react-lite'
+      // 'react': 'react-lite',
+      // 'react-dom': 'react-lite'
     }
   },
   module: {

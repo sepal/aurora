@@ -7,7 +7,7 @@ export default class Select extends InputElement {
   static propTypes = {
     name: React.PropTypes.string,
     label: React.PropTypes.string,
-    options: React.PropTypes.array(),
+    options: React.PropTypes.array,
     onChange: React.PropTypes.func
   };
 

@@ -5,8 +5,8 @@ import InputElement from '../InputElement';
 
 export default class TextInput extends InputElement {
   static propTypes = {
-    name: React.PropTypes.string.isRequired(),
-    label: React.PropTypes.string.isRequired(),
+    name: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string.isRequired,
     size: React.PropTypes.number,
     onChange: React.PropTypes.func
   }

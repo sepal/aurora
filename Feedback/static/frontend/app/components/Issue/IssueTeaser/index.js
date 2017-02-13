@@ -10,8 +10,8 @@ import {ItemTypes} from '../../../constants';
 const issueSource = {
   beginDrag(props) {
     return {
-      id: props.id,
-      lane: props.lane
+      issue: props,
+      onDrop: props.onDrop,
     }
   },
 
@@ -29,6 +29,7 @@ export default class IssueTeaser extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
+    onDrop: PropTypes.func.isRequired,
     id: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

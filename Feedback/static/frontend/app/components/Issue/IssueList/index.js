@@ -3,8 +3,9 @@ import React from 'react';
 import styles from './style.scss';
 import IssueTeaser from '../IssueTeaser';
 
-export default function IssueList(props) {
-  const issues = props.issues.map(issue => {
+const IssueList = ({issues, onDrop}) => {
+  // Build up the issues teasers.
+  const issueTeasers = issues.map(issue => {
     let number_comments = 0;
     let upvotes = 0;
 
@@ -20,18 +21,23 @@ export default function IssueList(props) {
       <li key={issue.id} className={styles.item}>
         <IssueTeaser title={issue.title} upvotes={upvotes}
                      comments={number_comments} id={issue.id} type={issue.type}
-                     lane={issue.lane.id} />
+                     lane={issue.lane.id} onDrop={onDrop} />
       </li>
     );
   });
+
+  // Build up the empty message.
   const msg = (
     <li className={styles.empty}>
-    No issues here yet.
+      No issues here yet.
     </li>
   );
+
   return (
     <ul>
-      { issues.length > 0 ? issues : msg }
+      { issues.length > 0 ? issueTeasers : msg }
     </ul>
   );
-}
+};
+
+export default IssueList;

@@ -1,3 +1,5 @@
+import {getCookieSetting} from '../utilities';
+
 export function getInitialData() {
   let jsonString = document.getElementById('data').innerHTML;
 
@@ -51,15 +53,15 @@ export function updateIssue(data, id = undefined) {
   let url = `/gsi/feedback/api/issue`;
   let method = 'POST';
 
-  if (this.id != undefined) {
-    url = `/gsi/feedback/api/issue/${this.id}`;
+  if (id != undefined) {
+    url = `/gsi/feedback/api/issue/${id}`;
     method = 'PUT';
   }
 
   return new Promise((resolve, reject) => {
     try {
       const json = JSON.stringify({
-        lane: data.lane.id,
+        lane: data.lane,
         type: data.type,
         title: data.title,
         body: data.body,
@@ -75,14 +77,7 @@ export function updateIssue(data, id = undefined) {
         data: json,
         url: url
       }).done((resp) => {
-        var updatedIssue = new Issue();
-        try {
-          updatedIssue.fromJSON(resp);
-        } catch (exception) {
-          reject(exception);
-          return;
-        }
-        resolve(updatedIssue);
+        resolve(resp);
       }).fail((err) => {
         reject(err);
       });

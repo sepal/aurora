@@ -10,18 +10,8 @@ import kanbanStore from '../../../models/kanbanStore';
 const laneTarget = {
   drop(props, monitor, component) {
     const issue_ctx = monitor.getItem();
-    const oldLane = kanbanStore.getLane(issue_ctx.lane);
-    const newLane = kanbanStore.getLane(props.id);
 
-    //todo: replace old dnd mobx code with redux actions.
-    // let issue = oldLane.getIssue(issue_ctx.id);
-    // oldLane.removeIssue(issue_ctx.id);
-    // newLane.addIssue(issue);
-    // issue.update();
-
-    return {
-      id: props.id,
-    }
+    issue_ctx.onDrop(issue_ctx.issue, props.id);
   },
 };
 
@@ -40,10 +30,6 @@ export default class Lane extends Component {
     issues: PropTypes.array
   };
 
-  renderIssueTeaser() {
-    return <IssueListContainer laneId={this.props.id} />
-  }
-
   render() {
     const {canDrop, isOver, connectDropTarget} = this.props;
     let content;
@@ -52,7 +38,7 @@ export default class Lane extends Component {
       <div className={styles.lane}>
         <h2 className={styles.title}>{this.props.name}</h2>
         <div className={styles.content}>
-          {this.renderIssueTeaser()}
+          <IssueListContainer laneId={this.props.id} />
         </div>
       </div>
     );
