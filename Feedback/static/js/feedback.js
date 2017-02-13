@@ -59034,7 +59034,8 @@
 	      { key: issue.id, className: _style2.default.item },
 	      _react2.default.createElement(_IssueTeaser2.default, { title: issue.title, upvotes: upvotes,
 	        comments: number_comments, id: issue.id, type: issue.type,
-	        lane: issue.lane.id, onDrop: onDrop })
+	        lane: issue.lane.id, onDrop: onDrop,
+	        preview: issue.preview !== undefined ? issue.preview : false })
 	    );
 	  });
 	
@@ -59150,7 +59151,7 @@
 	              pathname: '/gsi/feedback/issue/' + this.props.id,
 	              state: { returnTo: '/gsi/feedback' }
 	            },
-	            className: _style2.default.issueTeaser },
+	            className: this.props.preview === true ? _style2.default.issueTeaserPreview : _style2.default.issueTeaser },
 	          _react2.default.createElement(_IssueLabel2.default, { type: this.props.type, title: this.props.title }),
 	          _react2.default.createElement(
 	            'div',
@@ -59188,7 +59189,8 @@
 	  type: _react.PropTypes.string.isRequired,
 	  title: _react.PropTypes.string.isRequired,
 	  upvotes: _react.PropTypes.number,
-	  comments: _react.PropTypes.number
+	  comments: _react.PropTypes.number,
+	  preview: _react.PropTypes.bool
 	}, _temp)) || _class);
 	exports.default = IssueTeaser;
 
@@ -59197,7 +59199,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"issueTeaser":"style__issueTeaser___30IcU","upvotes":"style__upvotes___I14RN","comments":"style__comments___lRTtH","footer":"style__footer___LQgoN","type":"style__type___3m7OY"};
+	module.exports = {"issueTeaser":"style__issueTeaser___30IcU","issueTeaserPreview":"style__issueTeaserPreview___2BHyN","upvotes":"style__upvotes___I14RN","comments":"style__comments___lRTtH","footer":"style__footer___LQgoN","type":"style__type___3m7OY"};
 
 /***/ },
 /* 670 */
@@ -59239,10 +59241,8 @@
 	  value: true
 	});
 	exports.default = {
-	  GET_ISSUE: 'get_issue',
-	  ADD_ISSUE: 'add_issue',
-	  UPDATE_ISSUE: 'update_issue',
-	  UPDATED_ISSUE: 'updated_issue',
+	  PREVIEW_ISSUE: 'preview_issue',
+	  UPDATED_ISSUE: 'update_issue',
 	  SWITCH_LANE: 'switch_lane'
 	};
 
@@ -59282,6 +59282,7 @@
 	  value: true
 	});
 	exports.updatedIssue = updatedIssue;
+	exports.previewIssue = previewIssue;
 	exports.switchLane = switchLane;
 	
 	var _constants = __webpack_require__(670);
@@ -59301,6 +59302,19 @@
 	  };
 	}
 	
+	/**
+	 * Is dispatched before an async action request is send.
+	 */
+	function previewIssue(issueID, data) {
+	  return {
+	    type: _constants.IssueActionTypes.PREVIEW_ISSUE,
+	    payload: {
+	      issueID: issueID,
+	      data: data
+	    }
+	  };
+	}
+	
 	function switchLane(issue, newLane) {
 	  return function (dispatch) {
 	    var issueData = {
@@ -59310,6 +59324,7 @@
 	      body: issue.body,
 	      course: issue.course
 	    };
+	    dispatch(previewIssue(issue.id, { lane: { id: newLane } }));
 	    return (0, _api.updateIssue)(issueData, issue.id).then(function (issue) {
 	      dispatch(updatedIssue(issue));
 	    });
@@ -59890,15 +59905,29 @@
 	
 	  var _ret = function () {
 	    switch (action.type) {
+	      case _constants.IssueActionTypes.PREVIEW_ISSUE:
+	        var id = action.payload.issueID;
+	        var data = action.payload.data;
+	        var newState = state.map(function (issue) {
+	          if (issue.id == id) {
+	            data['preview'] = true;
+	            var newIssue = Object.assign(issue, data);
+	            return newIssue;
+	          }
+	          return issue;
+	        });
+	        return {
+	          v: newState
+	        };
+	        break;
 	      case _constants.IssueActionTypes.UPDATED_ISSUE:
 	        var updatedIssue = action.payload.issue;
 	        return {
 	          v: state.map(function (issue) {
 	            if (issue.id == updatedIssue.id) {
 	              return updatedIssue;
-	            } else {
-	              return issue;
 	            }
+	            return issue;
 	          })
 	        };
 	        break;

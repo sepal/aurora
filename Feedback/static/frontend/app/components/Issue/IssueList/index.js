@@ -21,7 +21,8 @@ const IssueList = ({issues, onDrop}) => {
       <li key={issue.id} className={styles.item}>
         <IssueTeaser title={issue.title} upvotes={upvotes}
                      comments={number_comments} id={issue.id} type={issue.type}
-                     lane={issue.lane.id} onDrop={onDrop} />
+                     lane={issue.lane.id} onDrop={onDrop}
+                     preview={issue.preview !== undefined ? issue.preview : false} />
       </li>
     );
   });

@@ -171,7 +171,7 @@
   padding: 14px;
   text-align: center;
   border-radius: 3px; }
-.style__issueTeaser___30IcU {
+.style__issueTeaser___30IcU, .style__issueTeaserPreview___2BHyN {
   display: block;
   padding: 14px;
   border-radius: 3px;
@@ -179,8 +179,12 @@
   background: white;
   color: #222;
   text-decoration: none; }
-  .style__issueTeaser___30IcU:hover, .style__issueTeaser___30IcU:active, .style__issueTeaser___30IcU:focus {
+  .style__issueTeaser___30IcU:hover, .style__issueTeaserPreview___2BHyN:hover, .style__issueTeaser___30IcU:active, .style__issueTeaserPreview___2BHyN:active, .style__issueTeaser___30IcU:focus, .style__issueTeaserPreview___2BHyN:focus {
     background: #f7f7f7; }
+
+.style__issueTeaserPreview___2BHyN {
+  opacity: 0.5;
+  cursor: wait; }
 
 .style__upvotes___I14RN, .style__comments___lRTtH {
   margin-right: 21px; }

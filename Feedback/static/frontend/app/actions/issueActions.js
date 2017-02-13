@@ -16,6 +16,19 @@ export function updatedIssue(issue) {
   }
 }
 
+/**
+ * Is dispatched before an async action request is send.
+ */
+export function previewIssue(issueID, data) {
+  return {
+    type: IssueActionTypes.PREVIEW_ISSUE,
+    payload: {
+      issueID: issueID,
+      data: data
+    }
+  }
+}
+
 export function switchLane(issue, newLane) {
   return function (dispatch) {
     const issueData = {
@@ -25,6 +38,7 @@ export function switchLane(issue, newLane) {
       body: issue.body,
       course: issue.course
     };
+    dispatch(previewIssue(issue.id, {lane: { id: newLane}}));
     return updateIssue(issueData, issue.id)
       .then((issue) => {dispatch(updatedIssue(issue))});
   }

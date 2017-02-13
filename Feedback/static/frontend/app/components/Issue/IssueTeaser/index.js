@@ -35,6 +35,7 @@ export default class IssueTeaser extends Component {
     title: PropTypes.string.isRequired,
     upvotes: PropTypes.number,
     comments: PropTypes.number,
+    preview: PropTypes.bool
   };
 
   render() {
@@ -51,7 +52,7 @@ export default class IssueTeaser extends Component {
             pathname: `/gsi/feedback/issue/${this.props.id}`,
             state: {returnTo: '/gsi/feedback'}
           }}
-          className={styles.issueTeaser} >
+          className={this.props.preview === true ? styles.issueTeaserPreview : styles.issueTeaser} >
           <IssueLabel type={this.props.type} title={this.props.title} />
           <div className={styles.footer}>
             <span className={styles.upvotes}>
