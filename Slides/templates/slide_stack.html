@@ -32,7 +32,7 @@
 		        </a>
 		        <p></p>
 		        <h3 class="slide-title card-title">{{ slide.title }}</h3>
-                <p>{{ slide.lecturer_comment }}</p>
+                {% if slide.lecturer_comment %}<p>{{ slide.lecturer_comment }}</p>{% endif %}
 		    </div>
 	{% endfor %}
 	</div>
