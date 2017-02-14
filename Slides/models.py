@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils import timezone
 import re
+from operator import attrgetter
 
 from Course.models import Course
 
@@ -22,7 +23,8 @@ class SlideStack(models.Model):
         """
         :return: a filter set of Slides, assigned to this SlideStack.
         """
-        return Slide.objects.filter(slide_stack=self)
+        qs = Slide.objects.filter(slide_stack=self)
+        return sorted(qs, key=attrgetter('id'), reverse=False)
 
     @property
     def list_categories(self):
@@ -71,11 +73,15 @@ class Slide(models.Model):
     title           = models.CharField(max_length=120)
     image           = models.ImageField(upload_to=upload_location)
     text_content    = models.TextField(blank=True, null=True)
+    lecturer_comment = models.TextField(blank=True, null=True)
     tags            = models.CharField(max_length=240, blank=True, null=True)
     slide_stack     = models.ForeignKey(SlideStack)
 
     def __str__(self):
         return self.title
+
+    def __repr__(self):
+        return repr(self.id)
 
 
 def unique_slugify(instance, value, slug_field_name='slug', queryset=None,

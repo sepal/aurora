@@ -28,19 +28,19 @@
 	{% for slide in slide_stack.slides %}
 	    	<div class="card card-block aCard">
 		        <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="example-gallery">
-		        <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
+		            <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
 		        </a>
 		        <p></p>
 		        <h3 class="slide-title card-title">{{ slide.title }}</h3>
+                <p>{{ slide.lecturer_comment }}</p>
 		    </div>
 	{% endfor %}
 	</div>
 
 <!--Comments-->
-	<div class="col-lg-5  col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
+	<div class="col-lg-5 col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
         {% render_multi_comment_list for slide_stack newest_last endless %}
     </div>
-
 </div>
 
 
