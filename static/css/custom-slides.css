@@ -20,6 +20,7 @@ a.btn-next[href=''],a.btn-prev[href='']{
 
 
 .fs {
+	overflow:hidden;
 	border-radius:5px;
 	height:100%;
 	border:1px solid silver;
@@ -92,13 +93,11 @@ hr {
 
 .btn-next,.btn-prev{
 	font-weight:normal;
-	font-size:62%;
 	color:rgb(58, 201, 88);
 }
 
 .btn-next-not,.btn-prev-not {
 	font-weight:normal;
-	font-size:62%;
 	color:lightgray;
 }
 
@@ -110,4 +109,8 @@ hr {
 
 .seen_link {
 	display:none;
+}
+
+.slides_navi {
+	float:right;
 }
