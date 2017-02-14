@@ -3,6 +3,9 @@
 <html>
 <head>
 
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
+
 
 <title>{% block head_title %}Aurora: Slides{% endblock head_title %}</title>
 <!-- Bootstrap 4 -->
@@ -18,6 +21,12 @@
 
 </head>
 <body>
+	
+<script>
+	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+</script>
+	
 
 
 {% block navigation %}
