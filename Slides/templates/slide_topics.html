@@ -4,7 +4,12 @@
 
 
 
-<h1>{{ title }}</h1>
+<h1 class="slide-stack-title">{{ title }}
+	<div class="slides_navi">
+		{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
+		{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
+	</div>
+</h1>
 <hr />
 
 <!--SlideStack listing-->
@@ -27,8 +32,7 @@
         </div>
     </a>
 
-    <p></p>
-    <h3 class="card-title">{{ slide_stack.title }}</h3>
+    <h3 class="stack-title card-title">{{ slide_stack.title }}</h3>
     <a href="{% url 'Slides:slidestack' topic=top slug=slide_stack.slug course_short_title=course.short_title %}" class="btn btn-primary">View Slides</a>
 
     </div>
@@ -38,15 +42,6 @@
 </div>
 <hr />
 
-<!--Next and Previous-->
-<div class="row">
-    <div class="col-xs-6">
-    <p class="text-xs-left"><a href="{{ prev }}" class="btn-prev">prev</a></p>
-        </div>
-    <div class="col-xs-6">
-    <p class="text-xs-right"><a href="{{ nxt }}" class="btn-next">next</a></p>
-    </div>
-</div>
 
 
 

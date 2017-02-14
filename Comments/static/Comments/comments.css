@@ -1,3 +1,7 @@
+.edit_link {
+	display:none;
+}
+
 #notify_about_comment.inactive{
 	color:silver;
 	text-decoration:none;

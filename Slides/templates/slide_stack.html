@@ -9,50 +9,39 @@
 
 
 <!--title and other chapters-->
-<h1>{{ slide_stack.title }}</h1>
-    <p>this slides as well are found in:
+<h1 class="slide-stack-title">{{ slide_stack.title }}
+	<div class="slides_navi">
+		{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
+		{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
+	</div>
+</h1>
+    <p>These slides also belong to
         {% for topic in other_topics %}
-            <a href="../../{{ topic.0 }}_{{ topic.1 }}">{{ topic.0 }}: {{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
+            <a href="../../{{ topic.0 }}_{{ topic.1 }}">{% comment %}{{ topic.0 }}: {% endcomment %}{{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
     </p>
 <hr />
 
 <!--listing of slides-->
 <div class="row">
-{% for slide in slide_stack.slides %}
-
-<div class="col-xs-12 col-md-6 col-lg-4 col-xl-3">
-    <div class="card card-block">
-        <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="example-gallery">
-            <img class="img-fluid" style="width:100%;" src="{{ slide.image|thumbnail_url:'preview' }}" />
-        </a>
-        <p></p>
-        <h3 class="card-title">{{ slide.title }}</h3>
-    </div>
-</div>
-{% endfor %}
-</div>
-<hr />
-
-<!--Next and Previous-->
-<div class="row">
-    <div class="col-xs-6">
-    <p class="text-xs-left"><a href="{{ prev }}" class="btn-prev">prev</a></p>
-        </div>
-    <div class="col-xs-6">
-    <p class="text-xs-right"><a href="{{ nxt }}" class="btn-next">next</a></p>
-    </div>
-</div>
+	<div class="col-lg-7 col-md-12">
+	{% for slide in slide_stack.slides %}
+	    	<div class="card card-block aCard">
+		        <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="example-gallery">
+		        <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
+		        </a>
+		        <p></p>
+		        <h3 class="slide-title card-title">{{ slide.title }}</h3>
+		    </div>
+	{% endfor %}
+	</div>
 
 <!--Comments-->
-<div class="row">
-    <div class="col-xs-0 col-md-1 col-xl-2"></div>
-    <div class="col-xs-12 col-md-10 col-xl-8" id="comments_{{slide_stack.id}}">
+	<div class="col-lg-5  col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
         {% render_multi_comment_list for slide_stack newest_last endless %}
     </div>
-    <div class="col-xs-0 col-md-1 col-xl-2"></div>
-</div>
 
+</div>
 
 
 {% endblock content %}
