@@ -23,8 +23,7 @@ class SlideStack(models.Model):
         """
         :return: a filter set of Slides, assigned to this SlideStack.
         """
-        qs = Slide.objects.filter(slide_stack=self)
-        return sorted(qs, key=attrgetter('id'), reverse=False)
+        return self.slide_set.all().order_by('id')
 
     @property
     def list_categories(self):
