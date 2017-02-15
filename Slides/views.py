@@ -129,12 +129,15 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
     for cat in this_ss.list_category_tuples:
         if topic != cat[0] + '_' + cat[1]:
             other_topics.append(cat)
+        else:
+            this_topic = cat
 
     context = {
         "slide_stack": this_ss,
         "other_topics": other_topics,
         "prev": prev,
         "nxt": nxt,
+        "this_topic": this_topic, 
         "course": Course.get_or_raise_404(course_short_title),
     }
 

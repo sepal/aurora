@@ -84,12 +84,10 @@ a.btn-next[href=''],a.btn-prev[href='']{
 }
 
 .slide-stack-title::before {
-	content:"Slides: ";
+	font-weight:100;
+	content:"Slides ";
 }
 
-hr {
-	visibility:hidden;
-}
 
 .btn-next,.btn-prev{
 	font-weight:normal;
