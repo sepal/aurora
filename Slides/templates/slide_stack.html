@@ -11,7 +11,7 @@
 
 
 <!--title and other chapters-->
-<h1 class="slide-stack-title">{{ slide_stack.title }}
+<h1 class="slide-stack-title">{{ slide_stack.title }} <span style="font-weight:100">from <a href="../../{{ this_topic.0 }}_{{ this_topic.1 }}">{{this_topic.1}}</a></span>
 	<div class="slides_navi">
 		{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
 		{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
@@ -22,7 +22,6 @@
             <a href="../../{{ topic.0 }}_{{ topic.1 }}">{% comment %}{{ topic.0 }}: {% endcomment %}{{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
     </p>
-<hr />
 
 <!--listing of slides-->
 <div class="row">
@@ -34,12 +33,18 @@
 		        </a>
 		        <p></p>
 		        <h3 class="slide-title card-title">{{ slide.title }}</h3>
-                {% if slide.lecturer_comment %}<p>{{ slide.lecturer_comment }}</p>{% endif %}
 		    </div>
 	{% endfor %}
 	</div>
 
 <!--Comments-->
+	<div class="lecturer_comments">
+		<p><b>Lecturer Notes</b></p>
+		{% for slide in slide_stack.slides %}
+			{% if slide.lecturer_comment %}<p style="margin-bottom:5px">{{slide.title}}: {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</p>{% endif %}
+		{% endfor %}
+	</div>
+	<br>
 	<div class="col-lg-5 col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
         {% render_multi_comment_list for slide_stack newest_last endless %}
     </div>

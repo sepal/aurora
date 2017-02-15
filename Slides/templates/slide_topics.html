@@ -4,13 +4,12 @@
 
 
 
-<h1 class="slide-stack-title">{{ title }}
+<h1 class="topic_stack_title">{{section}} {{ title }} 
 	<div class="slides_navi">
 		{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
 		{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
 	</div>
 </h1>
-<hr />
 
 <!--SlideStack listing-->
 <div class="row">
@@ -40,7 +39,6 @@
 
 {%  endfor %}
 </div>
-<hr />
 
 
 
