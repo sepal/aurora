@@ -128,3 +128,14 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .lecturer_comments::after {
 	content:"---";
 }
+
+
+.modal-title {
+	font-size:162%;
+	font-weight:bold;
+	float:left;
+}
+
+.modal-header button {
+	padding-top:4px;
+}
