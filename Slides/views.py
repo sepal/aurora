@@ -74,6 +74,7 @@ def slide_topics(request, topic=None, course_short_title=None):
 
     context = {
         "title": tup[1],
+        "section": tup[0],
         "used_slide_stacks": complete_list,
         "prev": prev,
         "nxt": nxt,

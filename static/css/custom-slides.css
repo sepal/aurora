@@ -76,7 +76,7 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	border-radius: 0 0 5px 5px;
 }
 
-.slide-stack-title {
+.slide-stack-title,.topic_stack_title,.stack-title-category {
 	font-size:162%;
 	font-weight:bold;
 	padding-top:1em;
@@ -88,6 +88,14 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	content:"Slides ";
 }
 
+.topic_stack_title::before {
+	font-weight:100;
+	content:"Sections in ";
+}
+
+.stack-title-category::after{
+	content:"s ";
+}
 
 .btn-next,.btn-prev{
 	font-weight:normal;
@@ -111,4 +119,12 @@ a.btn-next[href=''],a.btn-prev[href='']{
 
 .slides_navi {
 	float:right;
+}
+
+.lecturer_comments {
+	padding:1em;
+}
+
+.lecturer_comments::after {
+	content:"---";
 }

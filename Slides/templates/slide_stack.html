@@ -44,7 +44,7 @@
 			{% if slide.lecturer_comment %}<p style="margin-bottom:5px">{{slide.title}}: {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</p>{% endif %}
 		{% endfor %}
 	</div>
-	<br><hr>
+	<br>
 	<div class="col-lg-5 col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
         {% render_multi_comment_list for slide_stack newest_last endless %}
     </div>
