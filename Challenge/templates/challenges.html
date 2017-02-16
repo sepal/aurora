@@ -36,7 +36,7 @@
 		   	{% if stack.is_started %}
 				{% if not stack.submitted%}<i class="fa fa-pencil fa-2x"></i>{% endif %}
 			{% else %}
-				{% if stack.currently_active %}<i class="fa fa-unlock-alt fa-2x"></i>{% endif %}
+				{% if stack.currently_active %}<i class="fa fa-unlock fa-2x"></i>{% endif %}
 			{% endif %}
 		</div>
 		<div class="chapter">Chapter &raquo;{{ stack.stack.chapter.name }}&laquo;</div>
