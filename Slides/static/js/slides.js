@@ -13,7 +13,7 @@ $(function() {
 $(function() {
 	$('.lecturer_note').hover(
 		function () {
-			$('#SL_'+this.id.slice(3)+' img').toggleClass('extraShadow');
+			$('#SL_'+this.id.slice(3)+' img').toggleClass('extraShadowXL');
 	});
 });
 
