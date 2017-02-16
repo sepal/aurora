@@ -12,17 +12,9 @@
 {% block content %}
 
 <script type="text/javascript">
-
   var REVIEW_ANSWER_URL = "{% url 'Review:review_answer' course_short_title=course.short_title %}";
   var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
-
-  //history.pushState(null, null, 'write_review');
-  // window.addEventListener('popstate', function(event) {
-  // history.pushState(null, null, 'write_review');
-  // });
-
 </script>
-
 
 <div id="detail_area">
 
@@ -53,25 +45,15 @@
 		<a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf" style="color:yellow">About Reviewing</a>.
 		Then, carefully examine the work shown above and answer the following questions:</b> </div>
     <form>
-{% for question in questions %}
-        <div class="question_container">
-{% if not question.visible_to_author %}
-              <i class="fa fa-arrow-right"></i>Only the course team will be able to see this answer
-{% endif %}
-          <div class="question" id="{{ question.id }}">
-            {{ question.text }}
-          </div>
-          <div class="answer {% if question.boolean_answer %}boolean_answer{% endif %}" id="{{ question.id }}"
-              question_id="{{ question.id }}">
-{% if question.boolean_answer %}
-              <input type="radio" name="{{ question.id }}" id="{{ question.id }}Y" value="True"><label for="{{ question.id }}Y">Yes</label><br>
-              <input type="radio" name="{{ question.id }}" id="{{ question.id }}N" value="False"><label for="{{ question.id }}N">No</label>
-{% else %}
-              <textarea id="text_answer" name="answer"></textarea>
-{% endif %}
-          </div>
-        </div>
-{% endfor %}
+      {% for question in author_questions %}
+        {% include "question.html" %}
+      {% endfor %}
+
+      <h1>&nbsp;<i class="fa fa-info-circle"></i> Only the course team will be able to see this answers to the following questions questions</h1>
+      {% for question in staff_questions %}
+        {% include "question.html" %}
+      {% endfor %}
+
      	<div class="question">Your final verdict </div>
   	  <div class="answer">
       	<input type="radio" name="appraisal" value="A" id="apprA"> <label for="apprA">Exceptional <span class="explanation">Please explain in field &raquo;Anmerkung für LVA-Team&laquo;.</span></label><br>
@@ -79,7 +61,7 @@
       	<input type="radio" name="appraisal" value="F" id="apprF"> <label for="apprF">Requirements missed<span class="explanation">The Author missed the point, or a substantial part is missing.</span></label><br>
       	<input type="radio" name="appraisal" value="N" id="apprN"> <label for="apprN">Plagiarism, cheated or empty <span class="explanation">The Author handed in somebody else's work, or (more or less) nothing at all.</span></label><br><br>
   	  </div>
-	  <div class="suButton">
+	    <div class="suButton">
     	  <input id="submit_button" class="button submitButton XL" style="padding-left:0.5em;" type="submit" value="Submit">
     </div>
     </form>

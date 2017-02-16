@@ -1,0 +1,13 @@
+<div class="question_container">
+  <div class="question" id="{{ question.id }}">
+    {{ question.text }}
+  </div>
+  <div class="answer {% if question.boolean_answer %}boolean_answer{% endif %}" id="{{ question.id }}" question_id="{{ question.id }}">
+    {% if question.boolean_answer %}
+        <input type="radio" name="{{ question.id }}" id="{{ question.id }}Y" value="True"><label for="{{ question.id }}Y">Yes</label><br>
+        <input type="radio" name="{{ question.id }}" id="{{ question.id }}N" value="False"><label for="{{ question.id }}N">No</label>
+    {% else %}
+        <textarea id="text_answer" name="answer"></textarea>
+    {% endif %}
+  </div>
+</div>
