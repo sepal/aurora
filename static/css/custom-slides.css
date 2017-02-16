@@ -76,7 +76,7 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	border-radius: 0 0 5px 5px;
 }
 
-.slide-stack-title {
+.slide-stack-title,.topic_stack_title,.stack-title-category {
 	font-size:162%;
 	font-weight:bold;
 	padding-top:1em;
@@ -84,11 +84,17 @@ a.btn-next[href=''],a.btn-prev[href='']{
 }
 
 .slide-stack-title::before {
-	content:"Slides: ";
+	font-weight:100;
+	content:"Slides ";
 }
 
-hr {
-	visibility:hidden;
+.topic_stack_title::before {
+	font-weight:100;
+	content:"Sections in ";
+}
+
+.stack-title-category::after{
+	content:"s ";
 }
 
 .btn-next,.btn-prev{
@@ -113,4 +119,23 @@ hr {
 
 .slides_navi {
 	float:right;
+}
+
+.lecturer_comments {
+	padding:1em;
+}
+
+.lecturer_comments::after {
+	content:"---";
+}
+
+
+.modal-title {
+	font-size:162%;
+	font-weight:bold;
+	float:left;
+}
+
+.modal-header button {
+	padding-top:4px;
 }
