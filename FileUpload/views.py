@@ -15,6 +15,9 @@ from FileUpload.models import UploadFile
 from django.http import Http404
 from django.conf import settings
 
+import logging
+logger = logging.getLogger(__name__)
+
 @login_required()
 def file_upload(request):
     user = request.user
@@ -24,7 +27,7 @@ def file_upload(request):
         try:
             elaboration = Elaboration.objects.get(pk=elaboration_id)
             if not elaboration.user == user:
-                return file_upload_failed_response()
+                return file_upload_failed_response('Upload user does not match elaboration User')
             if not elaboration.is_submitted():
                 upload_file = UploadFile(user=user, elaboration_id=elaboration_id, upload_file=file)
             else:
