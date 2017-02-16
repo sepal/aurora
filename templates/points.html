@@ -258,11 +258,12 @@
             {% endif %}
           </table>
           </td>
-
-          <b>Unevaluated Reviews:</b><br>
-          {% for review in review_evaluation_data.reviews_missing_evaluation %}
-            <a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title}}</a><br>
-          {% endfor %}
+          {% if review_evaluation_data.number_of_unevaluated_reviews > 0 %}
+            <b>Unevaluated Reviews:</b><br>
+            {% for review in review_evaluation_data.reviews_missing_evaluation %}
+              <a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title}}</a><br>
+            {% endfor %}
+          {% endif %}
         </tr>
     </div>
   {% endif %}
