@@ -43,10 +43,11 @@
       </div>
     </div>
 
-{% render_original_uploads review.elaboration %}
+    {% render_original_uploads review.elaboration %}
 
-    <div class="elaboration">
-      <textarea id="editor_review">{{ review.elaboration.elaboration_text }}</textarea>
+    <div class="elaboration submitted-content">
+      <textarea id="review-editor" class="trix-content" style="display: none;">{{ review.elaboration.elaboration_text }}</textarea>
+      <trix-editor class="trix-content" input="review-editor"></trix-editor>
     </div>
 
 	<div class="betweentext"><i class="fa fa-arrow-right"></i> <b>Before you start reviewing, please read

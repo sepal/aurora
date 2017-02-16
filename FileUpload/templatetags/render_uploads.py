@@ -3,6 +3,7 @@ from django import template
 
 from Elaboration.models import Elaboration
 from FileUpload.models import UploadFile
+from AuroraProject.settings import MEDIA_ROOT
 
 register = template.Library()
 
@@ -22,7 +23,9 @@ def render_uploads(context, elaboration):
 
 
 def file_map_for_upload(upload_file, index, elaboration):
-    if not os.path.isfile(upload_file.upload_file.name):
+    file_path = os.path.join(MEDIA_ROOT, upload_file.upload_file.name)
+
+    if not os.path.isfile(file_path):
         file_map = {'name': "Placeholder",
                     'size': "0",
                     'url': "https://placeimg.com/640/480/any",
