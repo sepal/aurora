@@ -37,16 +37,40 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	width:320px;
 }
 
-.aCard:hover img, .lecturer_note:hover {
-	filter:drop-shadow(0px 0px 6px rgb(58, 201, 88));
+.card-with-note::after {
+	content:"\1F4AC";
+	position:absolute;
+	right:12;
+	bottom:40;
+	font-size:162%;
+	font-weight:bold;
+	color:black;
+	text-shadow: #FFFFFF 0px 0px 3px;
+}
+/*
+.card-with-note:hover img, .lecturer_note:hover {
+	filter:drop-shadow(0px 0px 4px rgb(58, 201, 88));
+}
+*/
+
+.extraShadowN, .extraShadow img {
+	box-shadow: 0px 0px 8px rgb(58,201,88);
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.extraShadow {
-	filter:drop-shadow(0px 0px 10px rgb(58, 201, 88));
+.extraShadowN {
+	background:white;
 }
 
-.extraShadowXL {
-	filter:drop-shadow(0px 0px 10px rgb(58, 201, 88));
+.grayout {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+	filter:opacity(30%);
 }
 
 .Card h3 {
@@ -59,10 +83,9 @@ a.btn-next[href=''],a.btn-prev[href='']{
 
 
 .lecturer_note {
-	background:white;
 	width:42%;
 	margin-left:58%;
-	padding:3px;
+	padding:6px;
 	border-radius:3px;
 }
 
@@ -123,8 +146,6 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .topic-title:hover {
 	filter:opacity(25%);
 }
-
-
 
 .slide-stack-title,.topic_stack_title,.stack-title-category {
 	font-weight:300;
@@ -192,5 +213,3 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	padding-top:4px;
 }
 
-
-.
