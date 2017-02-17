@@ -28,10 +28,10 @@
 
                 {% endif %}
             {% endfor %}
+			<h3 class="stack-title card-title">{{ slide_stack.title }} ({{slide_stack.slides|length}} Slides)</h3>
         </div>
     </a>
 
-    <h3 class="stack-title card-title">{{ slide_stack.title }}</h3>
     <a href="{% url 'Slides:slidestack' topic=top slug=slide_stack.slug course_short_title=course.short_title %}" class="btn btn-primary">View Slides</a>
 
     </div>
