@@ -2,8 +2,7 @@
 
 {% block additional_headers %}
   <script type="text/javascript" src="{{ STATIC_URL }}js/challenges.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}js/masonry.pkgd.min.js"></script>
-  <link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
   {% load humanize %}
 {% endblock %}
 
@@ -28,11 +27,11 @@
     {% for stack in course_stacks|dictsort:"stack.chapter.name" %}
 	
 <script>
-	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" style="width:980px">Chapter: {{stack.stack.chapter.name}}</div>');}
+	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" data-filter="{{stack.stack.chapter.id}}">Chapter: {{stack.stack.chapter.name}}</div>');}
 	x =  '{{stack.stack.chapter.name}}';
 </script>
 
-      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
+      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}} filter_{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
 		<div class="stack_icon" style="float:right">
 		   	{% if stack.submitted %}
 		   		{% if stack.status.status == 7 %}
@@ -48,7 +47,6 @@
 				{% if stack.currently_active %}<i class="fa fa-unlock fa-2x"></i>{% endif %}
 			{% endif %}
 		</div>
-		<div class="chapter">Chapter &raquo;{{ stack.stack.chapter.name }}&laquo;</div>
 		<div class="title">
 			<b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks
 		</div>
