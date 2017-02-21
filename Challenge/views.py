@@ -140,7 +140,6 @@ def challenges(request, course_short_title=None):
         submission_time = None
         currently_active = stack.currently_active()
         if submitted:
-            print(submitted)
             submission_time = stack.get_final_challenge().get_elaboration(user).submission_time
         data['course_stacks'].append({
             'stack': stack,

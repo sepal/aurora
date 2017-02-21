@@ -299,9 +299,9 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 
 .course_selected {
     font-family: 'yanone_kaffeesatzthin';
-    color: black; /*rgb(110,184,99);*/
+    color: white; /*rgb(110,184,99);*/
     font-size: 30px;
-	text-shadow: 0 0 5px rgba(255,255,255,1);
+	font-weight:bold;
 	cursor:pointer;
 	/*z-index:4201;*/
 	display:inline;
@@ -387,7 +387,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 }
 
 .pagehead a {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 

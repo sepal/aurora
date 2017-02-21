@@ -1,3 +1,24 @@
+$(function() {
+		$('#study_code').focus(function(){
+			$('.correct_maker').toggleClass('versteck',300);			
+		});
+		$('#study_code').focusout(function(){
+			$('.correct_maker').toggleClass('versteck',300);			
+		});
+		$('.bmi').click(function(){
+			$('#study_code').val('033532');
+		})
+		$('.bmz').click(function(){
+			$('#study_code').val('033533');
+		})
+		$('.bsi').click(function(){
+			$('#study_code').val('033534');
+		})
+		$('.bti').click(function(){
+			$('#study_code').val('033535');
+		})
+})
+
 $(profile_loaded);
 
 var file;

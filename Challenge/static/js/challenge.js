@@ -7,16 +7,16 @@ $(function () {
 		$('.create_revision').hide(300);
 		$('.revision_section').show(300);
 
-	})
+	})	
 });
 
 
 
 
 
-$(challenge_loaded);
+$(challenge_loaded) {};
 
-function challenge_loaded() {
+function challenge_loaded() {	
     if ($('.elaboration_block').length) {
         init_tinymce();
         init_tinymce_read_only();
