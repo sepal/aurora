@@ -40,7 +40,13 @@ def create_context_review(request):
         data['review'] = review
         data['stack_id'] = challenge.get_stack().id
         review_questions = ReviewQuestion.objects.filter(challenge=challenge).order_by("order")
+
+        author_questions = [question for question in review_questions if question.visible_to_author == True]
+        staff_questions  = [question for question in review_questions if question.visible_to_author == False]
+
         data['questions'] = review_questions
+        data['author_questions'] = author_questions
+        data['staff_questions'] = staff_questions
     return data
 
 

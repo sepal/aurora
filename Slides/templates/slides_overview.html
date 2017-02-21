@@ -32,9 +32,9 @@
                     <img class="card-img-top img-fluid" src="{{ slide_stack.slides.0.image|thumbnail_url:'preview' }}" />
                     {% endif %}
                 {% endfor %}
+				  <div class="topic-title card-title"><span class="topic-title-text">{{ topic.0 }}</span></div>
               </div>
               </a>
-              <h3 class="topic-title card-title">{{ topic.0 }}</h3>
               <p class="card-text">{{ topic.1.0.image.src }}</p>
               <a href="{{ category.0 }}_{{ topic.0 }}" class="btn btn-primary">View Topic</a></p>
             </div>

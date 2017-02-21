@@ -127,6 +127,7 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
 
     # find all other topics containing this SlideStack
     other_topics = []
+    this_topic = ('','search results')
     for cat in this_ss.list_category_tuples:
         if topic != cat[0] + '_' + cat[1]:
             other_topics.append(cat)
