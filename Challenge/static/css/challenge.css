@@ -268,12 +268,17 @@ h1 {
 }
 
 .filterbar {
+	color:white;
 	height:1em;
 	margin-top:2em;
 	margin-bottom:1em;
-	background-color:#eee;
-	padding-bottom: 4px;
-	padding-left: 2em;}
+	background-color:#888;
+	padding-bottom: 6px;
+	padding-left: 1.5em;
+	font-size:1.4em;
+	font-weight:bold;
+	border-radius:0 3px 3px 0;
+}
 
 .stack {
     padding: 5px 10px 5px 10px;
