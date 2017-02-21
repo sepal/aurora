@@ -39,9 +39,8 @@
 
 <!--Comments-->
 	<div class="lecturer_comments">
-		<p style="display:none"><b>Lecturer Notes</b></p>
 		{% for slide in slide_stack.slides %}
-			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><b>{{slide.title}}:</b> {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</div>{% endif %}
+			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><span class="lecturer_note_title">{{slide.title}}</span> {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</div>{% endif %}
 		{% endfor %}
 	</div>
 	<br>

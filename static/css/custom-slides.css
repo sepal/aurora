@@ -70,8 +70,8 @@ a.btn-next[href=''],a.btn-prev[href='']{
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
-	filter:opacity(30%);
-}
+	filter:opacity(20%);
+-moz-border-radius}
 
 .Card h3 {
 	margin-top:6px;
@@ -86,6 +86,14 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	width:42%;
 	margin-left:58%;
 	padding:6px;
+	border-radius:3px;
+}
+
+.lecturer_note_title {
+	background:#888;
+	color:white;
+	font-weight:bold;
+	padding:0 3px 0 3px;
 	border-radius:3px;
 }
 
