@@ -276,7 +276,7 @@ h1 {
 
 .stack {
     padding: 5px 10px 5px 10px;
-	width:450px;
+	width:940px;
 	position:relative;
 	margin-left:1.5em;
 	border-radius:0.5em;
@@ -451,8 +451,7 @@ h1 {
 }
 
 .chapter {
-	border-bottom:1px 
-	solid silver;
-	margin-bottom:3px;
-	width:410px;
+	border-bottom:1px solid silver;
+	margin-bottom:5px;
+	width:890px;
 }
