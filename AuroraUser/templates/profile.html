@@ -51,7 +51,7 @@
       <td>
         <input id="matriculation_number" type="text" name="matriculation_number" value="{{ user.matriculation_number }}" readonly tabindex=1000>
       </td>
-		  <td class="legend">
+		<td class="legend">
 	  		private. cannot be changed.
   		</td>
     </tr>
@@ -63,9 +63,19 @@
         <input id="study_code" type="text" name="study_code" value="{{ user.study_code }}" class="focusable">
       </td>
       <td class="legend">
-        eg. 033532. private. please make sure this is correct.
+        private. click in field to see choices.<br>
       </td>
     </tr>
+	<tr class="correct_maker versteck">
+		<td></td><td></td>
+		<td>
+			<DIV class="bmi button">Medieninformatik &amp; Visual Computing - 033532</DIV>
+			<DIV class="bmz button">Medizinische Informatik - 033533</DIV>
+			<DIV class="bsi button">Software &amp; Information Engineering - 033534</DIV>
+			<DIV class="bti button">Technische Informatik - 033535</DIV>
+			
+		</td>
+	</tr>
     <tr class="formRow">
       <td>
         <label for="statement">Statement</label>
