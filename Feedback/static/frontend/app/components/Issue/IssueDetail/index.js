@@ -45,9 +45,6 @@ export default class IssueDetail extends React.Component {
             <li>
               <button><i className="fa fa-thumbs-up"></i> upvote</button>
             </li>
-            <li>
-              <button><i className="fa fa-eye"></i> subscribe</button>
-            </li>
           </ul>
         </div>
         {this.renderImages()}

@@ -54095,16 +54095,6 @@
 	                _react2.default.createElement('i', { className: 'fa fa-thumbs-up' }),
 	                ' upvote'
 	              )
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement(
-	                'button',
-	                null,
-	                _react2.default.createElement('i', { className: 'fa fa-eye' }),
-	                ' subscribe'
-	              )
 	            )
 	          )
 	        ),
