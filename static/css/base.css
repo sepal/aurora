@@ -153,13 +153,13 @@ abbr, acronym {
     font-family: 'yanone_kaffeesatzlight';
 	color:rgb(58,201,88);
 	font-size:2.5em;
-	text-shadow: 0 0 6px rgba(255,255,255,0.7);
+	text-shadow: 0 0 6px rgba(0,0,0,0.5);
 	margin-bottom:1em;
 }
 
 .login input{
     font: 1.5em Helvetica Neue, Arial, sans-serif;
-	background:rgba(255,255,255,0.5);
+	background:rgba(0,0,0,0.5);
 	color:rgba(58,201,88,1);
 	box-shadow: 0 0 20px rgba(58,201,88,0.8) inset;
 	width:500px;
@@ -188,7 +188,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	padding:50px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	background-color:rgba(255,255,255,0.9);
+	background-color:rgba(0,0,0,0.4);
 	border-radius: 20px;
 }
 
@@ -264,7 +264,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
     -moz-appearance:none;
     appearance:none;
 	box-shadow: 0 0 20px rgb(58,201,88);
-	background:rgba(255,255,255,0.5);
+	background:rgba(0,0,0,0.5);
 	border:none;
 	white-space: nowrap;
 	border-radius:0.5em;
