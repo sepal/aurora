@@ -53988,12 +53988,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _mobxReact = __webpack_require__(640);
-	
-	var _issue = __webpack_require__(642);
-	
-	var _issue2 = _interopRequireDefault(_issue);
-	
 	var _style = __webpack_require__(645);
 	
 	var _style2 = _interopRequireDefault(_style);
@@ -54005,6 +53999,10 @@
 	var _IssueIcon = __webpack_require__(653);
 	
 	var _IssueIcon2 = _interopRequireDefault(_IssueIcon);
+	
+	var _IssueBody = __webpack_require__(692);
+	
+	var _IssueBody2 = _interopRequireDefault(_IssueBody);
 	
 	var _Comments = __webpack_require__(654);
 	
@@ -54025,6 +54023,7 @@
 	    var _this = _possibleConstructorReturn(this, (IssueDetail.__proto__ || Object.getPrototypeOf(IssueDetail)).call(this, props));
 	
 	    _this.onLabelTypeChange = _this.onLabelTypeChange.bind(_this);
+	    _this.onBodyChange = _this.onBodyChange.bind(_this);
 	    return _this;
 	  }
 	
@@ -54082,11 +54081,8 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: _style2.default.content },
-	          _react2.default.createElement(
-	            'div',
-	            { className: _style2.default.body },
-	            this.props.issue.body
-	          ),
+	          _react2.default.createElement(_IssueBody2.default, { className: _style2.default.body, body: this.props.issue.body,
+	            onChange: this.onBodyChange }),
 	          _react2.default.createElement(
 	            'ul',
 	            { className: _style2.default.actions },
@@ -54149,6 +54145,11 @@
 	    key: 'onLabelTypeChange',
 	    value: function onLabelTypeChange(type, title) {
 	      this.props.update(this.props.issue.id, type, title, this.props.issue.body);
+	    }
+	  }, {
+	    key: 'onBodyChange',
+	    value: function onBodyChange(body) {
+	      this.props.update(this.props.issue.id, this.props.issue.type, this.props.issue.title, body);
 	    }
 	  }]);
 	
@@ -58263,8 +58264,6 @@
 	
 	    var _this = _possibleConstructorReturn(this, (IssueLabel.__proto__ || Object.getPrototypeOf(IssueLabel)).call(this, props));
 	
-	    console.log("IssueLabel");
-	
 	    _this.onLabelClick = _this.onLabelClick.bind(_this);
 	    _this.onSaveClick = _this.onSaveClick.bind(_this);
 	    _this.onEnterPress = _this.onEnterPress.bind(_this);
@@ -60289,6 +60288,176 @@
 	      return state;
 	  }
 	}
+
+/***/ },
+/* 692 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _class, _temp;
+	
+	var _react = __webpack_require__(108);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _style = __webpack_require__(693);
+	
+	var _style2 = _interopRequireDefault(_style);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var IssueBody = (_temp = _class = function (_React$Component) {
+	  _inherits(IssueBody, _React$Component);
+	
+	  function IssueBody(props) {
+	    _classCallCheck(this, IssueBody);
+	
+	    var _this = _possibleConstructorReturn(this, (IssueBody.__proto__ || Object.getPrototypeOf(IssueBody)).call(this, props));
+	
+	    _this.enableEdit = _this.enableEdit.bind(_this);
+	    _this.disableEdit = _this.disableEdit.bind(_this);
+	    _this.onKeyDown = _this.onKeyDown.bind(_this);
+	    _this.onChange = _this.onChange.bind(_this);
+	    _this.save = _this.save.bind(_this);
+	    _this.cancel = _this.cancel.bind(_this);
+	
+	    _this.state = {
+	      body: props.body,
+	      editing: false
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(IssueBody, [{
+	    key: 'render',
+	    value: function render() {
+	      if (this.state.editing == true) {
+	        var classes = this.props.className + " " + _style2.default.editing;
+	        return _react2.default.createElement(
+	          'div',
+	          { className: classes },
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement('textarea', { defaultValue: this.state.body,
+	              onChange: this.onChange,
+	              onKeyDown: this.onKeyDown })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _style2.default.button },
+	            _react2.default.createElement(
+	              'button',
+	              { onClick: this.save },
+	              _react2.default.createElement('i', { className: 'fa fa-check' }),
+	              ' Save'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { onClick: this.disableEdit },
+	              _react2.default.createElement('i', { className: 'fa fa-times' }),
+	              ' Cancel'
+	            )
+	          )
+	        );
+	      }
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: this.props.className },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          this.props.body
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: _style2.default.button },
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.enableEdit },
+	            _react2.default.createElement('i', { className: 'fa fa-pencil' }),
+	            ' Edit'
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'enableEdit',
+	    value: function enableEdit() {
+	      var newState = Object.assign(this.state, { editing: true });
+	      this.setState(newState);
+	    }
+	  }, {
+	    key: 'disableEdit',
+	    value: function disableEdit() {
+	      var newState = Object.assign(this.state, { editing: false });
+	      this.setState(newState);
+	    }
+	  }, {
+	    key: 'save',
+	    value: function save() {
+	      this.props.onChange(this.state.body);
+	      this.disableEdit();
+	    }
+	  }, {
+	    key: 'cancel',
+	    value: function cancel() {
+	      var newState = Object.assign(this.state, {
+	        editing: false,
+	        body: this.props.body
+	      });
+	
+	      this.setState(newState);
+	    }
+	  }, {
+	    key: 'onKeyDown',
+	    value: function onKeyDown(event) {
+	      switch (event.key) {
+	        case 'Escape':
+	          this.disableEdit();
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'onChange',
+	    value: function onChange(event) {
+	      var newState = Object.assign(this.state, { body: event.target.value });
+	      this.setState(newState);
+	    }
+	  }]);
+	
+	  return IssueBody;
+	}(_react2.default.Component), _class.propTypes = {
+	  body: _react2.default.PropTypes.string,
+	  className: _react2.default.PropTypes.string,
+	  onChange: _react2.default.PropTypes.func
+	}, _class.defaultProps = {
+	  body: '',
+	  className: '',
+	  onChange: function onChange(body) {}
+	}, _temp);
+	exports.default = IssueBody;
+
+/***/ },
+/* 693 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"editing":"style__editing___2POed","button":"style__button___Qi2AB"};
 
 /***/ }
 /******/ ]);

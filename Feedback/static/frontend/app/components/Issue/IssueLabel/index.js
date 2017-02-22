@@ -15,7 +15,6 @@ export default class IssueLabel extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log("IssueLabel");
 
     this.onLabelClick = this.onLabelClick.bind(this);
     this.onSaveClick = this.onSaveClick.bind(this);

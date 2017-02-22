@@ -125,6 +125,20 @@
     outline: none; }
   .style__issueTypeLabel___e8qCy button {
     width: 10%; }
+.style__editing___2POed {
+  box-sizing: border-box; }
+  .style__editing___2POed *, .style__editing___2POed *:before, .style__editing___2POed *:after {
+    box-sizing: border-box; }
+  .style__editing___2POed textarea {
+    width: 100%;
+    min-height: 300px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-shadow: 0 0 3px 1px #ccc inset; }
+
+.style__button___Qi2AB {
+  margin-top: 10px; }
 .style__comment___1wglW {
   display: block;
   padding: 14px 0; }
