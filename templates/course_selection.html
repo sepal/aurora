@@ -62,9 +62,12 @@
 
 .title {
     font-family: 'yanone_kaffeesatzlight';
-	color:rgb(58,201,88);
+	color:white; /*rgb(58,201,88);*/
 	font-size:2.5em;
 	margin-bottom:1em;
+	background:rgba(0,0,0,0.5);
+	border-radius:6px;
+	padding-left:30px;
 }
 
 .choicetitle {
@@ -78,6 +81,8 @@
 	color:white;
 	font-size:1.5em;
 	margin-bottom:1em;
+	background:rgba(0,0,0,0.5);
+	border-radius:6px;
 }
 
 .choice a {
@@ -147,15 +152,17 @@ $(function(){
     <div class="centered">
         <div class="title">Welcome to Aurora 2016</div>
 
-        <div class="choice">
         {% for course in courses %}
+        <div class="choice">
              &rarr; <a href="{% url 'home' course.short_title %}">{{ course.title }}</a><br>
-        {% endfor %}
         </div>
+        {% endfor %}
 
         {% if debug %}
-            <a href="/admin">ADMIN</a>
+        <div class="choice">
+            &rarr; <a href="/admin">ADMIN</a>
         {% endif %}
+        </div>
     </div>
 {% endblock %}
 
