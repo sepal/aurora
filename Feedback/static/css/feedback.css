@@ -114,6 +114,17 @@
     width: 100%; }
 .style__issueTypeLabel___e8qCy {
   color: #aaa; }
+  .style__issueTypeLabel___e8qCy select {
+    width: 20%;
+    margin-right: 10px; }
+  .style__issueTypeLabel___e8qCy input[type=text] {
+    width: 60%;
+    font-weight: bold;
+    border-style: none;
+    border-bottom: 1px solid black;
+    outline: none; }
+  .style__issueTypeLabel___e8qCy button {
+    width: 10%; }
 .style__comment___1wglW {
   display: block;
   padding: 14px 0; }

@@ -48,7 +48,6 @@ def issue_display(request, course_short_title, issue_id):
 def issue_edit(request, course_short_title, issue_id):
     return index(request, course_short_title)
 
-
 @login_required
 def api_issue(request, course_short_title, issue_id):
     issue = Issue.objects.get(pk=issue_id)
@@ -57,7 +56,7 @@ def api_issue(request, course_short_title, issue_id):
     elif request.method == 'PUT':
         data = json.loads(request.body.decode('utf-8'))
 
-        if issue.lane.pk != data['lane']:
+        if 'lane' in data and issue.lane.pk != data['lane']:
             new_lane = Lane.objects.get(pk=data['lane'])
             issue.lane = new_lane
 

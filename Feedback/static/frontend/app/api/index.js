@@ -60,13 +60,7 @@ export function updateIssue(data, id = undefined) {
 
   return new Promise((resolve, reject) => {
     try {
-      const json = JSON.stringify({
-        lane: data.lane,
-        type: data.type,
-        title: data.title,
-        body: data.body,
-        course: data.course
-      });
+      const json = JSON.stringify(data);
 
       $.ajax({
         method: method,

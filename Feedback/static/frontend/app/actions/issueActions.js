@@ -29,6 +29,9 @@ export function previewIssue(issueID, data) {
   }
 }
 
+/**
+ * Async action that switches the lane for an issue.
+ */
 export function switchLane(issue, newLane) {
   return function (dispatch) {
     const issueData = {
@@ -40,6 +43,17 @@ export function switchLane(issue, newLane) {
     };
     dispatch(previewIssue(issue.id, {lane: { id: newLane}}));
     return updateIssue(issueData, issue.id)
+      .then((issue) => {dispatch(updatedIssue(issue))});
+  }
+}
+
+/**
+ * Updates either the title, type or body of an issue.
+ */
+export function changeIssue(data, id) {
+
+  return function (dispatch) {
+    return updateIssue(data, id)
       .then((issue) => {dispatch(updatedIssue(issue))});
   }
 }

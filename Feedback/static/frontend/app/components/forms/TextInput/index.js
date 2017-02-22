@@ -9,12 +9,12 @@ export default class TextInput extends InputElement {
     label: React.PropTypes.string.isRequired,
     size: React.PropTypes.number,
     onChange: React.PropTypes.func
-  }
+  };
 
   static defaultProps = {
     size: 64,
     onChange: (event) => {}
-  }
+  };
 
   render() {
     return (
