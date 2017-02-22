@@ -6,17 +6,19 @@ export default class IssueLabel extends React.Component {
   static propTypes = {
     type: React.PropTypes.string.isRequired,
     title: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func,
+    editable: React.PropTypes.bool,
+    onChange: React.PropTypes.func
   };
 
   static defaultProps = {
+    editable: false,
     onChange: (type, title) => {}
   };
 
   constructor(props) {
     super(props);
 
-    this.onLabelClick = this.onLabelClick.bind(this);
+    this.enableEditing = this.enableEditing.bind(this);
     this.onSaveClick = this.onSaveClick.bind(this);
     this.onEnterPress = this.onEnterPress.bind(this);
     this.onTypeChange = this.onTypeChange.bind(this);
@@ -32,26 +34,11 @@ export default class IssueLabel extends React.Component {
   }
 
   render() {
-    let label = '';
-    switch (this.props.type) {
-      case 'bug':
-        label = 'Bug';
-        break;
-      case 'feature_request':
-        label = 'Feature Request';
-        break;
-      case 'feedback':
-        label = 'Feedback';
-        break;
-      case 'security':
-        label = 'Security';
-        break;
-    }
-
+    const label = IssueTypes[this.props.type];
 
     if (this.state.editing === true) {
-      const options = IssueTypes.map((type) => (
-          <option key={type.key} value={type.key}>{type.label}</option>
+      const options = Object.keys(IssueTypes).map((type) => (
+          <option key={type} value={type}>{IssueTypes[type]}</option>
       ));
 
       return (
@@ -82,11 +69,18 @@ export default class IssueLabel extends React.Component {
     }
 
     return (
-      <div onClick={this.onLabelClick}>
+      <div onClick={this.enableEditing}>
         <span
           className={styles.issueTypeLabel}>[{label}]</span> {this.props.title}
       </div>
     );
+  }
+
+  enableEditing() {
+    if (this.props.editable) {
+      const newState = Object.assign(this.state, {editing: true});
+      this.setState(newState);
+    }
   }
 
   save() {
@@ -95,7 +89,7 @@ export default class IssueLabel extends React.Component {
   }
 
   onBlur(event) {
-    if (this.state.editing == true) {
+    if (this.state.editing === true && !this.editing) {
       // todo: currently also called when switching to inner element, therefore
       // deactivated.
       //const newState = Object.assign(this.state, {'editing': false});
@@ -111,13 +105,6 @@ export default class IssueLabel extends React.Component {
   onTitleChange(event) {
     const newState = Object.assign(this.state, {'title': event.target.value});
     this.setState(newState);
-  }
-
-  onLabelClick(event) {
-    if (!this.editing) {
-      const newState = Object.assign(this.state, {'editing': true});
-      this.setState(newState);
-    }
   }
 
   onEnterPress(event) {

@@ -54050,7 +54050,7 @@
 	              type: this.props.issue.type,
 	              title: this.props.issue.title,
 	              onChange: this.onLabelTypeChange,
-	              editing: false })
+	              editable: true })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -58264,7 +58264,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (IssueLabel.__proto__ || Object.getPrototypeOf(IssueLabel)).call(this, props));
 	
-	    _this.onLabelClick = _this.onLabelClick.bind(_this);
+	    _this.enableEditing = _this.enableEditing.bind(_this);
 	    _this.onSaveClick = _this.onSaveClick.bind(_this);
 	    _this.onEnterPress = _this.onEnterPress.bind(_this);
 	    _this.onTypeChange = _this.onTypeChange.bind(_this);
@@ -58283,28 +58283,14 @@
 	  _createClass(IssueLabel, [{
 	    key: 'render',
 	    value: function render() {
-	      var label = '';
-	      switch (this.props.type) {
-	        case 'bug':
-	          label = 'Bug';
-	          break;
-	        case 'feature_request':
-	          label = 'Feature Request';
-	          break;
-	        case 'feedback':
-	          label = 'Feedback';
-	          break;
-	        case 'security':
-	          label = 'Security';
-	          break;
-	      }
+	      var label = _constants.IssueTypes[this.props.type];
 	
 	      if (this.state.editing === true) {
-	        var options = _constants.IssueTypes.map(function (type) {
+	        var options = Object.keys(_constants.IssueTypes).map(function (type) {
 	          return _react2.default.createElement(
 	            'option',
-	            { key: type.key, value: type.key },
-	            type.label
+	            { key: type, value: type },
+	            _constants.IssueTypes[type]
 	          );
 	        });
 	
@@ -58344,7 +58330,7 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        { onClick: this.onLabelClick },
+	        { onClick: this.enableEditing },
 	        _react2.default.createElement(
 	          'span',
 	          {
@@ -58358,6 +58344,14 @@
 	      );
 	    }
 	  }, {
+	    key: 'enableEditing',
+	    value: function enableEditing() {
+	      if (this.props.editable) {
+	        var newState = Object.assign(this.state, { editing: true });
+	        this.setState(newState);
+	      }
+	    }
+	  }, {
 	    key: 'save',
 	    value: function save() {
 	      this.props.onChange(this.state.type, this.state.title);
@@ -58366,7 +58360,7 @@
 	  }, {
 	    key: 'onBlur',
 	    value: function onBlur(event) {
-	      if (this.state.editing == true) {
+	      if (this.state.editing === true && !this.editing) {
 	        // todo: currently also called when switching to inner element, therefore
 	        // deactivated.
 	        //const newState = Object.assign(this.state, {'editing': false});
@@ -58384,14 +58378,6 @@
 	    value: function onTitleChange(event) {
 	      var newState = Object.assign(this.state, { 'title': event.target.value });
 	      this.setState(newState);
-	    }
-	  }, {
-	    key: 'onLabelClick',
-	    value: function onLabelClick(event) {
-	      if (!this.editing) {
-	        var newState = Object.assign(this.state, { 'editing': true });
-	        this.setState(newState);
-	      }
 	    }
 	  }, {
 	    key: 'onEnterPress',
@@ -58424,8 +58410,10 @@
 	}(_react2.default.Component), _class.propTypes = {
 	  type: _react2.default.PropTypes.string.isRequired,
 	  title: _react2.default.PropTypes.string.isRequired,
+	  editable: _react2.default.PropTypes.bool,
 	  onChange: _react2.default.PropTypes.func
 	}, _class.defaultProps = {
+	  editable: false,
 	  onChange: function onChange(type, title) {}
 	}, _temp);
 	exports.default = IssueLabel;
@@ -58497,7 +58485,12 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = [{ label: 'Bug', key: 'bug' }, { label: 'Feature Request', key: 'feature_request' }, { label: 'Feedback', key: 'feedback' }, { label: 'Scurity', key: 'security' }];
+	exports.default = {
+	  'bug': 'Bug',
+	  'feature_request': 'Feature Request',
+	  'feedback': 'Feedback',
+	  'security': 'Security'
+	};
 
 /***/ },
 /* 651 */

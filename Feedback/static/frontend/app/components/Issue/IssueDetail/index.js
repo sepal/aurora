@@ -30,7 +30,7 @@ export default class IssueDetail extends React.Component {
               type={this.props.issue.type}
               title={this.props.issue.title}
               onChange={this.onLabelTypeChange}
-              editing={false} />
+              editable={true}/>
           </div>
           <div className={styles.subtitle}>
             <span>by {this.props.issue.author.name}</span>&nbsp;
