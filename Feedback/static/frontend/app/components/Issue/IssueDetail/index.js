@@ -30,7 +30,8 @@ export default class IssueDetail extends React.Component {
             <IssueLabel
               type={this.props.issue.type}
               title={this.props.issue.title}
-              onChange={this.onLabelTypeChange} />
+              onChange={this.onLabelTypeChange}
+              editing={false}/>
           </div>
           <div className={styles.subtitle}>
             <span>by {this.props.issue.author.name}</span>&nbsp;

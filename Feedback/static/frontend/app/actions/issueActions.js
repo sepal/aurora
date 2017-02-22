@@ -51,8 +51,8 @@ export function switchLane(issue, newLane) {
  * Updates either the title, type or body of an issue.
  */
 export function changeIssue(data, id) {
-
   return function (dispatch) {
+    dispatch(previewIssue(id, data));
     return updateIssue(data, id)
       .then((issue) => {dispatch(updatedIssue(issue))});
   }

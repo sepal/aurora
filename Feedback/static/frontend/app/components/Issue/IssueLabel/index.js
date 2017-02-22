@@ -15,6 +15,7 @@ export default class IssueLabel extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log("IssueLabel");
 
     this.onLabelClick = this.onLabelClick.bind(this);
     this.onSaveClick = this.onSaveClick.bind(this);
@@ -91,6 +92,7 @@ export default class IssueLabel extends React.Component {
 
   save() {
     this.props.onChange(this.state.type, this.state.title);
+    this.closeEditing();
   }
 
   onBlur(event) {
@@ -127,12 +129,16 @@ export default class IssueLabel extends React.Component {
 
   onKeyDown(event) {
     if (event.key == 'Escape') {
-      const newState = Object.assign(this.state, {'editing': false});
-      this.setState(newState);
+      this.closeEditing();
     }
   }
 
   onSaveClick(event) {
     this.save();
+  }
+
+  closeEditing() {
+    const newState = Object.assign(this.state, {'editing': false});
+    this.setState(newState);
   }
 }

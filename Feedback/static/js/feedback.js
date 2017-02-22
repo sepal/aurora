@@ -54050,7 +54050,8 @@
 	            _react2.default.createElement(_IssueLabel2.default, {
 	              type: this.props.issue.type,
 	              title: this.props.issue.title,
-	              onChange: this.onLabelTypeChange })
+	              onChange: this.onLabelTypeChange,
+	              editing: false })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -58262,6 +58263,8 @@
 	
 	    var _this = _possibleConstructorReturn(this, (IssueLabel.__proto__ || Object.getPrototypeOf(IssueLabel)).call(this, props));
 	
+	    console.log("IssueLabel");
+	
 	    _this.onLabelClick = _this.onLabelClick.bind(_this);
 	    _this.onSaveClick = _this.onSaveClick.bind(_this);
 	    _this.onEnterPress = _this.onEnterPress.bind(_this);
@@ -58359,6 +58362,7 @@
 	    key: 'save',
 	    value: function save() {
 	      this.props.onChange(this.state.type, this.state.title);
+	      this.closeEditing();
 	    }
 	  }, {
 	    key: 'onBlur',
@@ -58401,14 +58405,19 @@
 	    key: 'onKeyDown',
 	    value: function onKeyDown(event) {
 	      if (event.key == 'Escape') {
-	        var newState = Object.assign(this.state, { 'editing': false });
-	        this.setState(newState);
+	        this.closeEditing();
 	      }
 	    }
 	  }, {
 	    key: 'onSaveClick',
 	    value: function onSaveClick(event) {
 	      this.save();
+	    }
+	  }, {
+	    key: 'closeEditing',
+	    value: function closeEditing() {
+	      var newState = Object.assign(this.state, { 'editing': false });
+	      this.setState(newState);
 	    }
 	  }]);
 	
@@ -59502,8 +59511,8 @@
 	 * Updates either the title, type or body of an issue.
 	 */
 	function changeIssue(data, id) {
-	
 	  return function (dispatch) {
+	    dispatch(previewIssue(id, data));
 	    return (0, _api.updateIssue)(data, id).then(function (issue) {
 	      dispatch(updatedIssue(issue));
 	    });
