@@ -54030,7 +54030,7 @@
 	  _createClass(IssueDetail, [{
 	    key: 'render',
 	    value: function render() {
-	      var upvote_label = this.props.issue.upvotes > 1 ? "upvotes" : "upvote";
+	      var upvote_label = this.props.issue.upvotes == 1 ? "upvote" : "upvotes";
 	      var date = (0, _moment2.default)(this.props.issue.post_date).calendar();
 	      return _react2.default.createElement(
 	        'div',
@@ -54072,7 +54072,7 @@
 	            _react2.default.createElement(
 	              'span',
 	              null,
-	              this.props.issue.upvotes,
+	              this.props.issue.upvotes ? this.props.issue.upvotes : 0,
 	              ' ',
 	              upvote_label
 	            )

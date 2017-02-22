@@ -17,7 +17,7 @@ export default class IssueDetail extends React.Component {
   }
 
   render() {
-    const upvote_label = this.props.issue.upvotes > 1 ? "upvotes" : "upvote";
+    const upvote_label = this.props.issue.upvotes == 1 ? "upvote" : "upvotes";
     const date = Moment(this.props.issue.post_date).calendar();
     return (
       <div className={styles.issueDetail}>
@@ -30,12 +30,12 @@ export default class IssueDetail extends React.Component {
               type={this.props.issue.type}
               title={this.props.issue.title}
               onChange={this.onLabelTypeChange}
-              editable={true}/>
+              editable={true} />
           </div>
           <div className={styles.subtitle}>
             <span>by {this.props.issue.author.name}</span>&nbsp;
             <span>on {date}</span>,&nbsp;
-            <span>{this.props.issue.upvotes} {upvote_label}</span>
+            <span>{this.props.issue.upvotes ? this.props.issue.upvotes : 0} {upvote_label}</span>
           </div>
         </div>
         <div className={styles.content}>
