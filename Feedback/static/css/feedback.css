@@ -5,7 +5,8 @@
   width: 100%;
   height: 100%;
   z-index: 5001;
-  background: rgba(0, 0, 0, 0.75); }
+  background: rgba(0, 0, 0, 0.75);
+  overflow-y: scroll; }
 
 .style__window___EE3X8 {
   border-radius: 5px;
