@@ -2,6 +2,13 @@
  * Created by peterpur between 22.2.2014 and now.
  */
 
+$(function() {
+	$('.feed_header').each(function () {
+        $(this).css('background-position-x', (Math.floor(Math.random()*50)+50)+'%');
+        $(this).css('background-position-y', (Math.floor(Math.random()*100))+'%');
+	})
+})
+
 var loadMore_Timer;
 
 $(function() {
