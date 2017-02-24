@@ -14,13 +14,13 @@
 
       <table>
         <tr>
-          <td colspan=3></i> {{ stack_data.course_title }}</td>
+          <td colspan=3 class="subheader"></i>Challenges</td>
         </tr>
         <tr class="sum">
           <td class="letztezeile sum">
 			  <a href="javascript:tggle('.final_list');void(0);" style="color:black;text-decoration:none">
-				  <i  style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Awarded points so far</a></td>
-          <td class="letztezeile punkte">{{ stack_data.evaluated_points_earned_total }}<span style="color:gray">/{{ stack_data.evaluated_points_available_total }}</span></td>
+				  <i  style="{% if stack in stack_data.course_stacks %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> Awarded points so far</a></td>
+          <td class="letztezeile punkte"><span style="color:gray">{{ stack_data.evaluated_points_available_total }}</span> &nbsp;{{ stack_data.evaluated_points_earned_total }}</td>
         </tr>
 		</table><div class="final_list"  style="display:none"><table>
 				{% for stack in stack_data.course_stacks %} <!-- loop 1: evaluated, valid challenges -->
@@ -57,18 +57,14 @@
             </tr>
           {% endif %}
         {% endfor %}
-        <tr>
-          <td>Slide Special Points</td>
-          <td class="punkte">(inactive)</td>
-        </tr>
-		</table></div>
+	</table></div>
 
     <table>
       <tr class="sum">
           <td class="letztezeile sum">
               <a href="javascript:tggle('.extra_list');void(0);" style="color:black;text-decoration:none">
                   <i style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Extra Points</td>
-          <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden">XX</span></td>
+          <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden;display:none">XX</span></td>
       </tr>
     </table>
     <div class="extra_list" style="display:none">
@@ -77,10 +73,12 @@
           <td>Writing Reviews</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_reviews }}</td>
         </tr>
+		{% comment %}
         <tr class="pZeile1">
           <td>Comments</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_comments }}</td>
         </tr>
+		{% endcomment %}
         <tr class="pZeile1">
           <td>Rating Reviews</td>
           <td class="punkte">{{ stack_data.extra_points_earned_by_rating_reviews }}</td>
@@ -162,8 +160,7 @@
         <tr class="sum">
           <td  style="color:gray">
 			 <i style="color:rgba(0,0,0,0);" class="fa fa-caret-square-o-down"></i> Optimistic Sum</td>
-          <td class="punkte" style="vertical-align:bottom;color:gray">
-		   {{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total}}<span>/{{ stack_data.evaluated_points_available_total }}</span>
+          <td class="punkte" style="vertical-align:bottom;color:gray"><span style="color:lightgray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;&nbsp;{{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total}}
 		  </td>
 	  	</tr>
 {% comment %}
@@ -194,6 +191,7 @@
         </tr>
 
 	{% if not user.is_staff %}
+          <td colspan=3 class="subheader"></i>Reviews</td>
         <tr>
 		  <script>
 			  	var a = {{ review_evaluation_data.positive_review_evaluations }} ;
@@ -203,12 +201,12 @@
 				var br = b==0?0:Math.round(b/(a+b+c)*100);
 				var cr = c==0?0:Math.round(c/(a+b+c)*100);
 		  </script>
-          <td colspan="2" style="font-size:80%;padding-top:1em;">
+          <td colspan="2" style="padding-top:1em;">
             <script>document.write(a+b+c)</script> of your reviews have been rated:
           </td>
         </tr>
         <tr>
-          <td style="font-size:80%" colspan="2">
+          <td style="" colspan="2">
             <span
                 style="color:rgba(0,109,0,
                     {% if review_evaluation_data.positive_review_evaluations == 0 %}
@@ -248,7 +246,7 @@
         </tr>
 	{% endif %}
         <tr>
-          <td colspan=2 style="font-size:80%">
+          <td colspan=2 style="">
             You have rated
             {% widthratio review_evaluation_data.review_evaluation_percent 1 100 %}% of all reviews you received.
             <br>
@@ -256,15 +254,24 @@
               &rarr; You are currently eligible for an
               extra-point.
             {% endif %}
-          </table>
           </td>
-          {% if review_evaluation_data.number_of_unevaluated_reviews > 0 %}
-            <b>Unevaluated Reviews:</b><br>
+	  	</tr>
+		<tr>
+			<td colspan=3>
+		  
+		  <a href="javascript:tggle('.rev_list');void(0);" style="color:black;text-decoration:none;font-weight:bold">
+			  <i  style="{% if review_evaluation_data.reviews_missing_evaluation %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> {{review_evaluation_data.reviews_missing_evaluation|length}} Unevaluated Review{{review_evaluation_data.reviews_missing_evaluation|pluralize}}</a></td>
+		  </td></table>
+
+		  <div class="rev_list"  style="display:none"><table>
             {% for review in review_evaluation_data.reviews_missing_evaluation %}
-              <a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title}}</a><br>
+		        <tr class="pZeile{{ forloop.counter }}"><td>
+					<a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title}}</a><br>
+				</td></tr>
             {% endfor %}
-          {% endif %}
-        </tr>
+			</table>
+		</div>
+		
     </div>
   {% endif %}
 {% endfor %}

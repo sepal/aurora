@@ -29,20 +29,24 @@ def save_elaboration(request, course_short_title):
         elaboration = Elaboration.objects.all().filter(challenge=challenge, user=user).order_by('id').latest('creation_time')
 
         if elaboration.can_be_revised and 'revised_elaboration_text' in request.POST:
-            elaboration.revised_elaboration_text = request.POST['revised_elaboration_text'] # sanitze here
+            elaboration.revised_elaboration_text = request.POST['revised_elaboration_text']
             if 'revised_elaboration_changelog' in request.POST:
                 elaboration.revised_elaboration_changelog = request.POST['revised_elaboration_changelog']
             if 'most_helpful_other_user' in request.POST:
                 review_id = request.POST['most_helpful_other_user']
-                if int(review_id) > 0:
-                    review_id = Review.objects.get(pk=review_id).reviewer.pk
-                elaboration.most_helpful_other_user = review_id
+                try:
+                    review_id = int(review_id)
+                    if int(review_id) > 0:
+                        review_id = Review.objects.get(pk=review_id).reviewer.pk
+                    elaboration.most_helpful_other_user = review_id
+                except ValueError as verr:
+                    pass
 
             elaboration.save()
 
         # only save if it is unsubmitted (because of js raise condition)
         if not elaboration.is_submitted():
-            elaboration_text = request.POST['elaboration_text'] # sanitze here
+            elaboration_text = request.POST['elaboration_text']
             elaboration.elaboration_text = ''
             elaboration.elaboration_text = elaboration_text
             elaboration.save()
@@ -72,8 +76,8 @@ def submit_elaboration(request, course_short_title):
    if elaboration.is_submitted():
        return HttpResponse("elaboration already submitted", status=400)
 
-   elaboration.elaboration_text = request.POST['elaboration_text'] # sanitze here
-   elaboration.revised_elaboration_text = elaboration.elaboration_text
+   # elaboration.elaboration_text = request.POST['elaboration_text'] # sanitze here
+   # elaboration.revised_elaboration_text = elaboration.elaboration_text
 
    if elaboration.elaboration_text or UploadFile.objects.filter(elaboration=elaboration).exists():
        elaboration.submission_time = datetime.now()

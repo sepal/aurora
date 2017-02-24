@@ -10,14 +10,15 @@
 
 
 <!--title and other chapters-->
-<h1 class="slide-stack-title">{{ slide_stack.title }} <span style="font-weight:100">from <a href="../../{{ this_topic.0 }}_{{ this_topic.1 }}">{{this_topic.1}}</a></span>
+<h1 class="slide-stack-title"><b>{{ slide_stack.title }}:</b> {{slide_stack.slides|length}} Slides
 	<div class="slides_navi">
 		{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
 		{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
 	</div>
 </h1>
-    <div class="also-belong">These slides also belong to
+    <div class="also-belong">These slides belong to <a href="../../{{ this_topic.0 }}_{{ this_topic.1 }}">{{this_topic.1}}</a>
         {% for topic in other_topics %}
+			{% if forloop.first %} and also {% endif %}
             <a href="../../{{ topic.0 }}_{{ topic.1 }}">{% comment %}{{ topic.0 }}: {% endcomment %}{{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
     </div>
@@ -26,7 +27,7 @@
 <div class="row">
 	<div class="col-lg-7 col-md-12">
 	{% for slide in slide_stack.slides %}
-	    	<div class="card card-block aCard" id="SL_{{slide.id}}">
+	    	<div class="card card-block aCard {% if slide.lecturer_comment %}card-with-note{% endif %}" id="SL_{{slide.id}}">
 		        <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="slides" data-width="960" {% if slide.lecturer_comment %} data-footer="{{slide.lecturer_comment}}" {% endif %} data-title="{{slide.title}}">
 		            <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
 		        </a>
@@ -38,9 +39,8 @@
 
 <!--Comments-->
 	<div class="lecturer_comments">
-		<p style="display:none"><b>Lecturer Notes</b></p>
 		{% for slide in slide_stack.slides %}
-			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><b>{{slide.title}}:</b> {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</div>{% endif %}
+			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><span class="lecturer_note_title">{{slide.title}}</span> {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</div>{% endif %}
 		{% endfor %}
 	</div>
 	<br>

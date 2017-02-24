@@ -3,13 +3,16 @@
 
 {% block additional_headers %}
   <link rel="stylesheet" href="{{ STATIC_URL }}css/public_stats.css" type="text/css" media="screen"/>
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/points.css" type="text/css" media="screen"/>
   {% load humanize %}
 {% endblock %}
 
-<div class="stats">
+<div class="stats points_table">
 {% for stack_data in stacks %}
 	  {% if stack_data.course_title == course.title %}
-		 <p><b>Some (experimental) course stats</b></p>
+	  <table><tr>
+		 <td class="subheader">Some (experimental) course stats</td></tr>
+		 <tr><td>
 		 <p>This course will issue certificates for {{ students_with_at_least_one_submission }} students.</p>
 		 <p>So far, {{ evaluated_final_tasks }} challenges have been evaluated, 
 		 and {{ not_evaluated_final_tasks }} challenges are currently awaiting final evaluation.</p>
@@ -22,7 +25,7 @@
 		 else if(x>29) document.write({{ students_with_more_than_30_points }})</script> participants with more than <script>document.write(x)</script>
 			  points.</p>
 		 {% endif %}
-		 <br>
+		 </td></tr></table>
 	{% endif %}
 {% endfor %}
 </div>
