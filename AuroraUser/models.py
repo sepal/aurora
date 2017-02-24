@@ -47,10 +47,11 @@ class AuroraUser(User):
             questionable_tags = ["enthusiastic", ]
             negative_tags= ["min", "empty", "bad", "wrong", "leer", "offensive", "meaningless", ]
 
-            positive_review_scale_factor = 3
-            neutral_review_scale_factor  = 1
+            helpful_review_scale_factor = 3
+            good_review_scale_factor  = 1
+            bad_review_scale_factor  = 1
             negative_review_scale_factor = 3
-            helpful_review_scale_factor  = 2
+            helpful_review_revision_scale_factor  = 2
 
             positive_tag_scale_factor     = 2
             questionable_tag_scale_factor = 1
@@ -58,10 +59,11 @@ class AuroraUser(User):
 
             course = relation.course
 
-            number_of_neutral_reviews  = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='D').count()
-            number_of_positive_reviews = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='P').count()
+            number_of_helpful_reviews = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='P').count()
+            number_of_good_reviews  = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='D').count()
+            number_of_bad_reviews  = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='B').count()
             number_of_negative_reviews = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='N').count()
-            number_of_helpful_reviews  = Elaboration.objects.filter(most_helpful_other_user=self.id).count()
+            number_of_helpful_reviews_revision  = Elaboration.objects.filter(most_helpful_other_user=self.id).count()
 
             student_reviews = Review.objects.filter(reviewer_id=self.id, elaboration_id__challenge_id__course_id=course.id)
             total_reviews = Review.objects.filter(elaboration_id__challenge_id__course_id=course.id, reviewer_id__is_staff=False).count()
@@ -70,12 +72,13 @@ class AuroraUser(User):
             number_of_questionable_tags = student_reviews.filter(tags__name__regex=r'(' + '|'.join(questionable_tags) + ')').values('tagged_items__tag_id', 'tagged_items__object_id').distinct().count()
             number_of_negative_tags     = student_reviews.filter(tags__name__regex=r'(' + '|'.join(negative_tags) + ')').values('tagged_items__tag_id', 'tagged_items__object_id').distinct().count()
 
-            quality_factor_numerator = number_of_positive_reviews * positive_review_scale_factor + \
-                                       number_of_neutral_reviews  * neutral_review_scale_factor  + \
-                                       number_of_helpful_reviews  * helpful_review_scale_factor  + \
-                                       number_of_positive_tags    * positive_tag_scale_factor
+            quality_factor_numerator = number_of_helpful_reviews          * helpful_review_scale_factor + \
+                                       number_of_good_reviews             * good_review_scale_factor  + \
+                                       number_of_helpful_reviews_revision * helpful_review_revision_scale_factor  + \
+                                       number_of_positive_tags            * positive_tag_scale_factor
 
             quality_factor_denominator = quality_factor_numerator + \
+                                         number_of_bad_reviews       * bad_review_scale_factor  + \
                                          number_of_negative_reviews  * negative_review_scale_factor  + \
                                          number_of_negative_tags     * negative_tag_scale_factor     + \
                                          number_of_questionable_tags * questionable_tag_scale_factor

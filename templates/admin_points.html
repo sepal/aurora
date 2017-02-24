@@ -12,58 +12,73 @@
   <div class="points_table">
       <table>
         <tr>
-		  <script>
-			  	var a = {{ review_evaluation_data.positive_review_evaluations }} ;
-		 	  	var b= {{ review_evaluation_data.default_review_evaluations }} ;
-		  		var c = {{ review_evaluation_data.negative_review_evaluations }} ; 
-				var ar = a==0?0:Math.round(a/(a+b+c)*100); 
-				var br = b==0?0:Math.round(b/(a+b+c)*100);
-				var cr = c==0?0:Math.round(c/(a+b+c)*100);
-		  </script>
+          <script>
+              var a = {{ review_evaluation_data.helpful_review_evaluations }};
+              var b = {{ review_evaluation_data.good_review_evaluations }};
+              var c = {{ review_evaluation_data.bad_review_evaluations }};
+              var d = {{ review_evaluation_data.negative_review_evaluations }};
+            var ar = a==0?0:Math.round(a/(a+b+c+d)*100);
+            var br = b==0?0:Math.round(b/(a+b+c+d)*100);
+            var cr = c==0?0:Math.round(c/(a+b+c+d)*100);
+            var dr = d==0?0:Math.round(c/(a+b+c+d)*100);
+          </script>
           <td colspan="2">
-            <script>document.write(a+b+c)</script> of your reviews have been rated:
+            <script>document.write(a+b+c+d)</script> of your reviews have been rated:
           </td>
         </tr>
         <tr>
-          <td colspan="2">
+          <td style="" colspan="2">
             <span
                 style="color:rgba(0,109,0,
-                    {% if review_evaluation_data.positive_review_evaluations == 0 %}
+                    {% if review_evaluation_data.helpful_review_evaluations == 0 %}
                       0.5
                     {% else %}
                       1
                     {% endif %}
                     )">
-              <script>document.write(ar)</script>% 
-              as »Helpful« (&empty; is {{review_evaluations_positive_ratio|floatformat:"0"}}%)
+              <script>document.write(ar)</script>%
+              as »Helpful« (&empty; is {{review_evaluations_helpful_ratio|floatformat:"0"}}%)
             </span>
             <br>
             <span
                 style="color:rgba(0,50,0,
-                    {% if review_evaluation_data.default_review_evaluations == 0 %}
+                    {% if review_evaluation_data.good_review_evaluations == 0 %}
                       0.5
                     {% else %}
                       1
                     {% endif %}
                     )">
-              <script>document.write(br)</script>% 
-              as »Average« (&empty; is {{review_evaluations_default_ratio|floatformat:"0"}}%)
+              <script>document.write(br)</script>%
+              as »Good« (&empty; is {{review_evaluations_good_ratio|floatformat:"0"}}%)
             </span>
             <br>
             <span
                 style="color:rgba(255,0,0,
-                    {% if review_evaluation_data.negative_review_evaluations == 0 %}
+                    {% if review_evaluation_data.bad_review_evaluations == 0 %}
                       0.5
                     {% else %}
                       1
                     {% endif %}
                     )">
-              <script>document.write(cr)</script>% 
-              as »Meaningless or Offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
+              <script>document.write(cr)</script>%
+              as »Bad« (&empty; is {{review_evaluations_bad_ratio|floatformat:"0"}}%)
             </span>
+            <br>
+            <span
+                style="color:rgba(255,0,0,
+                    {% if review_evaluation_data.negatve_review_evaluations == 0 %}
+                      0.5
+                    {% else %}
+                      1
+                    {% endif %}
+                    )">
+              <script>document.write(cr)</script>%
+              as »Negative« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
+            </span>
+          </td>
           </td>
         </tr>
       </table>
     </div>
   {% endif %}
-{% endfor %} 
+{% endfor %}

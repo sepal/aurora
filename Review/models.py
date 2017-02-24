@@ -56,25 +56,33 @@ class ReviewEvaluation(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey('AuroraUser.AuroraUser')
 
-    DEFAULT = 'D'
+    HELPFUL= 'P'
+    GOOD = 'D'
+    BAD = 'B'
     NEGATIVE = 'N'
-    POSITIVE = 'P'
+
     APPRAISAL_CHOICES = (
-        (DEFAULT, 'Average Review'),
-        (NEGATIVE, 'Flag this review as meaningless or offensive'),
-        (POSITIVE, 'This review was helpful'),
+        (HELPFUL, 'Helpful Review'),
+        (GOOD, 'Good Review'),
+        (BAD, 'Bad Review'),
+        (NEGATIVE, 'Negative Review'),
     )
     appraisal = models.CharField(max_length=1, choices=APPRAISAL_CHOICES, default='D')
 
     @staticmethod
-    def get_default_review_evaluations(user, course):
+    def get_helpful_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
-                                               appraisal=ReviewEvaluation.DEFAULT).count()
+                                               appraisal=ReviewEvaluation.HELPFUL).count()
 
     @staticmethod
-    def get_positive_review_evaluations(user, course):
+    def get_good_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
-                                               appraisal=ReviewEvaluation.POSITIVE).count()
+                                               appraisal=ReviewEvaluation.GOOD).count()
+
+    @staticmethod
+    def get_bad_review_evaluations(user, course):
+        return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
+                                               appraisal=ReviewEvaluation.BAD).count()
 
     @staticmethod
     def get_negative_review_evaluations(user, course):

@@ -233,8 +233,12 @@
                  class="review_evaluation neutral {% if review_data.evaluation == "D" %} active{% endif %}">
                 ... was ok/average
             </div>
+            <div review_id="{{ review_data.review_id }}" appraisal="B"
+                 class="review_evaluation neutral {% if review_data.evaluation == "B" %} active{% endif %}">
+                ... was bad
+            </div>
             <div review_id="{{ review_data.review_id }}" appraisal="N"
-                 class="review_evaluation negative{% if review_data.evaluation == "N" %} active{% endif %}">
+                 class="review_evaluation negative {% if review_data.evaluation == "N" %} active{% endif %}">
                 ... was either minimalist, meaningless or offensive
             </div>
         </div>

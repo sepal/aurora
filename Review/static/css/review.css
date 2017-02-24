@@ -280,7 +280,7 @@ input[type=submit] {
 	float:left;
 }
 .review_evaluation_drawer {
-	min-height:52px;
+	min-height: 72px;
 	border:1px solid rgba(255,255,255,0.3);
 	background: lightgray;
 	box-shadow: 0 1px 2px rgba(0,0,0,0.7);
