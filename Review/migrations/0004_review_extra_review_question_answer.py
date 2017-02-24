@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Elaboration', '0004_elaboration_most_helpful_other_user'),
+        ('Review', '0003_auto_20160517_2120'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='elaboration',
-            name='extra_review_question',
+            model_name='review',
+            name='extra_review_question_answer',
             field=models.TextField(default=''),
             preserve_default=True,
         ),

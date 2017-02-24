@@ -47,8 +47,11 @@ def save_elaboration(request, course_short_title):
         # only save if it is unsubmitted (because of js raise condition)
         if not elaboration.is_submitted():
             elaboration_text = request.POST['elaboration_text']
+            extra_review_question = request.POST['extra_review_question']
+            
             elaboration.elaboration_text = ''
             elaboration.elaboration_text = elaboration_text
+            elaboration.extra_review_question = extra_review_question
             elaboration.save()
         else:
             raise Http404

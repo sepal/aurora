@@ -113,7 +113,9 @@
 			{% endif %}
     <form method="post">
       <textarea id="original-editor" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
-      <trix-editor class="trix-content" input="original-editor"></trix-editor>
+      <trix-editor class="trix-content" input="original-editor"></trix-editor><br>
+      <label for="extra-review-question">What question would you like to ask the people reviewing your work?</label><br>
+      <input id="extra-review-question" name="extra-review-question" value={{ elaboration.extra_review_question }}><br><br>
     </form>
 		<div class="status_under_MCE">
 	    	<button id="SagB" class="XL save_back">
@@ -161,11 +163,17 @@
        {% render_original_uploads elaboration %}
       {% endif %}
   		<textarea id="editor_challenge_orig" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
-      <trix-editor class="trix-content" input="editor_challenge_orig"></trix-editor>
+      <trix-editor class="trix-content" input="editor_challenge_orig"></trix-editor><br>
+      {% if extra_review_question_present %}
+      <p><strong>Additional question asked to reviewers:<strong> {{ elaboration.extra_review_question }}<p>
+      {% endif %}
 	  {% else %}
       {% render_uploads elaboration %}
   		<textarea id="editor_challenge" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
       <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
+      {% if extra_review_question_present %}
+      <p><b>Additional question asked to reviewers:</b> {{ elaboration.extra_review_question }}<p>
+      {% endif %}
 	  {% endif %}
   </div>
 
@@ -197,6 +205,14 @@
 	 &nbsp; Review {{ forloop.counter }}
       <div class="view_review">
 		  {% render_review_answers review_data.review_id %}
+
+      <div class="question_container">
+        <div>
+          {{ elaboration.extra_review_question }}
+          <textarea class="review_answer" readonly>{{ review_data.extra_review_question_answer }}</textarea>
+        </div>
+      </div>
+
 			{% if review_data.appraisal == "Awesome" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b>
             {% elif review_data.appraisal == "Awesome" %} Accepted
 			{% elif review_data.appraisal == "Success" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted</b>

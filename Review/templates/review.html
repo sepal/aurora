@@ -50,6 +50,17 @@
         {% include "question.html" %}
       {% endfor %}
 
+      {% if extra_review_question_present %}
+      <div class="extra_review_question_container">
+        <div class="question" id="extra-review-question">
+          {{ review.elaboration.extra_review_question }}
+        </div>
+        <div class="answer" >
+          <textarea id="extra-review-question-answer" name="answer"></textarea>
+        </div>
+      </div>
+      {% endif %}
+
       <h1>&nbsp;<i class="fa fa-info-circle"></i> Only the course team will be able to see this answers to the following questions questions</h1>
       {% for question in staff_questions %}
         {% include "question.html" %}

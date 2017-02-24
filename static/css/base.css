@@ -573,3 +573,7 @@ button:hover, .button:hover{
 .trix-content {
   min-height: 300px;
 }
+
+#extra-review-question {
+  width: 100%;
+}

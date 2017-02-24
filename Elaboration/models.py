@@ -33,8 +33,7 @@ class Elaboration(models.Model):
     tags = TaggableManager()
     comments = GenericRelation(Comment)
     extra_review_question = models.TextField(default='')
-    extra_review_question_answer = models.TextField(default='')
-
+    
     def __str__(self):
         return str(self.id)
 

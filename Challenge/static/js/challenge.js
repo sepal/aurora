@@ -78,11 +78,16 @@ function save_elaboration(challenge_id) {
     }
 
     var elaboration_text = $("#original-editor").val();
+    var extra_review_question = $("#extra-review-question").val();
     var data = {
         challenge_id: challenge_id,
         elaboration_text: elaboration_text,
-        revised_elaboration_text: elaboration_text
+        revised_elaboration_text: elaboration_text,
+        extra_review_question: extra_review_question
     };
+
+    console.log("Saving data:");
+    console.log(data);
 
     var args = {
         type: "POST",

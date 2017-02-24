@@ -9,6 +9,7 @@ class Review(models.Model):
     reviewer = models.ForeignKey('AuroraUser.AuroraUser')
     chosen_by = models.CharField(max_length=100, null=True, blank=True, default='random')
     tags = TaggableManager()
+    extra_review_question_answer = models.TextField(default='')
 
     NOTHING = 'N'
     FAIL = 'F'
