@@ -19,7 +19,7 @@
         <tr class="sum">
           <td class="letztezeile sum">
 			  <a href="javascript:tggle('.final_list');void(0);" style="color:black;text-decoration:none">
-				  <i  style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Awarded points so far</a></td>
+				  <i  style="{% if stack in stack_data.course_stacks %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> Awarded points so far</a></td>
           <td class="letztezeile punkte"><span style="color:gray">{{ stack_data.evaluated_points_available_total }}</span> &nbsp;{{ stack_data.evaluated_points_earned_total }}</td>
         </tr>
 		</table><div class="final_list"  style="display:none"><table>
@@ -260,15 +260,16 @@
 			<td colspan=3>
 		  
 		  <a href="javascript:tggle('.rev_list');void(0);" style="color:black;text-decoration:none;font-weight:bold">
-			  <i  style="color:#3AC958" class="fa fa-caret-square-o-down"></i> {{review_evaluation_data.reviews_missing_evaluation|length}} Unevaluated Review{{review_evaluation_data.reviews_missing_evaluation|pluralize}}</a></td>
+			  <i  style="{% if review_evaluation_data.reviews_missing_evaluation %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> {{review_evaluation_data.reviews_missing_evaluation|length}} Unevaluated Review{{review_evaluation_data.reviews_missing_evaluation|pluralize}}</a></td>
 		  </td></table>
 
 		  <div class="rev_list"  style="display:none"><table>
             {% for review in review_evaluation_data.reviews_missing_evaluation %}
 		        <tr class="pZeile{{ forloop.counter }}"><td>
 					<a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title}}</a><br>
-				</td></tr></table>
+				</td></tr>
             {% endfor %}
+			</table>
 		</div>
 		
     </div>
