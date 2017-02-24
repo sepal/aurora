@@ -1,3 +1,7 @@
+.subheader {
+	background:#eee;
+}
+
 .points_table {
     width: 100%;
     /*margin-top:1em;*/
@@ -66,7 +70,7 @@
 
 }
 
-.final_list,.work_list,.sub_list {
+.final_list,.work_list,.sub_list,.rev_list {
 	display:none;
 	border-radius:0 0 3px 3px;
 	background:#eee;
