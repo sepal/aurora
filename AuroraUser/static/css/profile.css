@@ -118,3 +118,14 @@ label {
 	pointer-events:none;
 }
 
+.correct_maker {
+}
+
+
+.versteck {
+	display:none;
+}
+
+.bmi, .bmz, .bsi, .bti {
+	font-size:13px;
+}

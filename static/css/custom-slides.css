@@ -28,14 +28,26 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	background-color:white;
 	z-index:0;
 }
-
-.aCard img {
-	box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
-	border-radius:3px;
-	background-color:white;
-	z-index:0;
-	width:320px;
+@media only screen and (max-width: 500px) {
+	.aCard img {
+		box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+		border-radius:3px;
+		background-color:white;
+		z-index:0;
+		width:100%;
+	}
 }
+
+@media only screen and (min-width: 501px) {
+	.aCard img {
+		box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+		border-radius:3px;
+		background-color:white;
+		z-index:0;
+		width:320px;
+	}
+}
+
 
 .card-with-note::after {
 	content:"\1F4AC";
