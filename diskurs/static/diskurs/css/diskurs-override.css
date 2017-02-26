@@ -50,7 +50,8 @@ body {margin:0;padding:0;}
 	    font-size: 32px;
 	    vertical-align: bottom;
 	    width: 100%;
-		color: black;
+		color: white;
+		font-weight:bold;
 		font-size: 30px;
 		text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 

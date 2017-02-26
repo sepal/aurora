@@ -16,6 +16,11 @@
 <script type="text/javascript" src="{% static 'diskurs/js/giffer.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'lightbox/css/lightbox.css' %}" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="{% static 'diskurs/css/diskurs-override.css' %}" />
+<script type="text/javascript">
+//<![CDATA[
+    var diskurs_preview_url = '{% url 'diskurs:preview_post' course.short_title %}';
+//]]>
+</script>
 </head>
 <body>
 <div class="diskurs_head">Aurora Discussions{% if thread.title %}: <b>{{thread.title}}</b>{% endif %}

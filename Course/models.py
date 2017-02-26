@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from datetime import datetime, date
-# from Challenge.models import Challenge
+#from Challenge.models import Challenge
 import logging
 
 class Course(models.Model):
@@ -55,3 +55,7 @@ class CourseUserRelation(models.Model):
     user = models.ForeignKey('AuroraUser.AuroraUser')
     course = models.ForeignKey(Course)
     active = models.BooleanField(default=True)
+    review_karma = models.DecimalField(max_digits=20, decimal_places=19, default=0.0)
+    review_group = models.PositiveSmallIntegerField(default=1)
+    top_reviewer = models.BooleanField(default=False)
+    positive_completion_possible = models.BooleanField(default=True)

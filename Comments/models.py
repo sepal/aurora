@@ -1,10 +1,9 @@
 from django.db import models as models
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models import Q, Count, Max
 import re
 from taggit.managers import TaggableManager
-
 
 class CommentList(models.Model):
     """
@@ -17,7 +16,7 @@ class CommentList(models.Model):
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     class Meta:
         unique_together = ('content_type', 'object_id')
@@ -84,7 +83,7 @@ class Comment(models.Model):
     # Foreign object this Comment is attached to
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     PUBLIC = 'public'
     STAFF = 'staff'

@@ -62,9 +62,10 @@
 
 .title {
     font-family: 'yanone_kaffeesatzlight';
-	color:rgb(58,201,88);
+	color:white; /*rgb(58,201,88);*/
 	font-size:2.5em;
 	margin-bottom:1em;
+	padding-left:30px;
 }
 
 .choicetitle {
@@ -78,6 +79,7 @@
 	color:white;
 	font-size:1.5em;
 	margin-bottom:1em;
+	border-radius:6px;
 }
 
 .choice a {
@@ -94,7 +96,10 @@
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
 	width:500px;
-	height:400px;
+	height:200px;
+	background:rgba(0,0,0,0.5);
+	border-radius:6px;
+	padding:30px;
 }
 
 .base {
@@ -111,28 +116,11 @@
 
 $(function(){
 
-    /*
-    Add this code to every page.
-
-    We start by hiding the body, and then fading it in.
-    */
     $('body').hide().fadeIn('slow');
 
-    /*
-    Now we deal with all 'a' tags...
-    */
     $('a').click(function(){
-        /*
-        Get the url from this anchors href
-        */
         var link = $(this).attr('href');
-        /*
-        Fade out the whole page
-        */
         $('body').fadeOut('slow', function(){
-            /*
-            When that's done (on the 'callback') send the browser to the link.
-            */
             window.location.href = link;
         });
         return false;
@@ -147,15 +135,17 @@ $(function(){
     <div class="centered">
         <div class="title">Welcome to Aurora 2016</div>
 
-        <div class="choice">
         {% for course in courses %}
+        <div class="choice">
              &rarr; <a href="{% url 'home' course.short_title %}">{{ course.title }}</a><br>
-        {% endfor %}
         </div>
+        {% endfor %}
 
         {% if debug %}
-            <a href="/admin">ADMIN</a>
+        <div class="choice" style="float:right">
+            &rarr; <a href="/admin">ADMIN</a>
         {% endif %}
+        </div>
     </div>
 {% endblock %}
 

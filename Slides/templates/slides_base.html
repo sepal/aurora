@@ -1,0 +1,78 @@
+{% load staticfiles %}
+<!--DOCTYPE html -->
+<html>
+<head>
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/slides.js"></script>
+
+
+<title>{% block head_title %}Aurora: Slides{% endblock head_title %}</title>
+<!-- Bootstrap 4 -->
+<link rel="stylesheet" href="{% static 'css/bootstrap4-alpha5.min.css' %}" />
+<!-- Lightbox -->
+<link rel="stylesheet" href="{% static 'css/ekko-lightbox.css' %}" />
+<!--FrameScrub -->
+<link rel="stylesheet" href="{% static 'css/frameScrub.css' %}" />
+<!--Custom CSS-->
+<link rel="stylesheet" href="{% static 'css/custom-slides.css' %}" />
+<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+
+
+</head>
+<body>
+	
+
+	
+
+
+{% block navigation %}
+  {% include "navigation.html" %}
+{% endblock %}
+
+<div class="container-fluid">
+    {% block content %}{% endblock content %}
+</div>
+
+<!--Ajax-->
+<script src="{% static 'js/ajax311.min.js' %}"></script>
+<!--Tether-->
+<script src="{% static 'js/tether137.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'js/bootstrap4-alpha5.min.js' %}"></script>
+<!-- Lightbox -->
+<script src="{% static 'js/ekko-lightbox.js' %}"></script>
+<script type="text/javascript">
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox();
+});
+</script>
+<!--Comments-->
+<script type="text/javascript" src="{{ STATIC_URL }}Comments/simple_functions.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}Comments/comments.js"></script>
+<!--FrameScrub = iPhoto functionality-->
+<script src="{% static 'js/frameScrub.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        setFrameScrubHeight();
+    });
+    $(window).resize(function () {
+        setFrameScrubHeight();
+    });
+    function setFrameScrubHeight() {
+        var cw = $('.fs').width();
+        $('.fs').css({
+            'height': cw * .5625 + 'px'
+        });
+    }
+    $(".fs").frameScrub({
+      defaultImage: 'firstImage',
+      verticalAlignment: 'top'
+    });
+  </script>
+
+
+</body>
+</html>

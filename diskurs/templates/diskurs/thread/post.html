@@ -20,11 +20,13 @@
                 {%  if user.avatar %}
                     <div class="avatar"><img src="{{ user.avatar.url }}" /></div>
                 {% endif %}
+                <div class="post_preview"></div>
                 <form method="post" action="{% if request.user.is_superuser %}{% url 'diskurs:new_group_post' course.short_title thread.id thread.filter_group_id %}{% else %}{% url 'diskurs:new_post' course.short_title thread.id %}{% endif %}">
                     <input type="hidden" name="parent_post_id" value="{{ post.id }}" />
                     {% csrf_token %}
                     <textarea class="reply_area" name="content"></textarea><br/>
                     <button type="submit">REPLY</button>
+                    <button type="button" class="preview_reply">PREVIEW</button>
                     <button type="reset" class="cancel_reply">CANCEL</button>
                     <button type="button" class="toggle_emojipicker">EMOJIS</button>
                 </form>

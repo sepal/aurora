@@ -36,11 +36,13 @@ def create_stat_data(course, data):
     data['students_with_more_than_53_points'] = students_with_x_or_more_points(course, 53)
     data['students_with_more_than_60_points'] = students_with_x_or_more_points(course, 60)
     data['review_evaluations'] = review_evaluations(course)
-    data['review_evaluations_positive'] = review_evaluations_positive(course)
-    data['review_evaluations_default'] = review_evaluations_default(course)
+    data['review_evaluations_helpful'] = review_evaluations_helpful(course)
+    data['review_evaluations_good'] = review_evaluations_good(course)
+    data['review_evaluations_bad'] = review_evaluations_bad(course)
     data['review_evaluations_negative'] = review_evaluations_negative(course)
-    data['review_evaluations_positive_ratio'] = data['review_evaluations_positive']/data['review_evaluations']*100
-    data['review_evaluations_default_ratio'] = data['review_evaluations_default']/data['review_evaluations']*100
+    data['review_evaluations_helpful_ratio'] = data['review_evaluations_helpful']/data['review_evaluations']*100
+    data['review_evaluations_good_ratio'] = data['review_evaluations_good']/data['review_evaluations']*100
+    data['review_evaluations_bad_ratio'] = data['review_evaluations_bad']/data['review_evaluations']*100
     data['review_evaluations_negative_ratio'] = data['review_evaluations_negative']/data['review_evaluations']*100
     data['reviews'] = reviews(course)
     data['commenter_top_25'] = commenter_top_x(course, 25)
@@ -103,20 +105,28 @@ def review_evaluations(course):
     review_evaluations += 1 if review_evaluations == 0 else 0
     return review_evaluations
 
-def review_evaluations_positive(course):
+def review_evaluations_helpful(course):
     return (
         ReviewEvaluation.objects
             .filter(review__elaboration__challenge__course=course)
-            .filter(appraisal=ReviewEvaluation.POSITIVE)
+            .filter(appraisal=ReviewEvaluation.HELPFUL)
+            .count()
+    )
+
+def review_evaluations_good(course):
+    return (
+        ReviewEvaluation.objects
+            .filter(review__elaboration__challenge__course=course)
+            .filter(appraisal=ReviewEvaluation.GOOD)
             .count()
     )
 
 
-def review_evaluations_default(course):
+def review_evaluations_bad(course):
     return (
         ReviewEvaluation.objects
             .filter(review__elaboration__challenge__course=course)
-            .filter(appraisal=ReviewEvaluation.DEFAULT)
+            .filter(appraisal=ReviewEvaluation.BAD)
             .count()
     )
 

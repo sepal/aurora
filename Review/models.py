@@ -7,7 +7,9 @@ class Review(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     submission_time = models.DateTimeField(null=True)
     reviewer = models.ForeignKey('AuroraUser.AuroraUser')
+    chosen_by = models.CharField(max_length=100, null=True, blank=True, default='random')
     tags = TaggableManager()
+    extra_review_question_answer = models.TextField(default='')
 
     NOTHING = 'N'
     FAIL = 'F'
@@ -54,25 +56,33 @@ class ReviewEvaluation(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey('AuroraUser.AuroraUser')
 
-    DEFAULT = 'D'
+    HELPFUL= 'P'
+    GOOD = 'D'
+    BAD = 'B'
     NEGATIVE = 'N'
-    POSITIVE = 'P'
+
     APPRAISAL_CHOICES = (
-        (DEFAULT, 'Average Review'),
-        (NEGATIVE, 'Flag this review as meaningless or offensive'),
-        (POSITIVE, 'This review was helpful'),
+        (HELPFUL, 'Helpful Review'),
+        (GOOD, 'Good Review'),
+        (BAD, 'Bad Review'),
+        (NEGATIVE, 'Negative Review'),
     )
     appraisal = models.CharField(max_length=1, choices=APPRAISAL_CHOICES, default='D')
 
     @staticmethod
-    def get_default_review_evaluations(user, course):
+    def get_helpful_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
-                                               appraisal=ReviewEvaluation.DEFAULT).count()
+                                               appraisal=ReviewEvaluation.HELPFUL).count()
 
     @staticmethod
-    def get_positive_review_evaluations(user, course):
+    def get_good_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
-                                               appraisal=ReviewEvaluation.POSITIVE).count()
+                                               appraisal=ReviewEvaluation.GOOD).count()
+
+    @staticmethod
+    def get_bad_review_evaluations(user, course):
+        return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
+                                               appraisal=ReviewEvaluation.BAD).count()
 
     @staticmethod
     def get_negative_review_evaluations(user, course):
@@ -80,12 +90,20 @@ class ReviewEvaluation(models.Model):
                                                appraisal=ReviewEvaluation.NEGATIVE).count()
     @staticmethod
     def get_review_evaluation_percent(user, course):
-        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course).count()
+        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False).count()
         number_of_review_evaluations = ReviewEvaluation.objects.filter(user=user, review__elaboration__challenge__course=course).count()
         if number_of_reviews == 0:
             return 0
         else:
             return number_of_review_evaluations/number_of_reviews
+
+    @staticmethod
+    def get_unevaluated_reviews(user, course):
+        review_ids = Review.objects.values_list('id', flat=True).filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False)
+        rated_review_ids = ReviewEvaluation.objects.values_list('review_id', flat=True).filter(user=user, review__elaboration__challenge__course=course)
+        missing_ratings_ids = list(set(review_ids)-set(rated_review_ids))
+
+        return Review.objects.filter(id__in=missing_ratings_ids)
 
 class ReviewConfig(models.Model):
     # in hours
@@ -107,7 +125,7 @@ class ReviewConfig(models.Model):
             return 0
         else:
             return config[0].candidate_offset_max
-    
+
     @staticmethod
     def setup():
         ReviewConfig.objects.create(candidate_offset_min = 23, candidate_offset_max = 120)

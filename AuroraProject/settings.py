@@ -8,6 +8,8 @@ from diskurs.markdown.giffer import GifferMarkdownFilter
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -23,8 +25,15 @@ DATABASES = {
         'PASSWORD': 'root',
         'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '8080',                      # Set to empty string for default.
+    },
+
+    'plagcheck': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'database-plagcheck.db',
     }
 }
+
+DATABASE_ROUTERS = ['PlagCheck.router.PlagCheckRouter']
 
 MARKUP_FILTER = {
     'markdown': MarkdownMarkupFilter,
@@ -76,6 +85,10 @@ MEDIA_ROOT = ''
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
 
+if DEBUG:
+    MEDIA_ROOT = os.path.curdir
+    MEDIA_URL = '/media/'
+
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
@@ -118,14 +131,15 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'middleware.exception_logging_middleware.ExceptionLoggingMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-#AUTHENTICATION_BACKENDS = (
-#    'django.contrib.auth.backends.ModelBackend',
-#    'middleware.DjangoAuthenticationMiddleware.DjangoAuthenticationMiddleware',
-#)
+AUTHENTICATION_BACKENDS = (
+    'middleware.AuroraAuthenticationBackend.AuroraAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 ROOT_URLCONF = 'AuroraProject.urls'
 
@@ -148,6 +162,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django.contrib.humanize',
+    # third party apps
+    'easy_thumbnails',
+    # own apps
     'AuroraUser',
     'Challenge',
     'Course',
@@ -162,7 +179,7 @@ INSTALLED_APPS = (
     'Slides',
     'Statistics',
     'Notification',
-    'endless_pagination',
+    'el_pagination',
     'taggit',
     'Faq',
     'djcelery',
@@ -175,7 +192,6 @@ INSTALLED_APPS = (
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
-
 
 LOGGING = {
     'version': 1,
@@ -198,6 +214,9 @@ LOGGING = {
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
+        'review': {
+            'format': '%(asctime)s - %(levelname)s %(message)s'
+        },
     },
     'handlers': {
         'mail_admins': {
@@ -212,6 +231,20 @@ LOGGING = {
             'backupCount': 1,
             'filename': '/tmp/aurora.log',
             'formatter': 'timed',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'timed'
+        },
+	'review_candidate': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024*1024*10,
+            'backupCount': 1,
+            'filename': os.path.dirname(PROJECT_ROOT) + '/AuroraUser/log/review_candidate.log',
+            'formatter': 'review',
         },
     },
     'loggers': {} # loggers are set below
@@ -231,6 +264,12 @@ if not DEBUG:
             'level': 'ERROR',
             'propagate': True,
         },
+        # Review logs
+        'review': {
+            'handlers': ['review_candidate'],
+            'level': 'INFO',
+            'propagate': False,
+        },
         # python logs
         '': {
             'handlers': ['file'],
@@ -242,23 +281,30 @@ if not DEBUG:
 else:
     LOGGING['loggers'] = {
         'django.request': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': False,
         },
         # django logs
         'django': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'ERROR',
             'propagate': True,
         },
+        # Review logs
+        'review': {
+            'handlers': ['review_candidate'],
+            'level': 'INFO',
+            'propagate': False,
+        },
         # python logs
         '': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'ERROR',
             'propagate': True,
         },
     }
+
 
 LOGIN_URL = '/'
 
@@ -270,26 +316,39 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "AuroraProject.context_processor.general_context_processor",
     "django.core.context_processors.request",
 )
 
-ENDLESS_PAGINATION_PER_PAGE = (
+EL_PAGINATION_PER_PAGE = (
     20
 )
-ENDLESS_PAGINATION_PREVIOUS_LABEL = (
+EL_PAGINATION_PREVIOUS_LABEL = (
     '<div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev</div>'
 )
-ENDLESS_PAGINATION_NEXT_LABEL = (
+EL_PAGINATION_NEXT_LABEL = (
     '<div class="paginator next">next <i class="fa fa-angle-double-right"></i></div>'
 )
 
-# PlagCheck settings
+PLAGCHECK = {
+    # a document scanned by PlagCheck needs to have the same or higher similarity percentage
+    # than PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT's value to be reported as a possible
+    # plagiarism.
+    'similarity_threshold': 50,
 
-# a document scanned by PlagCheck needs to have the same or higher similarity percentage
-# than PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT's value to be reported as a possible
-# plagiarism.
-PLAGCHECK_SIMILARITY_THRESHOLD_PERCENT = 50
+    # discards suspects whose matching hashes count is not greater than this
+    'minimal_match_count': 10,
+
+    # connection name for separation from default database
+    'database': 'plagcheck',
+
+    'suspicion_filters': [
+        'PlagCheck.filters.SimilarityThresholdFilter',
+        'PlagCheck.filters.MinimalMatchCountFilter',
+        'PlagCheck.filters.RevisedElaborationFilter',
+        'PlagCheck.filters.SelfPlagiarismFilter',
+        'PlagCheck.filters.DummyUserFilter',
+    ]
+}
 
 CELERY_ALWAYS_EAGER=False # set to True by unit tests
 CELERY_TASK_SERIALIZER = 'json'
@@ -323,6 +382,50 @@ if DEBUG:
     djcelery.setup_loader()
 
     CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+
+
+    def show_toolbar(request):
+        return not request.is_ajax() and 'toolbar' in request.GET
+
+    #INTERNAL_IPS = ('127.0.0.1', '10.0.0.11')
+
+    DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+    MIDDLEWARE_CLASSES += (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'middleware.Profiling.ProfileMiddleware'
+    )
+
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+        'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
+    }
+
+    THUMBNAIL_ALIASES = {
+        '': {
+            'preview': {'size': (640, 480)},
+            'full-res': {'size': (1920, 1080)},
+        },
+    }
 
 try:
     from local_settings import *

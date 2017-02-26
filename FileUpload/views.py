@@ -15,16 +15,19 @@ from FileUpload.models import UploadFile
 from django.http import Http404
 from django.conf import settings
 
+import logging
+logger = logging.getLogger(__name__)
+
 @login_required()
 def file_upload(request):
-    user = RequestContext(request)['user']
+    user = request.user
     file = request.FILES['file']
     if 'elaboration_id' in request.POST:
         elaboration_id = request.POST.get('elaboration_id')
         try:
             elaboration = Elaboration.objects.get(pk=elaboration_id)
             if not elaboration.user == user:
-                return file_upload_failed_response()
+                return file_upload_failed_response('Upload user does not match elaboration User')
             if not elaboration.is_submitted():
                 upload_file = UploadFile(user=user, elaboration_id=elaboration_id, upload_file=file)
             else:
@@ -70,7 +73,7 @@ def create_thumbnail(file, filename, save_function):
 
 @login_required()
 def file_remove(request):
-    user = RequestContext(request)['user']
+    user = request.user
     if 'id' in request.GET:
         id = request.GET.get('id')
         file = UploadFile.objects.get(pk=id)
@@ -83,7 +86,7 @@ def file_remove(request):
 
 @login_required()
 def all_files(request):
-    user = RequestContext(request)['user']
+    user = request.user
     if 'elaboration_id' in request.GET:
         elaboration_id = request.GET.get('elaboration_id')
         try:
@@ -105,7 +108,7 @@ def all_files(request):
 
 @login_required()
 def original_files(request):
-    user = RequestContext(request)['user']
+    user = request.user
     if 'elaboration_id' in request.GET:
         elaboration_id = request.GET.get('elaboration_id')
         try:
@@ -127,7 +130,7 @@ def original_files(request):
 
 @login_required()
 def revised_files(request):
-    user = RequestContext(request)['user']
+    user = request.user
     if 'elaboration_id' in request.GET:
         elaboration_id = request.GET.get('elaboration_id')
         try:

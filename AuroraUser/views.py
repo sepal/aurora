@@ -1,10 +1,10 @@
 from django.views.decorators.http import require_GET, require_POST
 import json
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login as django_login, logout
+from django.contrib.auth import login as django_login, logout, authenticate
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie
 from AuroraUser.models import AuroraUser
 from django.core.urlresolvers import reverse
 from Course.models import Course
@@ -46,6 +46,7 @@ def signin(request, course_short_title=None):
 
     response_data = {'success': True}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 
 def signout(request, course_short_title=None):
@@ -116,14 +117,14 @@ def sso_auth_callback(request):
 @aurora_login_required()
 @ensure_csrf_cookie
 def profile(request, course_short_title):
-    user = RequestContext(request)['user']
+    user = request.user
     selected_course = Course.get_or_raise_404(course_short_title)
     return render_to_response('profile.html', {'user': user, 'course': selected_course}, context_instance=RequestContext(request))
 
 @aurora_login_required()
 def profile_save(request, course_short_title):
     data = {}
-    user = RequestContext(request)['user']
+    user = request.user
     text_limit = 100
     valid_nickname = True
     if 'nickname' in request.POST and request.POST['nickname'] == "":
@@ -180,7 +181,7 @@ def is_valid_email(email, text_limit):
 @DeprecationWarning
 @aurora_login_required()
 def course(request):
-    user = RequestContext(request)['user']
+    user = request.user
     response_data = {}
     if request.method == 'POST':
         try:

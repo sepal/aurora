@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,16 +7,18 @@
   <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.12.1.min.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.3.custom.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}trix/trix.css">
+  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
 
   {% block additional_headers %}
   {% endblock %}
 
 </head>
-<body>
+<body content="text/html">
 
 <script>
 	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
@@ -31,6 +35,7 @@
   <div class="nothing_to_see_move_on" data-username="{{ user.username }}" id="the_username"></div>
   <div class="nothing_to_see_move_on" data-points="{{ sum }}" id="the_points"></div>
   <script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}trix/trix.js"></script>
 
 </body>
 </html>

@@ -10,17 +10,17 @@
 {% for stack_data in stacks %}
   {% if stack_data.course_title == course.title %}
   <div class="points_table">
-  
+
 
       <table>
         <tr>
-          <td colspan=3></i> {{ stack_data.course_title }}</td>
+          <td colspan=3 class="subheader"></i>Challenges</td>
         </tr>
         <tr class="sum">
           <td class="letztezeile sum">
 			  <a href="javascript:tggle('.final_list');void(0);" style="color:black;text-decoration:none">
-				  <i  style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Awarded points so far</a></td>
-          <td class="letztezeile punkte">{{ stack_data.evaluated_points_earned_total }}<span style="color:gray">/{{ stack_data.evaluated_points_available_total }}</span></td>
+				  <i  style="{% if stack in stack_data.course_stacks %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> Awarded points so far</a></td>
+          <td class="letztezeile punkte"><span style="color:gray">{{ stack_data.evaluated_points_available_total }}</span> &nbsp;{{ stack_data.evaluated_points_earned_total }}</td>
         </tr>
 		</table><div class="final_list"  style="display:none"><table>
 				{% for stack in stack_data.course_stacks %} <!-- loop 1: evaluated, valid challenges -->
@@ -57,11 +57,37 @@
             </tr>
           {% endif %}
         {% endfor %}
-        <tr>
-          <td>Slide Special Points</td>
-          <td class="punkte">(inactive)</td>
+	</table></div>
+
+    <table>
+      <tr class="sum">
+          <td class="letztezeile sum">
+              <a href="javascript:tggle('.extra_list');void(0);" style="color:black;text-decoration:none">
+                  <i style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Extra Points</td>
+          <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden;display:none">XX</span></td>
+      </tr>
+    </table>
+    <div class="extra_list" style="display:none">
+      <table>
+        <tr class="pZeile1">
+          <td>Writing Reviews</td>
+          <td class="punkte">{{ stack_data.extra_points_earned_with_reviews }}</td>
         </tr>
-		</table></div><table>
+		{% comment %}
+        <tr class="pZeile1">
+          <td>Comments</td>
+          <td class="punkte">{{ stack_data.extra_points_earned_with_comments }}</td>
+        </tr>
+		{% endcomment %}
+        <tr class="pZeile1">
+          <td>Rating Reviews</td>
+          <td class="punkte">{{ stack_data.extra_points_earned_by_rating_reviews }}</td>
+        </tr>
+      </table>
+    </div>
+
+
+    <table>
 
 		{% if stack_data.submitted_points_available_total == 0 %}
 	        <tr class="sum">
@@ -134,8 +160,7 @@
         <tr class="sum">
           <td  style="color:gray">
 			 <i style="color:rgba(0,0,0,0);" class="fa fa-caret-square-o-down"></i> Optimistic Sum</td>
-          <td class="punkte" style="vertical-align:bottom;color:gray">
-		   {{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total}}<span>/{{ stack_data.evaluated_points_available_total }}</span>
+          <td class="punkte" style="vertical-align:bottom;color:gray"><span style="color:lightgray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;&nbsp;{{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total}}
 		  </td>
 	  	</tr>
 {% comment %}
@@ -166,61 +191,76 @@
         </tr>
 
 	{% if not user.is_staff %}
+          <td colspan=3 class="subheader"></i>Reviews</td>
         <tr>
-		  <script>
-			  	var a = {{ review_evaluation_data.positive_review_evaluations }} ;
-		 	  	var b= {{ review_evaluation_data.default_review_evaluations }} ;
-		  		var c = {{ review_evaluation_data.negative_review_evaluations }} ; 
-				var ar = a==0?0:Math.round(a/(a+b+c)*100); 
-				var br = b==0?0:Math.round(b/(a+b+c)*100);
-				var cr = c==0?0:Math.round(c/(a+b+c)*100);
-		  </script>
-          <td colspan="2" style="font-size:80%;padding-top:1em;">
-            <script>document.write(a+b+c)</script> of your reviews have been rated:
+          <script>
+              var a = {{ review_evaluation_data.helpful_review_evaluations }};
+              var b = {{ review_evaluation_data.good_review_evaluations }};
+              var c = {{ review_evaluation_data.bad_review_evaluations }};
+              var d = {{ review_evaluation_data.negative_review_evaluations }};
+            var ar = a==0?0:Math.round(a/(a+b+c+d)*100);
+            var br = b==0?0:Math.round(b/(a+b+c+d)*100);
+            var cr = c==0?0:Math.round(c/(a+b+c+d)*100);
+            var dr = d==0?0:Math.round(c/(a+b+c+d)*100);
+          </script>
+          <td colspan="2" style="padding-top:1em;">
+            <script>document.write(a+b+c+d)</script> of your reviews have been rated:
           </td>
         </tr>
         <tr>
-          <td style="font-size:80%" colspan="2">
+          <td style="" colspan="2">
             <span
                 style="color:rgba(0,109,0,
-                    {% if review_evaluation_data.positive_review_evaluations == 0 %}
+                    {% if review_evaluation_data.helpful_review_evaluations == 0 %}
                       0.5
                     {% else %}
                       1
                     {% endif %}
                     )">
-              <script>document.write(ar)</script>% 
-              as »Helpful« (&empty; is {{review_evaluations_positive_ratio|floatformat:"0"}}%)
+              <script>document.write(ar)</script>%
+              as »Helpful« (&empty; is {{review_evaluations_helpful_ratio|floatformat:"0"}}%)
             </span>
             <br>
             <span
                 style="color:rgba(0,50,0,
-                    {% if review_evaluation_data.default_review_evaluations == 0 %}
+                    {% if review_evaluation_data.good_review_evaluations == 0 %}
                       0.5
                     {% else %}
                       1
                     {% endif %}
                     )">
-              <script>document.write(br)</script>% 
-              as »Average« (&empty; is {{review_evaluations_default_ratio|floatformat:"0"}}%)
+              <script>document.write(br)</script>%
+              as »Good« (&empty; is {{review_evaluations_good_ratio|floatformat:"0"}}%)
             </span>
             <br>
             <span
                 style="color:rgba(255,0,0,
-                    {% if review_evaluation_data.negative_review_evaluations == 0 %}
+                    {% if review_evaluation_data.bad_review_evaluations == 0 %}
                       0.5
                     {% else %}
                       1
                     {% endif %}
                     )">
-              <script>document.write(cr)</script>% 
-              as »Meaningless or Offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
+              <script>document.write(cr)</script>%
+              as »Bad« (&empty; is {{review_evaluations_bad_ratio|floatformat:"0"}}%)
+            </span>
+            <br>
+            <span
+                style="color:rgba(255,0,0,
+                    {% if review_evaluation_data.negatve_review_evaluations == 0 %}
+                      0.5
+                    {% else %}
+                      1
+                    {% endif %}
+                    )">
+              <script>document.write(cr)</script>%
+              as »Negative« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
             </span>
           </td>
         </tr>
 	{% endif %}
         <tr>
-          <td colspan=2 style="font-size:80%">
+          <td colspan=2 style="">
             You have rated
             {% widthratio review_evaluation_data.review_evaluation_percent 1 100 %}% of all reviews you received.
             <br>
@@ -229,8 +269,23 @@
               extra-point.
             {% endif %}
           </td>
-        </tr>
-      </table>
+	  	</tr>
+		<tr>
+			<td colspan=3>
+
+		  <a href="javascript:tggle('.rev_list');void(0);" style="color:black;text-decoration:none;font-weight:bold">
+			  <i  style="{% if review_evaluation_data.reviews_missing_evaluation %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> {{review_evaluation_data.reviews_missing_evaluation|length}} Unevaluated Review{{review_evaluation_data.reviews_missing_evaluation|pluralize}}</a></td>
+		  </td></table>
+
+		  <div class="rev_list"  style="display:none"><table>
+            {% for review in review_evaluation_data.reviews_missing_evaluation %}
+		        <tr class="pZeile{{ forloop.counter }}"><td>
+					<a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title}}</a><br>
+				</td></tr>
+            {% endfor %}
+			</table>
+		</div>
+
     </div>
   {% endif %}
-{% endfor %} 
+{% endfor %}

@@ -149,7 +149,7 @@ $(function() {
 
 $(function() {
     $("#search_tag").autocomplete({
-        source: "./autocomplete_tag/",
+        source: "/autocomplete_tag/",
         select: function (event, ui) {
             search(undefined, undefined, ui.item.value);
         },

@@ -29,6 +29,8 @@
       <div class="info_title">
            <b>{{ stack.title|safe }}</b>
         </div>
+		<script> window.document.title = "Challenge: {{stack.title|safe}}";</script>
+		
       <div class="info_description">
           {{ stack.description|safe|urlize }}
       </div>

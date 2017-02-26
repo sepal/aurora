@@ -20,13 +20,15 @@ or this one if you are in a development environment:
 
 ### Sherlock
 
-The worker needs to include the sherlock module, which is a external C module inside the a package. In order to use it
+The worker needs to include the sherlock module, which is a external C 
+module inside the a package. In order to use it
 run its installation script in the workers python environment.
 
     cd Plagcheck/hashing/sherlock
     python setup.py install
 
-For the monitor to work you need to run the RabbitMQ message queue server and set USE_DJANGO_BROKER to False. Otherwise
+For the monitor to work you need to run the RabbitMQ message queue server 
+and set USE_DJANGO_BROKER to False. Otherwise
 it should also work with djangos internal database and set USE_DJANGO_BROKER to True.
 
 ### RabbitMQ message queue
@@ -50,7 +52,7 @@ django apps are listed.
 
 ### Worker process
 
-    python manage.py celery worker -E --loglevel=INFO
+    python manage.py celery worker -E --loglevel=INFO --concurrency=1
 
 Only one worker can run at the same time, because:
  - sherlock is not yet multi-thread ready
@@ -62,8 +64,9 @@ Only one worker can run at the same time, because:
 
 It will then be available at http://localhost:5555
 
-Now each elaboration save operation should trigger a plagiarism check on the worker. On the monitor website you can see
-when the worker finishes. The results are displayed on the monitor and within auroras admin page.
+Now each elaboration save operation should trigger a plagiarism check on 
+the worker. On the monitor website you can see when the worker finishes.
+The results are displayed on the monitor and within auroras admin page.
 
 ### Was the installation successful?
 
@@ -83,16 +86,17 @@ Then you could wipe your current database and start from scratch:
 
 If this doesn't work for you, you can use amqp-tools from your package repository:
 
-    amqp-delete-queue -q celery
+    celery purge
 
 ### Importing elaborations from a csv file
 
     python manage.py plagcheck_csv_elaboration_import ELABORATION_CSV_FILE [START_LINE #]
 
-Import all elaborations from ELABORATION_CSV_FILE starting at START_LINE. START_LINE is useful
-when aborting the import and continue with the import at the specified line. START_LINE defaults to 0.
+Import all elaborations from ELABORATION_CSV_FILE starting at START_LINE.
+START_LINE is useful when aborting the import and continue with the 
+import at the specified line. START_LINE defaults to 0.
 
-### Cleaning all elaborations, references, results and suspects except the filtered
+### Cleaning all elaborations, references, results and suspicions except the filtered
 
 This is useful to test a big dataset. Import the csv dataset once, then create filters,
 call this clean script and import the csv dataset again. This way filters will be applied to all

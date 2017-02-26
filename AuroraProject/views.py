@@ -7,6 +7,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
+import json
 
 from AuroraProject.decorators import aurora_login_required
 from Course.models import Course
@@ -18,7 +22,9 @@ from Elaboration.models import Elaboration
 from Evaluation.views import get_points
 from Challenge.models import Challenge
 from Statistics.views import create_stat_data
+from Elaboration.views import get_extra_review_data
 from Faq.models import Faq
+from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 import logging
 
@@ -62,10 +68,26 @@ def course_selection(request):
 @aurora_login_required()
 def home(request, course_short_title=None):
 
-    user = RequestContext(request)['user']
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     course = Course.get_or_raise_404(course_short_title)
     data = get_points(request, user, course)
     data = create_stat_data(course,data)
+    data['user_is_top_reviewer'] = False
+
+    data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
+    data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
+    data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
+    if user.is_top_reviewer(course):
+        # data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
+        # data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
+        # data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
+        data['user_is_top_reviewer'] = True
+        # Expensive function, therefor only execute if user is top reviewer
+        data = get_extra_review_data(user, course, data)
+
+    data['extra_points_earned_with_comments'] = user.extra_points_earned_with_comments(course)
+    data['extra_points_earned_by_rating_reviews'] = user.extra_points_earned_by_rating_reviews(course)
+    data['total_extra_points_earned'] = user.total_extra_points_earned(course)
     faq_list = Faq.get_faqs(course_short_title)
     context = RequestContext(request, {'newsfeed': data['course'], 'faq_list': faq_list})
 
@@ -207,3 +229,45 @@ def result_reviews(request):
     result = get_result_reviews()
 
     return HttpResponse(result, mimetype="text/plain; charset=utf-8")
+
+@csrf_exempt
+@staff_member_required
+def add_tags(request, course_short_title=None):
+    text = request.POST['text']
+    object_id = request.POST['object_id']
+    content_type_id = request.POST['content_type_id']
+
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    taggable_object = content_type.get_object_for_this_type(pk=object_id)
+    taggable_object.add_tags_from_text(text)
+
+    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+
+@csrf_exempt
+@staff_member_required
+def remove_tag(request, course_short_title=None):
+    tag = request.POST['tag']
+    object_id = request.POST['object_id']
+    content_type_id = request.POST['content_type_id']
+
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    taggable_object = content_type.get_object_for_this_type(pk=object_id)
+    taggable_object.remove_tag(tag)
+
+    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+
+
+@login_required()
+@staff_member_required
+def autocomplete_tag(request, course_short_title=None):
+    term = request.GET.get('term', '')
+    content_type_id = request.GET['content_type_id']
+
+    content_type = ContentType.objects.get_for_id(content_type_id)
+    taggable_model = content_type.model_class()
+    tags = taggable_model.tags.all().filter(
+        Q(name__istartswith=term)
+    )
+    names = [tag.name for tag in tags]
+    response_data = json.dumps(names, ensure_ascii=False)
+    return HttpResponse(response_data, content_type='application/json; charset=utf-8')

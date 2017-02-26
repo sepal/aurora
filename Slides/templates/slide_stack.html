@@ -1,0 +1,57 @@
+{% extends "slides_base.html" %}
+{% load thumbnail %}
+{% load comments %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ STATIC_URL }}Comments/comments.css" type="text/css" media="screen"/>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
+{% comments_boilerplate %}
+
+
+<!--title and other chapters-->
+<h1 class="slide-stack-title"><b>{{ slide_stack.title }}:</b> {{slide_stack.slides|length}} Slides
+	<div class="slides_navi">
+		{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
+		{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
+	</div>
+</h1>
+    <div class="also-belong">These slides belong to <a href="../../{{ this_topic.0 }}_{{ this_topic.1 }}">{{this_topic.1}}</a>
+        {% for topic in other_topics %}
+			{% if forloop.first %} and also {% endif %}
+            <a href="../../{{ topic.0 }}_{{ topic.1 }}">{% comment %}{{ topic.0 }}: {% endcomment %}{{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    </div>
+
+<!--listing of slides-->
+<div class="row">
+	<div class="col-lg-7 col-md-12">
+	{% for slide in slide_stack.slides %}
+	    	<div class="card card-block aCard {% if slide.lecturer_comment %}card-with-note{% endif %}" id="SL_{{slide.id}}">
+		        <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="slides" data-width="960" {% if slide.lecturer_comment %} data-footer="{{slide.lecturer_comment}}" {% endif %} data-title="{{slide.title}}">
+		            <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
+		        </a>
+		        <p></p>
+		        <h3 class="slide-title card-title">{{ slide.title }}</h3>
+		    </div>
+	{% endfor %}
+	</div>
+
+<!--Comments-->
+	<div class="lecturer_comments">
+		{% for slide in slide_stack.slides %}
+			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><span class="lecturer_note_title">{{slide.title}}</span> {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</div>{% endif %}
+		{% endfor %}
+	</div>
+	<br>
+	<div class="col-lg-5 col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
+        {% render_multi_comment_list for slide_stack newest_last endless %}
+    </div>
+</div>
+
+
+<script>
+	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+</script>
+{% endblock content %}
