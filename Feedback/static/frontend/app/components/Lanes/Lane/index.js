@@ -4,7 +4,6 @@ import {DropTarget} from 'react-dnd';
 import styles from './style.scss';
 import {IssueListContainer} from '../../../containers';
 import {ItemTypes} from '../../../constants';
-import kanbanStore from '../../../models/kanbanStore';
 
 
 const laneTarget = {

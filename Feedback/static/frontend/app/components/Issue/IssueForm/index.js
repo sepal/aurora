@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './style.scss';
 import {withRouter} from 'react-router';
 
-import IssueModel from '../../../models/issue';
 import {TextInput, TextArea, Select, Submit} from '../../forms';
 import {IssueTypes} from '../../../constants'
 
