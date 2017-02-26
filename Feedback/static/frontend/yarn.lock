@@ -2651,20 +2651,6 @@ minimist@^1.1.3, minimist@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
-mobx-react-devtools@^4.2.5:
-  version "4.2.9"
-  resolved "https://registry.yarnpkg.com/mobx-react-devtools/-/mobx-react-devtools-4.2.9.tgz#46034da90fbcfac3c9cc040fcc3ced72e739518a"
-
-mobx-react@^3.5.5:
-  version "3.5.9"
-  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-3.5.9.tgz#b710299539d58d7af1189b5e86bc0be4198a43c1"
-  dependencies:
-    hoist-non-react-statics "^1.2.0"
-
-mobx@^2.4.4:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-2.6.2.tgz#55722706e485b56d88be2ff1811267b1e6703f5a"
-
 moment@2.x.x, moment@^2.13.0:
   version "2.15.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.15.2.tgz#1bfdedf6a6e345f322fe956d5df5bd08a8ce84dc"
