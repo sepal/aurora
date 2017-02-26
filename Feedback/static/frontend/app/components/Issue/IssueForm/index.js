@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './style.scss';
-import {withRouter} from 'react-router';
+import {Redirect} from 'react-router';
 
 import {TextInput, TextArea, Select, Submit} from '../../forms';
 import {IssueTypes} from '../../../constants'
@@ -8,9 +8,6 @@ import {IssueTypes} from '../../../constants'
 class IssueForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      issue: new IssueModel()
-    };
 
     this.updateChange = this.updateChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -54,6 +51,8 @@ class IssueForm extends React.Component {
 
     if (newState['body_error'] == '' && newState['title_error'] == '') {
       this.props.createIssue(this.state.type, this.state.title, this.state.body);
+      this.props.router.push('/gsi/feedback')
+
     } else {
       this.setState(newState);
     }
@@ -65,4 +64,4 @@ class IssueForm extends React.Component {
   }
 }
 
-export default withRouter(IssueForm);
+export default IssueForm;
