@@ -6,8 +6,7 @@ import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 
 import Feedback from './components/Feedback';
 import Kanban from './components/Kanban';
-import {IssueContainer} from  './containers'
-import {IssueForm} from './components/Issue'
+import {IssueContainer, IssueFormContainer} from  './containers'
 import configureStore from './store';
 
 
@@ -31,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         <Router history={browserHistory}>
           <Route path="/gsi/feedback" component={Feedback}>
             <IndexRoute component={Kanban} />
-            <Route path="/gsi/feedback/issue/add" component={IssueForm} />
+            <Route path="/gsi/feedback/issue/add" component={IssueFormContainer} />
             <Route path="/gsi/feedback/issue/:id" component={IssueContainer} />
           </Route>
         </Router>

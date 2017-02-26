@@ -1,12 +1,21 @@
 @import "../../../styles/config/colors";
 @import "../../../styles/config/layout";
 
-.text_input {
+.text_input, .text_input_error {
   margin: $spacing;
   label {
     display: block;
   }
+
   input {
     margin-top: $spacing--small;
+    padding: $padding--form;
+    border: 1px solid $gray--light;
+  }
+}
+
+.error {
+  input {
+    border-color: red;
   }
 }

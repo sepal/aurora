@@ -57,3 +57,13 @@ export function changeIssue(data, id) {
       .then((issue) => {dispatch(updatedIssue(issue))});
   }
 }
+
+export function createIssue(data) {
+  return function (dispatch) {
+    // todo: dispatch waiting for issue posting.
+    return updatedIssue(data, id)
+      .then((issue) => {
+        // todo: dispatch reroute / adding new issue action.
+      })
+  }
+}

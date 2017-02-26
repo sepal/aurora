@@ -169,6 +169,9 @@
     display: block; }
   .style__select___12K_d select {
     margin-top: 7px; }
+.styles__error___1sPX8 {
+  color: red;
+  margin: 5px 0; }
 .style__submit___3AEKx {
   margin: 14px;
   text-align: right; }
@@ -179,13 +182,22 @@
   .style__text_area___2cwnc textarea {
     border: 1px solid #cbcbcb;
     margin-top: 7px;
+    padding: 3px;
     width: 100%; }
-.style__text_input___2S6cK {
+
+.style__error___2-hY0 textarea {
+  border-color: red; }
+.style__text_input___2S6cK, .style__text_input_error___FjcAE {
   margin: 14px; }
-  .style__text_input___2S6cK label {
+  .style__text_input___2S6cK label, .style__text_input_error___FjcAE label {
     display: block; }
-  .style__text_input___2S6cK input {
-    margin-top: 7px; }
+  .style__text_input___2S6cK input, .style__text_input_error___FjcAE input {
+    margin-top: 7px;
+    padding: 3px;
+    border: 1px solid #cbcbcb; }
+
+.style__error___3ZeTh input {
+  border-color: red; }
 .style__item___3g1r5, .style__empty___lISp5 {
   margin-top: 21px; }
   .style__item___3g1r5:nth-child(1), .style__empty___lISp5:nth-child(1) {

@@ -7,28 +7,27 @@ export default class Select extends InputElement {
   static propTypes = {
     name: React.PropTypes.string,
     label: React.PropTypes.string,
-    options: React.PropTypes.array,
+    options: React.PropTypes.object,
+    value: React.PropTypes.string,
     onChange: React.PropTypes.func
   };
 
   static defaultProps = {
-    onChange: (event) => {}
+    onChange: (event) => {
+    }
   };
 
   render() {
-    let options = [];
-    for (let key in this.props.options) {
-      if (this.props.value == key) {
-        options.push(<option value={key} selected>{this.props.options[key]}</option>);
-      } else {
-        options.push(<option value={key}>{this.props.options[key]}</option>);
-      }
-    }
+    const options = Object.keys(this.props.options).map((key) => (
+      <option key={key} value={key}>{this.props.options[key]}</option>
+    ));
 
     return (
       <div className={styles.select}>
         <label htmlFor={this.props.name}>{this.props.label}:</label>
-        <select name={this.props.name} id={this.props.name} onChange={this.onChange} >
+        <select name={this.props.name} id={this.props.name}
+                defaultValue={this.props.value}
+                onChange={this.onChange}>
           {options}
         </select>
       </div>
