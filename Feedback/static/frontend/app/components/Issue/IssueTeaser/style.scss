@@ -16,6 +16,13 @@
 
   color: $color;
   text-decoration: none;
+
+}
+
+.issueTeaserPreview {
+  @extend .issueTeaser;
+  opacity: 0.5;
+  cursor: wait;
 }
 
 .upvotes, .comments {

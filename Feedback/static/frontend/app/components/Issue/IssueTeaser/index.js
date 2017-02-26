@@ -10,8 +10,8 @@ import {ItemTypes} from '../../../constants';
 const issueSource = {
   beginDrag(props) {
     return {
-      id: props.id,
-      lane: props.lane
+      issue: props,
+      onDrop: props.onDrop,
     }
   },
 
@@ -29,11 +29,13 @@ export default class IssueTeaser extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
+    onDrop: PropTypes.func.isRequired,
     id: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     upvotes: PropTypes.number,
     comments: PropTypes.number,
+    preview: PropTypes.bool
   };
 
   render() {
@@ -50,7 +52,7 @@ export default class IssueTeaser extends Component {
             pathname: `/gsi/feedback/issue/${this.props.id}`,
             state: {returnTo: '/gsi/feedback'}
           }}
-          className={styles.issueTeaser} >
+          className={this.props.preview === true ? styles.issueTeaserPreview : styles.issueTeaser} >
           <IssueLabel type={this.props.type} title={this.props.title} />
           <div className={styles.footer}>
             <span className={styles.upvotes}>

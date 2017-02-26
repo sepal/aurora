@@ -9,6 +9,11 @@
   textarea {
     border: 1px solid $gray--light;
     margin-top: $spacing--small;
+    padding: $padding--form;
     width: 100%;
   }
+}
+
+.error textarea {
+  border-color: red;
 }
