@@ -3,4 +3,5 @@ export default {
   UPDATED_ISSUE: 'update_issue',
   SWITCH_LANE: 'switch_lane',
   UPDATE_ISSUE: 'update_issue',
+  ADD_ISSUE: 'add_issue',
 }

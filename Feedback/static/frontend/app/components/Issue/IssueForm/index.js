@@ -54,7 +54,7 @@ class IssueForm extends React.Component {
     }
 
     if (newState['body_error'] == '' && newState['title_error'] == '') {
-      console.log('save');
+      this.props.createIssue(this.state.type, this.state.title, this.state.body);
     } else {
       this.setState(newState);
     }

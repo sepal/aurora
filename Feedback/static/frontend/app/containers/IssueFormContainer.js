@@ -9,7 +9,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    post: (type, title, body) => {
+    createIssue: (type, title, body) => {
       dispatch(createIssue({type: type, title: title, body: body}))
     }
   }

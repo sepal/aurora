@@ -25,6 +25,8 @@ export default function issues(state = initialState, action) {
         return issue;
       });
       break;
+    case IssueActionTypes.ADD_ISSUE:
+      return [...state, action.payload.issue];
     default:
       return state;
   }

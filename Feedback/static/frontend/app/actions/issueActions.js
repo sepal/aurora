@@ -29,6 +29,15 @@ export function previewIssue(issueID, data) {
   }
 }
 
+export function addIssue(issue) {
+  return {
+    type: IssueActionTypes.ADD_ISSUE,
+    payload: {
+      issue: issue
+    }
+  }
+}
+
 /**
  * Async action that switches the lane for an issue.
  */
@@ -61,9 +70,10 @@ export function changeIssue(data, id) {
 export function createIssue(data) {
   return function (dispatch) {
     // todo: dispatch waiting for issue posting.
-    return updatedIssue(data, id)
+    return updateIssue(data)
       .then((issue) => {
         // todo: dispatch reroute / adding new issue action.
+        dispatch(addIssue(issue));
       })
   }
 }

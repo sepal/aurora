@@ -54408,7 +54408,8 @@
 	  PREVIEW_ISSUE: 'preview_issue',
 	  UPDATED_ISSUE: 'update_issue',
 	  SWITCH_LANE: 'switch_lane',
-	  UPDATE_ISSUE: 'update_issue'
+	  UPDATE_ISSUE: 'update_issue',
+	  ADD_ISSUE: 'add_issue'
 	};
 
 /***/ },
@@ -54887,7 +54888,7 @@
 	      }
 	
 	      if (newState['body_error'] == '' && newState['title_error'] == '') {
-	        console.log('save');
+	        this.props.createIssue(this.state.type, this.state.title, this.state.body);
 	      } else {
 	        this.setState(newState);
 	      }
@@ -58600,6 +58601,7 @@
 	});
 	exports.updatedIssue = updatedIssue;
 	exports.previewIssue = previewIssue;
+	exports.addIssue = addIssue;
 	exports.switchLane = switchLane;
 	exports.changeIssue = changeIssue;
 	exports.createIssue = createIssue;
@@ -58630,6 +58632,15 @@
 	    payload: {
 	      issueID: issueID,
 	      data: data
+	    }
+	  };
+	}
+	
+	function addIssue(issue) {
+	  return {
+	    type: _constants.IssueActionTypes.ADD_ISSUE,
+	    payload: {
+	      issue: issue
 	    }
 	  };
 	}
@@ -58668,8 +58679,9 @@
 	function createIssue(data) {
 	  return function (dispatch) {
 	    // todo: dispatch waiting for issue posting.
-	    return updatedIssue(data, id).then(function (issue) {
+	    return (0, _api.updateIssue)(data).then(function (issue) {
 	      // todo: dispatch reroute / adding new issue action.
+	      dispatch(addIssue(issue));
 	    });
 	  };
 	}
@@ -58790,7 +58802,7 @@
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    post: function post(type, title, body) {
+	    createIssue: function createIssue(type, title, body) {
 	      dispatch((0, _issueActions.createIssue)({ type: type, title: title, body: body }));
 	    }
 	  };
@@ -59404,6 +59416,8 @@
 	
 	var _constants = __webpack_require__(643);
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	var initialState = [];
 	
 	function issues() {
@@ -59438,6 +59452,10 @@
 	          })
 	        };
 	        break;
+	      case _constants.IssueActionTypes.ADD_ISSUE:
+	        return {
+	          v: [].concat(_toConsumableArray(state), [action.payload.issue])
+	        };
 	      default:
 	        return {
 	          v: state
