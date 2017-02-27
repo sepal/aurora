@@ -1,9 +1,9 @@
 $(function() {
 		$('#study_code').focus(function(){
-			$('.correct_maker').toggleClass('versteck',300);
+			$('.correct_maker').removeClass('versteck',300);
 		});
 		$('#study_code').focusout(function(){
-			$('.correct_maker').toggleClass('versteck',300);
+			$('.correct_maker').addClass('versteck',300);
 		});
 		$('.bmi').click(function(){
 			$('#study_code').val('033532');

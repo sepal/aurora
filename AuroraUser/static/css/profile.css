@@ -129,3 +129,12 @@ label {
 .bmi, .bmz, .bsi, .bti {
 	font-size:13px;
 }
+
+
+.bno {
+	font-size:11px;
+	padding-left:0.5em;
+	width:98%;
+	background:lightgray;
+}
+
