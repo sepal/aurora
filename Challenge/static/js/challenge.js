@@ -12,7 +12,7 @@ $(document).ready(function() {
         $('.create_revision').hide(300);
         $('.revision_section').show(300);
     })
-
+});
 
 $(challenge_loaded);
 
@@ -37,7 +37,7 @@ function challenge_loaded() {
         var challenge_id = $('.challenge').attr('id');
         save_elaboration(challenge_id);
     }, autosave_interval);
-});
+}
 
 // #####################
 //  Elaboration
