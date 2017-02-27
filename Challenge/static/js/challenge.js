@@ -13,6 +13,9 @@ $(document).ready(function() {
         $('.revision_section').show(300);
     })
 
+
+$(challenge_loaded);
+
 function challenge_loaded() {	
     // Register event handlers
     if ($('.elaboration_block').length) {
