@@ -47,6 +47,7 @@ function submit_clicked() {
     $('#saved_message').hide();
     $('.submit').hide().finish();
     $('.save_back').hide().finish();
+    $('.hidden_extra_question').slideDown('fast');
     $('.submission_text').slideDown('fast', function() {
         window.scrollBy(0, 500);
     });
