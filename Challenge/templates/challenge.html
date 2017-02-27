@@ -111,12 +111,15 @@
       			<div style="font-size:80%;color:white;background:black"><b>Important note:</b> reload this page after image uploads are finished! Then, you can use »Fig.X« in your text to reference uploaded images. </div><br>
     		</div>
 			{% endif %}
-    <form method="post">
-      <textarea id="original-editor" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
-      <trix-editor class="trix-content" input="original-editor"></trix-editor><br>
-      <label for="extra-review-question">What question would you like to ask the people reviewing your work?</label><br>
-      <input id="extra-review-question" name="extra-review-question" value={{ elaboration.extra_review_question }}><br><br>
-    </form>
+ 		   <form method="post">
+			   <textarea id="original-editor" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+ 			  <trix-editor class="trix-content" input="original-editor"></trix-editor><br>
+			  <div class="hidden_extra_question" hidden>
+				  <label for="extra-review-question">Extra review question: What question would you like to ask the people reviewing your work?</label><br>
+				  <input id="extra-review-question" name="extra-review-question" value={{ elaboration.extra_review_question }}><br><br>
+			  </div>
+		  </form>
+
 		<div class="status_under_MCE">
 	    	<button id="SagB" class="XL save_back">
 	    		save and go back
