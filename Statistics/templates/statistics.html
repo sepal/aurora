@@ -14,7 +14,7 @@
 	    	total tasks started (with/without content)</td><td>{{ started_challenges }}/{{ elaborations }}</td></tr><tr><td>
 		</table><br><br>
 	    <table  width=100%>
-			<tr>
+			<tr>    
 				<td><b>top 25 commenter</b></td>
 				<td align=right>#comm.</td>
 			</tr>
@@ -29,7 +29,7 @@
 	        </tr>
 	    {% endfor %}
 	    </table>
-
+		
 	</td><td  width=33%  valign=top  style="padding:1em">
 	    <b>students with points</b><br>
 	    ≥ 10: <span style="color:#888;"><script>for (i=0;i<Math.round(({{ students_with_more_than_10_points }}+4)/20);i++)document.write('█');</script></span> {{ students_with_more_than_10_points }} <br>
@@ -46,7 +46,7 @@
 					helpful
 				</td>
 				<td width=75 align="right">
-					{{ review_evaluations_helpful }}
+					{{ review_evaluations_positive }}
 				</td><td></td>
 			</tr>
 			<tr>
@@ -70,7 +70,7 @@
 					total
 				</td>
 				<td width=75 align="right">
-					{{ review_evaluations }}
+					{{ review_evaluations }} 
 				</td>
 				<td width=75 align="left">
 					&nbsp;of {{ reviews }}
@@ -168,7 +168,7 @@
 			</tr>
 
 	    </table>
-
+		
 	</td></tr></table>
 	<br><br>
     <table class="points-table" width="600">
@@ -195,6 +195,6 @@
             </td>
         </tr>
     </table>
-
+	
 </div>
 {% endblock %}document.write('►')

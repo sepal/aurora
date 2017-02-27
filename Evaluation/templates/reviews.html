@@ -41,13 +41,6 @@
 
             {% render_review_answers_staff review.id %}
 
-            <div class="question_container">
-              <div>
-                {{ review.elaboration.extra_review_question }}
-                <textarea class="review_answer" readonly>{{ review.extra_review_question_answer }}</textarea>
-              </div>
-            </div>
-
         	<div class="appraisal eval_appraisal">
             	<input type="radio" id="X1{{forloop.counter}}{{review.id}}" name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'A')" {% if review.appraisal == 'A' %} checked {% endif %}/><label for="X1{{forloop.counter}}{{review.id}}" id="X1t">Exceptional</label>
             	<input type="radio" id="X2{{forloop.counter}}{{review.id}}" name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'S')" {% if review.appraisal == 'S' %} checked {% endif %}/><label for="X2{{forloop.counter}}{{review.id}}" id="X2t">All requirements met</label>

@@ -74,28 +74,12 @@ function submit_clicked(event) {
         missing_answer = true
     }
 
-    // Only check extra review questions if it exists
-    if($("#extra-review-question-answer").length > 0) {
-      var extra_review_question_answer =  $("#extra-review-question-answer").val();
-
-      if(extra_review_question_answer.length === 0) {
-        missing_answer = true
-      }
-      else {
-        data['extra_review_question_answer'] = extra_review_question_answer;
-      }
-    }
-
     if (missing_answer) {
         alert("please fill out all answers");
         return;
     }
-
     data['appraisal'] = appraisal.val();
-
-
-
-    ajax_setup();
+    ajax_setup()
     var args = {
         type: "POST",
         url: REVIEW_ANSWER_URL,
@@ -111,3 +95,4 @@ function submit_clicked(event) {
 function review_submitted() {
     window.location.href = STACK_URL + '?id=' + stack_id;
 }
+

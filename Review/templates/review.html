@@ -35,11 +35,10 @@
       </div>
     </div>
 
-    {% render_original_uploads review.elaboration %}
+{% render_original_uploads review.elaboration %}
 
-    <div class="elaboration submitted-content">
-      <textarea id="review-editor" class="trix-content" style="display: none;">{{ review.elaboration.elaboration_text }}</textarea>
-      <trix-editor class="trix-content" input="review-editor"></trix-editor>
+    <div class="elaboration">
+      <textarea id="editor_review">{{ review.elaboration.elaboration_text }}</textarea>
     </div>
 
 	<div class="betweentext"><i class="fa fa-arrow-right"></i> <b>Before you start reviewing, please read
@@ -49,17 +48,6 @@
       {% for question in author_questions %}
         {% include "question.html" %}
       {% endfor %}
-
-      {% if extra_review_question_present %}
-      <div class="extra_review_question_container">
-        <div class="question" id="extra-review-question">
-          {{ review.elaboration.extra_review_question }}
-        </div>
-        <div class="answer" >
-          <textarea id="extra-review-question-answer" name="answer"></textarea>
-        </div>
-      </div>
-      {% endif %}
 
       <h1>&nbsp;<i class="fa fa-info-circle"></i> Only the course team will be able to see this answers to the following questions questions</h1>
       {% for question in staff_questions %}

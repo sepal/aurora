@@ -34,12 +34,6 @@
 		{% for review_data in user_reviews %}
 		<div class="show_review">
 				{% render_review_answers review_data.review_id %}
-        <div class="question_container">
-          <div>
-            {{ review_data.review.elaboration.extra_review_question }}
-            <textarea class="review_answer" readonly>{{ review_data.extra_review_question_answer }}</textarea>
-          </div>
-        </div>
         <div class="show_review_verdict">
 			Your final verdict was <b>
 				{% if review_data.appraisal == "Awesome" %}&raquo;Exceptional&laquo;

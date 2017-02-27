@@ -9,7 +9,6 @@ class Review(models.Model):
     reviewer = models.ForeignKey('AuroraUser.AuroraUser')
     chosen_by = models.CharField(max_length=100, null=True, blank=True, default='random')
     tags = TaggableManager()
-    extra_review_question_answer = models.TextField(default='')
 
     NOTHING = 'N'
     FAIL = 'F'
@@ -56,33 +55,25 @@ class ReviewEvaluation(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey('AuroraUser.AuroraUser')
 
-    HELPFUL= 'P'
-    GOOD = 'D'
-    BAD = 'B'
+    DEFAULT = 'D'
     NEGATIVE = 'N'
-
+    POSITIVE = 'P'
     APPRAISAL_CHOICES = (
-        (HELPFUL, 'Helpful Review'),
-        (GOOD, 'Good Review'),
-        (BAD, 'Bad Review'),
-        (NEGATIVE, 'Negative Review'),
+        (DEFAULT, 'Average Review'),
+        (NEGATIVE, 'Flag this review as meaningless or offensive'),
+        (POSITIVE, 'This review was helpful'),
     )
     appraisal = models.CharField(max_length=1, choices=APPRAISAL_CHOICES, default='D')
 
     @staticmethod
-    def get_helpful_review_evaluations(user, course):
+    def get_default_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
-                                               appraisal=ReviewEvaluation.HELPFUL).count()
+                                               appraisal=ReviewEvaluation.DEFAULT).count()
 
     @staticmethod
-    def get_good_review_evaluations(user, course):
+    def get_positive_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
-                                               appraisal=ReviewEvaluation.GOOD).count()
-
-    @staticmethod
-    def get_bad_review_evaluations(user, course):
-        return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
-                                               appraisal=ReviewEvaluation.BAD).count()
+                                               appraisal=ReviewEvaluation.POSITIVE).count()
 
     @staticmethod
     def get_negative_review_evaluations(user, course):
