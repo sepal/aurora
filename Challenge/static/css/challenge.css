@@ -228,7 +228,7 @@ h1 {
 
 .allowedfruit .stack_action {
 	color:rgba(58,201,88,1)!important;
-	cursor:pointer;	
+	cursor:pointer;
 }
 
 .stack_next {
@@ -422,7 +422,7 @@ h1 {
 }
 
 .all_reviews {
-	
+
 }
 
 .show_review {
@@ -468,11 +468,23 @@ h1 {
 }
 
 .chapter {
-	border-bottom:1px solid silver;
+	border-bottom:1px
 	margin-bottom:5px;
 	width:890px;
 }
 
+.submitted-content > trix-toolbar {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.submitted-content > trix-editor {
+  pointer-events: none !important;
+}
+
+.submitted-content {
+  margin-bottom: 20px;
+}
 
 .lowkey {
 	color:rgba(255,255,255,0.5)!important;

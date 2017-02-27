@@ -32,7 +32,8 @@ class Elaboration(models.Model):
     submission_time = models.DateTimeField(null=True)
     tags = TaggableManager()
     comments = GenericRelation(Comment)
-
+    extra_review_question = models.TextField(default='')
+    
     def __str__(self):
         return str(self.id)
 

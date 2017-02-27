@@ -47,6 +47,11 @@ def create_context_review(request):
         data['questions'] = review_questions
         data['author_questions'] = author_questions
         data['staff_questions'] = staff_questions
+
+        extra_review_question_present = len(review.elaboration.extra_review_question) > 0
+        data['extra_review_question_present'] = extra_review_question_present
+
+
     return data
 
 
@@ -127,6 +132,11 @@ def review_answer(request, course_short_title):
             # send notifications
         review.submission_time = datetime.now()
         review.save()
+
+        if 'extra_review_question_answer' in data:
+            review.extra_review_question_answer = data['extra_review_question_answer']
+            review.elaboration.save()
+
         try:
             if review.appraisal == review.NOTHING:
                 Notification.bad_review(review)

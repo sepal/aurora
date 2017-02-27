@@ -43,6 +43,7 @@ def create_context_myreview(request, course_short_title):
            review_data = {}
            review_data['review_id'] = review.id
            review_data['review'] = review
+           review_data['extra_review_question_answer'] = review.extra_review_question_answer
            review_data['appraisal'] = review.get_appraisal_display()
            evaluation = ReviewEvaluation.objects.filter(review=review)
            review_data['evaluation'] = ''
@@ -186,6 +187,9 @@ def create_context_challenge(request, course_short_title):
         data['nothing'] = elaboration.get_nothing_reviews()
         data['fail'] = elaboration.get_fail_reviews()
 
+        extra_review_question_present = len(elaboration.extra_review_question) > 0
+        data['extra_review_question_present'] = extra_review_question_present
+
         if Evaluation.objects.filter(submission=elaboration).exists():
             data['evaluation'] = Evaluation.objects.filter(submission=elaboration)[0]
 
@@ -237,6 +241,7 @@ def create_context_view_review(request, data):
             review_data['review'] = review
             review_data['appraisal'] = review.get_appraisal_display()
             review_data['questions'] = []
+            review_data['extra_review_question_answer'] = review.extra_review_question_answer
             for review_question in ReviewQuestion.objects.filter(challenge=challenge).order_by("order"):
                 question_data = {}
                 review_answer = ReviewAnswer.objects.filter(review=review, review_question=review_question)[0]
@@ -248,4 +253,5 @@ def create_context_view_review(request, data):
             if evaluation:
                 review_data['evaluation'] = evaluation[0].appraisal
             data['reviews'].append(review_data)
+
     return data
