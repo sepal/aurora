@@ -14,7 +14,7 @@ $(function () {
 
 
 
-$(challenge_loaded) {};
+$(challenge_loaded);
 
 function challenge_loaded() {	
     if ($('.elaboration_block').length) {
