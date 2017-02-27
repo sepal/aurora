@@ -13,6 +13,7 @@ $(document).ready(function() {
         $('.revision_section').show(300);
     })
 
+function challenge_loaded() {	
     // Register event handlers
     if ($('.elaboration_block').length) {
         $('.submit').click(submit_clicked);
