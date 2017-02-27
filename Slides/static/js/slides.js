@@ -16,6 +16,18 @@ $(function() {
 });
 
 $(function() {
+	$('.card-with').mouseover(function () {
+			grayStuff(this.id);
+			$(this).addClass('extraShadow');
+	}).mouseleave(function () {
+	    clearTimeout(myTimeout);
+		$(this).removeClass('extraShadow');
+		$('.lecturer_note').removeClass('grayout');	
+	});
+});
+
+
+$(function() {
 	$('.lecturer_note').mouseover(function () {
 			grayText(this.id);
 			$(this).addClass('extraShadowN');

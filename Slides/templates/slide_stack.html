@@ -27,7 +27,7 @@
 <div class="row">
 	<div class="col-lg-7 col-md-12">
 	{% for slide in slide_stack.slides %}
-	    	<div class="card card-block aCard {% if slide.lecturer_comment %}card-with-note{% endif %}" id="SL_{{slide.id}}">
+	    	<div class="card card-block aCard card-with{% if slide.lecturer_comment %}-note{% endif %}" id="SL_{{slide.id}}">
 		        <a href="{{ slide.image|thumbnail_url:'full-res' }}" data-toggle="lightbox" data-gallery="slides" data-width="960" {% if slide.lecturer_comment %} data-footer="{{slide.lecturer_comment}}" {% endif %} data-title="{{slide.title}}">
 		            <img src="{{ slide.image|thumbnail_url:'preview' }}" class="img-fluid" alt="" />
 		        </a>
