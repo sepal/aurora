@@ -131,11 +131,11 @@ def review_answer(request, course_short_title):
             ReviewAnswer(review=review, review_question=review_question, text=text).save()
             # send notifications
         review.submission_time = datetime.now()
-        review.save()
-
+    
         if 'extra_review_question_answer' in data:
             review.extra_review_question_answer = data['extra_review_question_answer']
-            review.elaboration.save()
+
+        review.save()
 
         try:
             if review.appraisal == review.NOTHING:
