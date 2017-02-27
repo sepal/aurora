@@ -107,7 +107,7 @@
 
 
 .submission_text {
-	background:#40793F;
+	background:#316134;
 	color:white;
 	padding:16px 16px 0px 16px;
 	border-radius:0 0 3px 3px;
@@ -116,10 +116,10 @@
 }
 
 .hidden_extra_question {
-	background:#40793F;
+	background:#316134;
 	color:white;
 	padding:16px 16px 0px 16px;
-	border-bottom:1px dotted rgba(255,255,255,0.5);	
+	border-bottom:1px dashed rgba(255,255,255,0.5);	
 	border-radius:3px 3px 0 0;	
 	box-sizing: border-box;
 }
