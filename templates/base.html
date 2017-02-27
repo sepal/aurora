@@ -11,6 +11,7 @@
   <script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.3.custom.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}trix/trix.css">
   <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
 
   {% block additional_headers %}
@@ -34,6 +35,7 @@
   <div class="nothing_to_see_move_on" data-username="{{ user.username }}" id="the_username"></div>
   <div class="nothing_to_see_move_on" data-points="{{ sum }}" id="the_points"></div>
   <script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}trix/trix.js"></script>
 
 </body>
 </html>

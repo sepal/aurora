@@ -41,17 +41,24 @@
         {% render_original_uploads elaboration %}
 
         {% if elaboration.elaboration_text  %}
-            <textarea id="editor_detail">{{ elaboration.elaboration_text}}</textarea>
-		{% endif %}<br>
-        <br /><h1>Revised Work</h1>
+          <div class="submitted-content">
+              <textarea id="evaluation-editor" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+              <trix-editor class="trix-content" input="evaluation-editor"></trix-editor>
+          </div>
+		    {% endif %}
+
+        <h1>Revised Work</h1>
 
   	   	{% if elaboration.revised_elaboration_changelog %}
-		    <br><B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
+        <B>Changelog: </B>{{elaboration.revised_elaboration_changelog}}<br>
 		    most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
-		{% endif %}
+		    {% endif %}
         {% render_revised_uploads elaboration %}
         {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
-            <textarea id="revised_editor_detail">{{ elaboration.revised_elaboration_text}}</textarea>
+            <div class="submitted-content">
+                <textarea id="evaluation-revised-editor" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text}}</textarea>
+                <trix-editor class="trix-content" input="evaluation-revised-editor"></trix-editor>
+            </div>
         {% endif %}
         <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
             {% include 'tags.html' with tagged_object=elaboration %}

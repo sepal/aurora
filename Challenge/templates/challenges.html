@@ -19,13 +19,13 @@
 	  	<div class= "button"  id="chapterSort" style="display:inline">by chapter</div>&nbsp;
 	  	<div class= "button"  id="dateSort" style="display:inline">reset sort</div>
 	  </div>-->
-		  
+
 	  <div id="detail_area_1" class="grid_1" >
 
 <script>var x=""</script>
 
-    {% for stack in course_stacks|dictsort:"stack.chapter.name" %}
-	
+    {% for stack in course_stacks%}
+
 <script>
 	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-toggle-down half lowkey"></i> Chapter: {{stack.stack.chapter.name}}</div>');}
 	x =  '{{stack.stack.chapter.name}}';
@@ -59,10 +59,10 @@
           <a href="#" class="stack_action button XL" onclick="event.stopPropagation();">{{ stack.stack.active_status_text }} {{ stack.stack.active_status_date|naturaltime }}</a>
         {% endif %}
 			 <div class="stack_next">Status:<b>
-				 {% if not stack.currently_active %} 
-				 	Inactive 
+				 {% if not stack.currently_active %}
+				 	Inactive
 				 {% else %}
-				 	{% if stack.is_started %} 
+				 	{% if stack.is_started %}
 				 		{% if stack.status.status == 7 %}Evaluated with {% else %}{{ stack.status.next }} {% endif %}
 					{% else %}&nbsp;Not started
 					{% endif %}
@@ -70,9 +70,9 @@
 				{% if stack.status.status == 7 %}
 					{% if stack.points != 0 %}
 						{{ stack.points }} Points
-					{% else %} 
+					{% else %}
 						 0 Points
-					{% endif %} 
+					{% endif %}
 				{% endif %}</b><br>
     		{% if stack.submitted %}<div class="submission_time" style="display:inline"> (Handed in {{ stack.submission_time|naturaltime }})</div>{% endif %}
            <br>
@@ -86,7 +86,7 @@
 
 {% else %}
 
-	<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;"> 
+	<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;">
 		Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr möglich.
 	</div>
 
