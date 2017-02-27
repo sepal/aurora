@@ -13,14 +13,11 @@ $(document).ready(function() {
         $('.revision_section').show(300);
     })
 
-<<<<<<< HEAD
 
 $(challenge_loaded);
 
 function challenge_loaded() {	
-=======
     // Register event handlers
->>>>>>> master
     if ($('.elaboration_block').length) {
         $('.submit').click(submit_clicked);
         $('.save_back').click(go_back);
