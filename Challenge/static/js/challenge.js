@@ -11,7 +11,13 @@ $(document).ready(function() {
     $(".create_revision_link").click(function() {
         $('.create_revision').hide(300);
         $('.revision_section').show(300);
-    })
+    });
+	$(".zustimmung").click(function(){
+		if ($('#zustimmungs_box').prop('checked')) {$('.real_submit').removeClass('cannot_submit')} else {$('.real_submit').addClass('cannot_submit')}
+	});
+	$('.see_through').focus(function () {
+		$('.input_position').removeClass('see_through');
+	});
 });
 
 $(challenge_loaded);

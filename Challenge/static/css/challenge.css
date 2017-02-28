@@ -122,7 +122,30 @@
 	border-bottom:1px dashed rgba(255,255,255,0.5);	
 	border-radius:3px 3px 0 0;	
 	box-sizing: border-box;
+	position:relative;
 }
+
+.see_through {
+	background:rgba(0,0,0,0);
+}
+
+.input_position {
+	position:absolute;
+	top:35px;
+	width:900px!important;
+}
+
+
+.gray_text {
+	color:gray;
+	background:white;
+	position:absolute;
+	top:37px;
+	left:18px;
+	width:900px;
+}
+
+
 
 .real_submit{
 	position:relative;
@@ -502,4 +525,20 @@ h1 {
 
 .lowkey {
 	color:rgba(255,255,255,0.5)!important;
+}
+
+.zustimmung {
+	float:left;
+	height:40px;
+}
+
+.zustimmungstext {
+	padding-left:1.5em;
+	width:80%;
+}
+
+.cannot_submit {
+	background:rgba(255,255,255,0.6);
+	color:gray;
+	pointer-events:none;
 }
