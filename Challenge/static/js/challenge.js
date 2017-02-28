@@ -15,6 +15,9 @@ $(document).ready(function() {
 	$(".zustimmung").click(function(){
 		if ($('#zustimmungs_box').prop('checked')) {$('.real_submit').removeClass('cannot_submit')} else {$('.real_submit').addClass('cannot_submit')}
 	});
+	$('.see_through').focus(function () {
+		$('.input_position').removeClass('see_through');
+	});
 });
 
 $(challenge_loaded);
