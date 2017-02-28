@@ -8,7 +8,7 @@ a.btn-next[href=''],a.btn-prev[href='']{
 }
 
 .card-block {
-	padding:0.5em;
+	padding:0.2em;
 	margin-bottom:0;
 	padding-bottom:0;
 	position:relative;
@@ -210,8 +210,19 @@ a.btn-next[href=''],a.btn-prev[href='']{
 	display:none;
 }
 
-.slides_navi {
+.slides_navi_next {
 	float:right;
+}
+
+.slides_navi_prev {
+	float:left;
+}
+
+.slides_origin_center {
+	
+	width:100%;
+	float:left;
+	text-align:center;
 }
 
 .lecturer_comments {
