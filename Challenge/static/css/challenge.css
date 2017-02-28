@@ -503,3 +503,19 @@ h1 {
 .lowkey {
 	color:rgba(255,255,255,0.5)!important;
 }
+
+.zustimmung {
+	float:left;
+	height:40px;
+}
+
+.zustimmungstext {
+	padding-left:1.5em;
+	width:80%;
+}
+
+.cannot_submit {
+	background:rgba(255,255,255,0.6);
+	color:gray;
+	pointer-events:none;
+}

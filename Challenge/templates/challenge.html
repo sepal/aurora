@@ -135,13 +135,14 @@
         {% endif %}
         </button>
         <div class="submission_text" hidden>
-          <div>
+          <div class="zustimmung"><input id="zustimmungs_box" type="checkbox"></div>
+		  <div class="zustimmungstext">
             I certify that the work presented here is, to the best of my knowledge and belief, original and the result of
             my own investigations and creation, except as acknowledged, and has not been submitted, either in part or whole,
             for a degree at this or any other University.
           </div>
           <div>
-            <button class="real_submit XL R" id="{{ challenge.id }}">Submit work</button>
+            <button class="real_submit XL R cannot_submit" id="{{ challenge.id }}">Submit work</button>
           </div>
 
         </div>
