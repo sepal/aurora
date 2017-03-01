@@ -78,10 +78,7 @@ function submit_clicked(event) {
     if($("#extra-review-question-answer").length > 0) {
       var extra_review_question_answer =  $("#extra-review-question-answer").val();
 
-      if(extra_review_question_answer.length === 0) {
-        missing_answer = true
-      }
-      else {
+      if(extra_review_question_answer.length > 0) {
         data['extra_review_question_answer'] = extra_review_question_answer;
       }
     }
@@ -92,8 +89,6 @@ function submit_clicked(event) {
     }
 
     data['appraisal'] = appraisal.val();
-
-
 
     ajax_setup();
     var args = {
