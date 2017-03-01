@@ -1,6 +1,7 @@
 // #####################
 //  Setup
 // #####################
+var trixDings;
 
 $(document).ready(function() {
     $('#challenges-li').addClass('uRhere');
@@ -18,9 +19,17 @@ $(document).ready(function() {
 	$('.see_through').focus(function () {
 		$('.input_position').removeClass('see_through');
 	});
+	trixDings = document.querySelector("trix-editor");
+	document.addEventListener('trix-change',countChars);
+	document.addEventListener('trix-initialize',countChars);
 });
 
 $(challenge_loaded);
+
+function countChars() {
+	var x = trixDings.editor.getDocument().toString();
+	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+}
 
 function challenge_loaded() {	
     // Register event handlers

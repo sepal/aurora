@@ -542,3 +542,17 @@ h1 {
 	color:gray;
 	pointer-events:none;
 }
+
+.new_word_count {
+	position:absolute;
+	right:3px;
+	bottom:20px;
+}
+
+form {
+	position:relative;
+}
+
+.new_word_count::before {
+	content:'Word count: ';
+}
