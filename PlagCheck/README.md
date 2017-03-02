@@ -17,13 +17,21 @@ We use celery as our background task processor. Flower is a monitor, to watch th
 
 To let the Aurora frontend communicate to the background task processor a RabbitMQ message queue is used.
 
-Since we produce quite much data, this system is hardly depending on the performance of the database. Therefor
-everything read or written for the plagcheck tasks, is separated from the main database. (Not on a debugging system
- if performance is not required)
-
 ## Installation
 
 The following steps need to run all in the same python environment (virtualenv).
+
+### Database
+
+Since we produce quite much data, this system is hardly depending on the performance of the database. Therefore
+everything read or written for the plagcheck tasks, is separated from the main database. (Not on a debugging system
+ if performance is not required).
+
+To prepare the separate database run the following:
+
+    python manage.py migrate --database=plagcheck
+
+There is a bug which produces new migrations even thou no new migrations are in place.
 
 ### Sherlock
 
