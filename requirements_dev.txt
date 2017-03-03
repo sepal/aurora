@@ -8,14 +8,10 @@ django-taggit==0.19.1
 django-suit==0.2.18
 
 # needed for plagcheck worker side
-celery==3.1.19
-flower==0.8.3
-
-# plagcheck at aurora side
-django-celery==3.1.17
-
-# data driven tests
-ddt
+django-celery==3.2.1
+celery==4.0.2
+flower==0.9.1
+ddt==1.1.1
 
 #diskurs
 django-markup==1.0
