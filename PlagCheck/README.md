@@ -27,6 +27,12 @@ Since we produce quite much data, this system is hardly depending on the perform
 everything read or written for the plagcheck tasks, is separated from the main database. (Not on a debugging system
  if performance is not required).
 
+The plagcheck database stores the hashes, results of the checks, found suspicions and document metadata. You need this
+data to check against already hashed documents. This means that if you're going to create a fresh installation of
+Aurora and want the new documents checked against old ones, you need to keep the old plagcheck database for the
+new installation.
+If you don't want the database to grow infinitely, you could delete entries older than e.g. 5 years.
+
 To prepare the separate database run the following:
 
     python manage.py migrate --database=plagcheck
@@ -72,7 +78,27 @@ Only one worker can run at the same time, because:
 
 For the monitor to work you need to run the RabbitMQ message queue server
 and set USE_DJANGO_BROKER to False. Otherwise
-it should also work with djangos internal database and set USE_DJANGO_BROKER to True.
+it should also work with Djangos internal database and set USE_DJANGO_BROKER to True.
+
+
+### Management tasks
+
+PlagCheck offers some scripts to handle different reoccurring tasks. Those programs are accessible via the Django
+management command interface, which is simply:
+
+    # python manage.py plagcheck_{COMMAND}
+    # e.g.:
+    python manage.py plagcheck_check_unverified
+
+Each command has its own help text included. Just call the command with the help parameter to get to know what the
+ command actually does:
+
+    # python manage.py plagcheck_{COMMAND} -h
+    # e.g.:
+    python manage.py plagcheck_csv_elaboration_import -h
+
+Since the help text is inside the code, it is not vise to list and describe them here. But you can use your consoles
+auto-completion functionality to find commands starting with 'plagcheck_'.
 
 ### Was the installation successful?
 

@@ -7,7 +7,7 @@ from sys import stdout
 
 
 class Command(BaseCommand):
-    help = 'Populates database with demo data'
+    help = 'Import data from a csv file into the plagcheck database and trigger a check of all unchecked documents.'
 
     def add_arguments(self, parser):
         parser.add_argument('csv', type=str)

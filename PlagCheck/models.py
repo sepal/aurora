@@ -260,7 +260,7 @@ class Reference(models.Model):
         with suspect_doc_id has to be stored into the DB before calling this function.
 
         :param suspect_doc_id: Document to check against.
-        :return: List of Tuples (similar_doc_id, # similar hashes)
+        :return: List of Tuples (similar_doc_id, #similar hashes)
         """
         cursor = connections[PlagCheckSettings.database].cursor()
 
