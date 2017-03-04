@@ -5,6 +5,7 @@ from django.contrib import admin
 from AuroraUser.models import AuroraUser
 from Course.models import Course
 
+
 class Lane(models.Model):
     """Lane is a model one column in the feedback kanban."""
     name = models.CharField(max_length=100, unique=True)
@@ -16,6 +17,7 @@ class Lane(models.Model):
 
     def __unicode__(self):
         return self.__str__()
+
 
 class Issue(models.Model):
     """Issue is the content model for the feedback system."""

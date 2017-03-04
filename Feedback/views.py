@@ -15,12 +15,20 @@ def index(request, course_short_title):
     # Pass some values directly as js variables, so that the client doesn't
     # has to make additional requests.
     course = Course.get_or_raise_404(course_short_title)
-    lanes = Lane.objects.all().filter(hidden=False).order_by('order')
-    lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name, 'issues': []}, lanes))
+    lanes = None
+    if request.user.is_staff:
+        lanes = Lane.objects.all().order_by('order')
+    else:
+        lanes = Lane.objects.filter(hidden=False).order_by('order')
 
+    lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name, 'issues': []}, lanes))
     issues = Issue.objects.all()
 
-    issues = list(map(lambda issue: issue.serializable, issues))
+    issue_data = []
+
+    for issue in issues:
+        if issue.type != 'security' or issue.author == request.user or request.user.is_staff:
+            issue_data.append(issue.serializable)
 
     data = {
         # 'course': {
@@ -28,7 +36,7 @@ def index(request, course_short_title):
         #     'title': course.title,
         # },
         'lanes': lanes,
-        'issues': issues
+        'issues': issue_data
     }
 
     return render(
