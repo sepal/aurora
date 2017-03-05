@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import styles from './style.scss';
 
 class IssueBody extends React.Component {
@@ -58,7 +59,11 @@ class IssueBody extends React.Component {
 
     return (
       <div className={this.props.className}>
-        <div>{this.props.body}</div>
+        <div className={styles.content}>
+          <ReactMarkdown source={this.props.body}
+                         disallowedTypes={['HtmlInline', 'HtmlBlock']}
+                         escapeHtml={true} />
+        </div>
         {this.renderEditButton()}
       </div>
     );
@@ -66,7 +71,7 @@ class IssueBody extends React.Component {
 
   renderEditButton() {
     if (!this.props.editable) {
-      return ;
+      return;
     }
     return (
       <div className={styles.button}>

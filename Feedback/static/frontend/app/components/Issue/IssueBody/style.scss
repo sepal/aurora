@@ -18,3 +18,48 @@
 .button {
   margin-top: 10px;
 }
+
+.content {
+  strong {
+    font-weight: bold;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  li {
+    margin-left: 1rem;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  pre {
+    margin: 0.75rem 0;
+    padding: 0.25rem;
+    background: #f0ffD0;
+    border: 1px solid #E0EEC0;
+    box-shadow: inset 0px 0px 3px 0px #E0EEC0;
+  }
+
+  p, ul, ol, h1, h2 {
+    padding: 0.5rem 0;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+}
