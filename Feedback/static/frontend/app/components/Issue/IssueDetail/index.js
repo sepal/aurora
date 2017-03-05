@@ -19,6 +19,8 @@ export default class IssueDetail extends React.Component {
   render() {
     const upvote_label = this.props.issue.upvotes == 1 ? "upvote" : "upvotes";
     const date = Moment(this.props.issue.post_date).calendar();
+    const canDate = this.props.isAuthor || this.props.isStaff;
+
     return (
       <div className={styles.issueDetail}>
         <div>
@@ -30,7 +32,7 @@ export default class IssueDetail extends React.Component {
               type={this.props.issue.type}
               title={this.props.issue.title}
               onChange={this.onLabelTypeChange}
-              editable={true} />
+              editable={canDate} />
           </div>
           <div className={styles.subtitle}>
             <span>by {this.props.issue.author.name}</span>&nbsp;
@@ -40,7 +42,7 @@ export default class IssueDetail extends React.Component {
         </div>
         <div className={styles.content}>
           <IssueBody className={styles.body} body={this.props.issue.body}
-                     onChange={this.onBodyChange} />
+                     onChange={this.onBodyChange} editable={canDate} />
           <ul className={styles.actions}>
             <li>
               <button><i className="fa fa-thumbs-up"></i> upvote</button>

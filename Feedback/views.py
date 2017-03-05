@@ -42,6 +42,7 @@ def index(request, course_short_title):
         'issues': issue_data,
         'current_user': {
             'is_staff': request.user.is_staff,
+            'id': request.user.id,
         }
     }
 

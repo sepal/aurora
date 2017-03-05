@@ -5,12 +5,14 @@ class IssueBody extends React.Component {
   static propTypes = {
     body: React.PropTypes.string,
     className: React.PropTypes.string,
+    editable: React.PropTypes.bool,
     onChange: React.PropTypes.func
   };
 
   static defaultProps = {
     body: '',
     className: '',
+    editable: false,
     onChange: (body) => {
     }
   };
@@ -57,16 +59,29 @@ class IssueBody extends React.Component {
     return (
       <div className={this.props.className}>
         <div>{this.props.body}</div>
-        <div className={styles.button}>
-          <button onClick={this.enableEdit}><i className="fa fa-pencil"></i> Edit</button>
-        </div>
+        {this.renderEditButton()}
       </div>
     );
   }
 
+  renderEditButton() {
+    if (!this.props.editable) {
+      return ;
+    }
+    return (
+      <div className={styles.button}>
+        <button onClick={this.enableEdit}><i className="fa fa-pencil"></i>
+          Edit
+        </button>
+      </div>
+    )
+  }
+
   enableEdit() {
-    const newState = Object.assign(this.state, {editing: true});
-    this.setState(newState);
+    if (this.props.editable) {
+      const newState = Object.assign(this.state, {editing: true});
+      this.setState(newState);
+    }
   }
 
   disableEdit() {
@@ -75,8 +90,10 @@ class IssueBody extends React.Component {
   }
 
   save() {
-    this.props.onChange(this.state.body);
-    this.disableEdit();
+    if (this.props.editable) {
+      this.props.onChange(this.state.body);
+      this.disableEdit();
+    }
   }
 
   cancel() {

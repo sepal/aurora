@@ -8,7 +8,9 @@ const mapStateToProps = (state, ownProps) => {
   })[0];
 
   return {
-    issue: issue
+    issue: issue,
+    isStaff: state.current_user.is_staff,
+    isAuthor: issue.author.id == state.current_user.id
   };
 
 };

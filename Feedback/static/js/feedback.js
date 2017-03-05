@@ -53909,7 +53909,9 @@
 	  })[0];
 	
 	  return {
-	    issue: issue
+	    issue: issue,
+	    isStaff: state.current_user.is_staff,
+	    isAuthor: issue.author.id == state.current_user.id
 	  };
 	};
 	
@@ -54035,6 +54037,8 @@
 	    value: function render() {
 	      var upvote_label = this.props.issue.upvotes == 1 ? "upvote" : "upvotes";
 	      var date = (0, _moment2.default)(this.props.issue.post_date).calendar();
+	      var canDate = this.props.isAuthor || this.props.isStaff;
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: _style2.default.issueDetail },
@@ -54053,7 +54057,7 @@
 	              type: this.props.issue.type,
 	              title: this.props.issue.title,
 	              onChange: this.onLabelTypeChange,
-	              editable: true })
+	              editable: canDate })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -54085,7 +54089,7 @@
 	          'div',
 	          { className: _style2.default.content },
 	          _react2.default.createElement(_IssueBody2.default, { className: _style2.default.body, body: this.props.issue.body,
-	            onChange: this.onBodyChange }),
+	            onChange: this.onBodyChange, editable: canDate }),
 	          _react2.default.createElement(
 	            'ul',
 	            { className: _style2.default.actions },
@@ -54573,23 +54577,33 @@
 	          null,
 	          this.props.body
 	        ),
+	        this.renderEditButton()
+	      );
+	    }
+	  }, {
+	    key: 'renderEditButton',
+	    value: function renderEditButton() {
+	      if (!this.props.editable) {
+	        return;
+	      }
+	      return _react2.default.createElement(
+	        'div',
+	        { className: _style2.default.button },
 	        _react2.default.createElement(
-	          'div',
-	          { className: _style2.default.button },
-	          _react2.default.createElement(
-	            'button',
-	            { onClick: this.enableEdit },
-	            _react2.default.createElement('i', { className: 'fa fa-pencil' }),
-	            ' Edit'
-	          )
+	          'button',
+	          { onClick: this.enableEdit },
+	          _react2.default.createElement('i', { className: 'fa fa-pencil' }),
+	          'Edit'
 	        )
 	      );
 	    }
 	  }, {
 	    key: 'enableEdit',
 	    value: function enableEdit() {
-	      var newState = Object.assign(this.state, { editing: true });
-	      this.setState(newState);
+	      if (this.props.editable) {
+	        var newState = Object.assign(this.state, { editing: true });
+	        this.setState(newState);
+	      }
 	    }
 	  }, {
 	    key: 'disableEdit',
@@ -54600,8 +54614,10 @@
 	  }, {
 	    key: 'save',
 	    value: function save() {
-	      this.props.onChange(this.state.body);
-	      this.disableEdit();
+	      if (this.props.editable) {
+	        this.props.onChange(this.state.body);
+	        this.disableEdit();
+	      }
 	    }
 	  }, {
 	    key: 'cancel',
@@ -54634,10 +54650,12 @@
 	}(_react2.default.Component), _class.propTypes = {
 	  body: _react2.default.PropTypes.string,
 	  className: _react2.default.PropTypes.string,
+	  editable: _react2.default.PropTypes.bool,
 	  onChange: _react2.default.PropTypes.func
 	}, _class.defaultProps = {
 	  body: '',
 	  className: '',
+	  editable: false,
 	  onChange: function onChange(body) {}
 	}, _temp);
 	exports.default = IssueBody;
