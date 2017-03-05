@@ -8,7 +8,7 @@ const parts = require('./lib/parts');
 // folders.
 const PATHS = {
   app: path.join(__dirname, 'app'),
-  build: path.join(__dirname, '../'),
+  build: path.join(__dirname, '../static'),
   js: 'js',
   css: 'css'
 };
