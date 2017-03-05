@@ -13,20 +13,20 @@ class GsiStructure:
         inner list is the category. All following elements in a inner list represent the topics allocated to the category
         """
         structure = []
-        # for slide_stack in SlideStack.objects.filter(course=Course.objects.get(short_title='gsi')):
-        #     for tup in slide_stack.list_category_tuples:
-        #         try:
-        #             inner_list = next(i for i in structure if i[0].strip().lower() == tup[0].strip().lower())
-        #
-        #             category = inner_list.pop(0)
-        #             try:
-        #                 next(it for it in inner_list if it.strip().lower() == tup[1].strip().lower())
-        #             except StopIteration:
-        #                 inner_list.append(tup[1])
-        #             inner_list.insert(0, category)
-        #
-        #         except StopIteration:
-        #             structure.append([tup[0].strip(), tup[1].strip()])
+        for slide_stack in SlideStack.objects.filter(course=Course.objects.get(short_title='gsi')):
+            for tup in slide_stack.list_category_tuples:
+                try:
+                    inner_list = next(i for i in structure if i[0].strip().lower() == tup[0].strip().lower())
+
+                    category = inner_list.pop(0)
+                    try:
+                        next(it for it in inner_list if it.strip().lower() == tup[1].strip().lower())
+                    except StopIteration:
+                        inner_list.append(tup[1])
+                    inner_list.insert(0, category)
+
+                except StopIteration:
+                    structure.append([tup[0].strip(), tup[1].strip()])
 
         return structure
 
@@ -110,7 +110,7 @@ class HciStructure:
 
         return structure
 
-    # structure = create_structure.__func__()
+    structure = create_structure.__func__()
 
     @staticmethod
     def redefine_structure():
@@ -131,23 +131,23 @@ class HciDataStructure:
         """
         data_structure = []
 
-        # for lst in HciStructure.structure:
-        #     category = lst.pop(0)
-        #
-        #     topics = []
-        #     for topic in lst:
-        #         category_topic = category + '_' + topic
-        #         slide_stacks = []
-        #         for ss in SlideStack.objects.all():
-        #             if category_topic.lower() in (x.lower() for x in ss.list_categories):
-        #                 slide_stacks.append(ss)
-        #
-        #         topics.append((topic, slide_stacks))
-        #
-        #     data_structure.append((category, topics))
-        #
-        # HciStructure.redefine_structure()
-        # return data_structure
+        for lst in HciStructure.structure:
+            category = lst.pop(0)
+
+            topics = []
+            for topic in lst:
+                category_topic = category + '_' + topic
+                slide_stacks = []
+                for ss in SlideStack.objects.all():
+                    if category_topic.lower() in (x.lower() for x in ss.list_categories):
+                        slide_stacks.append(ss)
+
+                topics.append((topic, slide_stacks))
+
+            data_structure.append((category, topics))
+
+        HciStructure.redefine_structure()
+        return data_structure
 
     data_structure = create_data_structure.__func__()
 
