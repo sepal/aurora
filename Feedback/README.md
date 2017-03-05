@@ -1,6 +1,6 @@
 # Aurora feedback system
 
-This app provides a page, where students can give feedback for 
+This app provides a page, where students can give feedback for the
 aurora system and the staff can manage those issues on a kanban like 
 system.
 
@@ -9,12 +9,12 @@ and some additional frontend tools, to simulate trello as best as
 possible, while keeping a maintainable code base.
 
 The code is split into a generic backend code in django and a client 
-side code in `static/frontend`.
+side code in `./frontend`.
 
 ## Requirements
 
 You will [nodejs](http://nodejs.org/) > 4 and I also suggest upgrading
-npm:
+npm or using [yarn](http://yarnpkg.com/) (preferred).:
 ```
 npm update -g npm
 ```
@@ -31,8 +31,9 @@ npm install
 
 The frontend code is bundled into components, which means each module is 
 bundled into a GUI component. A component contains at least one 
-(React Component)[] and can be a stateless single function or a class.
-It can optionally have a styling which is scoped to that component only.
+(React Component)[https://facebook.github.io/react/docs/react-component.html]
+and can be a stateless single function or a class. It can optionally
+have a styling which is scoped to that component only.
 
 ### New components
 You can generate new components using the command
@@ -44,11 +45,13 @@ and then places it into `./app/components`.
 
 ### Styling components
 
-The stylesheet is generated using [PostCSS](https://github.com/postcss/postcss), 
-[React-CSS-Modules](https://github.com/gajus/react-css-modules) and [SASS](http://sass-lang.com/).
+The stylesheet is generated using
+[PostCSS](https://github.com/postcss/postcss),
+[React-CSS-Modules](https://github.com/gajus/react-css-modules) and
+[SASS](http://sass-lang.com/).
 
 This allows classes to be bound to the the single UI component. This 
-means that for example a the css class `.lane` in `app/components/Lane`
+means that for example the css class `.lane` in `app/components/Lane`
 is only applied main div of the lane component.
 
 Additionally there are also some global style settings in the folder
