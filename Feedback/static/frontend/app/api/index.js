@@ -80,3 +80,16 @@ export function updateIssue(data, id = undefined) {
     }
   });
 }
+
+export function getComments(issueID) {
+  const url = `/gsi/feedback/comments/${issueID}`;
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: url,
+    }).done((resp) => {
+      resolve(resp);
+    }).fail((err) => {
+      reject(err);
+    });
+  });
+}

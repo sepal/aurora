@@ -70,8 +70,8 @@ class IssueBody extends React.Component {
     }
     return (
       <div className={styles.button}>
-        <button onClick={this.enableEdit}><i className="fa fa-pencil"></i>
-          Edit
+        <button onClick={this.enableEdit}>
+          <i className="fa fa-pencil"></i> Edit
         </button>
       </div>
     )

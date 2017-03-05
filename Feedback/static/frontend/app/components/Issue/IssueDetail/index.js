@@ -6,7 +6,7 @@ import IssueLabel from '../IssueLabel'
 import IssueIcon from '../IssueIcon';
 import IssueBody from '../IssueBody';
 
-import {CommentList} from '../../Comments';
+import Comments from '../../Comments';
 
 export default class IssueDetail extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ export default class IssueDetail extends React.Component {
             </li>
           </ul>
         </div>
-        {this.renderImages()}
+        <Comments issueID={this.props.issue.id} />
       </div>
     );
   }

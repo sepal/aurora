@@ -130,3 +130,19 @@ def api_new_issue(request, course_short_title):
         return JsonResponse(issue.serializable)
 
     return JsonResponse([])
+
+
+@login_required
+def issue_comments(request, course_short_title, issue_id):
+    issue = Issue.objects.get(pk=issue_id)
+    # Only the staff and the author are able to see issues of the type
+    # security.
+    if issue.type == 'security' \
+            and issue.author != request.user and not request.user.is_staff:
+        return HttpResponseForbidden()
+
+    context = {
+        'issue': issue,
+        'course': Course.get_or_raise_404(course_short_title)
+    }
+    return render(request, "issue_comments.html", context)
