@@ -8,6 +8,10 @@ import {ItemTypes} from '../../../constants';
 
 
 const issueSource = {
+  canDrag(props) {
+    return props.canDrag;
+  },
+
   beginDrag(props) {
     return {
       issue: props,
@@ -33,6 +37,7 @@ export default class IssueTeaser extends Component {
     id: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    canDrag: PropTypes.bool,
     upvotes: PropTypes.number,
     comments: PropTypes.number,
     preview: PropTypes.bool

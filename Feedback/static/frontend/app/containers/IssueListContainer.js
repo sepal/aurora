@@ -8,7 +8,8 @@ const mapStateToProps = (state, ownProps) => {
   });
 
   return {
-    issues: issues
+    issues: issues,
+    isStaff: state.current_user.is_staff
   }
 };
 

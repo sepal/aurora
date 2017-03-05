@@ -3,7 +3,8 @@ import {LaneList} from '../components/Lanes'
 
 const mapStateToProps = (state) => {
   return {
-    lanes: state.lanes
+    lanes: state.lanes,
+    isStaff: state.current_user.isStaff
   }
 };
 

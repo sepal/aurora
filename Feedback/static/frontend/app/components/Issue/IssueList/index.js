@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './style.scss';
 import IssueTeaser from '../IssueTeaser';
 
-const IssueList = ({issues, onDrop}) => {
+const IssueList = ({issues, isStaff, onDrop}) => {
   // Build up the issues teasers.
   const issueTeasers = issues.map(issue => {
     let number_comments = 0;
@@ -22,7 +22,8 @@ const IssueList = ({issues, onDrop}) => {
         <IssueTeaser title={issue.title} upvotes={upvotes}
                      comments={number_comments} id={issue.id} type={issue.type}
                      lane={issue.lane.id} onDrop={onDrop}
-                     preview={issue.preview !== undefined ? issue.preview : false} />
+                     preview={issue.preview !== undefined ? issue.preview : false}
+                     canDrag={isStaff} />
       </li>
     );
   });

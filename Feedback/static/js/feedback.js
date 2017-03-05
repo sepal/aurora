@@ -55376,6 +55376,7 @@
 	
 	var IssueList = function IssueList(_ref) {
 	  var issues = _ref.issues,
+	      isStaff = _ref.isStaff,
 	      onDrop = _ref.onDrop;
 	
 	  // Build up the issues teasers.
@@ -55397,7 +55398,8 @@
 	      _react2.default.createElement(_IssueTeaser2.default, { title: issue.title, upvotes: upvotes,
 	        comments: number_comments, id: issue.id, type: issue.type,
 	        lane: issue.lane.id, onDrop: onDrop,
-	        preview: issue.preview !== undefined ? issue.preview : false })
+	        preview: issue.preview !== undefined ? issue.preview : false,
+	        canDrag: isStaff })
 	    );
 	  });
 	
@@ -55466,6 +55468,9 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var issueSource = {
+	  canDrag: function canDrag(props) {
+	    return props.canDrag;
+	  },
 	  beginDrag: function beginDrag(props) {
 	    return {
 	      issue: props,
@@ -55550,6 +55555,7 @@
 	  id: _react.PropTypes.number.isRequired,
 	  type: _react.PropTypes.string.isRequired,
 	  title: _react.PropTypes.string.isRequired,
+	  canDrag: _react.PropTypes.bool,
 	  upvotes: _react.PropTypes.number,
 	  comments: _react.PropTypes.number,
 	  preview: _react.PropTypes.bool
@@ -55856,7 +55862,8 @@
 	  });
 	
 	  return {
-	    issues: issues
+	    issues: issues,
+	    isStaff: state.current_user.is_staff
 	  };
 	};
 	
@@ -55888,7 +55895,8 @@
 	
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    lanes: state.lanes
+	    lanes: state.lanes,
+	    isStaff: state.current_user.isStaff
 	  };
 	};
 	
@@ -56155,11 +56163,16 @@
 	
 	var _lanes2 = _interopRequireDefault(_lanes);
 	
+	var _current_user = __webpack_require__(691);
+	
+	var _current_user2 = _interopRequireDefault(_current_user);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _redux.combineReducers)({
 	  lanes: _lanes2.default,
-	  issues: _issues2.default
+	  issues: _issues2.default,
+	  current_user: _current_user2.default
 	});
 
 /***/ },
@@ -56252,6 +56265,31 @@
 	  switch (action.type) {
 	    case _constants.LaneActionTypes.ADD_LANE:
 	      return [].concat(_toConsumableArray(state), [action.payload]);
+	    default:
+	      return state;
+	  }
+	}
+
+/***/ },
+/* 691 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = current_user;
+	
+	var initialState = {
+	  isStaff: false
+	};
+	
+	function current_user() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+	
+	  switch (action.type) {
 	    default:
 	      return state;
 	  }

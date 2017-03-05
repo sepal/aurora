@@ -39,7 +39,10 @@ def index(request, course_short_title):
         #     'title': course.title,
         # },
         'lanes': lanes,
-        'issues': issue_data
+        'issues': issue_data,
+        'current_user': {
+            'is_staff': request.user.is_staff,
+        }
     }
 
     return render(
@@ -72,17 +75,17 @@ def api_issue(request, course_short_title, issue_id):
                 or issue.author == request.user or request.user.is_staff:
             return JsonResponse(issue.serializable)
         else:
-            raise HttpResponseForbidden
+            return HttpResponseForbidden()
     elif request.method == 'PUT':
         # Only staff or the owner are allowed to edit issues.
         if issue.author != request.user and not request.user.is_staff:
-            raise HttpResponseForbidden
+            return HttpResponseForbidden()
         data = json.loads(request.body.decode('utf-8'))
 
         if 'lane' in data and issue.lane.pk != data['lane']:
             # Only staff is allowed change the issues lane.
             if not request.user.is_staff:
-                raise HttpResponseForbidden
+                return HttpResponseForbidden()
             new_lane = Lane.objects.get(pk=data['lane'])
             issue.lane = new_lane
 
@@ -111,7 +114,7 @@ def api_new_issue(request, course_short_title):
         user = RequestContext(request)['user']
 
         if 'title' not in data or 'type' not in data or 'body' not in data:
-            raise HttpResponseBadRequest
+            return HttpResponseForbidden()
 
         issue = Issue(
             author=user,
