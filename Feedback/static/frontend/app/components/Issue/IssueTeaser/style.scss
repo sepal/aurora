@@ -38,3 +38,13 @@
 .type {
   color: $gray;
 }
+
+.owned {
+  @extend .issueTeaser;
+  box-shadow: inset 0px 0px 6px 2px #cfc8ff;
+}
+
+.security {
+  @extend .issueTeaser;
+  box-shadow: inset 0px 0px 6px 2px #ff827d;
+}

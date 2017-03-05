@@ -63522,6 +63522,7 @@
 	var IssueList = function IssueList(_ref) {
 	  var issues = _ref.issues,
 	      isStaff = _ref.isStaff,
+	      current_user = _ref.current_user,
 	      onDrop = _ref.onDrop;
 	
 	  // Build up the issues teasers.
@@ -63544,7 +63545,8 @@
 	        comments: number_comments, id: issue.id, type: issue.type,
 	        lane: issue.lane.id, onDrop: onDrop,
 	        preview: issue.preview !== undefined ? issue.preview : false,
-	        canDrag: isStaff })
+	        canDrag: isStaff,
+	        isAuthor: current_user == issue.author.id })
 	    );
 	  });
 	
@@ -63652,6 +63654,13 @@
 	      var upvote_label = this.props.upvotes == 1 ? "upvote" : "upvotes";
 	      var comment_label = this.props.comments == 1 ? "comment" : "comments";
 	
+	      var className = this.props.preview === true ? _style2.default.issueTeaserPreview : _style2.default.issueTeaser;
+	      if (this.props.type == 'security') {
+	        className = _style2.default.security;
+	      } else if (this.props.isAuthor) {
+	        className = _style2.default.owned;
+	      }
+	
 	      return connectDragSource(_react2.default.createElement(
 	        'div',
 	        null,
@@ -63663,7 +63672,7 @@
 	              pathname: '/gsi/feedback/issue/' + this.props.id,
 	              state: { returnTo: '/gsi/feedback' }
 	            },
-	            className: this.props.preview === true ? _style2.default.issueTeaserPreview : _style2.default.issueTeaser },
+	            className: className },
 	          _react2.default.createElement(_IssueLabel2.default, { type: this.props.type, title: this.props.title }),
 	          _react2.default.createElement(
 	            'div',
@@ -63700,10 +63709,17 @@
 	  id: _react.PropTypes.number.isRequired,
 	  type: _react.PropTypes.string.isRequired,
 	  title: _react.PropTypes.string.isRequired,
+	  isAuthor: _react.PropTypes.bool,
 	  canDrag: _react.PropTypes.bool,
 	  upvotes: _react.PropTypes.number,
 	  comments: _react.PropTypes.number,
 	  preview: _react.PropTypes.bool
+	}, _class2.defaultProps = {
+	  isAuthor: false,
+	  canDrag: false,
+	  upvotes: 0,
+	  comments: 0,
+	  preview: false
 	}, _temp)) || _class);
 	exports.default = IssueTeaser;
 
@@ -63712,7 +63728,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"issueTeaser":"style__issueTeaser___30IcU","issueTeaserPreview":"style__issueTeaserPreview___2BHyN","upvotes":"style__upvotes___I14RN","comments":"style__comments___lRTtH","footer":"style__footer___LQgoN","type":"style__type___3m7OY"};
+	module.exports = {"issueTeaser":"style__issueTeaser___30IcU","issueTeaserPreview":"style__issueTeaserPreview___2BHyN","owned":"style__owned___k4MlC","security":"style__security___3EG3X","upvotes":"style__upvotes___I14RN","comments":"style__comments___lRTtH","footer":"style__footer___LQgoN","type":"style__type___3m7OY"};
 
 /***/ },
 /* 698 */
@@ -63865,7 +63881,8 @@
 	
 	  return {
 	    issues: issues,
-	    isStaff: state.current_user.is_staff
+	    isStaff: state.current_user.is_staff,
+	    current_user: state.current_user.id
 	  };
 	};
 	

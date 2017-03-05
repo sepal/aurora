@@ -219,7 +219,7 @@
   padding: 14px;
   text-align: center;
   border-radius: 3px; }
-.style__issueTeaser___30IcU, .style__issueTeaserPreview___2BHyN {
+.style__issueTeaser___30IcU, .style__issueTeaserPreview___2BHyN, .style__owned___k4MlC, .style__security___3EG3X {
   display: block;
   padding: 14px;
   border-radius: 3px;
@@ -227,7 +227,7 @@
   background: white;
   color: #222;
   text-decoration: none; }
-  .style__issueTeaser___30IcU:hover, .style__issueTeaserPreview___2BHyN:hover, .style__issueTeaser___30IcU:active, .style__issueTeaserPreview___2BHyN:active, .style__issueTeaser___30IcU:focus, .style__issueTeaserPreview___2BHyN:focus {
+  .style__issueTeaser___30IcU:hover, .style__issueTeaserPreview___2BHyN:hover, .style__owned___k4MlC:hover, .style__security___3EG3X:hover, .style__issueTeaser___30IcU:active, .style__issueTeaserPreview___2BHyN:active, .style__owned___k4MlC:active, .style__security___3EG3X:active, .style__issueTeaser___30IcU:focus, .style__issueTeaserPreview___2BHyN:focus, .style__owned___k4MlC:focus, .style__security___3EG3X:focus {
     background: #f7f7f7; }
 
 .style__issueTeaserPreview___2BHyN {
@@ -244,6 +244,12 @@
 
 .style__type___3m7OY {
   color: #aaa; }
+
+.style__owned___k4MlC {
+  box-shadow: inset 0px 0px 6px 2px #cfc8ff; }
+
+.style__security___3EG3X {
+  box-shadow: inset 0px 0px 6px 2px #ff827d; }
 .style__lane___2mnz9 {
   border: 1px solid #cbcbcb;
   border-radius: 5px;

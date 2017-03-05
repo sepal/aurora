@@ -5,7 +5,7 @@ import {Link} from 'react-router';
 import styles from './style.scss';
 import IssueLabel from '../IssueLabel';
 import {ItemTypes} from '../../../constants';
-
+import {IssueTypes} from '../../../constants'
 
 const issueSource = {
   canDrag(props) {
@@ -37,10 +37,19 @@ export default class IssueTeaser extends Component {
     id: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    isAuthor: PropTypes.bool,
     canDrag: PropTypes.bool,
     upvotes: PropTypes.number,
     comments: PropTypes.number,
     preview: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isAuthor: false,
+    canDrag: false,
+    upvotes: 0,
+    comments: 0,
+    preview: false
   };
 
   render() {
@@ -48,8 +57,15 @@ export default class IssueTeaser extends Component {
     let upvote_label = this.props.upvotes == 1 ? "upvote" : "upvotes";
     let comment_label = this.props.comments == 1 ? "comment" : "comments";
 
+    let className = this.props.preview === true ? styles.issueTeaserPreview : styles.issueTeaser;
+    if (this.props.type == 'security') {
+      className = styles.security;
+    } else if (this.props.isAuthor) {
+      className = styles.owned;
+    }
 
-    return connectDragSource(
+
+      return connectDragSource(
       <div>
         <Link
           key={this.props.id}
@@ -57,7 +73,7 @@ export default class IssueTeaser extends Component {
             pathname: `/gsi/feedback/issue/${this.props.id}`,
             state: {returnTo: '/gsi/feedback'}
           }}
-          className={this.props.preview === true ? styles.issueTeaserPreview : styles.issueTeaser} >
+          className={className} >
           <IssueLabel type={this.props.type} title={this.props.title} />
           <div className={styles.footer}>
             <span className={styles.upvotes}>
