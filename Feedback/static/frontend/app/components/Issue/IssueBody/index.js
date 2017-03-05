@@ -7,7 +7,7 @@ class IssueBody extends React.Component {
     body: React.PropTypes.string,
     className: React.PropTypes.string,
     editable: React.PropTypes.bool,
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -62,7 +62,7 @@ class IssueBody extends React.Component {
         <div className={styles.content}>
           <ReactMarkdown source={this.props.body}
                          disallowedTypes={['HtmlInline', 'HtmlBlock']}
-          escapeHtml={}/>
+                         escapeHtml={true} />
         </div>
         {this.renderEditButton()}
       </div>
