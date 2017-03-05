@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './style.scss';
-import {Redirect} from 'react-router';
 
 import {TextInput, TextArea, Select, Submit} from '../../forms';
 import {IssueTypes} from '../../../constants'

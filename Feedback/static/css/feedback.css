@@ -126,53 +126,6 @@
     outline: none; }
   .style__issueTypeLabel___e8qCy button {
     width: 10%; }
-.style__editing___2POed {
-  box-sizing: border-box; }
-  .style__editing___2POed *, .style__editing___2POed *:before, .style__editing___2POed *:after {
-    box-sizing: border-box; }
-  .style__editing___2POed textarea {
-    width: 100%;
-    min-height: 300px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    box-shadow: 0 0 3px 1px #ccc inset; }
-
-.style__button___Qi2AB {
-  margin-top: 10px; }
-
-.style__content___uQAgY strong {
-  font-weight: bold; }
-
-.style__content___uQAgY em {
-  font-style: italic; }
-
-.style__content___uQAgY li {
-  margin-left: 1rem; }
-
-.style__content___uQAgY ul {
-  list-style-type: disc; }
-
-.style__content___uQAgY ol {
-  list-style: decimal; }
-
-.style__content___uQAgY pre {
-  margin: 0.75rem 0;
-  padding: 0.25rem;
-  background: #f0ffD0;
-  border: 1px solid #E0EEC0;
-  box-shadow: inset 0px 0px 3px 0px #E0EEC0; }
-
-.style__content___uQAgY p, .style__content___uQAgY ul, .style__content___uQAgY ol, .style__content___uQAgY h1, .style__content___uQAgY h2 {
-  padding: 0.5rem 0; }
-  .style__content___uQAgY p:first-child, .style__content___uQAgY ul:first-child, .style__content___uQAgY ol:first-child, .style__content___uQAgY h1:first-child, .style__content___uQAgY h2:first-child {
-    margin-top: 0; }
-
-.style__content___uQAgY h1 {
-  font-size: 1.5rem; }
-
-.style__content___uQAgY h2 {
-  font-size: 1.25rem; }
 .style__select___12K_d {
   margin: 14px; }
   .style__select___12K_d label {

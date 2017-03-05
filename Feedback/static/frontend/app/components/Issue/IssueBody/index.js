@@ -62,7 +62,7 @@ class IssueBody extends React.Component {
         <div className={styles.content}>
           <ReactMarkdown source={this.props.body}
                          disallowedTypes={['HtmlInline', 'HtmlBlock']}
-                         escapeHtml={true} />
+          escapeHtml={}/>
         </div>
         {this.renderEditButton()}
       </div>
