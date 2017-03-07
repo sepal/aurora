@@ -133,7 +133,11 @@ $(function(){
     <div class="course_selection_background">
     </div>
     <div class="centered">
-        <div class="title">Welcome to Aurora 2016</div>
+        <div class="title">Welcome to Aurora 2017</div>
+		<div class="choice">
+			&rarr; Aurora 2017 wird ab 14.3. hier zur Verfügung stehen. Melden Sie sich in TISS für <a href="https://tiss.tuwien.ac.at/course/courseDetails.xhtml?courseNr=187A21&semester=2017S">Basics of HCI</a> und/oder <a href="https://tiss.tuwien.ac.at/course/courseDetails.xhtml?courseNr=187237&semester=2017S">Gesellschaftliche Spannungsfelder der Informatik</a> an, damit Sie in Aurora ab diesem Zeitpunkt registriert sind. Wir danken für Ihr Verständnis!
+		</div>
+	{% comment %}
 
         {% for course in courses %}
         <div class="choice">
@@ -146,6 +150,8 @@ $(function(){
             &rarr; <a href="/admin">ADMIN</a>
         {% endif %}
         </div>
+		{% endcomment %}
+		
     </div>
 {% endblock %}
 
