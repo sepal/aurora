@@ -174,10 +174,6 @@
 .real_submit_revised {
 }
 
-.challenge {
-	padding:10px;
-	width:940px;
-}
 
 .challenge_title {
 	font-size:16px;
@@ -302,43 +298,89 @@ h1 {
 	width:960px;
 }
 
-.filterbar {
-	box-sizing: border-box;
-	color:white;
-	height:1em;
-	margin-top:2em;
-	margin-bottom:0.5em;
-	background-color:#999;
-    background-image: url("../img/auroraX.png");
-	padding-bottom: 12px;
-	padding-top:2px;
-	padding-left: 10px;
-	font-size:1.4em;
-	border-radius:12px 12px 0px 0px;
-	margin-left:1.05em;
-	width:940px;
-	height:28px;
-	cursor:pointer;
-}
 
 .shrinked {
 	height:45px;
 }
 
-.stack {
-	box-sizing: border-box;
-    padding: 10px 10px 5px 10px;
-	width:940px;
-	position:relative;
-	margin-left:1.5em;
-	border-radius:0em;
-	cursor:pointer;
-	overflow:hidden;
-	margin-bottom:1em;
-	z-index:100;
-/*	box-shadow:0px 2px 7px rgba(0,0,0,0.1);
-*/	border-top:1px solid #e8e8e8;
-	border-top:1px solid #e8e8e8;
+@media all and (max-width: 959px) {
+	.filterbar {
+		box-sizing: border-box;
+		color:white;
+		height:1em;
+		margin-top:2em;
+		margin-bottom:0.5em;
+		background-color:#999;
+	    background-image: url("../img/auroraX.png");
+		padding-bottom: 12px;
+		padding-top:2px;
+		padding-left: 10px;
+		font-size:1.4em;
+		border-radius:12px 12px 0px 0px;
+		margin-left:1.05em;
+		width:90%;
+		height:28px;
+		cursor:pointer;
+	}
+
+	.stack {
+		box-sizing: border-box;
+	    padding: 10px 10px 5px 10px;
+		width:90%;
+		position:relative;
+		margin-left:1.5em;
+		border-radius:0em;
+		cursor:pointer;
+		overflow:hidden;
+		margin-bottom:1em;
+		z-index:100;
+	/*	box-shadow:0px 2px 7px rgba(0,0,0,0.1);
+	*/	border-top:1px solid #e8e8e8;
+		border-top:1px solid #e8e8e8;
+	}
+	.challenge {
+		width:100%px;
+	}
+}
+
+@media all and (min-width: 960px) {
+	.filterbar {
+		box-sizing: border-box;
+		color:white;
+		height:1em;
+		margin-top:2em;
+		margin-bottom:0.5em;
+		background-color:#999;
+	    background-image: url("../img/auroraX.png");
+		padding-bottom: 12px;
+		padding-top:2px;
+		padding-left: 10px;
+		font-size:1.4em;
+		border-radius:12px 12px 0px 0px;
+		margin-left:1.05em;
+		width:940px;
+		height:28px;
+		cursor:pointer;
+	}
+	.stack {
+		box-sizing: border-box;
+	    padding: 10px 10px 5px 10px;
+		width:940px;
+		position:relative;
+		margin-left:1.5em;
+		border-radius:0em;
+		cursor:pointer;
+		overflow:hidden;
+		margin-bottom:1em;
+		z-index:100;
+	/*	box-shadow:0px 2px 7px rgba(0,0,0,0.1);
+	*/	border-top:1px solid #e8e8e8;
+		border-top:1px solid #e8e8e8;
+	}
+	.challenge {
+		padding:10px;
+		width:940px;
+	}
 }
 
 .forbiddenfruit div {

@@ -25,15 +25,14 @@
 }
 
 
-#comments_column_1 {
-	float:left;
-    width: 580px;
-    overflow: auto;
-	margin-left:1em;
-	margin-top:2em;
-}
-
 @media all and (min-width: 966px) {
+	#comments_column_1 {
+		float:left;
+	    width: 580px;
+	    overflow: auto;
+		margin-left:1em;
+		margin-top:2em;
+	}
 	#info_column {
 		float:left;
 		margin-top:2em;
@@ -41,20 +40,28 @@
 	}
 	
 	.sidebar_item {
-		width:330px;
+		width:580px;
 	}
 }
 
 @media all and (max-width: 965px) {
+	#comments_column_1 {
+		float:left;
+	    width: 95%;
+	    overflow: auto;
+		margin-left:1em;
+		margin-top:2em;
+	}
+
 	#info_column {
 		float:left;
-		width:580px;
+		width:95%;
 		margin-top:1em;
 		margin-left:1em;
 	}
 	
 	.sidebar_item {
-		width:580px;
+		width:100%;
 	}
 }
 
