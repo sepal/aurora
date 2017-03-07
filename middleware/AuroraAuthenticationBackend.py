@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.backends import ModelBackend
 from AuroraUser.models import AuroraUser
+from django.core.exceptions import PermissionDenied
 
 """
 Custom authentication backend to just pass the AuroraUser
