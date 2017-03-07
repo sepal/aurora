@@ -11,7 +11,7 @@
     <div id="info_column">
         {% if not user.is_staff %}
 		<div class="sidebar_item">
-            <div class="feed_header"  id="part_0"><i class="fa fa-toggle-down half"></i> <b>Your work</b></div>
+            <div class="feed_header"  id="part_0"><i class="fa fa-minus-square half"></i> <b>Your work</b></div>
 			<div class="feed_column"  id="content_part_0">
             	{% include 'points.html' %}
           		{% include 'public_stats.html' %}
@@ -19,7 +19,7 @@
 		</div>
 		{% else %}
 		<div class="sidebar_item">
-            <div class="feed_header"  id="part_0"><i class="fa fa-toggle-down half"></i> <b>Your work</b></div>
+            <div class="feed_header"  id="part_0"><i class="fa fa-minus-square half"></i> <b>Your work</b></div>
 			<div class="feed_column"  id="content_part_0">
             	{% include 'admin_points.html' %}
 				{% include 'public_stats.html' %}
@@ -30,7 +30,7 @@
     {% if user_is_top_reviewer %}
       <div class="sidebar_item">
         <div class="feed_header"  id="part_5">
-          <i class="fa fa-toggle-down half"></i> <b>Extra Reviews</b>
+          <i class="fa fa-minus-square half"></i> <b>Extra Reviews</b>
         </div>
         <div class="feed_column"  id="content_part_5">
           {% include 'extra_reviews.html' %}
@@ -41,7 +41,7 @@
 		{% if user.is_staff %}
 		<div class="sidebar_item">
 	        <div class="feed_header" id="part_X">
-				<i class="fa fa-toggle-down half"></i> <b>LVA-Team Ressources </b>
+				<i class="fa fa-minus-square half"></i> <b>LVA-Team Ressources </b>
 			</div>
 	        <div class="feed_column" id="content_part_X">
 				<p><i style="color:gray" class="fa fa-arrow-right"></i> <a target="_blank" href="https://auri1-gsi.pbworks.com/w/page/77253689/FrontPage">Aurora Wiki</a><br>
@@ -52,7 +52,7 @@
 		{%  endif %}
 		<div class="sidebar_item">
 	        <div class="feed_header" id="part_1">
-				<i class="fa fa-toggle-down half"></i> <b>General Information </b>
+				<i class="fa fa-minus-square half"></i> <b>General Information </b>
 			</div>
 	        <div class="feed_column" id="content_part_1">
 				<p><b>Wesentliche Hinweise</b> ...<BR>
@@ -98,7 +98,7 @@
 		</div>
 		<div class="sidebar_item">
 	        <div class="feed_header" id="part_2">
-				<i class="fa fa-toggle-down half"></i> <b>Frequently Asked Questions</b>
+				<i class="fa fa-minus-square half"></i> <b>Frequently Asked Questions</b>
 			</div>
 	        <div class="feed_column" id="content_part_2">
 	            {% include "faq.html" %}
@@ -106,7 +106,7 @@
 		</div>
 		<div class="sidebar_item">
 	        <div class="feed_header" id="part_3">
-				<i class="fa fa-toggle-down half"></i> <b>Lecture dates
+				<i class="fa fa-minus-square half"></i> <b>Lecture dates
 				{% if course.short_title == "hci" %}
 				BHCI
 				{% else %}
