@@ -12,9 +12,8 @@
 <!--title and other chapters-->
 <h1 class="slide-stack-title"><b>{{ slide_stack.title }}:</b> {{slide_stack.slides|length}} Slides
 </h1>
-    <div class="also-belong">These slides belong to <a href="../../{{ this_topic.0 }}_{{ this_topic.1 }}">{{this_topic.1}}</a>
+    <div class="also-belong">These slides also belong to
         {% for topic in other_topics %}
-			{% if forloop.first %} and also {% endif %}
             <a href="../../{{ topic.0 }}_{{ topic.1 }}">{% comment %}{{ topic.0 }}: {% endcomment %}{{ topic.1 }}</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
     </div>
@@ -27,7 +26,7 @@
 		<div class="slides_navi_next">
 			{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
 		</div>
-		<span class="slides_origin_center">X</span>
+		<span class="slides_origin_center"> <a href="../../{{ this_topic.0 }}_{{ this_topic.1 }}">{{this_topic.1}}</a></span>
 	</div>
 </div>
 
