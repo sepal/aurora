@@ -109,6 +109,13 @@ class Document(models.Model):
 
         return docs
 
+    @staticmethod
+    def get_doc_from_elaboration_id(elaboration_id):
+        docs = Document.objects.filter(elaboration_id=elaboration_id).order_by('-submission_time')
+        if docs.count() == 0:
+            return None
+        else:
+            return docs[0]
 
 
 class Result(models.Model):

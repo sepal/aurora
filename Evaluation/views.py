@@ -26,7 +26,7 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from PlagCheck.models import Suspicion, SuspicionState
+from PlagCheck.models import Suspicion, SuspicionState, Result, Document
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 
@@ -901,12 +901,21 @@ def similarities(request, course_short_title=None):
 
     elaboration_id = request.session.get('elaboration_id', '')
 
+    doc = Document.get_doc_from_elaboration_id(elaboration_id)
+    not_checked = False
+    if doc:
+        if Result.objects.filter(doc_id=doc.id).count() == 0:
+            not_checked = True
+    else:
+        not_checked = True
+
     suspicion_list = Suspicion.suspicion_list_by_request(request, course)\
         .filter(suspect_doc__elaboration_id=elaboration_id)
 
     count = suspicion_list.count()
 
     context = {
+        'not_checked': not_checked,
         'course': course,
         'suspicions': suspicion_list,
         'suspicion_states': SuspicionState.choices(),
