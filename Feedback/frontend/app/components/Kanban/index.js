@@ -12,7 +12,7 @@ export default class Feedback extends React.Component {
   render() {
     return (
       <div className={styles.kanban}>
-        <Link to="/gsi/feedback/issue/add" className={styles.add}>
+        <Link to={`/${course_short_title}/feedback/issue/add`} className={styles.add}>
           <i className="fa fa-plus"></i> Add a new issue
         </Link>
         <LaneListContainer />

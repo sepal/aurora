@@ -22,7 +22,8 @@ export default class Feedback extends React.Component {
 
   render() {
     let {location} = this.props;
-    let isModal = location.pathname.match(/^\/gsi\/feedback[/]*$/i) == null;
+    const path = new RegExp(`^/${course_short_title}/feedback[/]*$`, 'i');
+    let isModal = location.pathname.match(path) == null;
     return (
       <div>
         {isModal ?
@@ -31,7 +32,7 @@ export default class Feedback extends React.Component {
         }
 
         {isModal && (
-          <Modal isOpen={true} returnTo="/gsi/feedback" router={this.props.router} onClose={this.closeModal}>
+          <Modal isOpen={true} returnTo={`/${course_short_title}/feedback`} router={this.props.router} onClose={this.closeModal}>
             {this.props.children}
           </Modal>
         )}
@@ -41,6 +42,6 @@ export default class Feedback extends React.Component {
 
 
   closeModal() {
-    this.props.router.push('/gsi/feedback')
+    this.props.router.push(`/${course_short_title}/feedback`)
   }
 }

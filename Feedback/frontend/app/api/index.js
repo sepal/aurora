@@ -17,7 +17,7 @@ export function getIssue(id) {
   return new Promise((resolve, reject) => {
     try {
       $.ajax({
-        url: `/gsi/feedback/api/issue/${id}`
+        url: `/${course_short_title}/feedback/api/issue/${id}`
       }).done((resp) => {
         // Required fields.
         let issue = {
@@ -50,11 +50,11 @@ export function getIssue(id) {
 }
 
 export function updateIssue(data, id = undefined) {
-  let url = `/gsi/feedback/api/issue`;
+  let url = `/${course_short_title}/feedback/api/issue`;
   let method = 'POST';
 
   if (id != undefined) {
-    url = `/gsi/feedback/api/issue/${id}`;
+    url = `/${course_short_title}/feedback/api/issue/${id}`;
     method = 'PUT';
   }
 
@@ -82,7 +82,7 @@ export function updateIssue(data, id = undefined) {
 }
 
 export function getComments(issueID) {
-  const url = `/gsi/feedback/comments/${issueID}`;
+  const url = `/${course_short_title}/feedback/comments/${issueID}`;
   return new Promise((resolve, reject) => {
     $.ajax({
       url: url,

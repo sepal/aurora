@@ -50,7 +50,7 @@ class IssueForm extends React.Component {
 
     if (newState['body_error'] == '' && newState['title_error'] == '') {
       this.props.createIssue(this.state.type, this.state.title, this.state.body);
-      this.props.router.push('/gsi/feedback')
+      this.props.router.push(`/${course_short_title}/feedback`)
 
     } else {
       this.setState(newState);

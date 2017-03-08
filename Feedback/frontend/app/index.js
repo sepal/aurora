@@ -23,15 +23,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   const store = configureStore(data);
 
+
   var node = document.getElementById('test');
   ReactDOM.render(
     (
       <Provider store={store}>
         <Router history={browserHistory}>
-          <Route path="/gsi/feedback" component={Feedback}>
+          <Route path={`/${course_short_title}/feedback`} component={Feedback}>
             <IndexRoute component={Kanban} />
-            <Route path="/gsi/feedback/issue/add" component={IssueFormContainer} />
-            <Route path="/gsi/feedback/issue/:id" component={IssueContainer} />
+            <Route path={`/${course_short_title}/feedback/issue/add`} component={IssueFormContainer} />
+            <Route path={`/${course_short_title}/feedback/issue/:id`} component={IssueContainer} />
           </Route>
         </Router>
       </Provider>

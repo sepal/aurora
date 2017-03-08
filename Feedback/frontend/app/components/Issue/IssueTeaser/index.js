@@ -70,8 +70,8 @@ export default class IssueTeaser extends Component {
         <Link
           key={this.props.id}
           to={{
-            pathname: `/gsi/feedback/issue/${this.props.id}`,
-            state: {returnTo: '/gsi/feedback'}
+            pathname: `/${course_short_title}/feedback/issue/${this.props.id}`,
+            state: {returnTo: `/${course_short_title}/feedback`}
           }}
           className={className} >
           <IssueLabel type={this.props.type} title={this.props.title} />
