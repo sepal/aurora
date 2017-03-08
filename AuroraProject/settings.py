@@ -376,12 +376,13 @@ if DEBUG:
         CELERY_BROKER_URL = 'django://'
 
     # kombu is used to use djangos database as message broker while debugging
-    INSTALLED_APPS += ('kombu.transport.django',)
+    #INSTALLED_APPS += ('kombu.transport.django',)
 
     djcelery.setup_loader()
 
     CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
+    ## DEBUG TOOLBAR ##
 
     def show_toolbar(request):
         return not request.is_ajax() and 'toolbar' in request.GET
@@ -392,7 +393,6 @@ if DEBUG:
 
     MIDDLEWARE_CLASSES += (
         'debug_toolbar.middleware.DebugToolbarMiddleware',
-        'middleware.Profiling.ProfileMiddleware'
     )
 
     INSTALLED_APPS += (
@@ -425,6 +425,11 @@ if DEBUG:
             'full-res': {'size': (1920, 1080)},
         },
     }
+
+    ## PROFILING ##
+    MIDDLEWARE_CLASSES += (
+        'middleware.Profiling.ProfileMiddleware',
+    )
 
 try:
     from local_settings import *

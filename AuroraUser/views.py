@@ -12,6 +12,7 @@ from django.conf import settings
 from django.http import Http404
 
 from AuroraProject.decorators import aurora_login_required
+from Notification.models import FeedToken
 
 import logging
 logger = logging.getLogger(__name__)
@@ -119,8 +120,21 @@ def sso_auth_callback(request):
 @ensure_csrf_cookie
 def profile(request, course_short_title):
     user = request.user
-    selected_course = Course.get_or_raise_404(course_short_title)
-    return render_to_response('profile.html', {'user': user, 'course': selected_course}, context_instance=RequestContext(request))
+    course = Course.get_or_raise_404(course_short_title)
+
+    feed_token = None
+    try:
+        feed_token = FeedToken.objects.get(user=user)
+    except FeedToken.DoesNotExist:
+        pass
+
+    context = {
+        'user': user,
+        'course': course,
+        'feed_token': feed_token,
+    }
+
+    return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
 @aurora_login_required()
 def profile_save(request, course_short_title):
@@ -196,3 +210,15 @@ def course(request):
             user.save()
         response_data['success'] = True
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@aurora_login_required()
+@require_GET
+def create_feed_token(request, course_short_title):
+    feed_token = FeedToken.create_new_token(request.user)
+
+    data = {
+        'token': str(feed_token.token)
+    }
+
+    return HttpResponse(json.dumps(data), content_type="application/json")

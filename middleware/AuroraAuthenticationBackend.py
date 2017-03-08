@@ -18,13 +18,16 @@ class AuroraAuthenticationBackend(ModelBackend):
         try:
             user = AuroraUser.objects.get(matriculation_number=username)
         except UserModel.DoesNotExist:
-            django_user = User.objects.get(username=username)
-            user = AuroraUser.objects.get(pk=django_user.id)
+            try:
+                django_user = User.objects.get(username=username)
+                user = AuroraUser.objects.get(pk=django_user.id)
+            except User.DoesNotExist:
+                return None
 
         if user.check_password(password):
             return user
         else:
-            raise PermissionDenied
+            return None
 
         # try:
         #     user = AuroraUser.objects.get(matriculation_number=username)
