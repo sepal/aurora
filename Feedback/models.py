@@ -7,7 +7,10 @@ from Course.models import Course
 
 
 class Lane(models.Model):
-    """Lane is a model one column in the feedback kanban."""
+    """
+    A lane represents one column in the kanban.
+    """
+
     name = models.CharField(max_length=100, unique=True)
     hidden = models.BooleanField(default=False)
     order = models.PositiveIntegerField(default=0)
@@ -20,7 +23,10 @@ class Lane(models.Model):
 
 
 class Issue(models.Model):
-    """Issue is the content model for the feedback system."""
+    """
+    Issue is the content model for the feedback system.
+    """
+
     ISSUE_TYPE = (
         ('bug', 'Bug'),
         ('feature_request', 'Feature Request'),
@@ -47,6 +53,7 @@ class Issue(models.Model):
         Get the basic issue information as a dict which can be serialized into
         json or anything else.
         """
+
         data = {
             'id': self.pk,
             'lane': {
@@ -55,6 +62,7 @@ class Issue(models.Model):
             },
             'type': self.type,
             'title': self.title,
+            'upvotes': Upvote.objects.filter(issue=self).count()
         }
 
         return data
@@ -79,8 +87,38 @@ class Issue(models.Model):
                 'name': self.author.nickname
             },
             'post_date': self.post_date.isoformat('T'),
-            'body': self.body,
+            'body': self.body
         })
         return data
 
     serializable = property(_get_serializable)
+
+    def upvoted(self, user):
+        """
+        Returns True if the given user has upvoted this issue.
+        """
+        return Upvote.exists(user, self.pk)
+
+
+class Upvote(models.Model):
+    """
+    Model which saves who up voted which issue.
+    """
+
+    user = models.ForeignKey(AuroraUser)
+    issue = models.ForeignKey(Issue)
+    created = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return "{0} upvoted {1}".format(self.user.nickname, self.issue.title)
+
+    def __unicode__(self):
+        return self.__str__()
+
+    @staticmethod
+    def exists(user, issue):
+        """
+        Checks if the given user has already upvoted the given issue.
+        :return:
+        """
+        return Upvote.objects.filter(user=user, issue=issue).count() > 0

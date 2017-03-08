@@ -10,11 +10,11 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
     let upvotes = 0;
 
     if (issue['comments'] !== undefined) {
-      return number_comments = issue.comments.length;
+      number_comments = issue.comments.length;
     }
 
     if (issue['upvotes'] !== undefined) {
-      return upvotes = issue['upvotes'];
+      upvotes = issue['upvotes'];
     }
 
     return (

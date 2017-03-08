@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import {IssueDetail} from '../components/Issue'
-import {changeIssue} from '../actions/issueActions';
+import {changeIssue, upvoteIssue} from '../actions/issueActions';
 
 const mapStateToProps = (state, ownProps) => {
   const issue = state.issues.filter(issue => {
@@ -8,17 +8,19 @@ const mapStateToProps = (state, ownProps) => {
   })[0];
 
   return {
-    issue: issue,
     isStaff: state.current_user.is_staff,
-    isAuthor: issue.author.id == state.current_user.id
+    isAuthor: issue.author.id == state.current_user.id ,
+    ...issue
   };
-
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     update: (id, type, title, body) => {
-      dispatch(changeIssue({type: type, title: title, body: body}, id))
+      dispatch(changeIssue({type: type, title: title, body: body}, id));
+    },
+    upvote: (id) => {
+      dispatch(upvoteIssue(id));
     }
   };
 };

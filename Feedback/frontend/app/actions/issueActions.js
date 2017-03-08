@@ -1,6 +1,6 @@
 import {IssueActionTypes} from '../constants'
 
-import {updateIssue} from '../api';
+import {updateIssue, upvote} from '../api';
 
 
 /**
@@ -29,11 +29,26 @@ export function previewIssue(issueID, data) {
   }
 }
 
+/**
+ * Adds an issue to the current app state.
+ */
 export function addIssue(issue) {
   return {
     type: IssueActionTypes.ADD_ISSUE,
     payload: {
       issue: issue
+    }
+  }
+}
+
+/**
+ * Adds an upvote to the given issue.
+ */
+export function addUpvote(issueID) {
+  return {
+    type: IssueActionTypes.UPVOTE,
+    payload: {
+      issueID: issueID,
     }
   }
 }
@@ -67,13 +82,28 @@ export function changeIssue(data, id) {
   }
 }
 
+/**
+ * Async action, which creates a new issue.
+ */
 export function createIssue(data) {
   return function (dispatch) {
     // todo: dispatch waiting for issue posting.
     return updateIssue(data)
       .then((issue) => {
-        // todo: dispatch reroute / adding new issue action.
         dispatch(addIssue(issue));
-      })
+      });
+  }
+}
+
+/**
+ * Async upvote an issue.
+ */
+export function upvoteIssue(issueID) {
+  return function (dispatch) {
+    dispatch(addUpvote(issueID));
+    return upvote(issueID)
+      .then((issue)=> {
+        // todo: dispatch update upvote counter.
+      });
   }
 }

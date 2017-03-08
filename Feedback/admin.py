@@ -13,3 +13,8 @@ class LaneAdmin(SortableModelAdmin):
 @admin.register(Issue)
 class IssueAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Upvote)
+class IssueAdmin(admin.ModelAdmin):
+    pass

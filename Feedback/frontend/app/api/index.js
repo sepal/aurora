@@ -93,3 +93,20 @@ export function getComments(issueID) {
     });
   });
 }
+
+export function upvote(issueID) {
+  const url = `/${course_short_title}/feedback/api/upvote/${issueID}`;
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      method: 'POST',
+      url: url,
+      headers: {
+        'X-CSRFToken': getCookieSetting('csrftoken'),
+      }
+    }).done((resp) => {
+      resolve(resp);
+    }).fail((err) => {
+      reject(err);
+    });
+  });
+}

@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^api/issue/(?P<issue_id>[\d]+[/]?)$', views.api_issue,
         name="issue_api"),
     url(r'^api/issue$', views.api_new_issue, name="new_issue_api"),
+    url(r'^api/upvote/(?P<issue_id>[\d]+[/]?)$', views.api_upvote,
+        name="upvote_api")
 ]

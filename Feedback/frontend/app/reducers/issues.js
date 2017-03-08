@@ -15,7 +15,6 @@ export default function issues(state = initialState, action) {
         return issue;
       });
       return newState;
-      break;
     case IssueActionTypes.UPDATED_ISSUE:
       const updatedIssue = action.payload.issue;
       return state.map((issue) => {
@@ -24,9 +23,19 @@ export default function issues(state = initialState, action) {
         }
         return issue;
       });
-      break;
     case IssueActionTypes.ADD_ISSUE:
       return [...state, action.payload.issue];
+    case IssueActionTypes.UPVOTE:
+      return state.map((issue) => {
+        if (action.payload.issueID == issue.id && !issue.upvoted) {
+          issue = Object.assign(issue, {
+            upvotes: issue.upvotes + 1,
+            upvoted: true
+          });
+        }
+        return issue;
+      });
+
     default:
       return state;
   }

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.template import RequestContext
 from Course.models import Course
-from .models import Lane, Issue
+from .models import Lane, Issue, Upvote
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, \
     HttpResponseForbidden
 
@@ -33,6 +33,7 @@ def index(request, course_short_title):
 
     # Issues are course specific.
     issues = Issue.objects.filter(course=course)
+    upvotes = Upvote.objects.filter(user=request.user)
 
     issue_data = []
     for issue in issues:
@@ -40,7 +41,9 @@ def index(request, course_short_title):
         # or an admin.
         if issue.type != 'security' or issue.author == request.user \
                 or request.user.is_staff:
-            issue_data.append(issue.serializable)
+            data = issue.serializable
+            data['upvoted'] = issue.upvoted(request.user)
+            issue_data.append(data)
 
     data = {
         'lanes': lanes,
@@ -127,6 +130,8 @@ def api_new_issue(request, course_short_title):
     """
     API callback to create a new issue.
     """
+
+    # Keep the API somehow REST like.
     if request.method == 'POST':
         course = Course.get_or_raise_404(course_short_title)
         lanes = Lane.objects.all().filter(hidden=False).order_by('order')
@@ -174,3 +179,40 @@ def issue_comments(request, course_short_title, issue_id):
     }
 
     return render(request, "issue_comments.html", context)
+
+
+@login_required
+def api_upvote(request, course_short_title, issue_id):
+    """
+    Registers a new upvote for the given issue.
+    """
+    # Keep the API somehow REST like.
+    if request.method != 'POST':
+        return HttpResponseBadRequest
+
+    issue = Issue.objects.get(pk=issue_id)
+
+    # Only the staff and the author are able to see issues of the type
+    # security.
+    if issue.type == 'security' \
+            and issue.author != request.user and not request.user.is_staff:
+        return HttpResponseForbidden()
+
+    # You can only up vote once.
+    if Upvote.exists(request.user, issue):
+        return HttpResponseForbidden()
+
+    # todo: determine if staff users and owner of the issue can up vote an
+    # issue.
+    upvote = Upvote(user=request.user, issue=issue)
+    upvote.save()
+
+    # Return the number of up votes, so that the client side code can update
+    # the number.
+    upvotes = Upvote.objects.filter(issue=issue).count()
+
+    response = {
+        'issue_id': issue_id,
+        'upvotes': upvotes
+    }
+    return JsonResponse(response)
