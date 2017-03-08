@@ -72,6 +72,16 @@ class FeedToken(models.Model):
         return FeedToken.objects.create(user=user)
 
     @staticmethod
+    def get_or_create_token(user):
+        token = None
+        try:
+            token = FeedToken.objects.get(user=user)
+        except FeedToken.DoesNotExist:
+            token = FeedToken.objects.create(user=user)
+
+        return token
+
+    @staticmethod
     def get_user_by_token_or_raise_404(token):
         try:
             feed_token = FeedToken.objects.get(token=token)

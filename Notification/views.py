@@ -16,6 +16,9 @@ def notifications(request, course_short_title=None):
     user = request.user
     course = Course.get_or_raise_404(course_short_title)
 
+    # check if rss token was already generated, if not generate it
+    FeedToken.get_or_create_token(user)
+
     if 'id' in request.GET:
         try:
             notification = Notification.objects.get(pk=request.GET['id'])
