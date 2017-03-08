@@ -1,32 +1,3 @@
-$(function() {
-		$('#study_code').focus(function(){
-			$('.correct_maker').removeClass('versteck',300);
-		});
-		$('#study_code').focusout(function(){
-			$('.correct_maker').addClass('versteck',300);
-		});
-		$('.bmi').click(function(){
-			$('#study_code').val('033532');
-			$('#statement').focus();
-			$('#study_code').change();
-		})
-		$('.bmz').click(function(){
-			$('#study_code').val('033533');
-			$('#statement').focus();
-      	  	$('#study_code').change();
-		})
-		$('.bsi').click(function(){
-			$('#study_code').val('033534');
-			$('#statement').focus();
-      	  	$('#study_code').change();
-		})
-		$('.bti').click(function(){
-			$('#study_code').val('033535');
-			$('#statement').focus();
-     	   	$('#study_code').change();
-		})
-})
-
 $(profile_loaded);
 
 var file;
@@ -44,8 +15,6 @@ function input_change(event) {
         file = event.target.files[0];
         $("#file_upload_form").submit();
     } else {
-        console.log("Saving");
-        console.log($('#study_code').val());
         $.ajax({
             type: 'POST',
             url: PROFILE_SAVE_URL,
@@ -96,3 +65,14 @@ function submit_form(event) {
         }
     });
 }
+
+function create_new_feed_token(url) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+    }).done(function(data) {
+        $('#feed_token').val(data.token);
+    })
+}
+
