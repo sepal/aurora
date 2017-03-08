@@ -107,11 +107,7 @@ In order to check your PlagCheck installation you can do the following:
 First run the unit tests, to see if Sherlock is installed properly:
 
     python manage.py test PlagCheck
-     
-Then you could wipe your current database and start from scratch:
 
-    rm -f database.db&& python manage.py syncdb --noinput && python manage.py populate_demo_data
- 
 ### In case you need to purge a RabbitMQ queue:
 
     rabbitmqctl purge_queue celery
