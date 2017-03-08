@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.backends import ModelBackend
 from AuroraUser.models import AuroraUser
-from django.core.exceptions import PermissionDenied
 
 """
 Custom authentication backend to just pass the AuroraUser
@@ -25,7 +24,7 @@ class AuroraAuthenticationBackend(ModelBackend):
         if user.check_password(password):
             return user
         else:
-            raise PermissionDenied
+            return None
 
         # try:
         #     user = AuroraUser.objects.get(matriculation_number=username)
