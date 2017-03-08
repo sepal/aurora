@@ -67,14 +67,15 @@
       </td>
     </tr>
 	<tr class="correct_maker versteck">
-		<td></td><td></td>
+		<td></td>
 		<td>
+			<DIV class="bno">Type a study code, or select one of these: </DIV>
 			<DIV class="bmi button">Medieninformatik &amp; Visual Computing - 033532</DIV>
 			<DIV class="bmz button">Medizinische Informatik - 033533</DIV>
 			<DIV class="bsi button">Software &amp; Information Engineering - 033534</DIV>
 			<DIV class="bti button">Technische Informatik - 033535</DIV>
 			
-		</td>
+		</td><td></td>
 	</tr>
     <tr class="formRow">
       <td>
@@ -99,6 +100,19 @@
       </td>
     </tr>
     <tr class="formRow">
+      <td>
+        <label for="feed_token">Feed token</label>
+      </td>
+      <td>
+        <input id="feed_token" type="text" name="feed_token" value="{{ feed_token.token }}" class="focusable"><br />
+        <input type="button" onclick="create_new_feed_token('{% url 'User:create_feed_token' course_short_title=course.short_title %}')" value="Create new feed token" />
+      </td>
+      <td class="legend">
+        Create new feed token, so that feeds can be referenced. Don't share this token with others.
+      </td>
+    </tr>
+
+    <tr class="formRow">
       <td class="avatar_label">
         <label for="avatar">Avatar</label>
       </td>
@@ -113,6 +127,7 @@
         visible to everyone.
       </td>
     </tr>
+
     <tr class="formRow">
       <td></td>
 	  <td align="right"><input class="button XL" type="button" value="SAVE" onclick="$('#saved_message').delay(150).fadeIn(250).delay(250).fadeOut(2000)"></td>

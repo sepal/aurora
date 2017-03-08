@@ -12,7 +12,9 @@
 <div>
   <div class="pagehead">
     <div class="headline">
-	  <div class="course_selected" onclick="location.href='/'"><span style="">Aurora - </span> {{course.title}}</div>
+	  <div class="course_selected" onclick="location.href='/'"><span style="">Aurora - </span>
+		  <span class="long_title_text">{{course.title}}</span>
+		  <span class="short_title_text">{{course.short_title}}</span></div>
     </div>	
 	
     {% if user.is_authenticated %}

@@ -60,13 +60,6 @@
 
 }
 
-.title {
-    font-family: 'yanone_kaffeesatzlight';
-	color:white; /*rgb(58,201,88);*/
-	font-size:2.5em;
-	margin-bottom:1em;
-	padding-left:30px;
-}
 
 .choicetitle {
 	font-family: 'yanone_kaffeesatzlight';
@@ -74,13 +67,6 @@
 	font-size:1.5em;
 }
 
-.choice {
-	font-family: 'yanone_kaffeesatz_rgregular';
-	color:white;
-	font-size:1.5em;
-	margin-bottom:1em;
-	border-radius:6px;
-}
 
 .choice a {
 	color:rgb(58,201,88);
@@ -91,15 +77,58 @@
 	text-shadow: 0 0 10px rgb(58,201,88);
 }
 
-.centered {
-	margin:auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-	width:500px;
-	height:200px;
-	background:rgba(0,0,0,0.5);
-	border-radius:6px;
-	padding:30px;
+@media only screen and (max-width: 959px) {
+	.centered {
+		margin:auto;
+	    position: absolute;
+	    top: 0; left: 0; bottom: 0; right: 0;
+		width:90%;
+		height:90%;
+		background:rgba(0,0,0,0.5);
+		border-radius:6px;
+		padding:30px;
+	}
+	.title {
+	    font-family: 'yanone_kaffeesatzlight';
+		color:white; /*rgb(58,201,88);*/
+		font-size:2.5em;
+		margin-bottom:1em;
+	}
+	.choice {
+		font-family: 'yanone_kaffeesatz_rgregular';
+		color:white;
+		font-size:1.5em;
+		margin-bottom:1em;
+		padding-right:1em;
+		border-radius:6px;
+	}
+}
+
+@media only screen and (min-width: 960px) {
+	.centered {
+		margin:auto;
+	    position: absolute;
+	    top: 0; left: 0; bottom: 0; right: 0;
+		width:500px;
+		height:200px;
+		background:rgba(0,0,0,0.5);
+		border-radius:6px;
+		padding:30px;
+	}
+	.title {
+	    font-family: 'yanone_kaffeesatzlight';
+		color:white; /*rgb(58,201,88);*/
+		font-size:2.5em;
+		margin-bottom:1em;
+		padding-left:30px;
+	}
+	.choice {
+		font-family: 'yanone_kaffeesatz_rgregular';
+		color:white;
+		font-size:1.5em;
+		margin-bottom:1em;
+		border-radius:6px;
+	}
 }
 
 .base {
@@ -133,7 +162,11 @@ $(function(){
     <div class="course_selection_background">
     </div>
     <div class="centered">
-        <div class="title">Welcome to Aurora 2016</div>
+        <div class="title">Welcome to Aurora 2017</div>
+		<div class="choice">
+			&rarr; Aurora 2017 wird ab 14.3. hier zur Verfügung stehen. Melden Sie sich in TISS für <a href="https://tiss.tuwien.ac.at/course/courseDetails.xhtml?courseNr=187A21&semester=2017S">Basics of HCI</a> und/oder <a href="https://tiss.tuwien.ac.at/course/courseDetails.xhtml?courseNr=187237&semester=2017S">Gesellschaftliche Spannungsfelder der Informatik</a> an, damit Sie in Aurora ab diesem Zeitpunkt registriert sind. Wir danken für Ihr Verständnis!
+		</div>
+	{% comment %}
 
         {% for course in courses %}
         <div class="choice">
@@ -146,6 +179,8 @@ $(function(){
             &rarr; <a href="/admin">ADMIN</a>
         {% endif %}
         </div>
+		{% endcomment %}
+		
     </div>
 {% endblock %}
 

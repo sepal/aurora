@@ -48,12 +48,18 @@ def check(self, **kwargs):
     The following are all required kwargs parameters that have to be passed.
 
     :param doc_id -- ID of the document within the Document store
+    :param ignore_filter -- Ignore filters for suspicions resulted from this check
 
     :return: Future object of this task invocation when called asynchronously,
     or the result if called synchronously.
     """
+
     try:
-        suspect_doc = Document.objects.get(pk=kwargs['doc_id'])
+        doc_id = kwargs['doc_id']
+        ignore_filter = kwargs.get('ignore_filter', False)
+
+
+        suspect_doc = Document.objects.get(pk=doc_id)
 
         # delete existing references to older versions of this document
         Reference.remove_references(suspect_doc.id)
@@ -110,10 +116,13 @@ def check(self, **kwargs):
                 state=Suspicion.DEFAULT_STATE.value
             )
 
-            (suspicion_state, reason) = filter_suspicion(suspicion, suspicion_filters)
+            if not ignore_filter:
+                (suspicion_state, reason) = filter_suspicion(suspicion, suspicion_filters)
 
-            if suspicion_state is not None:
-                suspicion.state = suspicion_state.value
+                if suspicion_state is not None:
+                    suspicion.state = suspicion_state.value
+                    suspicion.save()
+            else:
                 suspicion.save()
 
         return result.celery_result()

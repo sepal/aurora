@@ -1,6 +1,7 @@
 // #####################
 //  Setup
 // #####################
+var trixDings;
 
 $(document).ready(function() {
     $('#challenges-li').addClass('uRhere');
@@ -11,8 +12,26 @@ $(document).ready(function() {
     $(".create_revision_link").click(function() {
         $('.create_revision').hide(300);
         $('.revision_section').show(300);
-    })
+    });
+	$(".zustimmung").click(function(){
+		if ($('#zustimmungs_box').prop('checked')) {$('.real_submit').removeClass('cannot_submit')} else {$('.real_submit').addClass('cannot_submit')}
+	});
+	$('.see_through').focus(function () {
+		$('.input_position').removeClass('see_through');
+	});
+	trixDings = document.querySelector("trix-editor");
+	document.addEventListener('trix-change',countChars);
+	document.addEventListener('trix-initialize',countChars);
+});
 
+$(challenge_loaded);
+
+function countChars() {
+	var x = trixDings.editor.getDocument().toString();
+	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+}
+
+function challenge_loaded() {	
     // Register event handlers
     if ($('.elaboration_block').length) {
         $('.submit').click(submit_clicked);
@@ -33,7 +52,7 @@ $(document).ready(function() {
         var challenge_id = $('.challenge').attr('id');
         save_elaboration(challenge_id);
     }, autosave_interval);
-});
+}
 
 // #####################
 //  Elaboration
@@ -43,6 +62,7 @@ function submit_clicked() {
     $('#saved_message').hide();
     $('.submit').hide().finish();
     $('.save_back').hide().finish();
+    $('.hidden_extra_question').slideDown('fast');
     $('.submission_text').slideDown('fast', function() {
         window.scrollBy(0, 500);
     });

@@ -107,24 +107,59 @@
 
 
 .submission_text {
-	background:rgb(58,201,88);
-	padding:16px 16px 50px 16px;
+	background:#316134;
 	color:white;
-	border-radius:3px;
-	margin-top:3px;
+	padding:16px 16px 0px 16px;
+	border-radius:0 0 3px 3px;
+	box-sizing: border-box;
+	overflow:hidden;
 }
+
+.hidden_extra_question {
+	background:#316134;
+	color:white;
+	padding:16px 16px 0px 16px;
+	border-bottom:1px dashed rgba(255,255,255,0.5);	
+	border-radius:3px 3px 0 0;	
+	box-sizing: border-box;
+	position:relative;
+}
+
+.see_through {
+	background:rgba(0,0,0,0);
+}
+
+.input_position {
+	position:absolute;
+	top:35px;
+	width:900px!important;
+}
+
+
+.gray_text {
+	color:gray;
+	background:white;
+	position:absolute;
+	top:37px;
+	left:18px;
+	width:900px;
+}
+
+
 
 .real_submit{
 	position:relative;
-	left:16px;
+	left:18px;
+	bottom:0px;
+	height:120%;
 	padding:7px 10px 5px 15px;
-	margin-top:17px;
 	color:white;
-	background:none;
+	background:rgb(58,201,88);
 	border:1px solid white;
 	border-bottom:none;
 	border-right:none;
-	border-radius:0;
+	border-radius:3px 0 3px 0;
+	box-sizing: border-box;
 }
 
 .real_submit:hover {
@@ -139,10 +174,6 @@
 .real_submit_revised {
 }
 
-.challenge {
-	padding:10px;
-	width:940px;
-}
 
 .challenge_title {
 	font-size:16px;
@@ -267,43 +298,89 @@ h1 {
 	width:960px;
 }
 
-.filterbar {
-	box-sizing: border-box;
-	color:white;
-	height:1em;
-	margin-top:2em;
-	margin-bottom:0.5em;
-	background-color:#999;
-    background-image: url("../img/auroraX.png");
-	padding-bottom: 12px;
-	padding-top:2px;
-	padding-left: 10px;
-	font-size:1.4em;
-	border-radius:12px 12px 0px 0px;
-	margin-left:1.05em;
-	width:940px;
-	height:28px;
-	cursor:pointer;
-}
 
 .shrinked {
 	height:45px;
 }
 
-.stack {
-	box-sizing: border-box;
-    padding: 10px 10px 5px 10px;
-	width:940px;
-	position:relative;
-	margin-left:1.5em;
-	border-radius:0em;
-	cursor:pointer;
-	overflow:hidden;
-	margin-bottom:1em;
-	z-index:100;
-/*	box-shadow:0px 2px 7px rgba(0,0,0,0.1);
-*/	border-top:1px solid #e8e8e8;
-	border-top:1px solid #e8e8e8;
+@media all and (max-width: 959px) {
+	.filterbar {
+		box-sizing: border-box;
+		color:white;
+		height:1em;
+		margin-top:2em;
+		margin-bottom:0.5em;
+		background-color:#999;
+	    background-image: url("../img/auroraX.png");
+		padding-bottom: 12px;
+		padding-top:2px;
+		padding-left: 10px;
+		font-size:1.4em;
+		border-radius:12px 12px 0px 0px;
+		margin-left:1.05em;
+		width:90%;
+		height:28px;
+		cursor:pointer;
+	}
+
+	.stack {
+		box-sizing: border-box;
+	    padding: 10px 10px 5px 10px;
+		width:90%;
+		position:relative;
+		margin-left:1.5em;
+		border-radius:0em;
+		cursor:pointer;
+		overflow:hidden;
+		margin-bottom:1em;
+		z-index:100;
+	/*	box-shadow:0px 2px 7px rgba(0,0,0,0.1);
+	*/	border-top:1px solid #e8e8e8;
+		border-top:1px solid #e8e8e8;
+	}
+	.challenge {
+		width:100%px;
+	}
+}
+
+@media all and (min-width: 960px) {
+	.filterbar {
+		box-sizing: border-box;
+		color:white;
+		height:1em;
+		margin-top:2em;
+		margin-bottom:0.5em;
+		background-color:#999;
+	    background-image: url("../img/auroraX.png");
+		padding-bottom: 12px;
+		padding-top:2px;
+		padding-left: 10px;
+		font-size:1.4em;
+		border-radius:12px 12px 0px 0px;
+		margin-left:1.05em;
+		width:940px;
+		height:28px;
+		cursor:pointer;
+	}
+	.stack {
+		box-sizing: border-box;
+	    padding: 10px 10px 5px 10px;
+		width:940px;
+		position:relative;
+		margin-left:1.5em;
+		border-radius:0em;
+		cursor:pointer;
+		overflow:hidden;
+		margin-bottom:1em;
+		z-index:100;
+	/*	box-shadow:0px 2px 7px rgba(0,0,0,0.1);
+	*/	border-top:1px solid #e8e8e8;
+		border-top:1px solid #e8e8e8;
+	}
+	.challenge {
+		padding:10px;
+		width:940px;
+	}
 }
 
 .forbiddenfruit div {
@@ -415,6 +492,8 @@ h1 {
 	display:none;
 }
 
+
+
 .status_under_MCE {
 	position:relative;
 	width:530px;
@@ -488,4 +567,34 @@ h1 {
 
 .lowkey {
 	color:rgba(255,255,255,0.5)!important;
+}
+
+.zustimmung {
+	float:left;
+	height:40px;
+}
+
+.zustimmungstext {
+	padding-left:1.5em;
+	width:80%;
+}
+
+.cannot_submit {
+	background:rgba(255,255,255,0.6);
+	color:gray;
+	pointer-events:none;
+}
+
+.new_word_count {
+	position:absolute;
+	right:3px;
+	bottom:20px;
+}
+
+form {
+	position:relative;
+}
+
+.new_word_count::before {
+	content:'Word count: ';
 }

@@ -1,3 +1,8 @@
+
+# Uses the hostname for generated URLs from 'sites' table
+# at the index defined with SITE_ID.
+SITE_ID = 1
+
 # Use other paths if you intend to run this without vagrant
 MEDIA_ROOT = '/vagrant/aurora/media'
 STATIC_ROOT = '/vagrant/aurora/static'

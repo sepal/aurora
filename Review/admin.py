@@ -12,11 +12,12 @@ class ReviewAdmin(admin.ModelAdmin):
                     'creation_time',
                     'submission_time',
                     'reviewer',
+                    'extra_review_question_answer',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'elaboration', 'creation_time', 'submission_time', 'reviewer', )
+    list_display = ('id', 'elaboration', 'creation_time', 'submission_time', 'reviewer', 'extra_review_question_answer')
     search_fields = ('reviewer__username', 'elaboration__id',)
     readonly_fields = ("creation_time", )
 

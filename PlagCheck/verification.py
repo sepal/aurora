@@ -5,18 +5,18 @@ from PlagCheck.util.filter import filter_suspicion, load_suspicion_filters
 from PlagCheck import tasks as plagcheck_tasks
 
 
-def plagcheck_store_and_verify(store_only=False, dry=False, **kwargs):
+def plagcheck_store_and_verify(store_only=False, dry=False, ignore_filter=False, **kwargs):
     doc = plagcheck_store(dry, **kwargs)
 
     if not store_only:
-        plagcheck_verify(doc)
+        plagcheck_verify(doc, ignore_filter=ignore_filter)
 
     return doc
 
 
-def plagcheck_verify(doc):
+def plagcheck_verify(doc, ignore_filter=False):
     if doc:
-        plagcheck_tasks.check.delay(doc_id=doc.id)
+        plagcheck_tasks.check.delay(doc_id=doc.id, ignore_filter=ignore_filter)
 
 
 def plagcheck_check_unverified():
@@ -61,7 +61,7 @@ def plagcheck_store(dry_run=False, **kwargs):
     return doc
 
 
-def plagcheck_elaboration(elaboration, store_only=False):
+def plagcheck_elaboration(elaboration, store_only=False, ignore_filter=False, ignore_revised=False):
 
         username = elaboration.user.matriculation_number
         if username is None:
@@ -69,6 +69,7 @@ def plagcheck_elaboration(elaboration, store_only=False):
 
         doc = plagcheck_store_and_verify(
             store_only=store_only,
+            ignore_filter=ignore_filter,
 
             text=elaboration.elaboration_text,
             elaboration_id=elaboration.id,
@@ -78,17 +79,19 @@ def plagcheck_elaboration(elaboration, store_only=False):
             is_revised=False,
         )
 
-        if elaboration.elaboration_text != elaboration.revised_elaboration_text:
-            doc = plagcheck_store_and_verify(
-                store_only=store_only,
+        if not ignore_revised:
+            if elaboration.elaboration_text != elaboration.revised_elaboration_text:
+                doc = plagcheck_store_and_verify(
+                    store_only=store_only,
+                    ignore_filter=ignore_filter,
 
-                text=elaboration.revised_elaboration_text,
-                elaboration_id=elaboration.id,
-                user_id=elaboration.user.id,
-                user_name=username,
-                submission_time=str(elaboration.submission_time),
-                is_revised=True,
-            )
+                    text=elaboration.revised_elaboration_text,
+                    elaboration_id=elaboration.id,
+                    user_id=elaboration.user.id,
+                    user_name=username,
+                    submission_time=str(elaboration.submission_time),
+                    is_revised=True,
+                )
 
         return doc
 

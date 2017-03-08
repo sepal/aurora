@@ -1,24 +1,26 @@
 import os, itertools, fnmatch, random, codecs
+
 from unittest import skip
 from django.test import TestCase
 from django.test.utils import override_settings
+from django.utils import timezone
 
-from PlagCheck.models import Reference, Result, Suspicion, SuspicionState
-from PlagCheck import tasks
 from ddt import ddt, data
 
+from PlagCheck.models import Reference, Result, Suspicion, SuspicionState
 from Elaboration.models import Elaboration
 from Challenge.models import Challenge
 from AuroraUser.models import AuroraUser
 from Course.models import Course
-
+from PlagCheck.verification import plagcheck_elaboration
 from PlagCheck.util.settings import PlagCheckSettings
+
 import sherlock # noqa
 
 
 def hashes(doc_id):
     ret = list()
-    for ref in Reference.objects.all().filter(doc_id=doc_id):
+    for ref in Reference.objects.all().filter(suspect_doc_id=doc_id):
         ret.append(ref.hash)
     return ret
 
@@ -57,16 +59,14 @@ class PlagcheckTestData:
                        CELERY_ALWAYS_EAGER=True,
                        BROKER_BACKEND='memory')
 class PlagCheckTestCase(TestCase):
+    # use this setting to install clean fixtures into the second database
+    multi_db = True
 
     # Fixture
     def setUp(self):
-
         self.course = Course.objects.create(title="plagcheck", short_title="plagcheck", description="desc")
         self.user = AuroraUser.objects.create(nickname="plagcheck-test")
         self.challenge = Challenge.objects.create(title="plagcheck-challange", subtitle="subtitle", description="desc", course=self.course)
-
-        # self.challanges = Challenge.objects.all()
-        # self.users = AuroraUser.objects.all()
 
     # Helpers
     def import_text(self, filename, doc_id=None, user=None, challenge=None, is_new=True):
@@ -80,20 +80,19 @@ class PlagCheckTestCase(TestCase):
 
         ret = dict()
 
-        ret['elaboration'] = Elaboration.objects.create(challenge=challenge, user=user, elaboration_text=text)
+        # create the test elaboration
+        ret['elaboration'] = Elaboration.objects.create(challenge=challenge, user=user, elaboration_text=text, submission_time=timezone.now())
+
+        # let plagcheck run through it, explicetly
+        plagcheck_elaboration(ret['elaboration'], ignore_filter=True, ignore_revised=True)
+
+        # get result and suspicions if found
         ret['result'] = Result.objects.get(doc_id=ret['elaboration'].id)
-        ret['suspicions'] = Suspicion.objects.filter(doc_id=ret['elaboration'].id)
+        ret['suspicions'] = Suspicion.objects.filter(suspect_doc_id=ret['elaboration'].id)
 
         return ret
 
-        #return tasks.check(doc=text,
-        #                   doc_id=doc_id,
-        #                   doc_version=0,
-        #                   doc_type="default_type",
-        #                   username=user.nickname,
-        #                   is_new=False)
-
-    def insert_random_texts(self, count):
+    def import_random_texts(self, count):
         for i in range(0, count):
             self.import_text(PlagcheckTestData.get_random_text_path(), i)
 
@@ -152,7 +151,6 @@ class PlagCheckTestCase(TestCase):
         ret = self.import_text("simple/hello_world.txt")
         self.assertEqual(len(ret['suspicions']), 2)
 
-    #@skip("remove this")
     def test_elaboration_single_similar(self):
         """ Test if similar document is found """
 
@@ -161,7 +159,7 @@ class PlagCheckTestCase(TestCase):
         ret2 = self.import_text("simple/hello_world.txt")
 
         similarities = Reference.get_similar_elaborations(ret2['elaboration'].id)
-        (doc_id, similar_hashes, filter_id) = similarities[0]
+        (doc_id, similar_hashes) = similarities[0]
 
         self.assertEqual(doc_id, ret1['result'].doc_id)
         self.assertEqual(similar_hashes, ret1['result'].hash_count)
@@ -170,15 +168,15 @@ class PlagCheckTestCase(TestCase):
         """ Test if similar document is found """
 
         # import same text with different doc_id
-        ret1 = self.import_text("simple/hello_world.txt")
-        ret2 = self.import_text("simple/hello_world.txt")
-        ret3 = self.import_text("simple/hello_world.txt")
+        self.import_text("simple/hello_world.txt")
+        self.import_text("simple/hello_world.txt")
+        self.import_text("simple/hello_world.txt")
 
         similarities = Reference.get_similar_elaborations(2)
-        (doc_id, similar_hashes, filter_id) = similarities[0]
+        (doc_id, similar_hashes) = similarities[0]
         self.assertEqual(similar_hashes, 3)
 
-        (doc_id, similar_hashes, filter_id) = similarities[1]
+        (doc_id, similar_hashes) = similarities[1]
         self.assertEqual(similar_hashes, 3)
 
     def test_suspicion_single_similar(self):
@@ -192,7 +190,7 @@ class PlagCheckTestCase(TestCase):
 
         suspicion = Suspicion.objects.get()
 
-        self.assertEqual(suspicion.doc_id, ret2['elaboration'].id)
+        self.assertEqual(suspicion.suspect_doc_id, ret2['elaboration'].id)
         self.assertEqual(suspicion.similar_doc_id, ret1['elaboration'].id)
         self.assertEqual(suspicion.similarity, 75)
 
