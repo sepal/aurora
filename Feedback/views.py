@@ -63,11 +63,12 @@ def index(request, course_short_title):
 @login_required
 def issue_display(request, course_short_title, issue_id):
     """
-    Basically the same as the index, since react route will take care of showing
-    the specific issue. Couldn't find out how to move all into the index
-    function otherwise.
+    Basically the same as the index, since react route will take care of
+    showing the specific issue. Couldn't find out how to move all into the
+    index function otherwise.
     """
     return index(request, course_short_title)
+
 
 @login_required
 def api_issue(request, course_short_title, issue_id):
@@ -157,8 +158,8 @@ def issue_comments(request, course_short_title, issue_id):
     """
     Special API callback that returns the html part of the comments for a
     certain issue.
-    This is necessary, since the Feedback system reuses the Comments client side
-    code.
+    This is necessary, since the Feedback system reuses the Comments client
+    side code.
     """
     issue = Issue.objects.get(pk=issue_id)
     # Only the staff and the author are able to see issues of the type
@@ -171,5 +172,5 @@ def issue_comments(request, course_short_title, issue_id):
         'issue': issue,
         'course': Course.get_or_raise_404(course_short_title)
     }
-    
+
     return render(request, "issue_comments.html", context)
