@@ -134,7 +134,7 @@
 
 
 				{% if challenge_dict.status.status == 7 %}
-						<span class="step donow""> EVALUATED: </i><span style="font-weight:bold;">{{ challenge_dict.points }}</span> POINTS</span>
+						<span class="step donow"> EVALUATED: </i><span style="font-weight:bold;">{{ challenge_dict.points }}</span> POINTS</span>
 				{% endif %}
 			{% endif %}
 
@@ -241,7 +241,7 @@
                 <div class="card_headline">{{ challenge.title|safe }}</div>
                 <div class="card_text">{{ challenge.description|safe}}</div>
 			</div>
-			<div class="card_status_area">
+			<div class="card_status_area" onClick="#">
 					<span class="step s1 {% if challenge_dict.status.status > 0%}done{% endif %}" title="Start task"><i class="fa fa-pencil "></i></span>
 					<span style="color:gray">&rang;</span>
 				<span class="step s2 {% if challenge_dict.status.status > 1%}done{% endif %}" title="Enter your work for evaluation"><i class="fa fa-paper-plane  "></i></span>
