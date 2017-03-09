@@ -70,7 +70,7 @@ def populate(ctx):
 
 
 @task
-def db(ctx, fresh=False, plagcheck=False):
+def db(ctx, fresh=False, demo=False, plagcheck=False):
     """ Wipe databases and recreate them.
 
     :param plagcheck: Wipe also plagcheck database (default=False)
@@ -87,8 +87,8 @@ def db(ctx, fresh=False, plagcheck=False):
         ctx.run('python manage.py migrate --database=plagcheck --noinput')
         ctx.run('celery purge -f')
 
-    ctx.run('python manage.py collectstatic --clear --noinput')
-    ctx.run('python manage.py collectstatic --noinput')
+    if demo:
+        populate(ctx)
 
 
 @task
@@ -107,3 +107,10 @@ def celery(ctx, worker=1):
 def flower(ctx):
     """ Run the monitor for the message queue"""
     ctx.run('celery flower', pty=True)
+
+
+@task
+def static(ctx):
+    """ Install static files"""
+    ctx.run('python manage.py collectstatic --clear --noinput')
+    ctx.run('python manage.py collectstatic --noinput')
