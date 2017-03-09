@@ -1,37 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
-<head>
-<title>{{ thread.title }}</title>
-{% load staticfiles %}
-<script type="text/javascript" src="{% static 'diskurs/js/jquery-1.11.3.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'diskurs/js/jquery-ui.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'diskurs/js/diskurs.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'diskurs/css/diskurs.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'diskurs/css/jquery.emojipicker.css' %}">
-<script type="text/javascript" src="{% static 'diskurs/js/jquery.emojipicker.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'diskurs/css/jquery.emojipicker.a.css' %}">
-<script type="text/javascript" src="{% static 'diskurs/js/jquery.emojipicker.a.js' %}"></script>
-<script type="text/javascript" src="{% static 'diskurs/js/readmore.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'diskurs/js/jquery.insert-at-caret.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'diskurs/js/giffer.min.js' %}"></script>
-<link rel="stylesheet" href="{% static 'lightbox/css/lightbox.css' %}" type="text/css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="{% static 'diskurs/css/diskurs-override.css' %}" />
+{% extends "base.html" %}
+
+{% block additional_headers %}
+<script type="text/javascript" src="{{ STATIC_URL }}diskurs/js/diskurs.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}diskurs/css/diskurs.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}diskurs/css/jquery.emojipicker.css">
+<script type="text/javascript" src="{{ STATIC_URL }}diskurs/js/jquery.emojipicker.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}diskurs/css/jquery.emojipicker.a.css">
+<script type="text/javascript" src="{{ STATIC_URL }}diskurs/js/jquery.emojipicker.a.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}diskurs/js/readmore.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}diskurs/js/jquery.insert-at-caret.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}diskurs/js/giffer.min.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}diskurs/css/diskurs-override.css" />
 <script type="text/javascript">
 //<![CDATA[
     var diskurs_preview_url = '{% url 'diskurs:preview_post' course.short_title %}';
 //]]>
 </script>
-</head>
-<body>
-<div class="diskurs_head">Aurora Discussions{% if thread.title %}: <b>{{thread.title}}</b>{% endif %}
-	<span class="back_link"><a href="/{{course.short_title}}">Go home</a></span>
-	{% if thread.title %}<span class="back_link"><a href="/{{course.short_title}}/diskurs">discussion index</a></span>{% endif %}
-	<span class="back_link"><a href="https://titanpad.com/4dW2ukQqK4">Bugs &amp; Feedback</a></span>
-</div>
+{% endblock %}
 {% block content %}{% endblock content %}
-<script type="text/javascript" src="{% static 'lightbox/js/lightbox.js' %}"></script>
-</body>
-</html>
-
-
+<script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
 

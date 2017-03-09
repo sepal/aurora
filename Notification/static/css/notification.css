@@ -55,6 +55,14 @@
 	}
 }
 
+.glow {
+	box-shadow: 0 0 10px 3px rgb(58,201,88);
+	background:rgba(0,0,0,0.5);
+	color:black;
+}
+.glow a {color:rgb(58,201,88);}
+
+
 @media all and (min-width: 960px) {
 	.not_head_line {
 		width:950px;
@@ -107,6 +115,9 @@
 	    box-sizing: border-box;
 	    -moz-box-sizing: border-box;
 	    -webkit-box-sizing: border-box;
+	}
+	.glow {
+		box-shadow: 0 0 10px rgb(58,201,88);
 	}
 }
 
