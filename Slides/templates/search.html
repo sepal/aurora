@@ -5,10 +5,10 @@
 
 <!--search form-->
 <div class="row">
-<div class="col-xs-12">
-    <form method="GET" action="" class="text-xs-right">
-    <input type="text" name="q" placeholder="Search slides" value="{{ request.GET.q }}"/>
-    <input type="submit" value="Search" />
+<div class="col-xs-12 slides_search_field">
+    <form method="GET" action="{% url 'Slides:search' course.short_title %}" class="text-xs-right">
+    <input type="text" name="q" placeholder="Search slides"/>
+    <input type="submit" value="&#x1F50D" />
     </form>
 </div>
 </div>
