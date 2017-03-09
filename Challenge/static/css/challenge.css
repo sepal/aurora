@@ -286,17 +286,6 @@ h1 {
 	/*color:rgb(58,201,88);*/
 }
 
-.not_stack {
-	clear:both;
-	position:relative;
-	padding: 1em;
-	padding-bottom:0em;
-	margin-left:0.5em;
-	border-radius:0.5em;
-	cursor:pointer;
-	overflow:hidden;
-	width:960px;
-}
 
 
 .shrinked {
@@ -304,31 +293,48 @@ h1 {
 }
 
 @media all and (max-width: 959px) {
+	.not_stack {
+		clear:both;
+		position:relative;
+		padding: 1em;
+		padding-bottom:0em;
+		border-radius:0.5em;
+		cursor:pointer;
+		overflow:hidden;
+		width:95%;
+	}
+
+	.grid_1 {
+		padding-bottom:3em;
+	}
+
 	.filterbar {
 		box-sizing: border-box;
 		color:white;
-		height:1em;
+		height:48px;
 		margin-top:2em;
 		margin-bottom:0.5em;
 		background-color:#999;
 	    background-image: url("../img/auroraX.png");
 		padding-bottom: 12px;
-		padding-top:2px;
+		padding-top:1em;
 		padding-left: 10px;
 		font-size:1.4em;
-		border-radius:12px 12px 0px 0px;
-		margin-left:1.05em;
-		width:90%;
-		height:28px;
+		width:100%;
 		cursor:pointer;
+		text-shadow:0 0 3px black;
+	}
+
+	.filterbar i {
+		float:right;
+		padding-right:8px;
 	}
 
 	.stack {
 		box-sizing: border-box;
 	    padding: 10px 10px 5px 10px;
-		width:90%;
+		width:100%;
 		position:relative;
-		margin-left:1.5em;
 		border-radius:0em;
 		cursor:pointer;
 		overflow:hidden;
@@ -344,6 +350,17 @@ h1 {
 }
 
 @media all and (min-width: 960px) {
+	.not_stack {
+		clear:both;
+		position:relative;
+		padding: 1em;
+		padding-bottom:0em;
+		margin-left:0.5em;
+		border-radius:0.5em;
+		cursor:pointer;
+		overflow:hidden;
+		width:960px;
+	}
 	.filterbar {
 		box-sizing: border-box;
 		color:white;

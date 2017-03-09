@@ -171,6 +171,11 @@
 .singleChallenge {
 }
 
+.step {
+	padding-top:0.7em;
+	padding-bottom:0.7em;
+}
+
 
 .review_label {
 	clear:both;

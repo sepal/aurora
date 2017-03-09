@@ -114,3 +114,21 @@ def static(ctx):
     """ Install static files"""
     ctx.run('python manage.py collectstatic --clear --noinput')
     ctx.run('python manage.py collectstatic --noinput')
+
+
+@task
+def server(ctx):
+    """ Run the debugging webserver"""
+    ctx.run('python manage.py runserver', pty=True)
+
+
+@task
+def celery(ctx, worker=1):
+    """ Run the background worker"""
+    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)
+
+
+@task
+def flower(ctx):
+    """ Run the monitor for the message queue"""
+    ctx.run('celery flower', pty=True)

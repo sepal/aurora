@@ -65,4 +65,42 @@
 
     {% endif %}
   </div>
+  <div class="pagebottom">
+      <ul>
+         <li id="feed-li">
+            <a href="{% url 'home' course.short_title %}"><i class="fa fa-newspaper-o "></i></a></li>
+
+		{% if "1" %}
+        <li id="challenges-li">
+          <a href="{% url 'Challenge:home' course.short_title %}"><i class="fa fa-pencil "></i></a></li>
+		{% else %}
+        <li id="challenges-li" style="color:#666" title="Der Zugang zu Challenges ist mehr möglich, weil die Einführungs-Challenge nicht abgegeben wurde.">
+          <s>Challenges</s></li>
+		{% endif %}
+
+        <li id="slides-li">
+          <a href="{% url 'Slides:slides' course.short_title %}"><i class="fa fa-tv "></i></a></li>
+			
+		{% if course.short_title == "gsi" %}
+	        <li id="slides-li">
+	          <a href="{% url 'diskurs:index' course.short_title %}"><i class="fa fa-comment-o "></i></a></li>
+		{% endif %}
+
+        <li id="bugs-li">
+          <a href="https://piratenpad.de/p/tr4m3bj6" target="_blank"><i class="fa fa-bug "></i></a>
+        </li>
+
+        {% if user.is_staff %}
+          <li id="evaluation-li"><a href="{% url 'Evaluation:home' course.short_title %}"><i class="fa fa-star-half-empty"></i></a></li>
+        {% endif %}
+
+        {% if user.is_superuser %}
+          <li id="statistics-li"><a href="{% url 'Statistics:home' course.short_title %}"><i class="fa fa-bar-chart"></i></a></li>
+        {% endif %}
+        <li id="notifications-li" class="unread_notifications">
+          <a id="unread_notifications"  href="{% url 'Notification:list' course.short_title %}">{{ unread_notifications|length }}</a>
+        </li>
+		
+      </ul>
+  </div>
 </div>
