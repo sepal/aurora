@@ -293,6 +293,9 @@ h1 {
 }
 
 @media all and (max-width: 959px) {
+	.chapter_name {
+		display:none;
+	}
 	.not_stack {
 		clear:both;
 		position:relative;
@@ -347,6 +350,7 @@ h1 {
 .filterbar i {
 	float:right;
 	padding-right:8px;
+	text-shadow:none;
 }
 
 @media all and (min-width: 960px) {
@@ -363,21 +367,20 @@ h1 {
 	}
 	.filterbar {
 		box-sizing: border-box;
+		margin-left:1.5em;
 		color:white;
-		height:1em;
+		height:23px;
 		margin-top:2em;
 		margin-bottom:0.5em;
 		background-color:#999;
 	    background-image: url("../img/auroraX.png");
 		padding-bottom: 12px;
-		padding-top:2px;
+		padding-top:4px;
 		padding-left: 10px;
 		font-size:14px;
 		font-weight:bold;
 		border-radius: 4px 4px 1px 1px;
-		margin-left:1.05em;
 		width:940px;
-		height:28px;
 		text-shadow:0 0 3px black;
 		cursor:pointer;
 	}
