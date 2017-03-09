@@ -1,3 +1,11 @@
+.RSS {
+	float:right;
+}
+
+.not_head_line {
+	width:950px;
+}
+
 .notificationList {
 	margin-top:15px;
 	clear:both;

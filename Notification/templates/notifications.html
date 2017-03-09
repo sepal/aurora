@@ -17,13 +17,18 @@
 {% load humanize %}
 {% load static %}
 
-{% if feed_token %}
-    <div>
-    <a rel="alternate" type="application/atom+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button>Get your notifications as a RSS feed.</button></a>
+<div class="not_head_line">
+	{% if feed_token %}
+    <div class="RSS">
+    	<a rel="alternate" type="application/atom+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button><i class="fa fa-rss-square fa-2x"></i></button></a>
     </div>
-{% endif %}
+	{% endif %}
+
 
   {% if notifications|length > 0 %}<button id="read_all_button" class="irrelevant">Mark all as read</button>{% else %} <button class="irrelevant" style="color:black">nothing here</button> {% endif %}
+  
+ </div>
+ 
   <div class="notificationList">
   {% for notification in notifications %}
     <a href="{% url 'Notification:list' course.short_title %}?id={{ notification.id }}{% if notification.link %}&link={{ notification.link }}{% endif %}">
