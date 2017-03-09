@@ -62,6 +62,19 @@ body {margin:0;padding:0;}
 		left:0;
 		z-index:100;
 }
+@media all and (min-width: 960px) {
+	.mini {
+		display:none;
+	}
+}
+@media all and (max-width: 959px) {
+	.too_long {
+		display:none;
+	}
+	.full {
+		display:none;
+	}
+}
 
 .back_link a {
 	display:inline-block;
