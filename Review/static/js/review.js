@@ -11,6 +11,9 @@ $(function() {
 	});
 });
 
+$(document).ready(function() {
+  $("trix-editor").attr('contenteditable', 'false');
+});
 
 $(review_loaded);
 

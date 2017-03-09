@@ -6,22 +6,21 @@
 var purgsLoadFilter;
 
 if (typeof(loadFilter) === 'undefined') {
-    purgsLoadFilter = function () {
-    };
+    purgsLoadFilter = function() {};
 } else {
     purgsLoadFilter = loadFilter;
 }
 
 
 
-var COMMENTS = (function (my, $, purgsLoadFilter) {
+var COMMENTS = (function(my, $, purgsLoadFilter) {
     "use strict";
 
-    my.registerAllTheElements = function () {
+    my.registerAllTheElements = function() {
         my.registerStartPolling();
         my.registerStopPolling();
 
-        $('.comment_list').each(function () {
+        $('.comment_list').each(function() {
             $(this).find('*').off();
             my.registerElementsForCommentList($(this));
         });
@@ -41,7 +40,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         posting: false
     };
 
-    my.registerElementsForCommentList = function ($comment_list) {
+    my.registerElementsForCommentList = function($comment_list) {
         my.registerReplyLinksForCommentList($comment_list);
         my.registerEditLinksForCommentList($comment_list);
         my.registerDeleteLinksForCommentList($comment_list);
@@ -51,14 +50,14 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         my.registerSeenLinksForCommentList($comment_list);
     };
 
-    my.registerPolling = function () {
+    my.registerPolling = function() {
         var $window = $(window);
         $window.off('blur');
-        $window.blur(function () {
+        $window.blur(function() {
             my.POLLING.current_interval = my.POLLING.idle_interval;
         });
         $window.off('focus');
-        $window.focus(function () {
+        $window.focus(function() {
             my.POLLING.current_interval = my.POLLING.active_interval;
 
             if (!my.state.modifying && !my.state.posting) {
@@ -67,28 +66,28 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.registerStopPolling = function () {
+    my.registerStopPolling = function() {
         var $stopPolling = $('#stopPolling');
         $stopPolling.off();
-        $stopPolling.click(function (event) {
+        $stopPolling.click(function(event) {
             event.preventDefault();
             my.stopPolling();
             return false;
         });
     };
 
-    my.registerStartPolling = function () {
+    my.registerStartPolling = function() {
         var $startPolling = $('#startPolling');
         $startPolling.off();
-        $startPolling.click(function (event) {
+        $startPolling.click(function(event) {
             event.preventDefault();
             my.startPolling();
             return false;
         });
     };
 
-    my.registerVoteForCommentList = function ($comment_list) {
-        $comment_list.find('.vote_up_on').click(function (event) {
+    my.registerVoteForCommentList = function($comment_list) {
+        $comment_list.find('.vote_up_on').click(function(event) {
             event.preventDefault();
 
             my.POLLING.resetTimer();
@@ -97,7 +96,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             return false;
         });
 
-        $comment_list.find('.vote_down_on').click(function (event) {
+        $comment_list.find('.vote_down_on').click(function(event) {
             event.preventDefault();
 
             my.POLLING.resetTimer();
@@ -147,15 +146,15 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         }
     };
 
-    my.registerAddCommentFormButtons = function () {
-        $('.button_add_comment_form').each(function () {
+    my.registerAddCommentFormButtons = function() {
+        $('.button_add_comment_form').each(function() {
             my.registerAddCommentFormButton($(this));
         });
     };
 
-    my.registerAddCommentFormButton = function ($button) {
+    my.registerAddCommentFormButton = function($button) {
         $button.off();
-        $button.click(function (event) {
+        $button.click(function(event) {
             event.preventDefault();
 
             if (my.state.modifying) {
@@ -194,8 +193,8 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.registerEditLinksForCommentList = function ($comment_list) {
-        $comment_list.find('.edit_link').click(function (event) {
+    my.registerEditLinksForCommentList = function($comment_list) {
+        $comment_list.find('.edit_link').click(function(event) {
             event.preventDefault();
 
             if (my.state.posting || my.state.modifying) {
@@ -214,7 +213,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
 
             $commentText.attr('contenteditable', true);
 
-            $comment.on("keydown", function (e) {
+            $comment.on("keydown", function(e) {
                 var lineBreak;
 
                 if (e.which === 13 && !e.shiftKey) {
@@ -229,6 +228,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             });
 
             $(document).keydown(handleHotkeys);
+
             function handleHotkeys(e) {
                 if (e.which === 27) {
                     cancelEdit(e);
@@ -256,6 +256,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             var $cancel = $('#edit_cancel');
             $cancel.off();
             $cancel.click(cancelEdit);
+
             function cancelEdit(event) {
                 event.preventDefault();
 
@@ -269,6 +270,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             var $save = $('#edit_save');
             $save.off();
             $save.click(saveEdit);
+
             function saveEdit(event) {
                 event.preventDefault();
 
@@ -279,11 +281,13 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
                     .replace(/&gt;?/ig, '>')
                     .replace(/&amp;?/ig, '&');
 
-                var data = {comment_id: $comment.data('comment_number'),
-                    text: text};
+                var data = {
+                    comment_id: $comment.data('comment_number'),
+                    text: text
+                };
 
                 $.ajax({
-                    beforeSend: function (xhr) {
+                    beforeSend: function(xhr) {
                         xhr.setRequestHeader("X-CSRFToken", my.getCsrfToken());
                     },
                     url: my.EDIT_URL,
@@ -291,11 +295,10 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
                     data: data,
                     type: 'POST',
                     dataType: 'html',
-                    success: function () {
+                    success: function() {
                         endEdit();
                     },
-                    complete: function (xhr, status) {
-                    }
+                    complete: function(xhr, status) {}
                 });
 
                 return false;
@@ -305,8 +308,8 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.registerReplyLinksForCommentList = function ($comment_list) {
-        $comment_list.find('[id^=reply_comment_link_]').click(function (event) {
+    my.registerReplyLinksForCommentList = function($comment_list) {
+        $comment_list.find('[id^=reply_comment_link_]').click(function(event) {
             event.preventDefault();
 
             if (my.state.modifying) {
@@ -347,7 +350,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.setCommentId = function ($form, comment_number) {
+    my.setCommentId = function($form, comment_number) {
         $form.find('#id_parent_comment').attr('value', comment_number);
 
         var $comment = $('[data-comment_number=' + comment_number + ']');
@@ -356,8 +359,8 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         $form.find('#id_reference_type_id').attr('value', ref_obj.type);
     };
 
-    my.registerDeleteLinksForCommentList = function ($comment_list) {
-        $comment_list.find('.delete_comment, .delete_response').click(function (event) {
+    my.registerDeleteLinksForCommentList = function($comment_list) {
+        $comment_list.find('.delete_comment, .delete_response').click(function(event) {
             event.preventDefault();
 
             if (my.state.modifying || my.state.posting) {
@@ -378,14 +381,16 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             function deleteComment() {
                 $.ajax({
                     url: my.DELETE_URL,
-                    data: { comment_id: comment_number },
+                    data: {
+                        comment_id: comment_number
+                    },
                     type: 'POST',
                     dataType: 'json',
-                    beforeSend: function (xhr) {
+                    beforeSend: function(xhr) {
                         var csrftoken = my.getCsrfToken();
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     },
-                    complete: function () {
+                    complete: function() {
                         endDelete();
                     }
                 });
@@ -400,7 +405,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
 
             var $delete_cancel = $('#delete_cancel');
             $delete_cancel.off();
-            $delete_cancel.click(function (event) {
+            $delete_cancel.click(function(event) {
                 event.preventDefault();
                 endDelete();
                 $actions.show();
@@ -409,7 +414,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
 
             var $delete_confirm = $('#delete_confirm');
             $delete_confirm.off();
-            $delete_confirm.click(function (event) {
+            $delete_confirm.click(function(event) {
                 event.preventDefault();
                 deleteComment();
                 return false;
@@ -419,11 +424,12 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.registerReplyButton = function () {
+    my.registerReplyButton = function() {
         var $button_post_reply = $('#button_post_reply');
         $button_post_reply.off();
-        $button_post_reply.click(function (event) {
+        $button_post_reply.click(function(event) {
             event.preventDefault();
+            event.stopPropagation();
 
             $('#replyCourseShortTitle').val(course_short_title || '');
 
@@ -431,11 +437,6 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             var $newComment = $('#comment_new');
             var $replyTextarea = $('#replyTextarea');
             var text = $replyTextarea.val();
-
-            var $seen_button = $button_post_reply.closest('div.comment_with_responses').find('.mark_seen_link');
-            if (typeof $seen_button !== 'undefined') {
-                $seen_button.click();
-            }
 
             $replyForm.after($newComment);
             $newComment.find(".comment_text").text(text);
@@ -447,7 +448,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
                 data: $(this).closest('form').serialize(),
                 type: 'POST',
                 dataType: 'html',
-                success: function () {
+                success: function() {
                     $replyTextarea.val('');
                     my.startPolling();
                     my.state.posting = false;
@@ -457,10 +458,10 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.registerCancelReplyButton = function () {
+    my.registerCancelReplyButton = function() {
         var $button_cancel_reply = $('#button_cancel_reply');
         $button_cancel_reply.off();
-        $button_cancel_reply.click(function (event) {
+        $button_cancel_reply.click(function(event) {
             event.preventDefault();
             $('#replyForm').hide();
             $('#replyTextarea').val('');
@@ -470,17 +471,17 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.hideCommentForm = function () {
+    my.hideCommentForm = function() {
         var $form = $('#commentForm');
         $form.hide();
         $('#commentTextarea').val('');
         $form.prev().show();
     };
 
-    my.registerCancelCommentButton = function () {
+    my.registerCancelCommentButton = function() {
         var $button_cancel_comment = $('#button_cancel_comment');
         $button_cancel_comment.off();
-        $button_cancel_comment.click(function (event) {
+        $button_cancel_comment.click(function(event) {
             event.preventDefault();
             my.hideCommentForm();
             my.state.posting = false;
@@ -489,10 +490,10 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    my.registerSubmitCommentButton = function () {
+    my.registerSubmitCommentButton = function() {
         var $button_add_comment = $('#button_add_comment');
         $button_add_comment.off();
-        $button_add_comment.click(function (event) {
+        $button_add_comment.click(function(event) {
             event.preventDefault();
 
             var $commentTextarea = $("#commentTextarea");
@@ -505,31 +506,29 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
 
             $commentForm.hide();
             $newComment.show();
-						
+
             $.ajax({
                 url: my.POST_URL,
                 data: $commentForm.serialize(),
                 type: "POST",
                 dataType: 'html',
-                success: function () {
+                success: function() {
                     my.hideCommentForm();
                     my.startPolling();
                 },
-                error: function (xhr, status) {
-                },
-                complete: function (xhr, status) {
-                }
+                error: function(xhr, status) {},
+                complete: function(xhr, status) {}
             });
 
             my.state.posting = false;
-			if(window.location.href.indexOf("/slides/studio/lecture/") != -1)
-			{
-				setTimeout(function () { 
-					var tp = $('#contentblock').scrollTop(); var lft = $('#contentblock').scrollLeft();
-		        	if (tp || lft) window.name = 'X_' + lft + '_' + tp + '_X';
-					location.reload(1); 
-				}, 500);
-			}
+            if (window.location.href.indexOf("/slides/studio/lecture/") != -1) {
+                setTimeout(function() {
+                    var tp = $('#contentblock').scrollTop();
+                    var lft = $('#contentblock').scrollLeft();
+                    if (tp || lft) window.name = 'X_' + lft + '_' + tp + '_X';
+                    location.reload(1);
+                }, 500);
+            }
             return false;
         });
     };
@@ -539,31 +538,33 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         current_interval: 5000,
         active_interval: 5000,
         idle_interval: 60000,
-        increase_interval: function () {
+        increase_interval: function() {
             my.POLLING.current_interval = Math.min(my.POLLING.current_interval * 2, my.POLLING.idle_interval);
         },
         firstRefId: null,
         lastRefId: null,
 
-        resetTimer: function () {
+        resetTimer: function() {
             if (!my.POLLING.stopped) {
                 clearTimeout(my.POLLING.current_timeout);
-                my.POLLING.current_timeout = setTimeout(function () {
+                my.POLLING.current_timeout = setTimeout(function() {
                     my.updateCommentLists(true);
                 }, my.POLLING.current_interval);
             }
         }
     };
 
-    my.updateCommentLists = function (keepPolling) {
-        var data = {revisions: my.getRevisions()};
-		$('#lindicator').fadeIn(50);
+    my.updateCommentLists = function(keepPolling) {
+        var data = {
+            revisions: my.getRevisions()
+        };
+        $('#lindicator').fadeIn(50);
         $.ajax({
             url: my.UPDATE_URL,
             data: data,
             type: 'POST',
             dataType: 'json',
-            success: function (json) {
+            success: function(json) {
                 var comment_list_updates = json.comment_list_updates;
                 if (comment_list_updates.length > 0) {
                     my.handleCommentListUpdates(comment_list_updates);
@@ -576,28 +577,28 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
                     my.POLLING.idle_interval = json.polling_idle_interval;
                 }
             },
-            error: function () {
+            error: function() {
                 my.POLLING.increase_interval();
             },
-            complete: function () {
+            complete: function() {
                 if (keepPolling === true) {
                     my.POLLING.resetTimer();
                 }
             },
-            beforeSend: function (xhr) {
+            beforeSend: function(xhr) {
                 var csrftoken = my.getCsrfToken();
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         });
-		$('#lindicator').fadeOut(200);
+        $('#lindicator').fadeOut(200);
     };
 
-    my.findCommentListByRef = function (ref_id, ref_type) {
+    my.findCommentListByRef = function(ref_id, ref_type) {
         return $('.comment_list').filter('[data-ref_type=' + ref_type + ']')
             .filter('[data-ref_id=' + ref_id + ']');
     };
 
-    my.handleCommentListUpdates = function (comment_list_updates) {
+    my.handleCommentListUpdates = function(comment_list_updates) {
         var ref_id, ref_type, html;
         var $comment_list;
 
@@ -616,7 +617,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         }
     };
 
-    my.replaceCommentListWithHtml = function ($comment_list, html) {
+    my.replaceCommentListWithHtml = function($comment_list, html) {
         var ref_type = $comment_list.data('ref_type');
         var ref_id = $comment_list.data('ref_id');
 
@@ -655,29 +656,29 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         my.registerElementsForCommentList($comment_list);
     };
 
-    my.stopPolling = function () {
+    my.stopPolling = function() {
         clearTimeout(my.POLLING.current_timeout);
         my.POLLING.stopped = true;
     };
 
-    my.startPolling = function () {
+    my.startPolling = function() {
         my.POLLING.stopped = false;
         my.updateCommentLists(true);
     };
 
-    my.setActivePollingObjects = function (firstRefId, lastRefId) {
+    my.setActivePollingObjects = function(firstRefId, lastRefId) {
         my.POLLING.firstRefId = firstRefId;
         my.POLLING.lastRefId = lastRefId;
 
         my.updateCommentLists(false);
     };
 
-    my.getRevisions = function () {
+    my.getRevisions = function() {
         var revisions = [];
         var ref_id;
 
         var $comment_lists = $('.comment_list');
-        $comment_lists.each(function () {
+        $comment_lists.each(function() {
             var $this = $(this);
             ref_id = $this.attr('data-ref_id');
             if (my.POLLING.firstRefId !== null) {
@@ -698,7 +699,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         return revisions;
     };
 
-    my.getRevision = function ($comment_list) {
+    my.getRevision = function($comment_list) {
         return {
             id: $comment_list.data('revision'),
             ref_type: $comment_list.data('ref_type'),
@@ -706,10 +707,13 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         };
     };
 
-    my.findClosestRefObj = function ($child) {
+    my.findClosestRefObj = function($child) {
         var ref_type = $child.closest('[data-ref_type]').attr('data-ref_type');
         var ref_id = $child.closest('[data-ref_id]').attr('data-ref_id');
-        return { type: ref_type, id: ref_id };
+        return {
+            type: ref_type,
+            id: ref_id
+        };
     };
 
     /**
@@ -728,17 +732,17 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         });
     };
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         my.registerAllTheElements();
         my.fixEndlessPaginationLinks();
     });
 
-    $(window).load(function() {
-        if(typeof(checkSlidesInView) !== 'undefined') {
-            checkSlidesInView();
-        }
+    $(window).on('load', function(){
+      if (typeof(checkSlidesInView) !== 'undefined') {
+          checkSlidesInView();
+      }
 
-        my.startPolling();
+      my.startPolling();
     });
 
     return my;

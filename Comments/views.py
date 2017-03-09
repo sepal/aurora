@@ -137,9 +137,9 @@ def lecturer_post(request):
 def create_comment(form, request):
     if not form.is_valid():
         raise ValidationError('The submitted form was not valid')
-    
+
     homeURL = form.cleaned_data['uri']
-    
+
     context = RequestContext(request)
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     ref_type_id = form.cleaned_data['reference_type_id']
@@ -165,7 +165,7 @@ def create_comment(form, request):
                                      visibility=visibility)
 
     if comment.author.is_staff or comment.visibility == Comment.PRIVATE:
-        comment.seen = True
+        # comment.seen = True
         comment.save()
 
     comment_list = CommentList.get_by_comment(comment)

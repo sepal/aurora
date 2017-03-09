@@ -12,6 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import *
 
 from Elaboration.models import Elaboration
+from Stack.models import StackChallengeRelation, Stack
 
 from PlagCheck.util.state import SuspicionState
 from PlagCheck.util.settings import PlagCheckSettings
@@ -37,7 +38,13 @@ class Document(models.Model):
     is_revised = models.BooleanField(null=False, default=False)
 
     def get_elaboration(self):
-        return Elaboration.objects.get(pk=self.elaboration_id)
+
+        elab = Elaboration.objects.get(pk=self.elaboration_id)
+
+        if elab.submission_time != self.submission_time:
+            return None
+
+        return elab
     elaboration = property(get_elaboration)
 
     def get_user(self):
@@ -61,6 +68,19 @@ class Document(models.Model):
         info['User ID'] = self.user_id
         info['Elaboration ID'] = self.elaboration_id
         info['Submission time'] = self.submission_time
+
+        try:
+            challenge = self.elaboration.challenge
+
+            relation = StackChallengeRelation.objects.get(challenge=challenge, challenge__course=challenge.course)
+
+            info['Challenge'] = relation.stack.title
+            info['Task'] = challenge.title
+            info['Course'] = challenge.course.short_title
+        except Elaboration.DoesNotExist:
+            info['Challenge'] = "unknown"
+            info['Task'] = "unknown"
+            info['Course'] = "unknown"
 
         return info
     document_info = property(get_document_info)
@@ -109,6 +129,13 @@ class Document(models.Model):
 
         return docs
 
+    @staticmethod
+    def get_doc_from_elaboration_id(elaboration_id):
+        docs = Document.objects.filter(elaboration_id=elaboration_id).order_by('-submission_time')
+        if docs.count() == 0:
+            return None
+        else:
+            return docs[0]
 
 
 class Result(models.Model):

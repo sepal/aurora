@@ -31,7 +31,7 @@ function countChars() {
 	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
 }
 
-function challenge_loaded() {	
+function challenge_loaded() {
     // Register event handlers
     if ($('.elaboration_block').length) {
         $('.submit').click(submit_clicked);
@@ -45,6 +45,8 @@ function challenge_loaded() {
         event.preventDefault();
         return
     });
+
+    document.querySelector(".submitted-content > trix-editor").contentEditable = false
 
     // Autosafe elaboration every x milliseconds
     var autosave_interval = 20000

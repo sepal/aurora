@@ -4,6 +4,10 @@ $(function () {
     });
 });
 
+$(document).ready(function() {
+  $("trix-editor").attr('contenteditable', 'false');
+});
+
 $(function() {
     tinymce.init({
         // selector: "textarea#editor",

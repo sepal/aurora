@@ -909,11 +909,14 @@ td.diff_header {
 
 .submitted-content > trix-toolbar {
   display: none !important;
-  pointer-events: none !important;
+}
+
+trix-editor a {
+  text-decoration: underline !important;
+  color: #0000EE !important;
 }
 
 .submitted-content > trix-editor {
-  pointer-events: none !important;
   background-color: white;
 }
 

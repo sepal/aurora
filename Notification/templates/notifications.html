@@ -17,7 +17,6 @@
 {% load humanize %}
 {% load static %}
 
-<div class="not_head_line">
 	{% if feed_token %}
     <div class="RSS">
     	<a rel="alternate" type="application/atom+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button><i class="fa fa-rss-square fa-2x"></i></button></a>

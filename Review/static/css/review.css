@@ -328,11 +328,10 @@ input[type=submit] {
 
 .submitted-content > trix-toolbar {
   display: none !important;
-  pointer-events: none !important;
 }
 
-.submitted-content > trix-editor {
-  pointer-events: none !important;
+trix-editor {
+  background-color: white !important;
 }
 
 .submitted-content {

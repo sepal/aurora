@@ -119,8 +119,8 @@
 	background:#316134;
 	color:white;
 	padding:16px 16px 0px 16px;
-	border-bottom:1px dashed rgba(255,255,255,0.5);	
-	border-radius:3px 3px 0 0;	
+	border-bottom:1px dashed rgba(255,255,255,0.5);
+	border-radius:3px 3px 0 0;
 	box-sizing: border-box;
 	position:relative;
 }
@@ -571,11 +571,6 @@ h1 {
 
 .submitted-content > trix-toolbar {
   display: none !important;
-  pointer-events: none !important;
-}
-
-.submitted-content > trix-editor {
-  pointer-events: none !important;
 }
 
 .submitted-content {
