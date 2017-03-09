@@ -329,14 +329,14 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	.course_selected {
 	    font-family: 'yanone_kaffeesatz_rgregular';
 	    color: white; /*rgb(110,184,99);*/
-	    font-size: 20px;
+	    font-size: 32px;
 		padding-right:48px;
 		overflow:hidden;
 		cursor:pointer;
 		/*z-index:4201;*/
 		display:inline;
 		position:relative;
-		top:8px;
+		top:5px;
 		overflow:hidden;
 	}
 	.long_title_text {
@@ -405,36 +405,89 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 
 }
 
-.pagehead {
-    position: relative;
-	top:-5px;
-	background-color:#254B1F;
-    background-image: url("../img/auroraH.png");
-	background-clip: border-box;
-	background-origin: border-box;
-	background-position: 0 0%;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-    min-height: 96px;
-    color: black;
-	padding-left:12px;
-    vertical-align: bottom;
-    width: 100%;
-}
+@media all and (max-width: 959px) {
+	.pagebottom {
+		z-index:32760;
+		position:fixed;
+		bottom:-1px;
+		height:48px;
+		background-color:#254B1F;
+	    background-image: url("../img/auroraH.png");
+		background-clip: border-box;
+		background-origin: border-box;
+		background-position: 0 0%;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		color:white;
+		padding-left:12px;
+	    vertical-align: bottom;
+	    width: 100%;
+	}
+	
+	.pagebottom>ul {
+		list-style:none;
+		position:absolute;
+		bottom:8px;
+	    display: flex;
+		flex-direction:row;
+		flex-wrap:nowrap;
+	    justify-content: space-between;
+		width:95%;
+	}
+	
+	.pagebottom ul li {
+		width:32px;
+	    font-size: 28px;
+	    margin-right: 6px;
+	    margin-left: 6px;
+		color:white;
+		vertical-align:middle;
+	}
 
+	.unread_notifications {
+		border-radius:32px;
+		background-color: rgba(255,255,255,0.5);
+		text-align:center;
+	}
 
-.pagehead> ul {
-    list-style: none;
-    position: absolute;
-    bottom: 5px;
-}
+	.unread_notifications > a {
+		font-size:20px;
+		height:32px;
+		position:relative;
+		width:32px;
+		bottom:-4px;
+		display:block;
+		vertical-align:middle;
+	}
 
-@media only screen and (max-width: 959px) {
+	.pagehead {
+	    position: relative;
+		top:-5px;
+		background-color:#254B1F;
+	    background-image: url("../img/auroraH.png");
+		background-clip: border-box;
+		background-origin: border-box;
+		background-position: 0 0%;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	    height: 48px;
+	    color: black;
+		padding-left:12px;
+	    vertical-align: bottom;
+	    width: 100%;
+	}
+
+	.pagehead> ul {
+		display:none;
+	    list-style: none;
+	    position: absolute;
+	    bottom: 5px;
+	}
 	.headline {
 	    margin-top: 5px;
 	    margin-left: 0px;
 	    font-family: 'yanone_kaffeesatzthin';
-	    font-size: 16px;
+	    font-size: 24px;
 	}
 
 	.pagehead ul li {
@@ -444,42 +497,17 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	    margin-right: 0px;
 	    margin-left: 1px;
 	}
-}
-
-@media only screen and (min-width: 959px) {
-	.headline {
-	    margin-top: 5px;
-	    margin-left: 10px;
-	    font-family: 'yanone_kaffeesatzthin';
-	    font-size: 16px;
-	}
-
-	.pagehead ul li {
-	    font-size: 20px;
-	    display: inline;
-	    font-family: 'yanone_kaffeesatz_rgregular';
-	    margin-right: 10px;
-	    margin-left: 10px;
-	}
-}
-
-.pagehead a {
-    color: white;
-    text-decoration: none;
-}
-
-@media only screen and (max-width: 959px) {
 	.logout_button {
 		text-transform: capitalize !important;
 	    position: absolute;
 	    bottom:5px;
-	    right: 6px;
+	    right: 52px;
 		border:none;
 		background-color:rgba(0,0,0,0);
 		color:white;
-	    font-size: 15px;
-	    font-family: 'yanone_kaffeesatz_rgbold';
+	    font-family: 'yanone_kaffeesatz_rgregular';
 		cursor:pointer;
+	    font-size: 32px;
 	}
 	.user_info {
 		cursor:pointer;
@@ -495,7 +523,47 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	}
 }
 
-@media only screen and (min-width: 960px) {
+@media all and (min-width: 960px) {
+	.pagebottom {
+		display:none;
+	}
+	.pagehead {
+	    position: relative;
+		top:-5px;
+		background-color:#254B1F;
+	    background-image: url("../img/auroraH.png");
+		background-clip: border-box;
+		background-origin: border-box;
+		background-position: 0 0%;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	    min-height: 96px;
+	    color: black;
+		padding-left:12px;
+	    vertical-align: bottom;
+	    width: 100%;
+	}
+
+
+	.pagehead> ul {
+	    list-style: none;
+	    position: absolute;
+	    bottom: 5px;
+	}
+	.headline {
+	    margin-top: 5px;
+	    margin-left: 10px;
+	    font-family: 'yanone_kaffeesatzthin';
+	    font-size: 16px;
+	}
+
+	.pagehead ul li {
+	    font-size: 20px;
+	    display: inline;
+	    font-family: 'yanone_kaffeesatz_rgregular';
+	    margin-right: 10px;
+	    margin-left: 10px;
+	}
 	.logout_button {
 		text-transform: capitalize !important;
 	    position: absolute;
@@ -526,8 +594,24 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 		opacity:1;
 		filter:alpha(opacity=100); /* For IE8 and earlier */
 	}
+	.unread_notifications {
+		border-radius:12px;
+		background-color: rgba(255,255,255,0.5);
+		text-align:center;
+	}
+	.unread_notifications > a {
+		display:inline-block;
+		position:relative;
+		width:30px;
+		color:black;
+	}
 }
 
+
+.pagehead a, .pagebottom a {
+    color: white;
+    text-decoration: none;
+}
 
 
 .user_info .user_nick {
@@ -572,11 +656,6 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	overflow:hidden;
 }
 
-.unread_notifications {
-	border-radius:12px;
-	background-color: rgba(255,255,255,0.5);
-	text-align:center;
-}
 
 .glow {
 /*	box-shadow: 0 0 15px rgba(58,201,88,1),0 0 15px rgba(58,201,88,1);*/
@@ -585,12 +664,6 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	color:black;
 }
 
-.unread_notifications > a {
-	display:inline-block;
-	position:relative;
-	width:30px;
-	color:black;
-}
 
 
 button {

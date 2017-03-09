@@ -1,4 +1,11 @@
 $(function() {
+	$('.filterbar').each(function () {
+        $(this).css('background-position-x', (Math.floor(Math.random()*50)+50)+'%');
+        $(this).css('background-position-y', (Math.floor(Math.random()*100))+'%');
+	})
+})
+
+$(function() {
 	$('#challenges-li').addClass('uRhere');
 	window.document.title="Aurora: Challenges";
 
