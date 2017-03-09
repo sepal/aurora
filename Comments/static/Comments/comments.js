@@ -424,6 +424,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
         $button_post_reply.off();
         $button_post_reply.click(function (event) {
             event.preventDefault();
+            event.stopPropagation();
 
             $('#replyCourseShortTitle').val(course_short_title || '');
 
@@ -431,11 +432,6 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             var $newComment = $('#comment_new');
             var $replyTextarea = $('#replyTextarea');
             var text = $replyTextarea.val();
-
-            var $seen_button = $button_post_reply.closest('div.comment_with_responses').find('.mark_seen_link');
-            if (typeof $seen_button !== 'undefined') {
-                $seen_button.click();
-            }
 
             $replyForm.after($newComment);
             $newComment.find(".comment_text").text(text);
@@ -505,7 +501,7 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
 
             $commentForm.hide();
             $newComment.show();
-						
+
             $.ajax({
                 url: my.POST_URL,
                 data: $commentForm.serialize(),
@@ -524,10 +520,10 @@ var COMMENTS = (function (my, $, purgsLoadFilter) {
             my.state.posting = false;
 			if(window.location.href.indexOf("/slides/studio/lecture/") != -1)
 			{
-				setTimeout(function () { 
+				setTimeout(function () {
 					var tp = $('#contentblock').scrollTop(); var lft = $('#contentblock').scrollLeft();
 		        	if (tp || lft) window.name = 'X_' + lft + '_' + tp + '_X';
-					location.reload(1); 
+					location.reload(1);
 				}, 500);
 			}
             return false;

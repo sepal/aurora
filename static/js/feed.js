@@ -3,35 +3,46 @@
  */
 
 $(function() {
-	$('.feed_header').each(function () {
-        $(this).css('background-position-x', (Math.floor(Math.random()*50)+50)+'%');
-        $(this).css('background-position-y', (Math.floor(Math.random()*100))+'%');
-	})
+    $('.feed_header').each(function() {
+        $(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
+        $(this).css('background-position-y', (Math.floor(Math.random() * 100)) + '%');
+    })
 })
 
 var loadMore_Timer;
 
 $(function() {
-	loadMore_Timer = setTimeout(function(){clickLoadMore()},1000);
-	 if ($(window).width() > 960) {$('#info_column').width($(window).width() - 660)};
-	 $('#info_column').masonry({itemSelector:'.sidebar_item',columWidth:330,gutter:14})
-	 $(window).resize(function() {
-		 if ($(window).width() > 960) {$('#info_column').width($(window).width() - 660)};
-	 })
+    loadMore_Timer = setTimeout(function() {
+        clickLoadMore()
+    }, 1000);
+    if ($(window).width() > 960) {
+        $('#info_column').width($(window).width() - 660)
+    };
+    $('#info_column').masonry({
+        itemSelector: '.sidebar_item',
+        columWidth: 330,
+        gutter: 14
+    })
+    $(window).resize(function() {
+        if ($(window).width() > 960) {
+            $('#info_column').width($(window).width() - 660)
+        };
+    })
 })
 
 function clickLoadMore() {
-	el = $('.endless_more')[0]
-	if ($(el).length) {
-		if (isScrolledIntoView(el)) {
-			el.click();
-		}
-		loadMore_Timer = setTimeout(function(){clickLoadMore()},1000);
-	}
+    el = $('.endless_more')[0]
+    if ($(el).length) {
+        if (isScrolledIntoView(el)) {
+            el.click();
+        }
+        loadMore_Timer = setTimeout(function() {
+            clickLoadMore()
+        }, 1000);
+    }
 }
 
-function isScrolledIntoView(el)
-{
+function isScrolledIntoView(el) {
     var elemTop = el.getBoundingClientRect().top;
     var elemBottom = el.getBoundingClientRect().bottom;
 
@@ -42,44 +53,48 @@ function isScrolledIntoView(el)
 
 
 $(function() {
-	$('#feed-li').addClass('uRhere');
-	window.document.title="Aurora: Newsfeed"
-	$('.feed_header').click(function(){
-		$('#content_'+$(this).attr('id')).slideToggle('fast',function(){$('#info_column').masonry('layout');});
-		
-	})
+    $('#feed-li').addClass('uRhere');
+    window.document.title = "Aurora: Newsfeed"
+    $('.feed_header').click(function() {
+        $('#content_' + $(this).attr('id')).slideToggle('fast', function() {
+            $('#info_column').masonry('layout');
+        });
+
+    })
 });
 
 var updateNew_Timer;
 
-$(window).load( function() {
+$(window).load(function() {
     "use strict";
-	loadFilter();
+    loadFilter();
 });
 
 function loadFilter() {
     "use strict";
-	filter(getCookie('filtercookie.'+$('#the_username').data('username')));
-	doClickFilter();
+    filter(getCookie('filtercookie.' + $('#the_username').data('username')));
+    doClickFilter();
 }
 
-function doClickFilter () {
-	"use strict";
-	var ccCookieData = getCookie('clickcookie.'+$('#the_username').data('username'));
-	if (ccCookieData != null) {
-		var clickedComments = ccCookieData.split(',');
-		for (var i=0;i<clickedComments.length;i++) {
-			if (clickedComments[i] != "") {filterByClick('#comment_'+clickedComments[i])}
-		}
-	}
+function doClickFilter() {
+    "use strict";
+    var ccCookieData = getCookie('clickcookie.' + $('#the_username').data('username'));
+    if (ccCookieData != null) {
+        var clickedComments = ccCookieData.split(',');
+        for (var i = 0; i < clickedComments.length; i++) {
+            if (clickedComments[i] != "") {
+                filterByClick('#comment_' + clickedComments[i])
+            }
+        }
+    }
 }
 
-function filterClick(fx,usr) {
-	document.cookie = "clickcookie." + $('#the_username').data('username') + "= " + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
-	filter(fx,usr);
+function filterClick(fx, usr) {
+    document.cookie = "clickcookie." + $('#the_username').data('username') + "= " + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
+    filter(fx, usr);
 }
 
-function filter(fx,usr) {
+function filter(fx, usr) {
     "use strict";
 
     if (typeof usr !== 'undefined') {
@@ -90,10 +105,11 @@ function filter(fx,usr) {
         fx = parseInt(fx);
     }
 
-	$('.filterbtn').removeClass('hilited');
-	$('#'+fx).addClass('hilited');
-	$('#new_date').text(''); clearTimeout(updateNew_Timer);
-	
+    $('.filterbtn').removeClass('hilited');
+    $('#' + fx).addClass('hilited');
+    $('#new_date').text('');
+    clearTimeout(updateNew_Timer);
+
     switch (fx) {
         case 1: // show all comments
             $('.response,.comment,.r_list').removeClass('hided');
@@ -105,23 +121,23 @@ function filter(fx,usr) {
             $('.response:not(.staff_author):not(.author_author),.comment:not(.staff_author):not(.author_author)').addClass('hided');
             $('#' + $('.response.staff_author').parent().attr('class').split(' ')[0].slice(2)).removeClass('hided');
             break;
-        case 3: // lecturer top level 
+        case 3: // lecturer top level
             $('.response,.comment,.r_list').addClass('hided');
             $('.comment.staff_author').removeClass('hided');
             break;
-		case 4:  // top-level comments, no replies
+        case 4: // top-level comments, no replies
             $('.response,.comment,.r_list').removeClass('hided');
             $('.response').addClass('hided');
-			break;
-		case 99:  // only staff comments
-        	$('.response,.comment,.r_list').removeClass('hided');
+            break;
+        case 99: // only staff comments
+            $('.response,.comment,.r_list').removeClass('hided');
             $('.response:not(.staff_visibility),.comment:not(.staff_visibility)').addClass('hided');
             $('.response:not(.staff_visibility),.comment:not(.staff_visibility)').addClass('hided');
-			break;
-		case 98:  // no staff comments
-        	$('.response,.comment,.r_list').removeClass('hided');
+            break;
+        case 98: // no staff comments
+            $('.response,.comment,.r_list').removeClass('hided');
             $('.response.staff_visibility,.comment.staff_visibility').addClass('hided');
-			break;
+            break;
         case -5: // no lame comments
             $('.response,.comment,.r_list').removeClass('hided');
             $('.r_list').show();
@@ -130,90 +146,102 @@ function filter(fx,usr) {
         case 0: // new comments
             $('.response,.comment,.r_list').addClass('hided');
             $('.r_list').addClass('hided');
-			var cookieName = 'filterTimeCookie.'+$('#the_username').data('username');
-			var x = getCookie(cookieName);
-			$('.comment').each(function(i){
-				var c = $(this).data('date');
-				if (c > x) {
-					$(this).removeClass('hided');
-				}
-			});
-			$('.response').each(function(i){
-				var c = $(this).data('date');
-				if (c > x) {
-					$('#'+$(this).data('comment')).removeClass('hided');
-					$('.r_'+$(this).data('comment')).removeClass('hided');
-					$(this).removeClass('hided');
-				}
-			});
-			updateNew();
+            var cookieName = 'filterTimeCookie.' + $('#the_username').data('username');
+            var x = getCookie(cookieName);
+            $('.comment').each(function(i) {
+                var c = $(this).data('date');
+                if (c > x) {
+                    $(this).removeClass('hided');
+                }
+            });
+            $('.response').each(function(i) {
+                var c = $(this).data('date');
+                if (c > x) {
+                    $('#' + $(this).data('comment')).removeClass('hided');
+                    $('.r_' + $(this).data('comment')).removeClass('hided');
+                    $(this).removeClass('hided');
+                }
+            });
+            updateNew();
             break;
     }
-	clearTimeout(loadMore_Timer);
-	loadMore_Timer = setTimeout(function(){clickLoadMore()},1000);
+    clearTimeout(loadMore_Timer);
+    loadMore_Timer = setTimeout(function() {
+        clickLoadMore()
+    }, 1000);
 }
 
 function updateNew() {
-	var cookieName = 'filterTimeCookie.'+$('#the_username').data('username');
-	var x = getCookie(cookieName);
-	var y = Math.round(Date.now()/60000 - x/60);
-	if (y<2) {y = ''}
-	else if (y<10) {y = '(0:0' + y + ')'}
-	else if (y<60) {y = '(0:' + y + ')'}
-	else if (y<1440) {y = '(' + Math.round(y/60) + 'h)'}
-	else {y = '(' + Math.round(y/1440) + 'd)'}
-	$('#new_date').text(y);
-	updateNew_Timer = setTimeout(function(){updateNew()},60000);
+    var cookieName = 'filterTimeCookie.' + $('#the_username').data('username');
+    var x = getCookie(cookieName);
+    var y = Math.round(Date.now() / 60000 - x / 60);
+    if (y < 2) {
+        y = ''
+    } else if (y < 10) {
+        y = '(0:0' + y + ')'
+    } else if (y < 60) {
+        y = '(0:' + y + ')'
+    } else if (y < 1440) {
+        y = '(' + Math.round(y / 60) + 'h)'
+    } else {
+        y = '(' + Math.round(y / 1440) + 'd)'
+    }
+    $('#new_date').text(y);
+    updateNew_Timer = setTimeout(function() {
+        updateNew()
+    }, 60000);
 }
 
 function headClick(aDiv) {
     "use strict";
-	var ccCookieData = getCookie('clickcookie.'+$('#the_username').data('username'));
-	if (ccCookieData != null && ccCookieData != "") {
-		var clickedComments = ccCookieData.split(',');
-	} 
-	else {
-		var clickedComments = new Array()
-	}
-//	$('.filterbtn').removeClass('hilited');
-	var thisID = $(aDiv).data('comment_number');
-	var indexID = $.inArray(thisID.toString(),clickedComments);
-	if (indexID==-1) {clickedComments.push(thisID)} else {clickedComments.splice(indexID,1)}
-	var morgs = "clickcookie." + $('#the_username').data('username') + "=" + clickedComments.join(',') + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
-//	alert (morgs);
-	document.cookie = morgs;
-	
-	filterByClick(aDiv);	
+    var ccCookieData = getCookie('clickcookie.' + $('#the_username').data('username'));
+    if (ccCookieData != null && ccCookieData != "") {
+        var clickedComments = ccCookieData.split(',');
+    } else {
+        var clickedComments = new Array()
+    }
+    //	$('.filterbtn').removeClass('hilited');
+    var thisID = $(aDiv).data('comment_number');
+    var indexID = $.inArray(thisID.toString(), clickedComments);
+    if (indexID == -1) {
+        clickedComments.push(thisID)
+    } else {
+        clickedComments.splice(indexID, 1)
+    }
+    var morgs = "clickcookie." + $('#the_username').data('username') + "=" + clickedComments.join(',') + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
+    //	alert (morgs);
+    document.cookie = morgs;
+
+    filterByClick(aDiv);
 }
 
 function filterByClick(aDiv) {
     "use strict";
-	$(aDiv).toggleClass('hided');
-	if ($(aDiv).hasClass('comment')) {
-		if ($(aDiv).hasClass('hided')) {
-			$('.r_'+$(aDiv).attr('id')).addClass('hided');
-		}
-		else {
-			$('.r_'+$(aDiv).attr('id')).removeClass('hided');
-			$('.'+$(aDiv).attr('id')).removeClass('hided');
-		}
-	}	
+    $(aDiv).toggleClass('hided');
+    if ($(aDiv).hasClass('comment')) {
+        if ($(aDiv).hasClass('hided')) {
+            $('.r_' + $(aDiv).attr('id')).addClass('hided');
+        } else {
+            $('.r_' + $(aDiv).attr('id')).removeClass('hided');
+            $('.' + $(aDiv).attr('id')).removeClass('hided');
+        }
+    }
 }
 
 
 function markT(usr) {
     "use strict";
 
-	var s = Date.now() /1000 || 0;
-	s = s-30;
-	var a = "filterTimeCookie." + usr + "=" + s.toString() + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
-	document.cookie = a;
+    var s = Date.now() / 1000 || 0;
+    s = s - 30;
+    var a = "filterTimeCookie." + usr + "=" + s.toString() + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
+    document.cookie = a;
 }
 
 
-function toTimestamp(strDate){
+function toTimestamp(strDate) {
     "use strict";
 
-	var dat = Date.parse(strDate);
-	return dat/1000;
+    var dat = Date.parse(strDate);
+    return dat / 1000;
 }
