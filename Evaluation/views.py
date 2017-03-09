@@ -974,6 +974,13 @@ def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
         suspect_doc__submission_time__gt=course.start_date,
     )
 
+    try:
+        similar_elaboration = suspicion.similar_doc.elaboration
+        suspect_elaboration = suspicion.suspect_doc.elaboration
+    except Elaboration.DoesNotExist:
+        similar_elaboration = None
+        suspect_elaboration = None
+
     context = {
         'course': course,
         'suspicion': suspicion,
@@ -981,8 +988,8 @@ def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
         'suspicion_states_class': SuspicionState.__members__,
         'next_suspicion_id': next_suspicion_id,
         'prev_suspicion_id': prev_suspicion_id,
-        'similar_has_elaboration': suspicion.similar_doc.was_submitted_during(course),
-        'suspect_has_elaboration': suspicion.suspect_doc.was_submitted_during(course)
+        'similar_elaboration': similar_elaboration,
+        'suspect_elaboration': suspect_elaboration
     }
 
     # number of suspicious documents
