@@ -38,6 +38,7 @@ var COMMENTS = (function (my, $) {
 
         function promote($this, event) {
             event.preventDefault();
+            event.stopPropagation();
 
             if(typeof my.POLLING !== 'undefined') {
                 my.POLLING.resetTimer();
@@ -58,6 +59,7 @@ var COMMENTS = (function (my, $) {
 
         function demote($this, event) {
             event.preventDefault();
+            event.stopPropagation();
 
             if(typeof my.POLLING !== 'undefined') {
                 my.POLLING.resetTimer();
