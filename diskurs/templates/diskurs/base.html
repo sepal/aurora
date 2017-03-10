@@ -26,7 +26,7 @@
 <div class="diskurs_head">Aurora Discussions{% if thread.title %}: <b>{{thread.title}}</b>{% endif %}
 	<span class="back_link"><a href="/{{course.short_title}}">Go home</a></span>
 	{% if thread.title %}<span class="back_link"><a href="/{{course.short_title}}/diskurs">discussion index</a></span>{% endif %}
-	<span class="back_link"><a href="https://titanpad.com/4dW2ukQqK4">Bugs &amp; Feedback</a></span>
+	<span class="back_link"><a href={% url 'Feedback:index' course.short_title %}>Bugs &amp; Feedback</a></span>
 </div>
 {% block content %}{% endblock content %}
 <script type="text/javascript" src="{% static 'lightbox/js/lightbox.js' %}"></script>
