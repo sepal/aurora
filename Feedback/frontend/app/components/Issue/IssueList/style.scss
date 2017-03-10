@@ -2,6 +2,13 @@
 @import "../../../styles/config/layout";
 @import "../../../styles/abstract/selecting";
 
+
+.container {
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .item {
   margin-top: $spacing--big;
   &:nth-child(1) {

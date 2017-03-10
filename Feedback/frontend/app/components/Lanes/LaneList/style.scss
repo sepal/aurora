@@ -8,12 +8,13 @@
     bottom: 0;
     right: 0;
   };
-  padding: $spacing--big 0;
+  padding: 0;
   list-style: none;
   display: flex;
   flex-wrap: nowrap;
   height: 100%;
-  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .item {

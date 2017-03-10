@@ -25,7 +25,7 @@ export default class Feedback extends React.Component {
     const path = new RegExp(`^/${course_short_title}/feedback[/]*$`, 'i');
     let isModal = location.pathname.match(path) == null;
     return (
-      <div>
+      <div style={{height: '100%'}}>
         {isModal ?
           <Kanban /> :
           this.props.children

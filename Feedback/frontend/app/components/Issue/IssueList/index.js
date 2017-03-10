@@ -37,7 +37,7 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
   );
 
   return (
-    <ul>
+    <ul className={styles.container}>
       { issues.length > 0 ? issueTeasers : msg }
     </ul>
   );

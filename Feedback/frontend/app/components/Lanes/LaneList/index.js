@@ -6,14 +6,14 @@ import Lane from '../Lane';
 export default function LaneList(props) {
   var lanes = props.lanes.map(lane => {
     return (
-      <li className={styles.item} key={lane.id}>
+      <div className={styles.item} key={lane.id}>
         <Lane {...lane} />
-      </li>
+      </div>
     )
   });
   return (
-    <ul className={styles.laneList}>
+    <div className={styles.laneList}>
       {lanes}
-    </ul>
+    </div>
   );
 }

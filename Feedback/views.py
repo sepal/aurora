@@ -163,7 +163,7 @@ def issue_comments(request, course_short_title, issue_id):
         'course': Course.get_or_raise_404(course_short_title)
     }
 
-    return render(request, "issue_comments.html", context)
+    return render(request, "Feedback/issue_comments.html", context)
 
 
 @aurora_login_required()

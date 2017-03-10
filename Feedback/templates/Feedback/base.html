@@ -1,0 +1,54 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+  <title>Feedback | Aurora</title>
+  <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico"
+        type="image/x-icon">
+  <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
+  <script type="text/javascript"
+          src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+  <script type="text/javascript"
+          src="{{ STATIC_URL }}js/autogrow.min.js"></script>
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css"
+        media="screen" />
+  <link rel="stylesheet"
+        href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.3.custom.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}trix/trix.css">
+  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'css/feedback_base.css' %}" />
+
+
+  <script type="text/javascript">
+    var course_short_title = "{{ course.short_title }}";
+    var NOTIFICATION_REFRESH_URL = "{% url 'Notification:refresh' course.short_title %}";
+  </script>
+</head>
+<body>
+<div class="feedback__head">
+  <h1>Aurora Feedback</h1>
+  <nav>
+    <ul>
+      {% if course.short_title == "gsi" %}
+        <li class="navigate--discourse"><a
+            href="{% url 'diskurs:index' course.short_title %}">Discourse</a>
+        </li>
+      {% endif %}
+      <li class="navigate--home"><a
+          href="/{{ course.short_title }}">Go home</a></li>
+    </ul>
+  </nav>
+</div>
+
+{% block content %}
+{% endblock content %}
+
+</body>
+</html>
+
+
+

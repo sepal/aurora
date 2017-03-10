@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const store = configureStore(data);
 
 
-  var node = document.getElementById('test');
+  var node = document.getElementById('app-root');
   ReactDOM.render(
     (
       <Provider store={store}>

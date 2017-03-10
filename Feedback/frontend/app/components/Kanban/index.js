@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import { DragDropContext } from 'react-dnd';
+import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import {LaneListContainer} from '../../containers';
@@ -12,9 +12,11 @@ export default class Feedback extends React.Component {
   render() {
     return (
       <div className={styles.kanban}>
-        <Link to={`/${course_short_title}/feedback/issue/add`} className={styles.add}>
-          <i className="fa fa-plus"></i> Add a new issue
-        </Link>
+        <div className={styles.add}>
+          <Link to={`/${course_short_title}/feedback/issue/add`}>
+            <i className="fa fa-plus"></i> Add a new issue
+          </Link>
+        </div>
         <LaneListContainer />
       </div>
     );
