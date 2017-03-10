@@ -5,7 +5,6 @@
     float:left;
     box-sizing: border-box;
     border-radius: 9px;
-    line-height: normal; !important;
 }
 
 .plagcheck_info_left {
@@ -55,6 +54,7 @@
 .plagcheck_compare_text .diff_part {
     background-color: yellow;
     display: inline !important;
+    line-height: initial !important;
 }
 
 .diff_part, .diff_part p, .diff_part li {
