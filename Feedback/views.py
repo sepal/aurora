@@ -7,6 +7,7 @@ from Course.models import Course
 from .models import Lane, Issue, Upvote
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, \
     HttpResponseForbidden
+from django.views.decorators.http import require_http_methods
 
 
 @aurora_login_required()
@@ -74,88 +75,72 @@ def issue_display(request, course_short_title, issue_id):
 
 
 @aurora_login_required()
+@require_http_methods(['PUT'])
 def api_issue(request, course_short_title, issue_id):
     """
-    API callback for getting editing or retrieving a certain issue.
+    API callback for editing g a certain issue.
     """
     issue = Issue.objects.get(pk=issue_id)
 
-    # Currently not in use.
-    if request.method == 'GET':
-        # Only the staff and the author are able to see issues of the type
-        # security.
-        if issue.type != 'security' \
-                or issue.author == request.user or request.user.is_staff:
-            return JsonResponse(issue.serializable)
-        else:
+    # Only staff or the owner are allowed to edit issues.
+    if issue.author != request.user and not request.user.is_staff:
+        return HttpResponseForbidden()
+
+    # Decoded the passed values.
+    data = json.loads(request.body.decode('utf-8'))
+
+    # Check if the user wants to switch the lane.
+    if 'lane' in data and issue.lane.pk != data['lane']:
+        # Only staff is allowed to change the issues lane.
+        if not request.user.is_staff:
             return HttpResponseForbidden()
-    elif request.method == 'PUT':
-        # Edit a certain issue, is also used to switch the lane.
+        new_lane = Lane.objects.get(pk=data['lane'])
+        issue.lane = new_lane
 
-        # Only staff or the owner are allowed to edit issues.
-        if issue.author != request.user and not request.user.is_staff:
-            return HttpResponseForbidden()
+    # Users can only edit the type, title or the body of an issue.
+    if 'type' in data:
+        issue.type = data['type']
 
-        # Decoded the passed values.
-        data = json.loads(request.body.decode('utf-8'))
+    if 'title' in data:
+        issue.title = data['title']
 
-        # Check if the user wants to switch the lane.
-        if 'lane' in data and issue.lane.pk != data['lane']:
-            # Only staff is allowed to change the issues lane.
-            if not request.user.is_staff:
-                return HttpResponseForbidden()
-            new_lane = Lane.objects.get(pk=data['lane'])
-            issue.lane = new_lane
+    if 'body' in data:
+        issue.body = data['body']
 
-        # Users can only edit the type, title or the body of an issue.
-        if 'type' in data:
-            issue.type = data['type']
+    issue.save()
 
-        if 'title' in data:
-            issue.title = data['title']
-
-        if 'body' in data:
-            issue.body = data['body']
-
-        issue.save()
-
-        # Return the issue, so redux/react can update the kanban immediately.
-        return JsonResponse(issue.serializable)
-
-    return JsonResponse([])
+    # Return the issue, so redux/react can update the kanban immediately.
+    return JsonResponse(issue.serializable)
 
 
 @aurora_login_required()
+@require_http_methods(['POST'])
 def api_new_issue(request, course_short_title):
     """
     API callback to create a new issue.
     """
 
-    # Keep the API somehow REST like.
-    if request.method == 'POST':
-        course = Course.get_or_raise_404(course_short_title)
-        lanes = Lane.objects.all().filter(hidden=False).order_by('order')
+    course = Course.get_or_raise_404(course_short_title)
+    lanes = Lane.objects.all().filter(hidden=False).order_by('order')
 
-        data = json.loads(request.body.decode('utf-8'))
-        user = RequestContext(request)['user']
+    data = json.loads(request.body.decode('utf-8'))
+    user = RequestContext(request)['user']
 
-        # You can't create an issue without a title, type or a body.
-        if 'title' not in data or 'type' not in data or 'body' not in data:
-            return HttpResponseForbidden()
+    # You can't create an issue without a title, type or a body.
+    if 'title' not in data or 'type' not in data or 'body' not in data:
+        return HttpResponseForbidden()
 
-        issue = Issue(
-            author=user,
-            course=course,
-            lane=lanes[0],
-            type=data['type'],
-            title=data['title'],
-            body=data['body'],
-        )
+    issue = Issue(
+        author=user,
+        course=course,
+        lane=lanes[0],
+        type=data['type'],
+        title=data['title'],
+        body=data['body'],
+    )
 
-        issue.save()
-        return JsonResponse(issue.serializable)
-
-    return JsonResponse([])
+    issue.save()
+    return JsonResponse(issue.serializable)
 
 
 @aurora_login_required()
@@ -182,13 +167,11 @@ def issue_comments(request, course_short_title, issue_id):
 
 
 @aurora_login_required()
+@require_http_methods('POST')
 def api_upvote(request, course_short_title, issue_id):
     """
     Registers a new upvote for the given issue.
     """
-    # Keep the API somehow REST like.
-    if request.method != 'POST':
-        return HttpResponseBadRequest
 
     issue = Issue.objects.get(pk=issue_id)
 
