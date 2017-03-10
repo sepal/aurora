@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from AuroraProject.decorators import aurora_login_required
 from django.http import JsonResponse
 from django.template import RequestContext
 from Course.models import Course
@@ -9,7 +9,7 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound, \
     HttpResponseForbidden
 
 
-@login_required
+@aurora_login_required()
 def index(request, course_short_title):
     """
     index renders a simple html page, adds the react frontend code and some
@@ -63,7 +63,7 @@ def index(request, course_short_title):
     )
 
 
-@login_required
+@aurora_login_required()
 def issue_display(request, course_short_title, issue_id):
     """
     Basically the same as the index, since react route will take care of
@@ -73,7 +73,7 @@ def issue_display(request, course_short_title, issue_id):
     return index(request, course_short_title)
 
 
-@login_required
+@aurora_login_required()
 def api_issue(request, course_short_title, issue_id):
     """
     API callback for getting editing or retrieving a certain issue.
@@ -125,7 +125,7 @@ def api_issue(request, course_short_title, issue_id):
     return JsonResponse([])
 
 
-@login_required
+@aurora_login_required()
 def api_new_issue(request, course_short_title):
     """
     API callback to create a new issue.
@@ -158,7 +158,7 @@ def api_new_issue(request, course_short_title):
     return JsonResponse([])
 
 
-@login_required
+@aurora_login_required()
 def issue_comments(request, course_short_title, issue_id):
     """
     Special API callback that returns the html part of the comments for a
@@ -181,7 +181,7 @@ def issue_comments(request, course_short_title, issue_id):
     return render(request, "issue_comments.html", context)
 
 
-@login_required
+@aurora_login_required()
 def api_upvote(request, course_short_title, issue_id):
     """
     Registers a new upvote for the given issue.
