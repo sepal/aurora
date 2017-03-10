@@ -14,8 +14,8 @@ function notifications_refresh() {
             url: NOTIFICATION_REFRESH_URL,
             success: function (data) {
                 if ($.isNumeric(data)) {
-                    $('#unread_notifications').html(data);
-					if (data!='0') {$('#notifications-li').addClass('glow')} else {$('#notifications-li').removeClass('glow')}
+                    $('.unread_notifications_display').html(data);
+					if (data!='0') {$('.unread_notifications').addClass('glow');} else {$('.unread_notifications').removeClass('glow');}
                     setTimeout(refresh_worker, 60000);
                 }
             }

@@ -119,8 +119,8 @@
 	background:#316134;
 	color:white;
 	padding:16px 16px 0px 16px;
-	border-bottom:1px dashed rgba(255,255,255,0.5);	
-	border-radius:3px 3px 0 0;	
+	border-bottom:1px dashed rgba(255,255,255,0.5);
+	border-radius:3px 3px 0 0;
 	box-sizing: border-box;
 	position:relative;
 }
@@ -286,17 +286,6 @@ h1 {
 	/*color:rgb(58,201,88);*/
 }
 
-.not_stack {
-	clear:both;
-	position:relative;
-	padding: 1em;
-	padding-bottom:0em;
-	margin-left:0.5em;
-	border-radius:0.5em;
-	cursor:pointer;
-	overflow:hidden;
-	width:960px;
-}
 
 
 .shrinked {
@@ -304,31 +293,42 @@ h1 {
 }
 
 @media all and (max-width: 959px) {
+	.chapter_name {
+		display:none;
+	}
+	.not_stack {
+		clear:both;
+		position:relative;
+		padding: 1em;
+		padding-bottom:0em;
+		border-radius:0.5em;
+		cursor:pointer;
+		overflow:hidden;
+		width:92%;
+	}
+
 	.filterbar {
 		box-sizing: border-box;
 		color:white;
-		height:1em;
+		height:48px;
 		margin-top:2em;
 		margin-bottom:0.5em;
 		background-color:#999;
 	    background-image: url("../img/auroraX.png");
 		padding-bottom: 12px;
-		padding-top:2px;
+		padding-top:1em;
 		padding-left: 10px;
 		font-size:1.4em;
-		border-radius:12px 12px 0px 0px;
-		margin-left:1.05em;
-		width:90%;
-		height:28px;
+		width:100%;
 		cursor:pointer;
+		text-shadow:0 0 3px black;
 	}
 
 	.stack {
 		box-sizing: border-box;
 	    padding: 10px 10px 5px 10px;
-		width:90%;
+		width:100%;
 		position:relative;
-		margin-left:1.5em;
 		border-radius:0em;
 		cursor:pointer;
 		overflow:hidden;
@@ -343,23 +343,41 @@ h1 {
 	}
 }
 
+.filterbar i {
+	float:right;
+	padding-right:8px;
+	text-shadow:none;
+}
+
 @media all and (min-width: 960px) {
+	.not_stack {
+		clear:both;
+		position:relative;
+		padding: 1em;
+		padding-bottom:0em;
+		margin-left:0.5em;
+		border-radius:0.5em;
+		cursor:pointer;
+		overflow:hidden;
+		width:960px;
+	}
 	.filterbar {
 		box-sizing: border-box;
+		margin-left:1.5em;
 		color:white;
-		height:1em;
+		height:23px;
 		margin-top:2em;
 		margin-bottom:0.5em;
 		background-color:#999;
 	    background-image: url("../img/auroraX.png");
 		padding-bottom: 12px;
-		padding-top:2px;
+		padding-top:4px;
 		padding-left: 10px;
-		font-size:1.4em;
-		border-radius:12px 12px 0px 0px;
-		margin-left:1.05em;
+		font-size:14px;
+		font-weight:bold;
+		border-radius: 4px 4px 1px 1px;
 		width:940px;
-		height:28px;
+		text-shadow:0 0 3px black;
 		cursor:pointer;
 	}
 	.stack {
@@ -554,11 +572,6 @@ h1 {
 
 .submitted-content > trix-toolbar {
   display: none !important;
-  pointer-events: none !important;
-}
-
-.submitted-content > trix-editor {
-  pointer-events: none !important;
 }
 
 .submitted-content {

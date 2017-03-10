@@ -16,7 +16,6 @@
 		  <span class="long_title_text">{{course.title}}</span>
 		  <span class="short_title_text">{{course.short_title}}</span></div>
     </div>	
-	
     {% if user.is_authenticated %}
 
       <ul>
@@ -27,7 +26,7 @@
         <li id="challenges-li">
           <a href="{% url 'Challenge:home' course.short_title %}">Challenges</a></li>
 		{% else %}
-        <li id="challenges-li" style="color:#666" title="Der Zugang zu Challenges ist mehr möglich, weil die Einführungs-Challenge nicht abgegeben wurde.">
+        <li id="challenges-li" style="color:#666" title="Der Zugang zu Challenges ist nicht mehr möglich, weil die Einführungs-Challenge nicht fristgerecht abgegeben wurde.">
           <s>Challenges</s></li>
 		{% endif %}
 
@@ -35,7 +34,7 @@
           <a href="{% url 'Slides:slides' course.short_title %}">Slides</a></li>
 			
 		{% if course.short_title == "gsi" %}
-	        <li id="slides-li">
+	        <li id="diskurs-li">
 	          <a href="{% url 'diskurs:index' course.short_title %}">Discourse</a></li>
 		{% endif %}
 
@@ -53,7 +52,7 @@
             <a href="{% url 'Statistics:home' course.short_title %}">Statistics</a></li>
         {% endif %}
         <li id="notifications-li" class="unread_notifications">
-          <a id="unread_notifications"  href="{% url 'Notification:list' course.short_title %}">{{ unread_notifications|length }}</a>
+          <a id="unread_notifications"  class="unread_notifications_display" href="{% url 'Notification:list' course.short_title %}">{{ unread_notifications|length }}</a>
         </li>
       </ul>
 
@@ -63,6 +62,44 @@
 	  </div>
   	<a class="logout_button" id="button_sign_out" href="{% url 'User:signout' course.short_title %}">Sign out</a>
 
+  </div>
+  <div class="pagebottom">
+      <ul>
+         <li id="feed-li-bottom">
+            <a href="{% url 'home' course.short_title %}"><i class="fa fa-newspaper-o "></i></a></li>
+
+		{% if "1" %}
+        <li id="challenges-li-bottom">
+          <a href="{% url 'Challenge:home' course.short_title %}"><i class="fa fa-pencil "></i></a></li>
+		{% else %}
+        <li id="challenges-li-bottom" style="color:#666" title="Der Zugang zu Challenges ist mehr möglich, weil die Einführungs-Challenge nicht abgegeben wurde.">
+          <s>Challenges</s></li>
+		{% endif %}
+
+        <li id="slides-li-bottom">
+          <a href="{% url 'Slides:slides' course.short_title %}"><i class="fa fa-tv "></i></a></li>
+			
+		{% if course.short_title == "gsi" %}
+	        <li id="diskurs-li-bottom">
+	          <a href="{% url 'diskurs:index' course.short_title %}"><i class="fa fa-comment-o "></i></a></li>
+		{% endif %}
+
+        <li id="bugs-li-bottom">
+          <a href="https://piratenpad.de/p/tr4m3bj6" target="_blank"><i class="fa fa-bug "></i></a>
+        </li>
+
+        {% if user.is_staff %}
+          <li id="evaluation-li-bottom"><a href="{% url 'Evaluation:home' course.short_title %}"><i class="fa fa-star-half-empty"></i></a></li>
+        {% endif %}
+
+        {% if user.is_superuser %}
+          <li id="statistics-li-bottom"><a href="{% url 'Statistics:home' course.short_title %}"><i class="fa fa-bar-chart"></i></a></li>
+        {% endif %}
+        <li id="notifications-li-bottom" class="unread_notifications">
+          <a id="unread_notifications_bottom"  class="unread_notifications_display" href="{% url 'Notification:list' course.short_title %}">{{ unread_notifications|length }}</a>
+        </li>
+		
+      </ul>
     {% endif %}
   </div>
 </div>

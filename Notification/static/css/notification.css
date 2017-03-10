@@ -1,54 +1,126 @@
+.RSS {
+	float:right;
+}
+
 .notificationList {
 	margin-top:15px;
 	clear:both;
-}
-
-.notification {
-    min-height: 30px;
-	width:920px;
-	margin-left:24px;
-    overflow: hidden;	
-	border-bottom:1px solid #eee;
 }
 
 .notification.read {
 	color:#999;
 }
 
-.notification.read:before {
-	content: "\00A0";
-	width:12px;
-	font-size:10px;
-	float:left;
-	margin:4px 15px 4px 15px ;
+
+
+@media all and (max-width: 959px) {
+	.not_head_line {
+		width:100%;
+	}
+	.notification {
+	    min-height: 30px;
+		width:100%;
+	    overflow: hidden;	
+		border-bottom:1px solid #eee;
+		position:relative;
+	}
+	.notification_text {
+		padding:5px;
+	    overflow: hidden;
+		line-height:20px;
+		max-width:75%;
+		float:left;
+	}
+	.darkRow {
+		background:#eee;
+	}
+	.lightRow {
+	}
+
+
+	.notification img {
+	    width: 60px;
+		height:60px;
+	    float: left;
+		vertical-align:middle;
+	    box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    -webkit-box-sizing: border-box;
+	}
+	.notification.unread img {
+		border-left:3px solid rgb(58,201,88);
+	}
+	.notification.read img {
+	    opacity: 0.5;
+	}
 }
 
-.notification.unread:before {
-	margin:4px 15px 4px 15px ;
-	content: "\00A0";
-	margin-top:8px;
-	width:12px;
-	font-size:10px;
-	float:left;
-	background-color:green;
-	border-radius:10px;
-	box-shadow: inset 0px 1px 3px rgba(255,255,255,0.7), inset 0px -1px 3px rgba(0,0,0,0.4);
+.glow {
+	box-shadow: 0 0 10px 3px rgb(58,201,88);
+	background:rgba(0,0,0,0.5);
+	color:black;
+}
+.glow a {color:rgb(58,201,88);}
+
+
+@media all and (min-width: 960px) {
+	.not_head_line {
+		width:950px;
+	}
+	.notification {
+	    min-height: 30px;
+		width:920px;
+		margin-left:24px;
+	    overflow: hidden;	
+		border-bottom:1px solid #eee;
+		position:relative;
+	}
+	.notification_text {
+		padding:5px;
+	    overflow: hidden;
+		line-height:20px;
+		max-width:650px;
+		float:left;
+	}
+	.lightRow {
+	}
+
+	.darkRow {
+	}
+	.notification.read:before {
+		content: "\00A0";
+		width:12px;
+		font-size:10px;
+		float:left;
+		margin:4px 15px 4px 15px ;
+	}
+
+	.notification.unread:before {
+		margin:4px 15px 4px 15px ;
+		content: "\00A0";
+		margin-top:8px;
+		width:12px;
+		font-size:10px;
+		float:left;
+		background-color:rgb(58,201,88);
+		border-radius:10px;
+		box-shadow: inset 0px 1px 3px rgba(255,255,255,0.7), inset 0px -1px 3px rgba(0,0,0,0.4);
+	}
+
+	.notification img {
+	    width: 30px;
+		height:30px;
+	    float: left;
+		vertical-align:middle;
+	    box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    -webkit-box-sizing: border-box;
+	}
+	.glow {
+		box-shadow: 0 0 10px rgb(58,201,88);
+	}
 }
 
-.notification img {
-    width: 30px;
-	height:30px;
-    float: left;
-	vertical-align:middle;
-}
-
-.notification_text {
-	padding:5px;
-    overflow: hidden;
-	line-height:20px;
-	max-width:650px;
-	float:left;
-}
 
 a {
 	text-decoration:none;
@@ -58,7 +130,9 @@ a {
 .notification_time {
 	padding:5px;
 	line-height:20px;
-	float:right;
+	position:absolute;
+	right:0;
+	bottom:0;
 }
 
 #read_all_button {
@@ -74,8 +148,4 @@ a {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.lightRow {
-}
 
-.darkRow {
-}

@@ -23,6 +23,7 @@ from AuroraProject.settings import STATIC_ROOT
 import os
 from django.core.files import File
 from PlagCheck.tests import PlagcheckTestData
+from PlagCheck.verification import plagcheck_elaboration
 
 
 class Command(BaseCommand):
@@ -478,20 +479,27 @@ def import_data():
     de5.save()
 
     print('adding final elaboration 1 for challenge 8')
-    de6 = Elaboration(challenge=challenge_8, user=d3, elaboration_text="final submission user d3 " + PlagcheckTestData.get_random_text(),
+    text = PlagcheckTestData.get_random_text()
+    de6 = Elaboration(challenge=challenge_8, user=d3, elaboration_text="final submission user d3 " + text,
                       submission_time=datetime.now())
     de6.save()
 
     # create elaboration for challenge 1 for s0
-    print('adding elaboration for challenge 1 for s0')
-    e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this elaboration text is from populate demo data " + PlagcheckTestData.get_random_text(),
+    print('adding elaboration for challenge 1 for s0 and use same text as elaboration 1 for challenge 8 (=plagcheck test)')
+    e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this is a copy of elaboration 1/challenge 8 from user d3 " + PlagcheckTestData.get_random_text(),
                      submission_time=datetime.now())
     e1.save()
+
+    print('adding elaboration for challenge ')
 
     elaborations = Elaboration.objects.all()
     e1 = elaborations[0]
     e2 = elaborations[1]
     e3 = elaborations[2]
+
+    # trigger plagcheck daemon to verify documents
+    for elab in elaborations:
+        plagcheck_elaboration(elab)
 
     # create review for elaboration
     print('adding review 1 for elaboration for challenge 1 for s0')

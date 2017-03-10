@@ -4,7 +4,7 @@
 <html>
 <head>
   <title>Aurora</title>
-  <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
+<meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>  <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.12.1.min.js"></script>
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.3.custom.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}trix/trix.css">
-  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css">
 
   {% block additional_headers %}
   {% endblock %}

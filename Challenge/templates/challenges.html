@@ -27,7 +27,7 @@
     {% for stack in course_stacks%}
 
 <script>
-	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-toggle-down half lowkey"></i> Chapter: {{stack.stack.chapter.name}}</div>');}
+	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-minus-square half lowkey"></i> <span class="chapter_name">Chapter: </span>{{stack.stack.chapter.name}}</div>');}
 	x =  '{{stack.stack.chapter.name}}';
 </script>
 

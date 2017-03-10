@@ -1,17 +1,34 @@
 {% load humanize %}
 {% load notification %}
 
-<div class="response{% if response.author.is_staff %} staff_author{% endif %} {{ response.visibility }}_visibility {% if response.author == requester %} author_author{% endif %} comment_{{comment.id}} {% if response.score < 0 %}neg0{% endif %} {% if response.score < 3 %}not3{% endif %} {% if response.seen and requester.is_staff %}hided{% endif %}"
+<div class="response
+    {% if response.author.is_staff %}
+      staff_author
+    {% endif %}
+    {{ response.visibility }}_visibility
+    {% if response.author == requester %}
+      author_author
+    {% endif %}
+    comment_{{comment.id}}
+    {% if response.score < 0 %}
+      neg0
+    {% endif %}
+    {% if response.score < 3 %}
+      not3
+    {% endif %}
+    {% if response.seen and requester.is_staff %}
+      hided
+    {% endif %}"
 	 data-Cdate="{{ comment.post_date|date:'U' }}"
 	 data-date="{{ response.post_date|date:'U' }}"
 	 data-comment="comment_{{comment.id}}"
      id="comment_response_{{ response.id }}" data-comment_number="{{ response.id }}"
      data-comment_author="{{ response.author.display_name }}">
-	 <div class="response_top" onclick="headClick(this.parentNode);$('#detail_r{{response.id}}').hide();" >
+	 <div class="response_top" onclick="headClick(this.parentNode);" >
 		 <div class="comment_author">{{ response.author.display_name }}</div>
 		 <div class="comment_time" title="{{ response.post_date|date:'D j.n.y, G:i:s' }}">({{ response.post_date | naturaltime }})</div>
          {% if response.deleter == None %}
-			 <div class="comment_award">   
+			 <div class="comment_award">
 			 {% if response.promoted %}
 			 {% if requester.is_staff %}
 				 <a href='#' class="comment_demote" data-comment_number="{{ response.id }}" title="Demote this comment">
@@ -68,7 +85,7 @@
     </div>
 
 	<div class="response_actions">
-		
+
 {#        {% if response.bookmarked %}#}
 {#            <a href='#' class="comment_unbookmark" data-comment_number="{{ response.id }}" title="Remove this comment from Bookmarks">#}
 {#                unbookmark#}

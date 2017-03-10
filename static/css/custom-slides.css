@@ -247,4 +247,40 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .modal-header button {
 	padding-top:4px;
 }
+@media all and (min-width: 960px) {
+	.slides_search_field input[type="text"] {
+		width:480px;
+		height:32px;
+		border-radius:30px;
+		border:1px solid silver;
+		padding-left:20px;
+		position:absolute;
+		right:8px;
+	}
+	.slides_search_field input[type="submit"] {
+		border:0;
+		padding:2px;
+		background:none;
+		position:relative;
+		right:10px;
+		top:5px;
+	}
+}
 
+@media all and (max-width: 959px) {
+	.slides_search_field input[type="text"] {
+		width:100%;
+		height:32px;
+		border-radius:30px;
+		border:1px solid silver;
+		padding-left:20px;
+	}
+	.slides_search_field input[type="submit"] {
+		border:0;
+		padding:2px;
+		background:none;
+		position:relative;
+		top:-26px;
+		right:8px;
+	}
+}
