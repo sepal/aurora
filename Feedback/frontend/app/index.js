@@ -13,10 +13,9 @@ import configureStore from './store';
 document.addEventListener("DOMContentLoaded", function (event) {
   Moment.locale('en');
 
-  let str = document.getElementById('data').innerHTML;
   let data = {};
   try {
-    data = JSON.parse(str);
+    data = JSON.parse(initial_data);
   } catch ($exception) {
     console.error($exception);
   }

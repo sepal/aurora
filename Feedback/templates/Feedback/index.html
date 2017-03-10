@@ -31,8 +31,8 @@
           src="{% static 'js/feedback_vendor.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/feedback.js' %}"></script>
 
-  <script id="data" type="application/json">
-    {{ data|safe }}
+  <script type="text/javascript">
+    var initial_data = "{{ data|escapejs }}";
   </script>
   <input value="{% csrf_token %}" id="token" type="hidden" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/feedback.css' %}" />
