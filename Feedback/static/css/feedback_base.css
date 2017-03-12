@@ -17,6 +17,21 @@ html, body {
     padding: 21px 0;
 }
 
+.app-root--empty {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.app-root--empty h1 {
+    font-size: 2rem;
+    line-height: 2;
+}
+
+.app-root--empty h2 {
+    font-size: 1.5rem;
+}
+
 @font-face {
     font-family: 'yanone_kaffeesatzthin';
     src: url('../fonts/yanonekaffeesatz-thin-webfont.eot');

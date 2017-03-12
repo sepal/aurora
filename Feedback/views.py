@@ -6,7 +6,7 @@ from django.template import RequestContext
 from Course.models import Course
 from .models import Lane, Issue, Upvote
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, \
-    HttpResponseForbidden
+    HttpResponseForbidden, HttpResponseServerError
 from django.views.decorators.http import require_http_methods
 
 
@@ -28,6 +28,9 @@ def index(request, course_short_title):
     else:
         # Only staff is allowed to see hidden lanes.
         lanes = Lane.objects.filter(hidden=False).order_by('order')
+
+    if len(lanes) == 0:
+        return render(request, 'Feedback/empty.html', {'course': course})
 
     lanes = list(map(lambda lane: {
         'id': lane.pk, 'name': lane.name, 'issues': []}, lanes))
@@ -129,6 +132,9 @@ def api_new_issue(request, course_short_title):
     # You can't create an issue without a title, type or a body.
     if 'title' not in data or 'type' not in data or 'body' not in data:
         return HttpResponseForbidden()
+
+    if len(lanes) == 0:
+        return HttpResponseServerError
 
     issue = Issue(
         author=user,

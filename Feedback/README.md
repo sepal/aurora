@@ -11,6 +11,19 @@ possible, while keeping a maintainable code base.
 The code is split into a generic backend code in django and a client 
 side code in `./frontend`.
 
+## Install instructions
+
+Run the migrate command, to create the tables.
+```
+python manage.py migrate
+```
+
+Generate the default lanes, so that you can start adding issues:
+```
+python manage.py generate_default_lanes
+```
+
+
 ## Requirements
 
 You will [nodejs](http://nodejs.org/) > 4 and I also suggest upgrading
