@@ -45,6 +45,11 @@ class SlideStack(models.Model):
             category_tuples = []
             for cat in list_categories:
                 if not cat == '':
+                    if '_' not in cat:
+                        raise ValueError('The SlideStack object "%s" contains categories not fitting the pattern "Chapter_Topic"' % self.title +
+                                         'please fix this in the admin, or if you can not reach the admin run the following script in the python shell (python manage.py shell):' +
+                                         '\n\nfrom Slides.models import SlideStack\nbrokenitem = SlideStack.objects.get(id=%s)\nbrokenitem.categories = ""\nbrokenitem.save()' % self.id +
+                                         '\n\nyou have to add the categories for this object manually in the admin afterwards, or adjust the script as needed')
                     category_tuples.append(cat.split('_'))
 
             return category_tuples
