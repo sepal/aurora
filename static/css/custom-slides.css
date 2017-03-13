@@ -191,11 +191,17 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .btn-next,.btn-prev{
 	font-weight:normal;
 	color:rgb(58, 201, 88);
+	z-index:100;
 }
 
 .btn-next-not,.btn-prev-not {
 	font-weight:normal;
 	color:lightgray;
+}
+
+.slides_origin_center {
+	width:px;
+	margin-left:40%;
 }
 
 
@@ -209,21 +215,12 @@ a.btn-next[href=''],a.btn-prev[href='']{
 }
 
 .slides_navi_next {
-	float:right;
 }
 
 .slides_navi_prev {
 	float:left;
 }
 
-.slides_origin_center {
-	
-	width:100%;
-	float:left;
-	text-align:center;
-	position:relative;
-	top:-18px;
-}
 
 .row {
 	position:relative;
