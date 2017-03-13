@@ -66,6 +66,14 @@ body {margin:0;padding:0;}
 	.mini {
 		display:none;
 	}
+	body {
+		padding-top:70px;
+	}
+	
+	.pagehead {
+		position:fixed;
+		z-index:32000;
+	}
 }
 @media all and (max-width: 959px) {
 	.too_long {
