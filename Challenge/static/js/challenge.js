@@ -46,7 +46,7 @@ function challenge_loaded() {
         return
     });
 
-    document.querySelector(".submitted-content > trix-editor").contentEditable = false
+    $(".submitted-content > trix-editor").attr('contenteditable', 'false');
 
     // Autosafe elaboration every x milliseconds
     var autosave_interval = 20000
@@ -107,9 +107,6 @@ function save_elaboration(challenge_id) {
         revised_elaboration_text: elaboration_text,
         extra_review_question: extra_review_question
     };
-
-    console.log("Saving data:");
-    console.log(data);
 
     var args = {
         type: "POST",

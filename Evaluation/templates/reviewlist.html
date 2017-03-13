@@ -19,7 +19,9 @@
             </tr>
         {% endifchanged %}
         <tr onclick="load_reviews({{ review.elaboration.id }})" class="{% cycle 'darkTableRow' 'lightTableRow' %}">
+            {% if review.elaboration.user.avatar %}
             <td><img class="gravatar" src="{{ review.elaboration.user.avatar.url }}" style="vertical-align:middle"></td>
+            {% endif %}
             <td>{{ review.elaboration.user.nickname }}</td>
             <td class="timestamp" title="{{ review.elaboration.submission_time }}">{{ review.elaboration.submission_time|naturaltime }}</td>
             <td class="indicator_field result{{ review.appraisal }}"> <!-- A S F N -->
@@ -41,4 +43,3 @@
 	</script>
 
 {% endblock %}
-

@@ -686,7 +686,6 @@ def load_reviews(request, course_short_title=None):
 @aurora_login_required()
 @staff_member_required
 def load_task(request, course_short_title=None):
-    print('here')
     course = Course.get_or_raise_404(short_title=course_short_title)
     if not 'elaboration_id' in request.GET:
         return False;

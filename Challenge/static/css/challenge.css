@@ -137,7 +137,7 @@
 
 
 .gray_text {
-	color:gray;
+	color:#BBB;
 	background:white;
 	position:absolute;
 	top:37px;
@@ -209,11 +209,6 @@ h1 {
     background-color: #f0f0f0;
 }
 
-#detail_area {
-    width: 100%;
-	padding:10px;
-	box-sizing: border-box;
-}
 
 .stack_imgs {
 	position:absolute;
@@ -341,6 +336,17 @@ h1 {
 	.challenge {
 		width:100%px;
 	}
+	#detail_area {
+	    width: 100%;
+		box-sizing: border-box;
+	}
+	.challenge_description_title {
+		padding:1em 0 0 1em;
+	}
+	.challenge_description_text {
+		padding:1em;
+	}
+	
 }
 
 .filterbar i {
@@ -350,16 +356,21 @@ h1 {
 }
 
 @media all and (min-width: 960px) {
+	.challenge_description_text {
+		padding:0.25em;
+	}
+	.challenge_description_title {
+		padding-left:0.25em;
+	}
 	.not_stack {
 		clear:both;
 		position:relative;
-		padding: 1em;
-		padding-bottom:0em;
+		padding: 1.5em 1em 0em 1.7em;
 		margin-left:0.5em;
 		border-radius:0.5em;
 		cursor:pointer;
 		overflow:hidden;
-		width:960px;
+		width:920px;
 	}
 	.filterbar {
 		box-sizing: border-box;
@@ -399,6 +410,12 @@ h1 {
 		padding:10px;
 		width:940px;
 	}
+	#detail_area {
+	    width: 100%;
+		padding:10px;
+		box-sizing: border-box;
+	}
+	
 }
 
 .forbiddenfruit div {
@@ -514,7 +531,7 @@ h1 {
 
 .status_under_MCE {
 	position:relative;
-	width:530px;
+	width:200px;
 	float:left;
 }
 

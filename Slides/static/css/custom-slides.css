@@ -1,3 +1,4 @@
+
 a.btn-next[href=''],a.btn-prev[href='']{
     display:none;
 }
@@ -217,12 +218,12 @@ a.btn-next[href=''],a.btn-prev[href='']{
 }
 
 .slides_origin_center {
-	
 	width:100%;
 	float:left;
 	text-align:center;
 	position:relative;
-	top:-18px;
+	top:38px;
+	z-index:101;
 }
 
 .row {
