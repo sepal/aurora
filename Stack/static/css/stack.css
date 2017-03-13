@@ -68,11 +68,6 @@
 	margin-top:2px;
 }
 
-.challenges_stack {
-	margin-left:0.5em;
-	max-width:940px;
-	padding:1em;
-}
 
 .info_title {
 	font-size:1.5em;
@@ -242,6 +237,11 @@
 	    cursor: pointer;
 		z-index:-2;
 	}
+	.challenges_stack {
+		margin-left:0.5em;
+		max-width:940px;
+		padding:1em;
+	}
 }
 @media only screen and (max-width: 959px) {
 	.card {
@@ -252,6 +252,7 @@
 		margin-top:0.5em;
 		margin-bottom:0.5em;
 		width:95%;
+		max-width:294px;
 		height:435px;
 		border-radius:0.75em;
 		background-color:#fff;
@@ -263,6 +264,12 @@
 		overflow:hidden;
 	    cursor: pointer;
 		z-index:-2;
+	}
+	.card:last-of-type {
+		margin-bottom:50px;
+	}
+	.challenges_stack {
+		padding:0.5em;
 	}
 }
 
