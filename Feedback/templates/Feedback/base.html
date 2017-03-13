@@ -33,11 +33,13 @@
   <h1>Aurora Feedback</h1>
   <nav>
     <ul>
+	{% comment %}
       {% if course.short_title == "gsi" %}
         <li class="navigate--discourse"><a
             href="{% url 'diskurs:index' course.short_title %}">Discourse</a>
         </li>
       {% endif %}
+	{% endcomment %}
       <li class="navigate--home"><a
           href="/{{ course.short_title }}">Go home</a></li>
     </ul>
