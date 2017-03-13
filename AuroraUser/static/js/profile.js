@@ -1,3 +1,33 @@
+$(function() {
+		$('#study_code').focus(function(){
+			$('.correct_maker').removeClass('versteck',700);
+		});
+		$('#study_code').focusout(function(){
+			$('.correct_maker').addClass('versteck',700);
+		});
+		$('.bmi').click(function(){
+			$('#study_code').val('033532');
+			$('#statement').focus();
+			$('#study_code').change();
+		})
+		$('.bmz').click(function(){
+			$('#study_code').val('033533');
+			$('#statement').focus();
+      	  	$('#study_code').change();
+		})
+		$('.bsi').click(function(){
+			$('#study_code').val('033534');
+			$('#statement').focus();
+      	  	$('#study_code').change();
+		})
+		$('.bti').click(function(){
+			$('#study_code').val('033535');
+			$('#statement').focus();
+     	   	$('#study_code').change();
+		})
+})
+
+
 $(profile_loaded);
 
 var file;
