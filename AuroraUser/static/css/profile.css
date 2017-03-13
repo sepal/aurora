@@ -26,18 +26,17 @@ input[type=file] {
 }
 
 
-#name {
+#name, #matriculation_number, #feed_token {
 	box-shadow: none;	
 	background-color: white;
 	border:none;
 }
 
-#matriculation_number {
-	box-shadow: none;
-	background-color: white;
-	border:none;
+#feed_token {
+	display:inline-block;
+	font-family: "yanone_kaffeesatz_rgregular";
+	width:80%;
 }
-
 .legend {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:80%;

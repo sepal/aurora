@@ -353,13 +353,12 @@ h1 {
 	.not_stack {
 		clear:both;
 		position:relative;
-		padding: 1em;
-		padding-bottom:0em;
+		padding: 1.5em 1em 0em 1.7em;
 		margin-left:0.5em;
 		border-radius:0.5em;
 		cursor:pointer;
 		overflow:hidden;
-		width:960px;
+		width:920px;
 	}
 	.filterbar {
 		box-sizing: border-box;

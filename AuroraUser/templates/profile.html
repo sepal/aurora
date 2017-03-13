@@ -30,7 +30,7 @@
         <input id="nickname" type="text" name="nickname" value="{{ user.nickname }}" class="focusable">
       </td>
 		  <td class="legend">
-			  visible to everyone.
+			  Visible to everyone.
 		  </td>
     </tr>
     <tr class="formRow">
@@ -41,7 +41,7 @@
         <input id="name" type="text" name="name" value="{{ user.first_name }} {{ user.last_name }}" readonly tabindex=1000>
       </td>
 		  <td class="legend">
-	  		private. cannot be changed.
+	  		Private. Cannot be changed.
   		</td>
     </tr>
     <tr class="formRow">
@@ -52,7 +52,7 @@
         <input id="matriculation_number" type="text" name="matriculation_number" value="{{ user.matriculation_number }}" readonly tabindex=1000>
       </td>
 		<td class="legend">
-	  		private. cannot be changed.
+	  		Private. Cannot be changed.
   		</td>
     </tr>
     <tr class="formRow">
@@ -63,7 +63,7 @@
         <input id="study_code" type="text" name="study_code" value="{{ user.study_code }}" class="focusable">
       </td>
       <td class="legend">
-        private. click in field to see choices.<br>
+        »Studienkennzahl«. Private. Click in field to see choices.<br>
       </td>
     </tr>
 	<tr class="correct_maker versteck">
@@ -85,7 +85,7 @@
         <input id="statement" type="text" name="statement" value="{{ user.statement }}" class="focusable">
       </td>
       <td class="legend">
-        a sentence about yourself. visible to everyone.
+        A sentence about yourself. visible to everyone.
       </td>
     </tr>
     <tr class="formRow">
@@ -96,22 +96,23 @@
         <input id="email" type="text" name="email" value="{{ user.email }}" class="focusable">
       </td>
       <td class="legend">
-        private.
+        Private.
       </td>
     </tr>
+	{% comment %}
     <tr class="formRow">
       <td>
-        <label for="feed_token">Feed token</label>
+        <label for="feed_token">Feed token 
+</label>        
       </td>
       <td>
-        <input id="feed_token" type="text" name="feed_token" value="{{ feed_token.token }}" class="focusable"><br />
-        <input type="button" onclick="create_new_feed_token('{% url 'User:create_feed_token' course_short_title=course.short_title %}')" value="Create new feed token" />
+        <input id="feed_token" type="text" name="feed_token" value="{{ feed_token.token }}" readonly tabindex=1000><br />
       </td>
       <td class="legend">
-        Create new feed token, so that feeds can be referenced. Don't share this token with others.
+        Don't share this token with others. If you <a href="#" onclick="create_new_feed_token('{% url 'User:create_feed_token' course_short_title=course.short_title %}')" >create a new feed token</a>, your old RSS feed breaks. 
       </td>
     </tr>
-
+	{% endcomment %}
     <tr class="formRow">
       <td class="avatar_label">
         <label for="avatar">Avatar</label>
@@ -124,7 +125,7 @@
         </form>
       </td>
       <td class="legend avatar_label">
-        visible to everyone.
+        Visible to everyone.
       </td>
     </tr>
 
