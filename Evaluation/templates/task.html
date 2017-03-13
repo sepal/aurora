@@ -18,7 +18,7 @@
             </td>
         </tr>
     </table>
-	
+
 	<script>
 		$(".indicator:contains('0')").addClass('zero_reviews');
 		$(".timestamp:contains(' days')").html(function(i, text) {return text.replace(/ days/g, 'd');});
@@ -41,7 +41,8 @@
     {% render_original_uploads elaboration %}
 
     {% if elaboration.elaboration_text|length != 0 %}
-        <textarea id="editor_stack_orig">{{ elaboration.elaboration_text }}</textarea>
+        <textarea id="editor_stack_orig" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+        <trix-editor class="trix-content" input="editor_stack_orig"></trix-editor><br>
     {% endif %}
     <div class="spacer"></div>
 
