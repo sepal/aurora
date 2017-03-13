@@ -38,14 +38,14 @@
 
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
 		<script> window.document.title = "Task: {{challenge.title|safe}}";</script>
-	{{ challenge.title|safe }}
+	<div class="challenge_description_title">{{ challenge.title|safe }}</div>
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
 	{% endif %}
     </div>
     <div style="display:none">Points: {{ challenge.points }}</div>
     <div class="challenge_description{% if elaboration.is_submitted %} nothere{% endif %}" >
-      {{ challenge.description|safe|urlize }}
+      <div class="challenge_description_text">{{ challenge.description|safe|urlize }}</div>
       <div class="qa_section">
         <div class="comments">
           <span style="cursor:pointer;" onclick="$('#qa').slideToggle('fast');"><b><i class="fa fa-toggle-down"></i>
