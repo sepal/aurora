@@ -16,6 +16,7 @@
 
 <!--enlisting of topics-->
 {% for category in structure %}
+{% if category.0 != "Section" %}
     <h1 class="stack-title-category">{{ category.0 }}</h1>
 
     <div class="row">
@@ -43,7 +44,7 @@
 
     </div>
     <br />
-
+{% endif %}
 {% endfor %}
 
 
