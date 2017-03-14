@@ -1,34 +1,64 @@
-/**
+/*
  * Created by peterpur between 22.2.2014 and now.
  */
-
-$(function() {
-    $('.feed_header').each(function() {
-        $(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
-        $(this).css('background-position-y', (Math.floor(Math.random() * 100)) + '%');
-    })
-})
 
 var loadMore_Timer;
 
 $(function() {
-    loadMore_Timer = setTimeout(function() {
-        clickLoadMore()
-    }, 1000);
-    if ($(window).width() > 960) {
-        $('#info_column').width($(window).width() - 660)
-    };
-    $('#info_column').masonry({
-        itemSelector: '.sidebar_item',
-        columWidth: 330,
-        gutter: 14
-    })
-    $(window).resize(function() {
-        if ($(window).width() > 960) {
-            $('#info_column').width($(window).width() - 660)
-        };
-    })
+	window.document.title = "Aurora: Newsfeed";
+	$('.feed_header').each(function() {
+		$(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
+		$(this).css('background-position-y', (Math.floor(Math.random() * 100)) + '%');
+	});
+	loadMore_Timer = setTimeout(function() {
+		clickLoadMore();
+	}, 1000);
+	if ($(window).width() > 960) {
+		$('#info_column').width($(window).width() - 660)
+	};
+	$('#info_column').masonry({
+		itemSelector: '.sidebar_item',
+		columWidth: 330,
+		gutter: 14
+	});
+	$(window).resize(function() {
+		if ($(window).width() > 960) {
+			$('#info_column').width($(window).width() - 650)
+		};
+	});
+	$('#feed-li').addClass('uRhere');
+	$('.feed_header').click(function() {
+		$('#content_' + $(this).attr('id')).slideToggle('fast', function() {
+			$('#info_column').masonry('layout');
+			feedCookieUpdate();
+		});
+	});
+	feedCookieLoad();
 })
+
+function feedCookieUpdate(elem) {
+    "use strict";
+	var newFeedC = ""
+	$('.feed_header').each(function() {
+		var aFeedID = '#content_' + $(this).attr('id');
+		if ($(aFeedID).css('display') == 'none') {
+			newFeedC = newFeedC + "," + $(this).attr('id');
+		}
+	});
+	newFeedC = newFeedC.substr(1);
+    document.cookie = "feedCookie." + $('#the_username').data('username') + "= " + newFeedC + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
+}
+
+function feedCookieLoad() {
+	fCookie = getCookie('feedCookie.' + $('#the_username').data('username'));
+	if (fCookie != null) {
+		var clickedFeeds = fCookie.split(',');
+		for (var i = 0; i < clickedFeeds.length; i++) {
+			$('#content_'+clickedFeeds[i]).css('display','none');
+		}
+    }
+	$('#info_column').masonry('layout');
+}
 
 function clickLoadMore() {
     el = $('.endless_more')[0]
@@ -49,19 +79,6 @@ function isScrolledIntoView(el) {
     var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
     return isVisible;
 }
-
-
-
-$(function() {
-    $('#feed-li').addClass('uRhere');
-    window.document.title = "Aurora: Newsfeed"
-    $('.feed_header').click(function() {
-        $('#content_' + $(this).attr('id')).slideToggle('fast', function() {
-            $('#info_column').masonry('layout');
-        });
-
-    })
-});
 
 var updateNew_Timer;
 
