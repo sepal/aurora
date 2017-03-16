@@ -93,10 +93,14 @@ a.btn-next[href=''],a.btn-prev[href='']{
 
 
 .lecturer_note {
-	width:42%;
-	margin-left:58%;
 	padding:6px;
 	border-radius:3px;
+}
+
+.lecturer_note br{
+	display: block; /* makes it have a width */
+	content: ""; /* clears default height */
+	margin-top: 8px; /* change this to whatever height you want it */
 }
 
 .lecturer_note_title {
