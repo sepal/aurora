@@ -1,20 +1,3 @@
-.feed_header {
-	background:#243D2A;
-    background-image: url("../img/auroraX.png");
-	background-clip: border-box;
-	background-origin: border-box;
-	background-position: 33% 33%;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	color:white;
-	border-bottom:1px solid #3F6E34;
-	padding:0.2em 0.5em;
-	border-radius: 4px 4px 1px 1px;
-	cursor:pointer;
-	margin-bottom:1em;
-	text-shadow:0 0 3px black;
-}
-
 .feed_header.newsfeed {
 	margin-bottom:0;
 }
@@ -48,7 +31,7 @@
 	}
 	.feed_header {
 		background:#243D2A;
-	    background-image: url("../img/auroraX.png");
+	    background-image: url("../img/aurora_head.png");
 		background-clip: border-box;
 		background-origin: border-box;
 		background-position: 33% 33%;
@@ -87,7 +70,7 @@
 	.feed_header {
 		height:48px;
 		background:#243D2A;
-	    background-image: url("../img/auroraX.png");
+	    background-image: url("../img/aurora_head.png");
 		background-clip: border-box;
 		background-origin: border-box;
 		background-position: 33% 33%;
