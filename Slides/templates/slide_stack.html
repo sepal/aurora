@@ -50,9 +50,9 @@
 	</div>
 
 <!--Comments-->
-	<div class="lecturer_comments">
+	<div class="lecturer_comments col-lg-5 col-md-12">
 		{% for slide in slide_stack.slides %}
-			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><span class="lecturer_note_title">{{slide.title}}</span> {{ slide.lecturer_comment|safe|urlizetrunc:30 }}</div>{% endif %}
+			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><span class="lecturer_note_title">{{slide.title}}</span> {{ slide.lecturer_comment|safe|urlizetrunc:50 }}</div>{% endif %}
 		{% endfor %}
 	</div>
 	<br>

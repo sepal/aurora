@@ -149,7 +149,8 @@
 }
 
 .issue__type-label {
-	color: #aaa
+	color: #aaa;
+	font-weight:normal;
 }
 
 .issue__type-label select {
@@ -315,6 +316,7 @@
 	color: #222;
 	text-decoration: none;
 	background:#f8f8f8;
+	font-weight:bold;
 }
 
 .issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover,.issue--teaser__owned:active,.issue--teaser__owned:focus,.issue--teaser__owned:hover,.issue--teaser--security:active,.issue--teaser--security:focus,.issue--teaser--security:hover {
@@ -327,16 +329,21 @@
 }
 
 .issue--teaser__body {
-	height: 1rem;
+	height: 3rem;
   overflow: hidden;
   width: 100%;
+  font-weight:normal;
 }
 
 
 .issue--teaser__body p {
   text-overflow: ellipsis;
-  white-space: nowrap;
+/*  white-space: nowrap;*/
   overflow: hidden;
+}
+
+.issue--teaser__body p::after {
+	content:"...";
 }
 
 .issue--teaser__comments,.issue--teaser__upvotes {
@@ -346,7 +353,8 @@
 .issue--teaser__footer {
 	margin-top: 14px;
 	color: #aaa;
-	font-size: .9em
+	font-size: .9em;
+    font-weight:normal;
 }
 
 .issue--teaser__type {

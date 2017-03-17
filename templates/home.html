@@ -32,9 +32,11 @@
         <div class="feed_header"  id="part_5">
           <i class="fa fa-minus-square half"></i> <b>Extra Reviews</b>
         </div>
+		{% comment %}
         <div class="feed_column"  id="content_part_5">
           {% include 'extra_reviews.html' %}
   		</div>
+		{% endcomment i%}
       </div>
     {% endif %}
 
@@ -56,28 +58,9 @@
 			</div>
 	        <div class="feed_column" id="content_part_1">
 				<p><b>Wesentliche Hinweise</b> ...<BR>
-					...zum <a href="http://igw.tuwien.ac.at/aurora/aurora_challenges.pdf">Arbeiten in Aurora</a><br>
-				 ...zum <a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf">Schreiben von Reviews</a><br>
+					...zum <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">Arbeiten in Aurora</a><br>
 				 ...zu <a href="http://igw.tuwien.ac.at/aurora/plagiatsleitfaden.pdf">Plagiaten</a></p><br>
 		        <p>Hinweis: Diese Seite wird mit Mozilla- und Webkit-Browsern <b>(Firefox, Safari, Chrome)</b> entwickelt und getestet. Bitte verwenden sie Aurora mit einem dieser Browser. F&uuml;r alle anderen Browser &uuml;bernehmen wir keine Garantie. Melden Sie eventuelle Probleme auf unterstützten Browsern gegebenenfalls im &raquo;Bugs&amp;Feedback&laquo;-Bereich.</p><br>
-		       <p>Es gilt folgender <b>Punktespiegel:</b></p>
-		        <p>60 Punkte - sehr gut</p>
-		        <p>53 Punkte - gut</p>
-		        <p>47 Punkte - befriedigend</p>
-		        <p>40 Punkte - gen&uuml;gend</p><br>
-		        <p><b>Achtung:</b> F&uuml;r eine positive Note m&uuml;ssen Challenges im Umfang von 60 Punkten durchgearbeitet werden!</p><br>
-		        <br>
-		        <p><b>Video-Stream:</b></p>
-		        <br>
-		        <p>Während der Vorlesungszeit steht ein Video-Stream zur Verfügung, mit dem Sie die Vorlesung remote verfolgen können: <br><br>
-					{% if course.short_title == "gsi" %}
-					&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=253610">GSI live stream</a></p><br>
-					{% else %}
-					&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=253611">BHCI live stream</a></p><br>
-					{% endif %}
-				<p>Ausserdem zeichnen wir diese Streams auf; Sie finden die Aufzeichnungen in tuwel. Beachten Sie bitte, dass man dazu physisch oder zumindest logisch (VPN oder so) im Netz der TU sein muss!</p>
-		        <br><br>
-
 		        <p><b>Support:</b></p>
 		        <br>
 				<p>Wenn sie Probleme haben, sich nicht auskennen oder Hilfe ben&ouml;tigen, so stehen ihnen folgende Informationsquellen zur Verf&uuml;gung:</p>
@@ -94,6 +77,17 @@
 				{% endif %}<br>
 				<p>- Sie können auch in die LVA-Sprechstunde kommen: Mi 10-12h, Michael Urbanek, Argentinierstr. 8, 2. Stock, Mitte.
 		        <br><br>
+		        <p><b>Video-Stream:</b></p>
+		        <br>
+		        <p>Während der Vorlesungszeit steht ein Video-Stream zur Verfügung, mit dem Sie die Vorlesung remote verfolgen können: <br><br>
+					{% if course.short_title == "gsi" %}
+					&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363094">GSI live stream</a></p><br>
+					{% else %}
+					&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i><a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363079">BHCI live stream</a></p><br>
+					{% endif %}
+				<p>Ausserdem zeichnen wir diese Streams auf; Sie finden die Aufzeichnungen in tuwel. Beachten Sie bitte, dass man dazu physisch oder zumindest logisch (VPN oder so) im Netz der TU sein muss!</p>
+		        <br>
+
 			</div>
 		</div>
 		<div class="sidebar_item">
@@ -116,25 +110,25 @@
 			</div>
 	        <div class="feed_column" id="content_part_3">
 				<table width="100%">
-				{% if course.short_title == "hci" %}
+				{% if course.short_title == "gsi" %}
 					<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
-						<td width="17%" align="right" style="color:silver">1</td>
+						<td width="17%" align="right"></td>
 						<td width="17%" align="right">8</td>
 						<td width="17%" align="right">15</td>
-						<td width="17%" align="right" style="color:silver">22</td>
-						<td width="18%" align="right" style="color:silver">29</td>
+						<td width="17%" align="right">22</td>
+						<td width="18%" align="right">29</td>
 						<td witdh="2%"></td></tr>
 					<tr><td>April</td>
 						<td></td>
 						<td align="right">5</td>
-						<td align="right">12</td>
-						<td align="right">19</td>
+						<td align="right" style="color:silver">12</td>
+						<td align="right" style="color:silver">19</td>
 						<td align="right">26</td>
 						<td witdh="2%"></td></tr>
 					<tr bgcolor="#EEE"><td>Mai</td>
 						<td align="right">3</td>
 						<td align="right">10</td>
-						<td align="right" style="color:silver">17</td>
+						<td align="right">17</td>
 						<td align="right">24</td>
 						<td align="right">31</td>
 						<td witdh="2%"></td></tr>
@@ -142,35 +136,34 @@
 						<td></td>
 						<td align="right">7</td>
 						<td align="right">14</td>
-						<td align="right" style="color:gray">*21</td>
-						<td align="right" style="color:gray">*28</td>
+						<td align="right">21</td>
+						<td align="right">28</td>
 						<td witdh="2%"></td></tr>
 				{% else %}
 					<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
-						<td width="17%" align="right" style="color:silver">2</td>
-						<td width="17%" align="right">9</td>
-						<td width="17%" align="right">16</td>
-						<td width="17%" align="right" style="color:silver">23</td>
-						<td width="18%" align="right" style="color:silver">30</td></tr>
+						<td width="17%" align="right"></td>
+						<td width="17%" align="right" style="color:silver">7</td>
+						<td width="17%" align="right">14</td>
+						<td width="17%" align="right">21</td>
+						<td width="17%" align="right">28</td>
 					<tr><td>April</td>
 						<td></td>
+						<td align="right">4</td>
+						<td align="right" style="color:silver">11</td>
+						<td align="right" style="color:silver">18</td>
+						<td align="right">25</td></tr>
+					<tr bgcolor="#EEE"><td>Mai</td>
+						<td align="right">2</td>
+						<td align="right">9</td>
+						<td align="right">16</td>
+						<td align="right">23</td>
+						<td align="right">30</td>
+					<tr><td>Juni</td>
+						<td width="17%" align="right"></td>
 						<td align="right">6</td>
 						<td align="right">13</td>
-						<td align="right">20</td>
-						<td align="right">27</td></tr>
-					<tr bgcolor="#EEE"><td>Mai</td>
-						<td></td>
-						<td align="right">4</td>
-						<td align="right">11</td>
-						<td align="right" style="color:silver">18</td>
-						<td align="right">25</td>
-						<td witdh="2%"></td></tr>
-					<tr><td>Juni</td>
-						<td align="right" style="color:silver">1</td>
-						<td align="right" style="color:silver">8</td>
-						<td align="right">15</td>
-						<td align="right">22</td>
-						<td align="right" style="color:silver">29</td>
+						<td align="right" style="color:gray">20</td>
+						<td align="right" style="color:silver">27</td>
 						<td witdh="2%"></td></tr>
 				{% endif %}
 				</table>
