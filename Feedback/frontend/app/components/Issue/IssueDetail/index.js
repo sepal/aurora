@@ -1,7 +1,6 @@
 import Moment from 'moment';
 import React, {PropTypes, Component} from 'react';
 
-import styles from './style.scss';
 import IssueLabel from '../IssueLabel'
 import IssueIcon from '../IssueIcon';
 import IssueBody from '../IssueBody';
@@ -40,10 +39,10 @@ export default class IssueDetail extends Component {
     }
 
     return (
-      <div className={styles.issueDetail}>
+      <div className="issue--detail">
         <div>
-          <div className={styles.title}>
-            <span className={styles.icon}>
+          <div className="issue--detail__title">
+            <span className="issue--detail__icon">
               <IssueIcon type={this.props.type} />
             </span>
             <IssueLabel
@@ -52,16 +51,16 @@ export default class IssueDetail extends Component {
               onChange={this.onLabelTypeChange}
               editable={canEdit} />
           </div>
-          <div className={styles.subtitle}>
+          <div className="issue--detail__subtitle">
             <span>by {this.props.author.name}</span>&nbsp;
             <span>on {date}</span>,&nbsp;
             <span>{this.props.upvotes ? this.props.upvotes : 0} {upvote_label}</span>
           </div>
         </div>
-        <div className={styles.content}>
-          <IssueBody className={styles.body} body={this.props.body}
+        <div className="issue--detail__content">
+          <IssueBody className="issue--detail__body" body={this.props.body}
                      onChange={this.onBodyChange} editable={canEdit} />
-          <ul className={styles.actions}>
+          <ul className="issue--detail__actions">
             <li>
               {upvote_action}
             </li>
@@ -89,7 +88,7 @@ export default class IssueDetail extends Component {
       });
 
       return (
-        <ul className={styles.images}>
+        <ul className="issue--detail__images">
           {images}
         </ul>
       )

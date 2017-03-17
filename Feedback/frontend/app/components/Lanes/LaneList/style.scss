@@ -1,7 +1,7 @@
 @import "../../../styles/config/colors";
 @import "../../../styles/config/layout";
 
-.laneList {
+.lane-list {
   margin: {
     top: $spacing--big;
     left: 0;
@@ -17,7 +17,7 @@
   overflow-y: hidden;
 }
 
-.item {
+.lane-list__item {
   flex: 1 0 auto;
   padding: 0 $spacing--big;
   height: 100%;

@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './style.scss';
 
 import InputElement from '../InputElement';
 
@@ -23,7 +22,7 @@ export default class Select extends InputElement {
     ));
 
     return (
-      <div className={styles.select}>
+      <div className="select">
         <label htmlFor={this.props.name}>{this.props.label}:</label>
         <select name={this.props.name} id={this.props.name}
                 defaultValue={this.props.value}

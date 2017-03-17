@@ -1,6 +1,5 @@
 import React from 'react';
 
-import styles from './style.scss';
 import IssueTeaser from '../IssueTeaser';
 
 const IssueList = ({issues, isStaff, current_user, onDrop}) => {
@@ -18,7 +17,7 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
     }
 
     return (
-      <li key={issue.id} className={styles.item}>
+      <li key={issue.id} className="issue-list__item">
         <IssueTeaser title={issue.title} upvotes={upvotes}
                      comments={number_comments} id={issue.id} type={issue.type}
                      lane={issue.lane.id} onDrop={onDrop}
@@ -32,13 +31,13 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
 
   // Build up the empty message.
   const msg = (
-    <li className={styles.empty}>
+    <li className="issue-list__empty">
       No issues here yet.
     </li>
   );
 
   return (
-    <ul className={styles.container}>
+    <ul>
       { issues.length > 0 ? issueTeasers : msg }
     </ul>
   );

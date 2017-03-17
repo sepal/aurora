@@ -2,7 +2,7 @@
 @import "../../../styles/config/layout";
 @import "../../../styles/abstract/selecting";
 
-.issueTeaser {
+.issue--teaser {
   display: block;
   padding: $spacing;
   border-radius: $border-radius;
@@ -19,32 +19,39 @@
 
 }
 
-.issueTeaserPreview {
-  @extend .issueTeaser;
+.issue--teaser__body {
+  height: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.issue--teaser--preview {
+  @extend .issue--teaser;
   opacity: 0.5;
   cursor: wait;
 }
 
-.upvotes, .comments {
+.issue--teaser__upvotes, .issue--teaser__comments {
   margin-right: $spacing--big;
 }
 
-.footer {
+.issue--teaser__footer {
   margin-top: $spacing;
   color: $gray;
   font-size: 0.9em;
 }
 
-.type {
+.issue--teaser__type {
   color: $gray;
 }
 
-.owned {
-  @extend .issueTeaser;
+.issue--teaser__owned {
+  @extend .issue--teaser;
   box-shadow: inset 0px 0px 6px 2px #cfc8ff;
 }
 
-.security {
-  @extend .issueTeaser;
+.issue--teaser--security {
+  @extend .issue--teaser;
   box-shadow: inset 0px 0px 6px 2px #ff827d;
 }

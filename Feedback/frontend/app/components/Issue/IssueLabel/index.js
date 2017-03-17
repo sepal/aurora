@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './style.scss';
 import {IssueTypes} from '../../../constants';
 
 export default class IssueLabel extends React.Component {
@@ -42,8 +41,8 @@ export default class IssueLabel extends React.Component {
       ));
 
       return (
-        <div className={styles.issueTypeLabel} onBlur={this.onBlur}>
-          <span className={styles.issueTypeLabel}>
+        <div className="issue__type-label" onBlur={this.onBlur}>
+          <span className="issue__type-label">
             <select
               defaultValue={this.props.type}
               onChange={this.onTypeChange}
@@ -71,7 +70,7 @@ export default class IssueLabel extends React.Component {
     return (
       <div onClick={this.enableEditing}>
         <span
-          className={styles.issueTypeLabel}>[{label}]</span> {this.props.title}
+          className="issue__type-label">[{label}]</span> {this.props.title}
       </div>
     );
   }

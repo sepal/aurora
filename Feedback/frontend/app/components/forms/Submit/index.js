@@ -1,9 +1,8 @@
 import React from 'react';
-import styles from './style.scss';
 
 const Submit = function (props) {
   return (
-    <div className={styles.submit}>
+    <div className="submit">
       <button type="submit" onClick={props.onClick}>{props.value}</button>
     </div>
   );

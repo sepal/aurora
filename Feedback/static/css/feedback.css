@@ -1,4 +1,4 @@
-.style__modal___2FOtZ {
+.modal {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -9,7 +9,7 @@
 	overflow-y: scroll
 }
 
-.style__window___EE3X8 {
+.modal__window {
 	border-radius: 5px;
 	border: 1px solid #cbcbcb;
 	background: #fff;
@@ -17,29 +17,29 @@
 	width: 700px
 }
 
-.style__header___gSFNj {
+.modal__header {
 	position: relative;
 	width: 100%
 }
 
-.style__close___JgRVK {
+.modal__close {
 	float: right;
 	font-size: 2em;
 	color: red;
 	z-index: 5
 }
 
-.style__close___JgRVK:active,.style__close___JgRVK:focus,.style__close___JgRVK:hover {
+.modal__close:active,.modal__close:focus,.modal__close:hover {
 	background: none!important;
 	text-shadow: none!important;
-	color: #f66!important
+	color: #f66!important;
 }
 
-.style__title___HmgoS {
+.issue--detail__title {
 	position: relative
 }
 
-.style__icon___29uWf {
+.issue--detail__icon {
 	position: absolute;
 	left: -50px;
 	width: 40px;
@@ -48,26 +48,26 @@
 	text-align: center
 }
 
-.style__issueDetail___2e2N8 {
+.issue--detail {
 	padding: 14px 14px 14px 63px
 }
 
-.style__title___HmgoS {
+.issue--detail__title {
 	width: 90%;
 	font-size: 1.2em;
 	font-weight: 700
 }
 
-.style__subtitle___1rcLd {
+.issue--detail__subtitle {
 	font-size: .9em;
 	color: #aaa
 }
 
-.style__type___2Gah2 {
+.issue--detail__type {
 	color: #aaa
 }
 
-.style__content___IFQCu {
+.issue--detail__content {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -75,18 +75,18 @@
 	flex-wrap: nowrap
 }
 
-.style__images___2VAa3 {
+.issue--detail__images {
 	margin-top: 14px;
 	width: 100%;
 	clear: both
 }
 
-.style__images___2VAa3 img {
+.issue--detail__images img {
 	width: 150px;
 	height: auto
 }
 
-.style__body___2juuJ {
+.issue--detail__body {
 	-webkit-box-flex: 2;
 	-ms-flex-positive: 2;
 	flex-grow: 2;
@@ -94,7 +94,7 @@
 	width: 75%
 }
 
-.style__actions___37QoZ {
+.issue--detail__actions {
 	text-align: right;
 	-webkit-box-flex: 1;
 	-ms-flex-positive: 1;
@@ -104,60 +104,60 @@
 	width: 25%
 }
 
-.style__actions___37QoZ li {
+.issue--detail__actions li {
 	margin-bottom: 14px
 }
 
-.style__comments___3a26m {
+.issue--detail__comments {
 	margin-top: 21px
 }
 
-.style__comments___3a26m h2 {
+.issue--detail__comments h2 {
 	font-weight: 700;
 	border-bottom: 1px solid #cbcbcb
 }
 
-.style__new-comment___Wk2iq {
+.issue--detail__new-comment {
 	position: relative;
 	margin-top: 14px
 }
 
-.style__new-comment___Wk2iq .style__pic___2Lznp {
+.issue--detail__new-comment .issue--detail__new-comment__pic {
 	position: absolute;
 	left: -50px;
 	width: 40px;
 	text-align: center
 }
 
-.style__new-comment___Wk2iq .style__pic___2Lznp img {
+.issue--detail__new-comment .issue--detail__new-comment__pic img {
 	width: 100%;
 	height: auto
 }
 
-.style__new-comment___Wk2iq input[type=submit] {
+.issue--detail__new-comment input[type=submit] {
 	margin-top: 14px
 }
 
-.style__textarea___2JxXC {
+.textarea {
 	border: 1px solid #aaa;
 	padding: 14px
 }
 
-.style__textarea___2JxXC textarea {
+.textarea textarea {
 	border: none;
 	width: 100%
 }
 
-.style__issueTypeLabel___e8qCy {
+.issue__type-label {
 	color: #aaa
 }
 
-.style__issueTypeLabel___e8qCy select {
+.issue__type-label select {
 	width: 20%;
 	margin-right: 10px
 }
 
-.style__issueTypeLabel___e8qCy input[type=text] {
+.issue__type-label input[type=text] {
 	width: 60%;
 	font-weight: 700;
 	border-style: none;
@@ -165,15 +165,15 @@
 	outline: none
 }
 
-.style__issueTypeLabel___e8qCy button {
+.issue__type-label button {
 	width: 10%
 }
 
-.style__editing___2POed,.style__editing___2POed *,.style__editing___2POed :after,.style__editing___2POed :before {
+.issue__body--editing ,.issue__body--editing  *,.issue__body--editing  :after,.issue__body--editing  :before {
 	box-sizing: border-box
 }
 
-.style__editing___2POed textarea {
+.issue__body--editing  textarea {
 	width: 100%;
 	min-height: 300px;
 	padding: 5px;
@@ -182,31 +182,31 @@
 	box-shadow: inset 0 0 3px 1px #ccc
 }
 
-.style__button___Qi2AB {
+.issue__body__button {
 	margin-top: 10px
 }
 
-.style__content___uQAgY strong {
+.issue__body__content strong {
 	font-weight: 700
 }
 
-.style__content___uQAgY em {
+.issue__body__content em {
 	font-style: italic
 }
 
-.style__content___uQAgY li {
+.issue__body__content li {
 	margin-left: 1rem
 }
 
-.style__content___uQAgY ul {
+.issue__body__content ul {
 	list-style-type: disc
 }
 
-.style__content___uQAgY ol {
+.issue__body__content ol {
 	list-style: decimal
 }
 
-.style__content___uQAgY pre {
+.issue__body__content pre {
 	margin: .75rem 0;
 	padding: .25rem;
 	background: #f0ffd0;
@@ -214,91 +214,91 @@
 	box-shadow: inset 0 0 3px 0 #e0eec0
 }
 
-.style__content___uQAgY h1,.style__content___uQAgY h2,.style__content___uQAgY ol,.style__content___uQAgY p,.style__content___uQAgY ul {
+.issue__body__content h1,.issue__body__content h2,.issue__body__content ol,.issue__body__content p,.issue__body__content ul {
 	padding: .5rem 0
 }
 
-.style__content___uQAgY h1:first-child,.style__content___uQAgY h2:first-child,.style__content___uQAgY ol:first-child,.style__content___uQAgY p:first-child,.style__content___uQAgY ul:first-child {
+.issue__body__content h1:first-child,.issue__body__content h2:first-child,.issue__body__content ol:first-child,.issue__body__content p:first-child,.issue__body__content ul:first-child {
 	margin-top: 0
 }
 
-.style__content___uQAgY h1 {
+.issue__body__content h1 {
 	font-size: 1.5rem
 }
 
-.style__content___uQAgY h2 {
+.issue__body__content h2 {
 	font-size: 1.25rem
 }
 
-.style__select___12K_d {
+.select {
 	margin: 14px
 }
 
-.style__select___12K_d label {
+.select label {
 	display: block
 }
 
-.style__select___12K_d select {
+.select select {
 	margin-top: 7px
 }
 
-.styles__error___1sPX8 {
+.input--error {
 	color: red;
 	margin: 5px 0
 }
 
-.style__submit___3AEKx button {
+.submit button {
 	margin: 14px;
 	float:right;
 	font-size:130%;
 }
 
-.style__text_area___2cwnc {
+.text-area {
 	margin: 14px
 }
 
-.style__text_area___2cwnc label {
+.text-area label {
 	display: block
 }
 
-.style__text_area___2cwnc textarea {
+.text-area text-area--error {
 	border: 1px solid #cbcbcb;
 	margin-top: 7px;
 	padding: 3px;
 	width: 100%
 }
 
-.style__error___2-hY0 textarea {
+.error textarea {
 	border-color: red
 }
 
-.style__text_input___2S6cK,.style__text_input_error___FjcAE {
+.textinput {
 	margin: 14px
 }
 
-.style__text_input___2S6cK label,.style__text_input_error___FjcAE label {
+.textinput label {
 	display: block
 }
 
-.style__text_input___2S6cK input,.style__text_input_error___FjcAE input {
+.textinput input {
 	margin-top: 7px;
 	padding: 3px;
 	border: 1px solid #cbcbcb
 }
 
-.style__error___3ZeTh input {
+.textinput--error input {
 	border-color: red
 }
 
-.style__empty___lISp5,.style__item___3g1r5 {
+.issue-list__empty,.issue-list__item {
 	margin-top: 21px;
 }
 
-.style__empty___lISp5:first-child,.style__item___3g1r5:first-child {
+.issue-list__empty:first-child,.issue-list__item:first-child {
 	margin-top: 0
 }
 
-.style__empty___lISp5 {
+.issue-list__empty {
 	color: #aaa;
 	background: #fff;
 	padding: 14px;
@@ -306,7 +306,7 @@
 	border-radius: 3px
 }
 
-.style__issueTeaser___30IcU,.style__issueTeaserPreview___2BHyN,.style__owned___k4MlC,.style__security___3EG3X {
+.issue--teaser,.issue--teaser--preview,.issue--teaser__owned,.issue--teaser--security {
 	display: block;
 	padding: 14px;
 	border-radius: 3px;
@@ -317,38 +317,51 @@
 	background:#f8f8f8;
 }
 
-.style__issueTeaser___30IcU:active,.style__issueTeaser___30IcU:focus,.style__issueTeaser___30IcU:hover,.style__issueTeaserPreview___2BHyN:active,.style__issueTeaserPreview___2BHyN:focus,.style__issueTeaserPreview___2BHyN:hover,.style__owned___k4MlC:active,.style__owned___k4MlC:focus,.style__owned___k4MlC:hover,.style__security___3EG3X:active,.style__security___3EG3X:focus,.style__security___3EG3X:hover {
+.issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover,.issue--teaser__owned:active,.issue--teaser__owned:focus,.issue--teaser__owned:hover,.issue--teaser--security:active,.issue--teaser--security:focus,.issue--teaser--security:hover {
 	background: #f7f7f7
 }
 
-.style__issueTeaserPreview___2BHyN {
+.issue--teaser--preview {
 	opacity: .5;
 	cursor: wait
 }
 
-.style__comments___lRTtH,.style__upvotes___I14RN {
+.issue--teaser__body {
+	height: 1rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+
+.issue--teaser__body p {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.issue--teaser__comments,.issue--teaser__upvotes {
 	margin-right: 21px
 }
 
-.style__footer___LQgoN {
+.issue--teaser__footer {
 	margin-top: 14px;
 	color: #aaa;
 	font-size: .9em
 }
 
-.style__type___3m7OY {
+.issue--teaser__type {
 	color: #aaa
 }
 
-.style__owned___k4MlC {
+.issue--teaser__owned {
 	background:#F6F8CE;
 }
 
-.style__security___3EG3X {
+.issue--teaser--security {
 	box-shadow: inset 0 0 6px 2px #ff827d
 }
 
-.style__lane___2mnz9 {
+.lane {
 	border-radius: 5px;
 	background:#243D2A;
     background-image: url("../img/aurora_head.png");
@@ -369,7 +382,7 @@
 	flex-direction: column
 }
 
-.style__title___LFTjf {
+.lane__title {
 	font-size: 1em;
 	color:white;
 	text-shadow:0 0 3px black;
@@ -382,7 +395,7 @@
 	bottom:6px;
 }
 
-.style__content___10tMi {
+.lane__content {
 	border-top:1px solid #3F6E34;
 	padding-top: 14px;
 	overflow-x: hidden;
@@ -391,7 +404,7 @@
 	border:0;
 }
 
-.style__laneList___2Lc4I {
+.lane-list {
 	margin: 21px 0 0;
 	padding: 0;
 	list-style: none;
@@ -405,7 +418,7 @@
 	overflow-y: hidden
 }
 
-.style__item___3aj6k {
+.lane-list__item {
 	-webkit-box-flex: 1;
 	-ms-flex: 1 0 auto;
 	flex: 1 0 auto;
@@ -413,7 +426,7 @@
 	height: 100%
 }
 
-.style__kanban___o3cm8 {
+.kanban {
 	background: #fff;
 	height: 100%;
 	display: -webkit-box;
@@ -425,19 +438,17 @@
 	flex-direction: column
 }
 
-.style__add___2FI9e {
+.kanban__add {
 	margin: 0 21px;
 }
-.style__add___2FI9e a {
+.kanban__add a {
 	text-transform:uppercase;
 	color:rgb(58, 201, 88);
 	text-decoration:none;
 	padding:3px;
 	border-radius:3px;
 }
-.style__add___2FI9e a:active {
+.kanban__add a:active {
 	background:rgb(58, 201, 88);
 	color:white;
 }
-
-/*# sourceMappingURL=feedback.css.map*/

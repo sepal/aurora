@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './style.scss';
 import Modal from '../Modal';
 import Kanban from '../Kanban';
 

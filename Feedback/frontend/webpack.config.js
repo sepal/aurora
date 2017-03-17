@@ -4,13 +4,11 @@ const validate = require('webpack-validator');
 const parts = require('./lib/parts');
 
 // Define the input and output paths. Since django collects all static files
-// from the static/js and static/css, webpack has to build into the parent
-// folders.
+// from the static/js.
 const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, '../static'),
   js: 'js',
-  css: 'css'
 };
 
 // Common config for all build types.
@@ -72,8 +70,7 @@ switch (process.env.npm_lifecycle_event) {
         name: 'feedback_vendor',
         entries: ['react']
       }),
-      parts.minify(),
-      parts.extractCSS(PATHS.app, PATHS.css)
+      parts.minify()
     );
     break;
   default:
@@ -81,8 +78,7 @@ switch (process.env.npm_lifecycle_event) {
       common,
       {
         devtool: 'source-map'
-      },
-      parts.extractCSS(PATHS.app, PATHS.css)
+      }
     );
 }
 

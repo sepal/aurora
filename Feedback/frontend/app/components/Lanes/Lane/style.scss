@@ -12,14 +12,14 @@
   flex-direction: column;
 }
 
-.title {
+.lane__title {
   font-size: 1em;
   font-weight: bold;
   padding: 0 $spacing;
   flex: 0 0 auto;
 }
 
-.content {
+.lane__content {
   padding: {
     top: $spacing;
     left: $spacing;

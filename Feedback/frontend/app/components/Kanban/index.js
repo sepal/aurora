@@ -5,14 +5,12 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import {LaneListContainer} from '../../containers';
 
-import styles from './style.scss';
-
 @DragDropContext(HTML5Backend)
 export default class Feedback extends React.Component {
   render() {
     return (
-      <div className={styles.kanban}>
-        <div className={styles.add}>
+      <div className="kanban">
+        <div className="kanban__add">
           <Link to={`/${course_short_title}/feedback/issue/add`}>
             Add issue
           </Link>

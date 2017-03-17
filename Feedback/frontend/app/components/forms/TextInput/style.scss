@@ -1,7 +1,7 @@
 @import "../../../styles/config/colors";
 @import "../../../styles/config/layout";
 
-.text_input, .text_input_error {
+.textinput {
   margin: $spacing;
   label {
     display: block;
@@ -14,7 +14,7 @@
   }
 }
 
-.error {
+.textinput--error {
   input {
     border-color: red;
   }

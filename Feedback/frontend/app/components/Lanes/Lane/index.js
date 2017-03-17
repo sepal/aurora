@@ -1,7 +1,6 @@
 import React, {PropTypes, Component} from 'react';
 import {DropTarget} from 'react-dnd';
 
-import styles from './style.scss';
 import {IssueListContainer} from '../../../containers';
 import {ItemTypes} from '../../../constants';
 
@@ -34,9 +33,9 @@ export default class Lane extends Component {
     let content;
 
     return connectDropTarget(
-      <div className={styles.lane}>
-        <h2 className={styles.title}>{this.props.name}</h2>
-        <div className={styles.content}>
+      <div className="lane">
+        <h2 className="lane__title">{this.props.name}</h2>
+        <div className="lane__content">
           <IssueListContainer laneId={this.props.id} />
         </div>
       </div>

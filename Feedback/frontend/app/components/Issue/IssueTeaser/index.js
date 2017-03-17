@@ -3,7 +3,6 @@ import {DragSource} from 'react-dnd';
 import {Link} from 'react-router';
 import ReactMarkdown from 'react-markdown';
 
-import styles from './style.scss';
 import IssueLabel from '../IssueLabel';
 import {ItemTypes} from '../../../constants';
 import {IssueTypes} from '../../../constants'
@@ -59,11 +58,11 @@ export default class IssueTeaser extends Component {
     let upvote_label = this.props.upvotes == 1 ? "upvote" : "upvotes";
     let comment_label = this.props.comments == 1 ? "comment" : "comments";
 
-    let className = this.props.preview === true ? styles.issueTeaserPreview : styles.issueTeaser;
+    let className = this.props.preview === true ? "issue--teaser--preview" : "issue--teaser";
     if (this.props.type == 'security') {
-      className = styles.security;
+      className = "issue--teaser--security";
     } else if (this.props.isAuthor) {
-      className = styles.owned;
+      className = "issue--teaser__owned";
     }
 
     const body_preview = this.props.body.substring(0, 100);
@@ -79,17 +78,17 @@ export default class IssueTeaser extends Component {
           }}
           className={className}>
           <IssueLabel type={this.props.type} title={this.props.title} />
-          <div>
+          <div className="issue--teaser__body">
             <ReactMarkdown source={body_preview}
                            disallowedTypes={['HtmlInline', 'HtmlBlock']}
                            escapeHtml={true} />
           </div>
-          <div className={styles.footer}>
-            <span className={styles.upvotes}>
+          <div className="issue--teaser__footer">
+            <span className="issue--teaser__upvotes">
               <i
                 className="fa fa-thumbs-up"></i> {this.props.upvotes} {upvote_label}
             </span>
-            <span className={styles.comments}>
+            <span className="issue--teaser__comments">
               <i
                 className="fa fa-comments"></i> {this.props.comments} {comment_label}
             </span>

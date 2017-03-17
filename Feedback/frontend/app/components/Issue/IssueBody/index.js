@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import styles from './style.scss';
 
 class IssueBody extends React.Component {
   static propTypes = {
@@ -36,7 +35,7 @@ class IssueBody extends React.Component {
 
   render() {
     if (this.state.editing == true) {
-      const classes = this.props.className + " " + styles.editing;
+      const classes = `${this.props.className} issue__body--editing`;
       return (
         <div className={classes}>
           <div >
@@ -45,7 +44,7 @@ class IssueBody extends React.Component {
                       onKeyDown={this.onKeyDown}>
             </textarea>
           </div>
-          <div className={styles.button}>
+          <div className="issue__body__button">
             <button onClick={this.save}>
               <i className="fa fa-check"></i> Save
             </button>
@@ -59,7 +58,7 @@ class IssueBody extends React.Component {
 
     return (
       <div className={this.props.className}>
-        <div className={styles.content}>
+        <div className="issue__body__content">
           <ReactMarkdown source={this.props.body}
                          disallowedTypes={['HtmlInline', 'HtmlBlock']}
                          escapeHtml={true} />
@@ -74,7 +73,7 @@ class IssueBody extends React.Component {
       return;
     }
     return (
-      <div className={styles.button}>
+      <div className="issue__body__button">
         <button onClick={this.enableEdit}>
           <i className="fa fa-pencil"></i> Edit
         </button>

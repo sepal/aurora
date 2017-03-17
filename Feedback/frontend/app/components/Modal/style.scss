@@ -16,7 +16,7 @@
 }
 
 
-.window {
+.modal__window {
   border-radius: $border-radius--big;
   border: 1px solid $gray--light;
   background: white;
@@ -24,12 +24,12 @@
   width: 700px;
 }
 
-.header {
+.modal__header {
   position: relative;
   width: 100%;
 }
 
-.close {
+.modal__close {
   float: right;
   font-size: 2em;
   color: red;

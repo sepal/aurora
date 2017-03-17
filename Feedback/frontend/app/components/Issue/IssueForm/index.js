@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './style.scss';
 
 import {TextInput, TextArea, Select, Submit} from '../../forms';
 import {IssueTypes} from '../../../constants'
@@ -22,7 +21,7 @@ class IssueForm extends React.Component {
 
   render() {
     return (
-      <div className={styles.issueForm}>
+      <div>
         <form>
           <TextInput label="Title" defaultValue={this.state.title}
                      onChange={this.updateChange} name="title" error={this.state.title_error} />

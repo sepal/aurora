@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './style.scss';
 
 import InputElement from '../InputElement';
 
@@ -18,8 +17,8 @@ export default class TextArea extends InputElement {
   };
 
   render() {
-    const classNames = this.props.error == '' ? styles.text_area
-      : styles.text_area + ' ' + styles.error;
+    const classNames = this.props.error == '' ? "text-area"
+      : "text-area text-area--error";
     return (
       <div className={classNames}>
         <label htmlFor={this.props.name}>{this.props.label}:</label>

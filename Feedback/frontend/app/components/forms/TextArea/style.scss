@@ -1,7 +1,7 @@
 @import "../../../styles/config/colors";
 @import "../../../styles/config/layout";
 
-.text_area {
+.text-area {
   margin: $spacing;
   label {
     display: block;
@@ -14,6 +14,6 @@
   }
 }
 
-.error textarea {
+.text-area--error {
   border-color: red;
 }

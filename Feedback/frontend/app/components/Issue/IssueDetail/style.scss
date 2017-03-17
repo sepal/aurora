@@ -5,7 +5,7 @@
   position: relative;
 }
 
-.icon {
+.issue--detail__icon {
   position: absolute;
   left: -50px;
   width: 40px;
@@ -14,11 +14,11 @@
   text-align: center;
 }
 
-.issueDetail {
+.issue--detail {
   padding: $spacing $spacing $spacing $spacing--big*3;
 }
 
-.title {
+.issue--detail__title {
   width: 90%;
   font-size: 1.2em;
   font-weight: bold;
@@ -26,21 +26,21 @@
 
 }
 
-.subtitle {
+.issue--detail__subtitle {
   font-size: 0.9em;
   color: $gray;
 }
 
-.type {
+.issue--detail__type {
   color: $gray;
 }
 
-.content {
+.issue--detail__content {
   display: flex;
   flex-wrap: nowrap;
 }
 
-.images {
+.issue--detail__images {
   margin-top: $spacing;
   width: 100%;
   clear: both;
@@ -51,7 +51,7 @@
   }
 }
 
-.body {
+.issue--detail__body {
   flex-grow: 2;
 
   margin: {
@@ -60,7 +60,7 @@
   width: 75%;
 }
 
-.actions {
+.issue--detail__actions {
   text-align: right;
   flex-grow: 1;
 
@@ -75,7 +75,7 @@
   }
 }
 
-.comments {
+.issue--detail__comments {
   margin-top: $spacing--big;
 
   h2 {
@@ -84,11 +84,11 @@
   }
 }
 
-.new-comment {
+.issue--detail__new-comment {
   position: relative;
   margin-top: $spacing;
 
-  .pic {
+  .issue--detail__new-comment__pic {
     position: absolute;
     left: -50px;
     width: 40px;
@@ -105,7 +105,7 @@
   }
 }
 
-.textarea {
+.issue--detail__textarea {
   border: 1px solid $gray;
   padding: $spacing;
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './styles.scss';
 
 export default class InputElement extends React.Component {
   static propTypes = {
@@ -26,7 +25,7 @@ export default class InputElement extends React.Component {
     }
 
     return (
-      <div className={styles.error}>
+      <div className="input--error">
         {this.props.error}
       </div>
     )

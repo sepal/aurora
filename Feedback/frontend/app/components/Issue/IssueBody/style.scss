@@ -1,4 +1,4 @@
-.editing {
+.issue__body--editing {
   *, *:before, *:after {
     box-sizing: border-box;
   }
@@ -15,11 +15,11 @@
   }
 }
 
-.button {
+.issue__body__button {
   margin-top: 10px;
 }
 
-.content {
+.issue__body__content {
   strong {
     font-weight: bold;
   }
