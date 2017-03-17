@@ -923,3 +923,9 @@ trix-editor a {
 .submitted-content {
   margin-bottom: 20px;
 }
+
+.overview-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}

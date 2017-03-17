@@ -1,0 +1,75 @@
+{% load humanize %}
+{% load render_uploads %}
+
+<div class="detail_left">
+  {% include 'user_info.html' %}
+
+  {% render_original_uploads elaboration %}
+  {% if elaboration.elaboration_text  %}
+    <div class="submitted-content">
+        <textarea id="evaluation-editor" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+        <trix-editor class="trix-content" input="evaluation-editor"></trix-editor>
+    </div>
+  {% endif %}
+
+  {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
+      <h1>Revised Work</h1>
+      {% if elaboration.revised_elaboration_changelog %}
+        <b>Changelog: </b>{{elaboration.revised_elaboration_changelog}}<br>
+        Most helpful user was <b>user ID {{elaboration.most_helpful_other_user}}</b> (i know, this is next to useless...)<br><br>
+      {% endif %}
+
+      {% render_revised_uploads elaboration %}
+      <div class="submitted-content">
+          <textarea id="evaluation-revised-editor" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text}}</textarea>
+          <trix-editor class="trix-content" input="evaluation-revised-editor"></trix-editor>
+      </div>
+  {% endif %}
+
+  <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
+      {% include 'tags.html' with tagged_object=elaboration %}
+  </div>
+</div>
+
+<div class="detail_right">
+  {% if challenge_data.final == True %}
+    <h1 class="overview-header">Evaluation</h1>
+    {% if evaluation %}
+      {% if user.is_superuser %} Feedback written by <b>{{ evaluation.tutor.username }}</b>{% else %} Written feedback {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        {% if evaluation.submission_time %}
+          <div class="evaluation eval_done">{{ evaluation.evaluation_text|safe }}</div>
+          <div class="point_label">points assigned</div><div class="points eval_done">{{ evaluation.evaluation_points }}</div>
+          <div class="spacer"></div>
+
+          <div class="submission_date">
+            <span title="{{ evaluation.submission_time }}">evaluated {{ evaluation.submission_time|naturaltime }}</span>
+            <button class="reopen_evaluation" id="{{ elaboration.id }}">Reopen</button>
+          </div>
+        {% else %}
+            <div class="evaluation" id="evaluation" {% if not lock %} contenteditable="true" onclick="StartEvaluation({{ elaboration.id }})"{% endif %}
+                 onkeyup="DelayedAutoSave({{ elaboration.id }})">
+              {{ evaluation.evaluation_text|safe }}{% if lock %}<div class="evaluation_lock">locked by {{ evaluation.tutor.username }}</div>{% endif %}
+            </div>
+            <div class="point_label">Points</div><div class="points" {% if not lock %} contenteditable="true" {% endif %} onkeyup="DelayedAutoSave({{ elaboration.id }})">
+              {% if evaluation.evaluation_points %}{{ evaluation.evaluation_points }}{% endif %}</div>
+              {% if not lock %}
+                <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+              {% endif %}
+          {% endif %}
+      </form>
+    {% else %}
+      <div class="evaluation" contenteditable="true"
+           onclick="StartEvaluation({{ elaboration.id }})" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+         click to lock and start evaluation...
+      </div>
+      <div class="point_label">Points</div><div class="points" contenteditable="false" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+      </div>
+      <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+    {% endif %}
+  {% else %}
+    {% include 'reviews.html' %}
+  {% endif %}
+
+</div>

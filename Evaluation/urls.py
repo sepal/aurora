@@ -5,6 +5,7 @@ import Evaluation.views
 urlpatterns = [
     url(r'^$', Evaluation.views.evaluation, name='home'),
     url(r'^detail$', Evaluation.views.detail, name='detail'),
+    url(r'^overview$', Evaluation.views.overview, name='overview'),
     url(r'^stack/$', Evaluation.views.stack, name='tasks'),
     url(r'^others/$', Evaluation.views.others, name='others'),
     url(r'^challenge_txt/$', Evaluation.views.challenge_txt, name='task_description'),
