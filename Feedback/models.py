@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib import admin
 from AuroraUser.models import AuroraUser
 from Course.models import Course
+from Comments.models import Comment
 
 
 class Lane(models.Model):
@@ -62,7 +63,8 @@ class Issue(models.Model):
             },
             'type': self.type,
             'title': self.title,
-            'upvotes': Upvote.objects.filter(issue=self).count()
+            'upvotes': Upvote.objects.filter(issue=self).count(),
+            'comments': self._number_of_comments()
         }
 
         return data
@@ -99,6 +101,12 @@ class Issue(models.Model):
         """
         return Upvote.exists(user, self.pk)
 
+    def _number_of_comments(self):
+        """ Callback for the number of comments property. """
+        return  Comment.count_for('issue', self.pk)
+
+    number_of_comments = property(_number_of_comments)
+
 
 class Upvote(models.Model):
     """
@@ -119,6 +127,5 @@ class Upvote(models.Model):
     def exists(user, issue):
         """
         Checks if the given user has already upvoted the given issue.
-        :return:
         """
         return Upvote.objects.filter(user=user, issue=issue).count() > 0

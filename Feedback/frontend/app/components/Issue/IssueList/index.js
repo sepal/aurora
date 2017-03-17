@@ -9,7 +9,7 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
     let upvotes = 0;
 
     if (issue['comments'] !== undefined) {
-      number_comments = issue.comments.length;
+      number_comments = issue.comments;
     }
 
     if (issue['upvotes'] !== undefined) {
