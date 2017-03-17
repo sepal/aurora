@@ -14,7 +14,7 @@ export default class Feedback extends React.Component {
       <div className={styles.kanban}>
         <div className={styles.add}>
           <Link to={`/${course_short_title}/feedback/issue/add`}>
-            <i className="fa fa-plus"></i> Add a new issue
+            Add issue
           </Link>
         </div>
         <LaneListContainer />

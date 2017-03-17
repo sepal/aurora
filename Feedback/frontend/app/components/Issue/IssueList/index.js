@@ -24,7 +24,8 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
                      lane={issue.lane.id} onDrop={onDrop}
                      preview={issue.preview !== undefined ? issue.preview : false}
                      canDrag={isStaff}
-                     isAuthor={current_user == issue.author.id} />
+                     isAuthor={current_user == issue.author.id}
+                     body={issue.body} />
       </li>
     );
   });

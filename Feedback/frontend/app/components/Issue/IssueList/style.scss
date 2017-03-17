@@ -21,3 +21,11 @@
   text-align: center;
   border-radius: $border-radius;
 }
+
+
+.body {
+  height: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

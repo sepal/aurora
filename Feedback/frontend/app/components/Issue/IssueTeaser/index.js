@@ -1,6 +1,7 @@
 import React, {PropTypes, Component} from 'react';
 import {DragSource} from 'react-dnd';
 import {Link} from 'react-router';
+import ReactMarkdown from 'react-markdown';
 
 import styles from './style.scss';
 import IssueLabel from '../IssueLabel';
@@ -35,6 +36,7 @@ export default class IssueTeaser extends Component {
     isDragging: PropTypes.bool.isRequired,
     onDrop: PropTypes.func.isRequired,
     id: PropTypes.number.isRequired,
+    body: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     isAuthor: PropTypes.bool,
@@ -64,8 +66,10 @@ export default class IssueTeaser extends Component {
       className = styles.owned;
     }
 
+    const body_preview = this.props.body.substring(0, 100);
 
-      return connectDragSource(
+
+    return connectDragSource(
       <div>
         <Link
           key={this.props.id}
@@ -73,14 +77,21 @@ export default class IssueTeaser extends Component {
             pathname: `/${course_short_title}/feedback/issue/${this.props.id}`,
             state: {returnTo: `/${course_short_title}/feedback`}
           }}
-          className={className} >
+          className={className}>
           <IssueLabel type={this.props.type} title={this.props.title} />
+          <div>
+            <ReactMarkdown source={body_preview}
+                           disallowedTypes={['HtmlInline', 'HtmlBlock']}
+                           escapeHtml={true} />
+          </div>
           <div className={styles.footer}>
             <span className={styles.upvotes}>
-              <i className="fa fa-thumbs-up"></i> {this.props.upvotes} {upvote_label}
+              <i
+                className="fa fa-thumbs-up"></i> {this.props.upvotes} {upvote_label}
             </span>
             <span className={styles.comments}>
-              <i className="fa fa-comments"></i> {this.props.comments} {comment_label}
+              <i
+                className="fa fa-comments"></i> {this.props.comments} {comment_label}
             </span>
           </div>
         </Link>
