@@ -22,13 +22,13 @@
 	<div class="col-lg-7 col-md-12">
 		<table style="width:100%;border-bottom:1px solid gray; margin-bottom:12px"><tr><td width="33%">
 			<span class="slides_navi_prev">
-			{% if prev %}<a href="{{ prev }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
+			{% if nxt %}<a href="{{ nxt }}" class="btn-prev">PREVIOUS</a>{% else %}<span class="btn-prev-not">PREVIOUS</span>{% endif %}
 			</span>
 		</td><td width="33%">
 			<span class="slides_origin_center"> <a href="../../{{ this_topic.0 }}_{{ this_topic.1 }}">{{this_topic.1}}</a></span>
 		</td><td style="text-align:right" width="33%">
 			<span class="slides_navi_next">
-				{% if nxt %}<a href="{{ nxt }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
+				{% if prev %}<a href="{{ prev }}" class="btn-next">NEXT</a>{% else %}<span class="btn-next-not">NEXT</span>{% endif %}
 			</span>
 		</td></tr></table>
 	</div>
@@ -54,16 +54,16 @@
 		{% for slide in slide_stack.slides %}
 			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><span class="lecturer_note_title">{{slide.title}}</span> {{ slide.lecturer_comment|safe|urlizetrunc:50 }}</div>{% endif %}
 		{% endfor %}
-	</div>
 	<br>
-	<div class="col-lg-5 col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
+	<div class="slide-comments" id="comments_{{slide_stack.id}}">
         {% render_multi_comment_list for slide_stack newest_last endless %}
     </div>
+	</div>
 </div>
-
-
 <script>
 	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
 	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
 </script>
+
+
 {% endblock content %}

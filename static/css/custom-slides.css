@@ -2,6 +2,11 @@ a.btn-next[href=''],a.btn-prev[href='']{
     display:none;
 }
 
+.slide-title {
+	max-width:320px;
+	overflow:hidden;
+}
+
 
 .card {
 	border:none;
