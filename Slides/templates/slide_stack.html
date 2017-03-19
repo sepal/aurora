@@ -54,16 +54,16 @@
 		{% for slide in slide_stack.slides %}
 			{% if slide.lecturer_comment %}<div class="lecturer_note" ID="LC_{{slide.id}}"><span class="lecturer_note_title">{{slide.title}}</span> {{ slide.lecturer_comment|safe|urlizetrunc:50 }}</div>{% endif %}
 		{% endfor %}
-	</div>
 	<br>
-	<div class="col-lg-5 col-md-12 slide-comments" id="comments_{{slide_stack.id}}">
+	<div class="slide-comments" id="comments_{{slide_stack.id}}">
         {% render_multi_comment_list for slide_stack newest_last endless %}
     </div>
+	</div>
 </div>
-
-
 <script>
 	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
 	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
 </script>
+
+
 {% endblock content %}
