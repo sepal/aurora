@@ -39,7 +39,7 @@
 		{% endif %}
 
         <li id="bugs-li">
-          <a href="https://piratenpad.de/p/tr4m3bj6" target="_blank">Bugs &amp; Feedback</a>
+          <a href={% url 'Feedback:index' course.short_title %}>Bugs &amp; Feedback</a>
         </li>
 
         {% if user.is_staff %}

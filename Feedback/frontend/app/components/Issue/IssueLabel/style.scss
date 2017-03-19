@@ -1,0 +1,24 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+
+.issue__type-label {
+  color: $gray;
+
+  select {
+    width: 20%;
+    margin-right: 10px;
+  }
+
+  input[type=text] {
+    width: 60%;
+    font-weight: bold;
+    border-style: none;
+    border-bottom: 1px solid black;
+    outline: none;
+  }
+
+  button {
+    width: 10%;
+  }
+}
+

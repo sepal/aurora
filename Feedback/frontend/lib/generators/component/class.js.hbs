@@ -1,0 +1,19 @@
+import React from 'react';
+{{#if addStylesheet}}
+import styles from './style.scss';
+{{/if}}
+
+class {{ properCase name }} extends React.Component {
+  render() {
+    return (
+{{#if addStylesheet}}
+      <div className=\{styles.{{ camelCase name }}\}>
+{{else}}
+      <div>
+{{/if}}
+      </div>
+    );
+  }
+}
+
+export default {{ properCase name }}

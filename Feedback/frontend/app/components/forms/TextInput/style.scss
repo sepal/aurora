@@ -1,0 +1,21 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+
+.textinput {
+  margin: $spacing;
+  label {
+    display: block;
+  }
+
+  input {
+    margin-top: $spacing--small;
+    padding: $padding--form;
+    border: 1px solid $gray--light;
+  }
+}
+
+.textinput--error {
+  input {
+    border-color: red;
+  }
+}

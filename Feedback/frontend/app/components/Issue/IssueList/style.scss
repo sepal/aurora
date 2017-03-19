@@ -1,0 +1,19 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+@import "../../../styles/abstract/selecting";
+
+.issue-list__item {
+  margin-top: $spacing--big;
+  &:nth-child(1) {
+    margin-top: 0;
+  }
+}
+
+.issue-list__empty {
+  @extend .issue-list__item;
+  color: $gray;
+  background: white;
+  padding: $spacing;
+  text-align: center;
+  border-radius: $border-radius;
+}

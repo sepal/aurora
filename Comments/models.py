@@ -5,6 +5,7 @@ from django.db.models import Q, Count, Max
 import re
 from taggit.managers import TaggableManager
 
+
 class CommentList(models.Model):
     """
     currently Comments are associated with CommentList only by having the same reference object
@@ -48,7 +49,8 @@ class CommentList(models.Model):
 
     @staticmethod
     def get_by_comment(comment):
-        return CommentList.get_by_ref_numbers(comment.object_id, comment.content_type.id)
+        return CommentList.get_by_ref_numbers(comment.object_id,
+                                              comment.content_type.id)
 
     def increment(self):
         self.revision += 1
@@ -74,8 +76,11 @@ class Comment(models.Model):
     post_date = models.DateTimeField('date posted')
     delete_date = models.DateTimeField('date deleted', blank=True, null=True)
     edited_date = models.DateTimeField('date edited', blank=True, null=True)
-    deleter = models.ForeignKey('AuroraUser.AuroraUser', related_name='deleted_comments_set', blank=True, null=True)
-    parent = models.ForeignKey('self', blank=True, null=True, related_name='children')
+    deleter = models.ForeignKey('AuroraUser.AuroraUser',
+                                related_name='deleted_comments_set',
+                                blank=True, null=True)
+    parent = models.ForeignKey('self', blank=True, null=True,
+                               related_name='children')
     promoted = models.BooleanField(default=False)
     tags = TaggableManager()
     seen = models.BooleanField(default=False)
@@ -98,7 +103,8 @@ class Comment(models.Model):
                                   choices=VISIBILITY_CHOICES,
                                   default=PUBLIC)
 
-    bookmarked_by = models.ManyToManyField('AuroraUser.AuroraUser', related_name='bookmarked_comments_set')
+    bookmarked_by = models.ManyToManyField('AuroraUser.AuroraUser',
+                                           related_name='bookmarked_comments_set')
 
     def save(self, *args, **kwargs):
         super(Comment, self).save(*args, **kwargs)
@@ -145,7 +151,8 @@ class Comment(models.Model):
         return Comment.objects.filter(author=user, promoted=True).count()
 
     @staticmethod
-    def query_top_level_sorted(ref_object_id, ref_type_id, requester, newest_last=False):
+    def query_top_level_sorted(ref_object_id, ref_type_id, requester,
+                               newest_last=False):
         queryset_all = Comment.objects.filter(
             parent=None,
             content_type__pk=ref_type_id,
@@ -157,7 +164,6 @@ class Comment(models.Model):
             visible = visible.order_by('post_date')
         else:
             visible = visible.order_by('-post_date')
-
 
         # Only when all query actions are done we can set custom properties to
         # the objects in the queryset. If another query method is called (even if
@@ -200,7 +206,8 @@ class Comment(models.Model):
         for comment in comment_set:
             comment.requester = requester
             # comment.set_visibility_flag(requester)
-            comment.bookmarked = True if comment.bookmarked_by.filter(pk=requester.id).exists() else False
+            comment.bookmarked = True if comment.bookmarked_by.filter(
+                pk=requester.id).exists() else False
 
             comment.uri = CommentList.get_by_comment(comment).uri
 
@@ -253,7 +260,8 @@ class Comment(models.Model):
 
     @staticmethod
     def filter_visible(queryset, requester):
-        non_private_or_authored = queryset.filter(~Q(visibility=Comment.PRIVATE) | Q(author=requester))
+        non_private_or_authored = queryset.filter(
+            ~Q(visibility=Comment.PRIVATE) | Q(author=requester))
         if requester.is_staff:
             return non_private_or_authored
 
@@ -269,6 +277,34 @@ class Comment(models.Model):
     def ref_id_type_to_obj(ref_id, ref_type):
         ref_obj_model = ContentType.objects.get_for_id(ref_type).model_class()
         return ref_obj_model.objects.get(id=ref_id)
+
+    @staticmethod
+    def count_for(content_type_name, content_id, is_staff=False):
+        """
+        Returns number of comments for the given content_type and content_id
+        without private notes.
+
+        :param content_type_name:
+           The name of your model as a string, e.g. issue or stack
+        :param content_id:
+           The id of the object, to which the comments are attached to.
+        :param is_staff:
+            True if the count should include notes visible to staff only. False
+            by default.
+        :return:
+            An integer representing the number of comments.
+        """
+        visibility = [Comment.PUBLIC]
+        if is_staff:
+            visibility.append(Comment.STAFF)
+        content_types = ContentType.objects.filter(name=content_type_name)
+        if len(content_types) > 0:
+            return Comment.objects.filter(content_type=content_types[0],
+                                          object_id=content_id,
+                                          delete_date=None,
+                                          visibility__in=visibility).count()
+        # todo: raise an error instead?
+        return 0
 
 
 class CommentsConfig(models.Model):
@@ -289,7 +325,8 @@ class CommentsConfig(models.Model):
         active = CommentsConfig.objects.get(key='polling_active')
         idle = CommentsConfig.objects.get(key='polling_idle')
 
-        return int(active.value) * CommentsConfig.factor, int(idle.value) * CommentsConfig.factor
+        return int(active.value) * CommentsConfig.factor, int(
+            idle.value) * CommentsConfig.factor
 
     def __unicode__(self):
         return self.key

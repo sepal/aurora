@@ -1,0 +1,17 @@
+import React from 'react';
+{{#if addStylesheet}}
+import styles from './style.scss';
+{{/if}}
+
+function {{ properCase name }}(props) {
+  return (
+{{#if addStylesheet}}
+    <div className=\{styles.{{ camelCase name }}\}>
+{{else}}
+    <div>
+{{/if}}
+    </div>
+  );
+}
+
+export default {{ properCase name }}

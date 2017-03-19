@@ -1,0 +1,12 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+
+.select {
+  margin: $spacing;
+  label {
+    display: block;
+  }
+  select {
+    margin-top: $spacing--small;
+  }
+}

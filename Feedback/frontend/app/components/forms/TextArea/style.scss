@@ -1,0 +1,19 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+
+.text-area {
+  margin: $spacing;
+  label {
+    display: block;
+  }
+  textarea {
+    border: 1px solid $gray--light;
+    margin-top: $spacing--small;
+    padding: $padding--form;
+    width: 100%;
+  }
+}
+
+.text-area--error {
+  border-color: red;
+}

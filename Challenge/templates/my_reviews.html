@@ -51,9 +51,10 @@
         <div class="show_review_feedback">
 
 			{% if review_data.evaluation == "" %} Your review has not been rated yet.
-        	{% elif review_data.evaluation == "P" %} Your review has been rated as <b>&raquo;Helped my to improve my work&laquo;.
-        	{% elif review_data.evaluation == "D" %} Your review has been rated as <b>&raquo;Average&laquo;.
-       		{% elif review_data.evaluation == "N" %} Your review has been rated as <b>&raquo;Meaningless or offensive&laquo;.
+        	{% elif review_data.evaluation == "P" %} Your review has been rated as <b>&raquo;valuable&laquo;.
+        	{% elif review_data.evaluation == "D" %} Your review has been rated as <b>&raquo;ok&laquo;.
+        	{% elif review_data.evaluation == "B" %} Your review has been rated as <b>&raquo;meaningless&laquo;.
+       		{% elif review_data.evaluation == "N" %} Your review has been rated as <b>&raquo;minimalist or offensive&laquo;.
        		{% endif %}</b>
 		</div>
 	</div>
