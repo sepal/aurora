@@ -26,6 +26,8 @@
       </div>
   {% endif %}
 
+  {% include 'elaboration_indicators.html' with elaboration=elaboration %}
+
   <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
       {% include 'tags.html' with tagged_object=elaboration %}
   </div>
