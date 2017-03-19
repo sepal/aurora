@@ -1,10 +1,19 @@
 $(document).ready(function() {
-    $("#tabs").tabs();
+    $(".tab-content").first().css("display", "block");
+
+    $(".tabs-menu a").click(function(event) {
+        event.preventDefault();
+        $(this).parent().addClass("current");
+        $(this).parent().siblings().removeClass("current");
+        var tab = $(this).attr("href");
+        $(".tab-content").not(tab).css("display", "none");
+        $(tab).fadeIn();
+    });
 });
 
 
 $(function() {
-   $(".submit_evaluation").click(function(event) {
+    $(".submit_evaluation").click(function(event) {
         event.preventDefault();
 
         var points = Math.abs(parseInt($(".points").text()) || 0);
@@ -17,12 +26,15 @@ $(function() {
             evaluation_text: $(".evaluation").html(),
             evaluation_points: points
         };
-        var args = { type: "POST", url: "./submit_evaluation/", data: data,
-            error: function () {
+        var args = {
+            type: "POST",
+            url: "./submit_evaluation/",
+            data: data,
+            error: function() {
                 alert('error submitting evaluation');
             },
-            success: function () {
-              window.location.reload();
+            success: function() {
+                window.location.reload();
             }
         };
         $.ajax(args);
@@ -30,18 +42,21 @@ $(function() {
 });
 
 $(function() {
-   $(".reopen_evaluation").click(function(event) {
+    $(".reopen_evaluation").click(function(event) {
         event.preventDefault();
         var data = {
             elaboration_id: $(event.target).attr('id')
         };
-        var args = { type: "POST", url: "./reopen_evaluation/", data: data,
-            success: function () {
+        var args = {
+            type: "POST",
+            url: "./reopen_evaluation/",
+            data: data,
+            success: function() {
                 // var url = './detail?elaboration_id=' + $(event.target).attr('id');
                 // $.get(url, function (data) {
                 //     $('body').html(data);
                 // });
-              window.location.reload();
+                window.location.reload();
             }
         };
         $.ajax(args);
@@ -53,7 +68,7 @@ var timer = 0;
 
 function StartEvaluation(elaboration_id) {
     var url = './start_evaluation?elaboration_id=' + elaboration_id;
-    $.get(url, function (state) {
+    $.get(url, function(state) {
         if (state == 'init') {
             $('.evaluation').html("");
             $('.points').attr('contentEditable', true);
@@ -85,8 +100,11 @@ function AutoSave(elaboration_id) {
         evaluation_text: $(".evaluation").html(),
         evaluation_points: points
     };
-    var args = { type: "POST", url: "./save_evaluation/", data: data,
-        error: function () {
+    var args = {
+        type: "POST",
+        url: "./save_evaluation/",
+        data: data,
+        error: function() {
             alert('error saving evaluation');
         }
     };

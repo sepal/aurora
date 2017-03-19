@@ -6,19 +6,26 @@
 {% endblock %}
 
 {% block content %}
+<div class="content">
+  <div id="tabs-container">
+    <ul class="tabs-menu">
+      {% for challenge_data in challenges %}
+        {% if forloop.first %}
+          <li class="current"><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
+        {% else %}
+          <li><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
 
-<div id="tabs">
-  <ul>
+    <div class="tab">
     {% for challenge_data in challenges %}
-      <li><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
+      <div id="tabs-{{challenge_data.challenge.id}}" class="tab-content">
+        {% include 'challenge_overview.html' with elaboration=challenge_data.elaboration reviews=challenge_data.reviews challenge=challenge evaluation=challenge_data.evaluation evaluation_lock=challenge_data.evaluation_lock %}
+      </div>
     {% endfor %}
-  </ul>
-
-  {% for challenge_data in challenges %}
-    <div id="tabs-{{challenge_data.challenge.id}}">
-      {% include 'challenge_overview.html' with elaboration=challenge_data.elaboration reviews=challenge_data.reviews challenge=challenge evaluation=challenge_data.evaluation evaluation_lock=challenge_data.evaluation_lock %}
     </div>
-  {% endfor %}
+  </div>
 </div>
 
 {% endblock %}
