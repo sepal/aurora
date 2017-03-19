@@ -351,7 +351,7 @@ def overview(request, course_short_title=None):
 
     data = {}
     data['course'] = course
-    data['user'] = user
+    data['elaboration_user'] = user
     data['stack'] = stack
     data['challenges'] = challenges
     data['elaboration'] = elaboration

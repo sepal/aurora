@@ -2,7 +2,7 @@
 {% load render_uploads %}
 
 <div class="detail_left">
-  {% include 'user_info.html' %}
+  {% include 'user_info.html' with user=elaboration_user %}
 
   {% render_original_uploads elaboration %}
   {% if elaboration.elaboration_text  %}

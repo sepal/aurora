@@ -22,6 +22,9 @@
     			{{ review.reviewer.username }}
         		({{ review.reviewer.first_name }} {{ review.reviewer.last_name }}) @ <span title="{{review.submission_time}}">{{review.submission_time|naturaltime}}</span>:
 				<div style="display:inline-block;float:right;margin-top:1.5px;background:#c0c0c0;color:white;position:relative;right:-8px;padding:3px 6px;">Review {{ forloop.counter }}</div>
+				<div style="display:inline-block;float:right;margin-top:1.5px;background:#c0c0c0;color:white;position:relative;right:5px;padding:3px 6px;">
+          <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{elaboration.id}}" target="_blank"> Elaboration </a>
+        </div>
 			</div>
 	   		 <div class="author_detail hidden_detail" id="r_detail{{forloop.counter}}{{review.id}}" onclick="$('.author_detail').addClass('hidden_detail');$('#r_detail{{forloop.counter}}{{review.id}}').addClass('hidden_detail')">
 	   			 <img src='{{review.reviewer.avatar.url}}'>
