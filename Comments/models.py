@@ -279,20 +279,30 @@ class Comment(models.Model):
         return ref_obj_model.objects.get(id=ref_id)
 
     @staticmethod
-    def count_for(content_type_name, content_id):
+    def count_for(content_type_name, content_id, is_staff=False):
         """
         Returns number of comments for the given content_type and content_id
+        without private notes.
+
         :param content_type_name:
            The name of your model as a string, e.g. issue or stack
         :param content_id:
            The id of the object, to which the comments are attached to.
+        :param is_staff:
+            True if the count should include notes visible to staff only. False
+            by default.
         :return:
             An integer representing the number of comments.
         """
+        visibility = [Comment.PUBLIC]
+        if is_staff:
+            visibility.append(Comment.STAFF)
         content_types = ContentType.objects.filter(name=content_type_name)
         if len(content_types) > 0:
             return Comment.objects.filter(content_type=content_types[0],
-                                          object_id=content_id).count()
+                                          object_id=content_id,
+                                          delete_date=None,
+                                          visibility__in=visibility).count()
         # todo: raise an error instead?
         return 0
 

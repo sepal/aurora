@@ -45,8 +45,7 @@ def index(request, course_short_title):
         # or an admin.
         if issue.type != 'security' or issue.author == request.user \
                 or request.user.is_staff:
-            data = issue.serializable
-            data['upvoted'] = issue.upvoted(request.user)
+            data = issue.get_serializable(request.user.is_staff)
             issue_data.append(data)
 
     data = {
@@ -113,7 +112,7 @@ def api_issue(request, course_short_title, issue_id):
     issue.save()
 
     # Return the issue, so redux/react can update the kanban immediately.
-    return JsonResponse(issue.serializable)
+    return JsonResponse(issue.get_serializable(request.user.is_staff))
 
 
 @aurora_login_required()
@@ -146,7 +145,7 @@ def api_new_issue(request, course_short_title):
     )
 
     issue.save()
-    return JsonResponse(issue.serializable)
+    return JsonResponse(issue.get_serializable(request.user.is_staff))
 
 
 @aurora_login_required()
