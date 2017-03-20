@@ -53,18 +53,17 @@ $().ready(setTimeout(function() {
         $(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
     });
 	$('.issue__type-label').each(function() {
-		var tag = $(this).text();
-		if (tag == "[Bug]")  {
+		if ($(this).text() == "[Bug]")  {
 			$(this).html("<i class='fa fa-bug'></i>");
-		} else if (tag == "[Feature Request]")  {
+		} else if ($(this).text() == "[Feature Request]")  {
 			$(this).html("<i class='fa fa-lightbulb-o'></i>");
-		} else if (tag == "[Feedback]")  {
+		} else if ($(this).text() == "[Feedback]")  {
 			$(this).html("<i class='fa fa-commenting-o'></i>");
-		} else if (tag == "[Security]")  {
+		} else if ($(this).text() == "[Security]")  {
 			$(this).html("<i class='fa fa-lock'></i>");
 		}
 	});
-}),100);
+},100));
 </script>
 </body>
 </html>
