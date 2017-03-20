@@ -234,7 +234,7 @@
             </span>
             <br>
             <span
-                style="color:rgba(255,0,0,
+                style="color:rgba(218,177,0,
                     {% if review_evaluation_data.bad_review_evaluations == 0 %}
                       0.5
                     {% else %}
@@ -247,13 +247,13 @@
             <br>
             <span
                 style="color:rgba(255,0,0,
-                    {% if review_evaluation_data.negatve_review_evaluations == 0 %}
+                    {% if review_evaluation_data.negative_review_evaluations == 0 %}
                       0.5
                     {% else %}
                       1
                     {% endif %}
                     )">
-              <script>document.write(cr)</script>%
+              <script>document.write(dr)</script>%
               as »Minimalist/offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
             </span>
           </td>
