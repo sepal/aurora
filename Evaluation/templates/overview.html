@@ -33,9 +33,13 @@
         {% paginate elaborations %}
         {% for elaboration in elaborations %}
             <tr class="{% cycle 'darkRow' 'lightRow' %}" onclick="document.location = '{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{elaboration.id}}'">&nbsp;
-                {%  if elabboration.user.avatar %}
-                  <td><img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle"> {{ elaboration.user.nickname }}</td>
-                {%  endif %}
+                <td>
+                  {%  if elaboration.user.avatar %}
+                  <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle">
+                    {%  endif %}
+                  {{ elaboration.user.nickname }}
+                </td>
+
                 <td>{{ elaboration.challenge.title|safe }}</td>
                 {% if complaints %}
                     <td class="timestamp" title="{{ elaboration.get_last_post_date }}">{{ elaboration.get_last_post_date|naturaltime }}</td>
