@@ -221,7 +221,7 @@
       </div>
 
 			{% if review_data.appraisal == "Awesome" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b>
-            {% elif review_data.appraisal == "Awesome" %} Accepted
+            {% elif review_data.appraisal == "Awesome" %} Review conclusion: Accepted
 			{% elif review_data.appraisal == "Success" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted</b>
 			{% elif review_data.appraisal == "Fail" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted (Requirements missed)</b>
 			{% elif review_data.appraisal == "Not even trying" %} <div class="appraisal Verdict_Not"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Plagiarism or cheated</b>
@@ -246,7 +246,7 @@
             </div>
             <div review_id="{{ review_data.review_id }}" appraisal="N"
                  class="review_evaluation negative {% if review_data.evaluation == "N" %} active{% endif %}">
-                ... was either minimalist, meaningless or offensive
+                ... was minimalist or offensive
             </div>
         </div>
 	</div>
