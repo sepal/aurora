@@ -25,7 +25,7 @@
 .modal__close {
 	float: right;
 	font-size: 2em;
-	color: red;
+	color: darkred;
 	z-index: 5
 }
 
@@ -43,9 +43,12 @@
 	position: absolute;
 	left: -50px;
 	width: 40px;
-	color: #aaa;
+	color: white;
+	background:#247F37;
+	border-radius:5px;
 	font-size: 2em;
-	text-align: center
+	text-align: center;
+	padding-bottom:1px;
 }
 
 .issue--detail {
@@ -157,6 +160,10 @@
 	text-align:center;
 	display:inline-block;
 	font-weight:normal;
+}
+
+.modal__window .issue__type-label {
+	display:none;
 }
 
 .issue__type-label select {
@@ -328,7 +335,7 @@
 }
 
 .issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover,.issue--teaser__owned:active,.issue--teaser__owned:focus,.issue--teaser__owned:hover,.issue--teaser--security:active,.issue--teaser--security:focus,.issue--teaser--security:hover {
-	background: #f7f7f7
+	background: #ddd;
 }
 
 .issue--teaser--preview {
@@ -360,7 +367,7 @@
 
 .issue--teaser__footer {
 	margin-top: 14px;
-	color: #aaa;
+	color: #888;
 	font-size: .9em;
     font-weight:normal;
 }
@@ -373,8 +380,18 @@
 	background:#F6F8CE;
 }
 
+.issue--teaser--security:hover {
+	background:black;
+}
+
 .issue--teaser--security {
-	box-shadow: inset 0 0 6px 2px #ff827d
+	background:darkred;
+	color:white;
+}
+
+.issue--teaser--security  .issue__type-label {
+	color: black;
+	background:white;
 }
 
 .lane {
