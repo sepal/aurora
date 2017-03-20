@@ -254,12 +254,14 @@
 	font-size:130%;
 }
 
-.text-area {
-	margin: 14px
+.text-area textarea {
+	margin: 14px;
+	width: 95%;
 }
 
 .text-area label {
-	display: block
+	display: block;
+	margin-left:1em;
 }
 
 .text-area text-area--error {
