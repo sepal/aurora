@@ -1,3 +1,8 @@
+.trix-content em {
+	font-style:italic!important;
+	font-weight:inherit;
+}
+
 .unstarted {
 	display:none;
 }

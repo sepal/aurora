@@ -30,7 +30,7 @@
 </head>
 <body>
 <div class="feedback__head">
-  <h1>Aurora Feedback</h1>
+  <h1>Aurora Feedback - {{ course.short_title }}</h1>
   <nav>
     <ul>
         <li class="navigate--discourse"><a href="https://piratenpad.de/p/tr4m3bj6">bisheriges feedback-dokument</a>
@@ -49,10 +49,21 @@
 {% endblock content %}
 <script>
 $().ready(setTimeout(function() {
-    $('.style__lane___2mnz9').each(function() {
+    $('.lane').each(function() {
         $(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
-    })
-}),100);
+    });
+	$('.issue__type-label').each(function() {
+		if ($(this).text() == "[Bug]")  {
+			$(this).html("<i class='fa fa-bug'></i>");
+		} else if ($(this).text() == "[Feature Request]")  {
+			$(this).html("<i class='fa fa-lightbulb-o'></i>");
+		} else if ($(this).text() == "[Feedback]")  {
+			$(this).html("<i class='fa fa-commenting-o'></i>");
+		} else if ($(this).text() == "[Security]")  {
+			$(this).html("<i class='fa fa-lock'></i>");
+		}
+	});
+},100));
 </script>
 </body>
 </html>

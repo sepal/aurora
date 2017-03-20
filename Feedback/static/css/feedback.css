@@ -25,7 +25,7 @@
 .modal__close {
 	float: right;
 	font-size: 2em;
-	color: red;
+	color: darkred;
 	z-index: 5
 }
 
@@ -43,9 +43,12 @@
 	position: absolute;
 	left: -50px;
 	width: 40px;
-	color: #aaa;
+	color: white;
+	background:#247F37;
+	border-radius:5px;
 	font-size: 2em;
-	text-align: center
+	text-align: center;
+	padding-bottom:1px;
 }
 
 .issue--detail {
@@ -149,8 +152,18 @@
 }
 
 .issue__type-label {
-	color: #aaa;
+	color:white;
+	background:#247F37;
+	padding:1px 3px;
+	border-radius:3px;
+	width:1.5em;
+	text-align:center;
+	display:inline-block;
 	font-weight:normal;
+}
+
+.modal__window .issue__type-label {
+	display:none;
 }
 
 .issue__type-label select {
@@ -294,7 +307,7 @@
 }
 
 .issue-list__empty,.issue-list__item {
-	margin-top: 21px;
+	margin-top: 12px;
 }
 
 .issue-list__empty:first-child,.issue-list__item:first-child {
@@ -317,12 +330,12 @@
 	background: #fff;
 	color: #222;
 	text-decoration: none;
-	background:#f8f8f8;
+	background:#eee;
 	font-weight:bold;
 }
 
 .issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover,.issue--teaser__owned:active,.issue--teaser__owned:focus,.issue--teaser__owned:hover,.issue--teaser--security:active,.issue--teaser--security:focus,.issue--teaser--security:hover {
-	background: #f7f7f7
+	background: #ddd;
 }
 
 .issue--teaser--preview {
@@ -335,6 +348,7 @@
   overflow: hidden;
   width: 100%;
   font-weight:normal;
+  margin-top:6px;
 }
 
 
@@ -354,21 +368,31 @@
 
 .issue--teaser__footer {
 	margin-top: 14px;
-	color: #aaa;
+	color: #888;
 	font-size: .9em;
     font-weight:normal;
 }
 
 .issue--teaser__type {
-	color: #aaa
+	color: #aaa;
 }
 
 .issue--teaser__owned {
 	background:#F6F8CE;
 }
 
+.issue--teaser--security:hover {
+	background:black;
+}
+
 .issue--teaser--security {
-	box-shadow: inset 0 0 6px 2px #ff827d
+	background:darkred;
+	color:white;
+}
+
+.issue--teaser--security  .issue__type-label {
+	color: black;
+	background:white;
 }
 
 .lane {
@@ -377,10 +401,9 @@
     background-image: url("../img/aurora_head.png");
 	background-clip: border-box;
 	background-origin: border-box;
-	background-position: 80% 22%;
 	background-repeat:no-repeat;
 	box-sizing: border-box;
-	padding: 12px 0 0 0;
+	padding: 0px 0 0 0;
 	width: 270px;
 	max-height: 90%;
 	display: -webkit-box;
@@ -397,13 +420,23 @@
 	color:white;
 	text-shadow:0 0 3px black;
 	font-weight: 700;
-	padding: 0 14px;
+	padding: 0.2em 0.5em;
 	-webkit-box-flex: 0;
 	-ms-flex: 0 0 auto;
 	flex: 0 0 auto;
 	position:relative;
-	bottom:6px;
+	padding-bottom:4px;
 }
+
+/*
+.lane__title:after {
+	content:"\f146";
+	float:right;
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: normal;
+	opacity:0.5;
+}*/
 
 .lane__content {
 	border-top:1px solid #3F6E34;
@@ -425,14 +458,15 @@
 	flex-wrap: nowrap;
 	height: 100%;
 	overflow-x: auto;
-	overflow-y: hidden
+	overflow-y: hidden;
+	padding-left:12px
 }
 
 .lane-list__item {
 	-webkit-box-flex: 1;
 	-ms-flex: 1 0 auto;
 	flex: 1 0 auto;
-	padding: 0 21px;
+	padding: 0 7px;
 	height: 100%
 }
 
