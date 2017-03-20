@@ -149,7 +149,13 @@
 }
 
 .issue__type-label {
-	color: #aaa;
+	color:white;
+	background:#247F37;
+	padding:1px 3px;
+	border-radius:3px;
+	width:1.5em;
+	text-align:center;
+	display:inline-block;
 	font-weight:normal;
 }
 
@@ -360,7 +366,7 @@
 }
 
 .issue--teaser__type {
-	color: #aaa
+	color: #aaa;
 }
 
 .issue--teaser__owned {
