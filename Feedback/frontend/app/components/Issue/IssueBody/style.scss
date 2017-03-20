@@ -1,0 +1,65 @@
+.issue__body--editing {
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  box-sizing: border-box;
+
+  textarea {
+    width: 100%;
+    min-height: 300px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-shadow: 0 0 3px 1px #ccc inset;
+  }
+}
+
+.issue__body__button {
+  margin-top: 10px;
+}
+
+.issue__body__content {
+  strong {
+    font-weight: bold;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  li {
+    margin-left: 1rem;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  pre {
+    margin: 0.75rem 0;
+    padding: 0.25rem;
+    background: #f0ffD0;
+    border: 1px solid #E0EEC0;
+    box-shadow: inset 0px 0px 3px 0px #E0EEC0;
+  }
+
+  p, ul, ol, h1, h2 {
+    padding: 0.5rem 0;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+}

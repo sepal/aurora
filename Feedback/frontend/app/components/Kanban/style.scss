@@ -1,0 +1,13 @@
+@import "../../styles/config/colors";
+@import "../../styles/config/layout";
+
+.kanban {
+  background: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban__add {
+  margin: 0 $spacing--big;
+}

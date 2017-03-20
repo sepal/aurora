@@ -1,0 +1,116 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+
+%container {
+  position: relative;
+}
+
+.issue--detail__icon {
+  position: absolute;
+  left: -50px;
+  width: 40px;
+  color: $gray;
+  font-size: 2em;
+  text-align: center;
+}
+
+.issue--detail {
+  padding: $spacing $spacing $spacing $spacing--big*3;
+}
+
+.issue--detail__title {
+  width: 90%;
+  font-size: 1.2em;
+  font-weight: bold;
+  @extend %container;
+
+}
+
+.issue--detail__subtitle {
+  font-size: 0.9em;
+  color: $gray;
+}
+
+.issue--detail__type {
+  color: $gray;
+}
+
+.issue--detail__content {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.issue--detail__images {
+  margin-top: $spacing;
+  width: 100%;
+  clear: both;
+
+  img {
+    width: 150px;
+    height: auto;
+  }
+}
+
+.issue--detail__body {
+  flex-grow: 2;
+
+  margin: {
+    top: $spacing;
+  }
+  width: 75%;
+}
+
+.issue--detail__actions {
+  text-align: right;
+  flex-grow: 1;
+
+  margin: {
+    top: $spacing;
+    left: $spacing;
+  }
+  width: 25%;
+
+  li {
+    margin-bottom: $spacing;
+  }
+}
+
+.issue--detail__comments {
+  margin-top: $spacing--big;
+
+  h2 {
+    font-weight: bold;
+    border-bottom: 1px solid $gray--light;
+  }
+}
+
+.issue--detail__new-comment {
+  position: relative;
+  margin-top: $spacing;
+
+  .issue--detail__new-comment__pic {
+    position: absolute;
+    left: -50px;
+    width: 40px;
+    text-align: center;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  input[type=submit] {
+    margin-top: $spacing;
+  }
+}
+
+.issue--detail__textarea {
+  border: 1px solid $gray;
+  padding: $spacing;
+
+  textarea {
+    border: none;
+    width: 100%;
+  }
+}

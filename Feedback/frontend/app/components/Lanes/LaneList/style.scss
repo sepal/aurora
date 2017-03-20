@@ -1,0 +1,24 @@
+@import "../../../styles/config/colors";
+@import "../../../styles/config/layout";
+
+.lane-list {
+  margin: {
+    top: $spacing--big;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  };
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.lane-list__item {
+  flex: 1 0 auto;
+  padding: 0 $spacing--big;
+  height: 100%;
+}

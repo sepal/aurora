@@ -1,0 +1,16 @@
+{% load comments %}
+
+
+<link rel="stylesheet" href="{{ STATIC_URL }}Comments/comments.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
+{% comments_boilerplate %}
+<div class="issue-comments">
+  {% render_multi_comment_list for issue %}
+</div>
+
+
+<script>
+  $('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+  $('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+</script>
