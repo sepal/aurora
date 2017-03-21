@@ -125,7 +125,12 @@
 
 		<div class="status_under_MCE">
 	    	<button id="SagB" class="XL save_back">
-	    		save and go back
+		<span class="large_screen">
+			save and go back
+		</span>
+		<span class="small_screen">
+            save + go back
+		</span>
 	    	</button>
 			<div class="hidden_text" id="saved_message">Text saved <i class="fa fa-check green"></i></div>
 		</div>
@@ -134,7 +139,12 @@
         	<span style="color:gray;float:right;padding-top:3px;">Enter for evaluation on {{ lock }} or later</span>
         {% else %}
 			<button id="EWfE" class="{% if not lock %} submit {% endif %}XL R" {% if lock %}disabled="disabled" style="color:darkred;"{% endif %}>
+		<span class="large_screen">
             Enter work for evaluation
+		</span>
+		<span class="small_screen">
+            Enter for evaluation
+		</span>
         {% endif %}
         </button>
         <div class="submission_text" hidden>
