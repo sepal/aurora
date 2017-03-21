@@ -85,7 +85,7 @@
 		{% endif %}
 
         <li id="bugs-li-bottom">
-          <a href="https://piratenpad.de/p/tr4m3bj6" target="_blank"><i class="fa fa-bug "></i></a>
+          <a href={% url 'Feedback:index' course.short_title %}><i class="fa fa-bug "></i></a>
         </li>
 
         {% if user.is_staff %}
