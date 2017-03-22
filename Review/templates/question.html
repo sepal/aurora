@@ -1,6 +1,6 @@
 <div class="question_container">
   <div class="question" id="{{ question.id }}">
-    {{ question.text }}
+    {{ question.text|safe }}
   </div>
   <div class="answer {% if question.boolean_answer %}boolean_answer{% endif %}" id="{{ question.id }}" question_id="{{ question.id }}">
     {% if question.boolean_answer %}
