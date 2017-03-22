@@ -1,3 +1,9 @@
+$(document).ready(function() {
+    $('#diskurs-li').addClass('uRhere');
+})
+
+
+
 var quotePost = "";
 var quotePostMarkdown = "";
 var scrollingEnabled = true;
