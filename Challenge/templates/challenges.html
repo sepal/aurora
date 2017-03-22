@@ -51,7 +51,7 @@
 			<b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks
 		</div>
 		<div>
-			{% if stack.currently_active %}(Ends {{stack.stack.end_date|naturaltime}}){% else %}Not currently active{% endif %}
+			{% if stack.currently_active %}Available until {{stack.stack.end_date|date:'j.n., G:i'}} ({{stack.stack.end_date|naturaltime}}){% else %}Not currently active{% endif %}
 		</div>
         <div class="description  {% if stack.submitted %}finished_challenge{% endif %}">{{ stack.stack.description|safe|urlize }}</div>
 
