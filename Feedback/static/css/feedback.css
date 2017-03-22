@@ -503,7 +503,19 @@
 
 
 .headOnly {
-	height:40px;
+	height:25px;
 	overflow:hidden;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+
+.headOnly a.issue--teaser div, .headOnly, a.issue--teaser__owned div {
+	position:relative;
+	bottom:10px;
+	font-weight:normal;
+	overflow:hidden;
+}
+
+.lastCol {
 	margin-bottom:15px;
 }
