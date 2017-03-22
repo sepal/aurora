@@ -500,3 +500,10 @@
 	background:rgb(58, 201, 88);
 	color:white;
 }
+
+
+.headOnly {
+	height:40px;
+	overflow:hidden;
+	margin-bottom:15px;
+}
