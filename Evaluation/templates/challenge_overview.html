@@ -54,8 +54,9 @@
   <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
       {% include 'tags.html' with tagged_object=elaboration %}
   </div>
-
-  {% include 'elaboration_comments.html' with elaboration=challenge_date.elaboration %}
+  
+  <br><br><br>
+  {% include 'elaboration_comments.html' with elaboration=elaboration %}
 
   {% if challenge_data.final == False %}
     <br><br><br>
