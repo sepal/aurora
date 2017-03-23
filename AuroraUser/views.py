@@ -149,11 +149,10 @@ def profile_save(request, course_short_title):
         data['error'] = "nickname too long (%s character limit)" % nickname_limit
         valid_nickname = False
 
-    users_with_same_nickname = AuroraUser.objects.filter(nickname=request.POST['nickname'])
-    for user_with_same_nickname in users_with_same_nickname:
-        if user.id is not user_with_same_nickname.id:
-            data['error'] = "nickname already taken"
-            valid_nickname = False
+    users_with_same_nickname = AuroraUser.objects.filter(nickname=request.POST['nickname']).exclude(id=user.id)
+    if len(users_with_same_nickname) > 0:
+        data['error'] = "nickname already taken"
+        valid_nickname = False
 
     if valid_nickname:
         user.nickname = request.POST['nickname']
