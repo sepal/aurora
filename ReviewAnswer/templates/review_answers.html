@@ -3,7 +3,7 @@
   <div {% if review_answer.review_question.visible_to_author == False %}class="whisperframe"{% endif %}>
 {% if review_answer.review_question.visible_to_author == False %}
 {% endif %}
-{{ review_answer.review_question.text }}
+{{ review_answer.review_question.text|safe }}
 
 {% if review_answer.review_question.boolean_answer %}
     <br><input type="radio" value="yes" {% if review_answer.text == 'True' %}checked{% endif %} disabled> Yes<br>
