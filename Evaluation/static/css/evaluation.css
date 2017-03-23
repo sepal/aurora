@@ -184,11 +184,13 @@ th {
 }
 
 #sticky-info > .detail_left {
-  min-height: 0px;
+  min-height: 220px;
+  background-color: white;
+  margin-bottom: 20px;
 }
 
 #sticky-info > .detail_right {
-  min-height: 0px;
+  min-height: 220px;
 }
 
 .tab-content > .detail_left {

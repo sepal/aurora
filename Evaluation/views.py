@@ -336,19 +336,6 @@ def overview(request, course_short_title=None):
         challenge_data['elaboration'] = elaboration
         challenge_data['reviews'] = challenge.get_reviews_written_by_user(user)
         challenge_data['reveiced_reviews'] = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False)
-        print(Review.objects.filter(elaboration=elaboration, submission_time__isnull=False).query)
-
-        evaluation = None
-        lock = False
-
-        if Evaluation.objects.filter(submission=elaboration):
-            evaluation = Evaluation.objects.get(submission=elaboration)
-            if evaluation.tutor != request.user and not evaluation.is_older_15min():
-                lock = True
-
-        challenge_data['evaluation'] = evaluation
-        challenge_data['evaluation_locked'] = lock
-
         challenges.append(challenge_data)
 
     data = {}
@@ -356,7 +343,18 @@ def overview(request, course_short_title=None):
     data['elaboration_user'] = user
     data['stack'] = stack
     data['challenges'] = challenges
-    data['request_elaboration'] = elaboration
+    data['elaboration'] = elaboration
+
+    evaluation = None
+    lock = False
+
+    if Evaluation.objects.filter(submission=elaboration):
+        evaluation = Evaluation.objects.get(submission=elaboration)
+        if evaluation.tutor != request.user and not evaluation.is_older_15min():
+            lock = True
+
+    data['evaluation'] = evaluation
+    data['evaluation_locked'] = lock
 
     return render_to_response('evaluation_overview.html',
                               data,
