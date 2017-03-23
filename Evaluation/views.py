@@ -335,6 +335,8 @@ def overview(request, course_short_title=None):
         elaboration =  challenge.get_elaboration(user)
         challenge_data['elaboration'] = elaboration
         challenge_data['reviews'] = challenge.get_reviews_written_by_user(user)
+        challenge_data['reveiced_reviews'] = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False)
+        print(Review.objects.filter(elaboration=elaboration, submission_time__isnull=False).query)
 
         evaluation = None
         lock = False
@@ -354,7 +356,7 @@ def overview(request, course_short_title=None):
     data['elaboration_user'] = user
     data['stack'] = stack
     data['challenges'] = challenges
-    data['elaboration'] = elaboration
+    data['request_elaboration'] = elaboration
 
     return render_to_response('evaluation_overview.html',
                               data,

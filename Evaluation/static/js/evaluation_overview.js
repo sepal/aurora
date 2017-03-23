@@ -10,8 +10,8 @@ $(document).ready(function() {
         $(tab).fadeIn();
     });
 
-    // console.log("Sticky");
-    // $("#sticky-info").sticky();
+
+    $("trix-editor").attr('contenteditable', 'false');
 });
 
 
