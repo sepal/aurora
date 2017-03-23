@@ -9,6 +9,9 @@ $(document).ready(function() {
         $(".tab-content").not(tab).css("display", "none");
         $(tab).fadeIn();
     });
+
+    // console.log("Sticky");
+    // $("#sticky-info").sticky();
 });
 
 

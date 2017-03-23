@@ -1,29 +1,78 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block additional_headers %}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sticky.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/evaluation_overview.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/evaluation.css" type="text/css" media="screen"/>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.modal.min.js"></script>
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.modal.min.css" type="text/css" media="screen"/>
 {% endblock %}
 
 {% block content %}
 <div class="content">
-  <div id="tabs-container">
-    <ul class="tabs-menu">
-      {% for challenge_data in challenges %}
-        {% if forloop.first %}
-          <li class="current"><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
-        {% else %}
-          <li><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
-        {% endif %}
-      {% endfor %}
-    </ul>
+  <div id="sticky-info">
+    <div class="detail_left">
+      {% include 'user_info.html' with user=elaboration_user %}
+    </div>
 
-    <div class="tab">
-    {% for challenge_data in challenges %}
-      <div id="tabs-{{challenge_data.challenge.id}}" class="tab-content">
-        {% include 'challenge_overview.html' with elaboration=challenge_data.elaboration reviews=challenge_data.reviews challenge=challenge evaluation=challenge_data.evaluation evaluation_lock=challenge_data.evaluation_lock %}
+    <div class="detail-right">
+      <h1 class="overview-header">Evaluation</h1>
+      {% if evaluation %}
+        {% if user.is_superuser %} Feedback written by <b>{{ challenge_data.evaluation.tutor.username }}</b>{% else %} Written feedback {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          {% if evaluation.submission_time %}
+            <div class="evaluation eval_done">{{ challenge_data.evaluation.evaluation_text|safe }}</div>
+            <div class="point_label">points assigned</div><div class="points eval_done">{{ challenge_data.evaluation.evaluation_points }}</div>
+            <div class="spacer"></div>
+
+            <div class="submission_date">
+              <span title="{{ challenge_data.evaluation.submission_time }}">evaluated {{ challenge_data.evaluation.submission_time|naturaltime }}</span>
+              <button class="reopen_evaluation" id="{{ elaboration.id }}">Reopen</button>
+            </div>
+          {% else %}
+              <div class="evaluation" id="evaluation" {% if not lock %} contenteditable="true" onclick="StartEvaluation({{ elaboration.id }})"{% endif %}
+                   onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                {{ challenge_data.evaluation.evaluation_text|safe }}{% if lock %}<div class="evaluation_lock">locked by {{ challenge_data.evaluation.tutor.username }}</div>{% endif %}
+              </div>
+              <div class="point_label">Points</div><div class="points" {% if not lock %} contenteditable="true" {% endif %} onkeyup="DelayedAutoSave({{ elaboration.id }})">
+                {% if evaluation.evaluation_points %}{{ challenge_data.evaluation.evaluation_points }}{% endif %}</div>
+                {% if not lock %}
+                  <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+                {% endif %}
+            {% endif %}
+        </form>
+      {% else %}
+        <div class="evaluation" contenteditable="true"
+             onclick="StartEvaluation({{ elaboration.id }})" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+           click to lock and start evaluation...
+        </div>
+        <div class="point_label">Points</div><div class="points" contenteditable="false" onkeyup="DelayedAutoSave({{ elaboration.id }})">
+        </div>
+        <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+      {% endif %}
+    </div>
+  </div>
+  <div class="bottom-info">
+    <div id="tabs-container">
+      <ul class="tabs-menu">
+        {% for challenge_data in challenges %}
+          {% if forloop.first %}
+            <li class="current"><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
+          {% else %}
+            <li><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+
+      <div class="tab">
+      {% for challenge_data in challenges %}
+        <div id="tabs-{{challenge_data.challenge.id}}" class="tab-content">
+          {% include 'challenge_overview.html' with elaboration=challenge_data.elaboration reviews=challenge_data.reviews challenge=challenge evaluation=challenge_data.evaluation evaluation_lock=challenge_data.evaluation_lock %}
+        </div>
+      {% endfor %}
       </div>
-    {% endfor %}
     </div>
   </div>
 </div>

@@ -183,6 +183,14 @@ th {
     background-color: white;
 }
 
+#sticky-info > .detail_left {
+  min-height: 0px;
+}
+
+#sticky-info > .detail_right {
+  min-height: 0px;
+}
+
 .spacer {
     margin: 20px 0 20px 0;
 	clear:both;

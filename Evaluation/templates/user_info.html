@@ -1,7 +1,7 @@
 <img class="gravatar" src="{{ user.avatar.url }}" style="vertical-align:middle"
 onclick="$('#top_detail').toggleClass('hidden_detail')">
 {{ user.nickname }} ({{ user.first_name }} {{ user.last_name }}/{{ user.username }})
-<div class="author_detail staff_detail hidden_detail" id="top_detail" style="overflow:auto; height:auto;">
+<div class="author_detail staff_detail" id="top_detail" style="overflow:auto; height:auto;">
     <img src='{{user.avatar.url}}'>
     <span class="nick">{{user.nickname}}</span><br>
     &quot;{{user.statement|urlizetrunc:50}}&quot;<br>

@@ -1,6 +1,7 @@
 {% load humanize %}
 {% load comments %}
 {% load render_review_answers_staff %}
+{% load render_uploads %}
 
 {% block additional_headers %}
   <script type="text/javascript" src="{{ STATIC_URL }}js/reviews.js"></script>
@@ -22,6 +23,9 @@
     			{{ review.reviewer.username }}
         		({{ review.reviewer.first_name }} {{ review.reviewer.last_name }}) @ <span title="{{review.submission_time}}">{{review.submission_time|naturaltime}}</span>:
 				<div style="display:inline-block;float:right;margin-top:1.5px;background:#c0c0c0;color:white;position:relative;right:-8px;padding:3px 6px;">Review {{ forloop.counter }}</div>
+        <div style="display:inline-block;float:right;margin-top:1.5px;background:#c0c0c0;color:white;position:relative;right:5px;padding:3px 6px;">
+          <a href="#review-{{ forloop.counter }}" rel="modal:open"> View Elaboration </a>
+        </div>
 			</div>
 	   		 <div class="author_detail hidden_detail" id="r_detail{{forloop.counter}}{{review.id}}" onclick="$('.author_detail').addClass('hidden_detail');$('#r_detail{{forloop.counter}}{{review.id}}').addClass('hidden_detail')">
 	   			 <img src='{{review.reviewer.avatar.url}}'>
@@ -60,6 +64,30 @@
           </div>
           <br><br>
 		</div>
+
+    <div id="review-{{ forloop.counter }}" style="display:none;">
+      {% render_original_uploads elaboration %}
+      {% if review.elaboration.elaboration_text  %}
+        <div class="submitted-content">
+            <textarea id="evaluation-editor" class="trix-content" style="display: none;">{{ review.elaboration.elaboration_text }}</textarea>
+            <trix-editor class="trix-content" input="evaluation-editor"></trix-editor>
+        </div>
+      {% endif %}
+
+      {% if review.elaboration.revised_elaboration_text != review.elaboration.elaboration_text %}
+          <h1>Revised Work</h1>
+          {% if review.elaboration.revised_elaboration_changelog %}
+            <b>Changelog: </b>{{ review.elaboration.revised_elaboration_changelog }}<br>
+            Most helpful user was <b>user ID {{ review.elaboration.most_helpful_other_user }}</b> (i know, this is next to useless...)<br><br>
+          {% endif %}
+
+          {% render_revised_uploads elaboration %}
+          <div class="submitted-content">
+              <textarea id="evaluation-revised-editor" class="trix-content" style="display: none;">{{ review.elaboration.revised_elaboration_text}}</textarea>
+              <trix-editor class="trix-content" input="evaluation-revised-editor"></trix-editor>
+          </div>
+      {% endif %}
+    </div>
     {% endfor %}
 
 </div>
