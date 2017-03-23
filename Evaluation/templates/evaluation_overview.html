@@ -14,6 +14,7 @@
 <div class="content">
   <div id="sticky-info">
     <div class="detail_left">
+      <h1 class="overview-header">User</h1>
       {% include 'user_info.html' with user=elaboration_user %}
     </div>
 
@@ -41,7 +42,7 @@
                 <div class="point_label">Points</div><div class="points" {% if not lock %} contenteditable="true" {% endif %} onkeyup="DelayedAutoSave({{ elaboration.id }})">
                   {% if evaluation.evaluation_points %}{{ evaluation.evaluation_points }}{% endif %}</div>
                   {% if not lock %}
-                    <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+                    <button class="submit_evaluation XL" id="{{ elaboration.id }}">evaluate</button>
                   {% endif %}
               {% endif %}
           </form>
