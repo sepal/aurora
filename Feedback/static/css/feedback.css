@@ -509,7 +509,7 @@
 	margin-top:5px;
 }
 
-.headOnly a.issue--teaser div, .headOnly, a.issue--teaser__owned div {
+.headOnly a.issue--teaser div, .headOnly a.issue--teaser__owned div {
 	position:relative;
 	bottom:10px;
 	font-weight:normal;
