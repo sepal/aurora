@@ -191,6 +191,10 @@ th {
   min-height: 0px;
 }
 
+.tab-content > .detail_left {
+  background-color: white;
+}
+
 .spacer {
     margin: 20px 0 20px 0;
 	clear:both;

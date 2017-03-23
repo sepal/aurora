@@ -1,7 +1,33 @@
 {% load humanize %}
 {% load render_uploads %}
+{% load comments %}
+{% comments_boilerplate %}
 
 <div class="detail_left">
+
+  <span style="cursor:pointer;" onclick="$('#challenge_description_{{elaboration.challenge.id}}').slideToggle('fast');">
+    <b><i class="fa fa-toggle-down"></i> Task description</b><br><br>
+  </span>
+
+  <div id="challenge_description_{{elaboration.challenge.id}}" class="challenge_description" style="display: none;" >
+    <div class="challenge_description_text">
+      <b>{{ stack.title }}</b> <br>
+      {{ stack.description|safe|urlize }} <br><br>
+      {{ elaboration.challenge.description|safe|urlize }}
+    </div>
+
+    <div class="qa_section">
+      <div class="comments">
+        <span style="cursor:pointer;" onclick="$('#qa-{{ elaboration.challenge.id }}').slideToggle('fast');"><b><i class="fa fa-toggle-down"></i>
+          Task Q+A Section</b> - {% comments_count for elaboration.challenge %} comments so far<br>
+        </span>
+        <div id="qa-{{ elaboration.challenge.id }}" class="challenge_comments">
+          {% render_multi_comment_list for elaboration.challenge %}
+        </div>
+      </div>
+    </div>
+  </div>
+
   {% render_original_uploads elaboration %}
   {% if elaboration.elaboration_text  %}
     <div class="submitted-content">
