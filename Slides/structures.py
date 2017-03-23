@@ -13,7 +13,7 @@ class GsiStructure:
         inner list is the category. All following elements in a inner list represent the topics allocated to the category
         """
         structure = []
-        for slide_stack in SlideStack.objects.filter(course=Course.objects.get(short_title='gsi')):
+        for slide_stack in SlideStack.objects.filter(course=Course.objects.get(short_title='gsi')).order_by('id'):
             for tup in slide_stack.list_category_tuples:
                 try:
                     inner_list = next(i for i in structure if i[0].strip().lower() == tup[0].strip().lower())
@@ -93,7 +93,7 @@ class HciStructure:
         inner list is the category. All following elements in a inner list represent the topics allocated to the category
         """
         structure = []
-        for slide_stack in SlideStack.objects.filter(course=Course.objects.get(short_title='hci')):
+        for slide_stack in SlideStack.objects.filter(course=Course.objects.get(short_title='hci')).order_by('id'):
             for tup in slide_stack.list_category_tuples:
                 try:
                     inner_list = next(i for i in structure if i[0].strip().lower() == tup[0].strip().lower())

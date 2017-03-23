@@ -73,6 +73,11 @@ body {margin:0;padding:0;}
 	.pagehead {
 		position:fixed;
 		z-index:32000;
+		top:0;
+	}
+	.headline {
+	    margin-top: 0px;
+	    margin-left: 10px;
 	}
 }
 @media all and (max-width: 959px) {
@@ -108,10 +113,6 @@ body {margin:0;padding:0;}
 	font-weight:normal;
 }
 
-.headline {
-    margin-top: 5px;
-    margin-left: 10px;
-}
 
 
 .diskurs-index{

@@ -344,6 +344,7 @@ h1 {
 	#detail_area {
 	    width: 100%;
 		box-sizing: border-box;
+		margin-bottom:40px;
 	}
 	.challenge_description_title {
 		padding:1em 0 0 1em;
@@ -351,7 +352,9 @@ h1 {
 	.challenge_description_text {
 		padding:1em;
 	}
-	
+	.large_screen {
+		display:none;
+	}
 }
 
 .filterbar i {
@@ -419,6 +422,9 @@ h1 {
 	    width: 100%;
 		padding:10px;
 		box-sizing: border-box;
+	}
+	.small_screen {
+		display:none;
 	}
 	
 }

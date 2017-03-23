@@ -334,8 +334,12 @@
 	font-weight:bold;
 }
 
-.issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover,.issue--teaser__owned:active,.issue--teaser__owned:focus,.issue--teaser__owned:hover,.issue--teaser--security:active,.issue--teaser--security:focus,.issue--teaser--security:hover {
+.issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover {
 	background: #ddd;
+}
+
+.issue--teaser__owned:hover,.issue--teaser__owned:active, issue--teaser__owned:focus {
+	background:#E2E4BD;
 }
 
 .issue--teaser--preview {
@@ -381,8 +385,8 @@
 	background:#F6F8CE;
 }
 
-.issue--teaser--security:hover {
-	background:black;
+.issue--teaser--security:active,.issue--teaser--security:focus,.issue--teaser--security:hover {
+	background:#430001;
 }
 
 .issue--teaser--security {
@@ -405,7 +409,7 @@
 	box-sizing: border-box;
 	padding: 0px 0 0 0;
 	width: 270px;
-	max-height: 90%;
+	max-height: 96%;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -495,4 +499,23 @@
 .kanban__add a:active {
 	background:rgb(58, 201, 88);
 	color:white;
+}
+
+
+.headOnly {
+	height:25px;
+	overflow:hidden;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+
+.headOnly a.issue--teaser div, .headOnly, a.issue--teaser__owned div {
+	position:relative;
+	bottom:10px;
+	font-weight:normal;
+	overflow:hidden;
+}
+
+.lastCol {
+	margin-bottom:15px;
 }
