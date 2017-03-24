@@ -517,3 +517,12 @@
 .lastCol {
 	margin-bottom:15px;
 }
+
+.issue-list__item {
+	border-left:3px hidden rgb(58, 201, 88);
+}
+
+.markChanged {
+	border-left:3px solid rgb(58, 201, 88);
+	border-radius: 3px;
+}
