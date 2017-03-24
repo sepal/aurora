@@ -52,19 +52,6 @@ function hashCode(s) {
 	return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
 }
 
-function markNewItems() {
-	var aList =[]; 
-	fCookie = getCookie('issueCookie.{{user.nickname}}');
-	iCookie = fCookie.split(',');
-	$('.issue-list__item').each(function() {
-		thisCode = hashCode($(this).find('.issue--teaser__body').text() + $(this).find('.issue--teaser__footer').text())+"";
-		if ($.inArray(thisCode,iCookie) == -1)
-			{$(this).addClass('markChanged')}
-		aList[aList.length] = thisCode;
-	});
-    document.cookie = 'issueCookie.{{user.nickname}}= ' + aList + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
-}
-
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -79,6 +66,21 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+function markNewItems() {
+	var aList = [];
+	fCookie = getCookie('issueCookie.{{user.nickname}}');
+	if (fCookie == null) fCookie = "";
+	iCookie = fCookie.split(',');
+	$('.issue-list__item').each(function() {
+		thisCode = hashCode($(this).find('.issue--teaser__body').text() + $(this).find('.issue--teaser__footer').text()) + "";
+		if ($.inArray(thisCode, iCookie) == -1) {
+			$(this).addClass('markChanged')
+		}
+		aList[aList.length] = thisCode;
+	});
+	document.cookie = 'issueCookie.{{user.nickname}}= ' + aList + "; expires=Tue, 18 Jan 2038 03:14:06 GMT";
 }
 
 $().ready(setTimeout(function() {
