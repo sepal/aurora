@@ -185,7 +185,7 @@
       <p><strong>Additional question asked to reviewers:<strong> {{ elaboration.extra_review_question }}<p>
       {% endif %}
 	  {% else %}
-      {% render_uploads elaboration %}
+      {% render_original_uploads elaboration %}
   		<textarea id="editor_challenge" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
       <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
       {% if extra_review_question_present %}

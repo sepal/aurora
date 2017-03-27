@@ -48,13 +48,12 @@ def save_elaboration(request, course_short_title):
         if not elaboration.is_submitted():
             elaboration_text = request.POST['elaboration_text']
             extra_review_question = request.POST['extra_review_question']
-            
+
             elaboration.elaboration_text = ''
             elaboration.elaboration_text = elaboration_text
             elaboration.extra_review_question = extra_review_question
             elaboration.save()
-        else:
-            raise Http404
+    
     else:
         Elaboration.objects.get_or_create(challenge=challenge, user=user, elaboration_text=elaboration_text)
 
