@@ -509,3 +509,12 @@
 .comment--body--loading {
 	text-align: center;
 }
+
+.issue--detail__platform {
+	margin-top: 14px;
+}
+
+.issue--detail__platform h2 {
+	font-weight: bold;
+	margin: 5px 0;
+}

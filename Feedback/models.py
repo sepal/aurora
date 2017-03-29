@@ -62,6 +62,7 @@ class Issue(models.Model):
     type = models.CharField(max_length=25, choices=ISSUE_TYPE)
     title = models.CharField(max_length=100)
     body = models.TextField()
+    user_agent = models.TextField(default='')
 
     def __str__(self):
         return self.title
@@ -91,7 +92,7 @@ class Issue(models.Model):
 
         return data
 
-    def get_serializable(self, is_staff=True):
+    def get_serializable(self, is_staff=False):
         """
         Get the full issue information with all references as a dict which can
         be serialized into json or anything else.
@@ -110,6 +111,12 @@ class Issue(models.Model):
             'post_date': self.post_date.isoformat('T'),
             'body': self.body
         })
+
+        if is_staff and self.user_agent:
+            data.update({
+                'user_agent': self.user_agent
+            })
+
         return data
 
     def upvoted(self, user):

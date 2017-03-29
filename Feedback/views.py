@@ -151,6 +151,7 @@ def api_new_issue(request, course_short_title):
         type=data['type'],
         title=data['title'],
         body=data['body'],
+        user_agent=request.META['HTTP_USER_AGENT'],
     )
 
     issue.save()
