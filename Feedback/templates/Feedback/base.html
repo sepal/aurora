@@ -13,6 +13,8 @@
           src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
   <script type="text/javascript"
           src="{{ STATIC_URL }}js/autogrow.min.js"></script>
+  <script type="text/javascript"
+          src="{{ STATIC_URL }}/js/feedback_addon.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css"
         media="screen" />
   <link rel="stylesheet"
@@ -47,13 +49,6 @@
 
 {% block content %}
 {% endblock content %}
-<script>
-$().ready(setTimeout(function() {
-    $('.lane').each(function() {
-        $(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
-    });
-},100));
-</script>
 </body>
 </html>
 
