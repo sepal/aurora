@@ -35,8 +35,7 @@ def index(request, course_short_title):
     lanes = list(map(lambda lane: {
         'id': lane.pk, 'name': lane.name, 'issues': []}, lanes))
 
-    # Issues are course specific.
-    issues = Issue.objects.filter(course=course)
+    issues = Issue.objects.filter()
     upvotes = Upvote.objects.filter(user=request.user)
 
     issue_data = []
