@@ -1,5 +1,6 @@
 import json
 import logging
+from itertools import chain
 from datetime import datetime, timedelta
 from django.shortcuts import render
 from AuroraProject.decorators import aurora_login_required
@@ -44,6 +45,8 @@ def index(request, course_short_title):
     archived = Issue.objects.filter(lane=last_lane) \
         .filter(post_date__range=(start_date, datetime.now()))
 
+    issues = chain(issues, archived)
+
     lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name}, lanes))
 
     issue_data = []
@@ -53,15 +56,6 @@ def index(request, course_short_title):
         if issue.type != 'security' or issue.author == request.user \
                 or request.user.is_staff:
             data = issue.get_serializable(request.user.is_staff)
-            issue_data.append(data)
-
-    for issue in archived:
-        # Filter out any security issues, if the current user is not the owner
-        # or an admin.
-        if issue.type != 'security' or issue.author == request.user \
-                or request.user.is_staff:
-            data = issue.get_serializable(request.user.is_staff)
-            data['archived'] = True
             issue_data.append(data)
 
     data = {
@@ -126,12 +120,8 @@ def api_issue(request, course_short_title, issue_id):
 
     issue.save()
 
-    data = issue.get_serializable(request.user.is_staff)
-    if issue.lane.archiving:
-        data['archived'] = True
-
     # Return the issue, so redux/react can update the kanban immediately.
-    return JsonResponse(data)
+    return JsonResponse(issue.get_serializable(request.user.is_staff))
 
 
 @aurora_login_required()

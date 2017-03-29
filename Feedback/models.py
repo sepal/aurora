@@ -69,7 +69,8 @@ class Issue(models.Model):
             'type': self.type,
             'title': self.title,
             'upvotes': Upvote.objects.filter(issue=self).count(),
-            'comments': self._number_of_comments(is_staff)
+            'comments': self._number_of_comments(is_staff),
+            'archived': self.lane.archiving
         }
 
         return data
