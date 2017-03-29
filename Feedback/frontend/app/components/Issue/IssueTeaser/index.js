@@ -44,7 +44,8 @@ export default class IssueTeaser extends Component {
     upvotes: PropTypes.number,
     comments: PropTypes.number,
     preview: PropTypes.bool,
-    archived: PropTypes.bool
+    archived: PropTypes.bool,
+    staff: PropTypes.bool
   };
 
   static defaultProps = {
@@ -67,6 +68,10 @@ export default class IssueTeaser extends Component {
 
     if (this.props.archived === true) {
       className += ' issue--teaser--archived';
+    }
+
+    if (this.props.staff === true) {
+      className += ' issue--teaser--staff';
     }
 
     if (this.props.type == 'security') {

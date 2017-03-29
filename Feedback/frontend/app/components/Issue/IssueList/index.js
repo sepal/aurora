@@ -16,15 +16,15 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
       upvotes = issue['upvotes'];
     }
 
+
+    const preview = issue.preview !== undefined ? issue.preview : false;
+    const isAuthor = current_user == issue.author.id;
+    const lane = issue.lane.id;
+
     return (
       <li key={issue.id} className="issue-list__item">
-        <IssueTeaser title={issue.title} upvotes={upvotes}
-                     comments={number_comments} id={issue.id} type={issue.type}
-                     lane={issue.lane.id} onDrop={onDrop}
-                     preview={issue.preview !== undefined ? issue.preview : false}
-                     canDrag={isStaff}
-                     isAuthor={current_user == issue.author.id}
-                     body={issue.body} archived={issue.archived} />
+        <IssueTeaser lane={lane} onDrop={onDrop} preview={preview}
+                      canDrag={isStaff} isAuthor={isAuthor} {...issue}   />
       </li>
     );
   });

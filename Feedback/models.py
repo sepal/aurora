@@ -70,7 +70,8 @@ class Issue(models.Model):
             'title': self.title,
             'upvotes': Upvote.objects.filter(issue=self).count(),
             'comments': self._number_of_comments(is_staff),
-            'archived': self.lane.archiving
+            'archived': self.lane.archiving,
+            'staff': self.author.is_staff
         }
 
         return data
@@ -89,7 +90,7 @@ class Issue(models.Model):
             },
             'author': {
                 'id': self.author.pk,
-                'name': self.author.nickname
+                'name': self.author.nickname,
             },
             'post_date': self.post_date.isoformat('T'),
             'body': self.body
