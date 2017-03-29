@@ -22,6 +22,11 @@ class Lane(models.Model):
     def __unicode__(self):
         return self.__str__()
 
+    def _is_last(self):
+        return self.pk == Lane.objects.all().order_by('-order').first().pk
+
+    archiving = property(_is_last)
+
 
 class Issue(models.Model):
     """

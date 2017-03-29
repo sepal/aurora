@@ -322,7 +322,7 @@
 	border-radius: 3px
 }
 
-.issue--teaser,.issue--teaser--preview,.issue--teaser__owned,.issue--teaser--security {
+.issue--teaser,.issue--teaser--preview,.issue--teaser--owned,.issue--teaser--security {
 	display: block;
 	padding: 14px;
 	border-radius: 3px;
@@ -338,7 +338,7 @@
 	background: #ddd;
 }
 
-.issue--teaser__owned:hover,.issue--teaser__owned:active, issue--teaser__owned:focus {
+.issue--teaser--owned:hover,.issue--teaser--owned:active, issue--teaser--owned:focus {
 	background:#E2E4BD;
 }
 
@@ -381,7 +381,7 @@
 	color: #aaa;
 }
 
-.issue--teaser__owned {
+.issue--teaser--owned {
 	background:#F6F8CE;
 }
 
@@ -502,18 +502,8 @@
 }
 
 
-.headOnly {
-	height:25px;
-	overflow:hidden;
-	margin-bottom:5px;
-	margin-top:5px;
-}
-
-.headOnly a.issue--teaser div, .headOnly a.issue--teaser__owned div {
-	position:relative;
-	bottom:10px;
-	font-weight:normal;
-	overflow:hidden;
+.issue--teaser--archived {
+	padding: 5px 14px;
 }
 
 .lastCol {

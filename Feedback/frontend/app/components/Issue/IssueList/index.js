@@ -24,7 +24,7 @@ const IssueList = ({issues, isStaff, current_user, onDrop}) => {
                      preview={issue.preview !== undefined ? issue.preview : false}
                      canDrag={isStaff}
                      isAuthor={current_user == issue.author.id}
-                     body={issue.body} />
+                     body={issue.body} archived={issue.archived} />
       </li>
     );
   });

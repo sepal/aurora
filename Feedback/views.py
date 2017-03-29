@@ -1,4 +1,6 @@
 import json
+import logging
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from AuroraProject.decorators import aurora_login_required
 from django.http import JsonResponse
@@ -32,11 +34,17 @@ def index(request, course_short_title):
     if len(lanes) == 0:
         return render(request, 'Feedback/empty.html', {'course': course})
 
-    lanes = list(map(lambda lane: {
-        'id': lane.pk, 'name': lane.name, 'issues': []}, lanes))
+    # Separately get the issues from the last lane and all the others, since
+    # the last lane is the archive lane, and we'll only get issues from the
+    # last two weeks and show less information for them.
+    last_lane = lanes[len(lanes) - 1]
+    issues = Issue.objects.exclude(lane=last_lane)
 
-    issues = Issue.objects.filter()
-    upvotes = Upvote.objects.filter(user=request.user)
+    start_date = datetime.now() - timedelta(days=14)
+    archived = Issue.objects.filter(lane=last_lane) \
+        .filter(post_date__range=(start_date, datetime.now()))
+
+    lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name}, lanes))
 
     issue_data = []
     for issue in issues:
@@ -45,6 +53,15 @@ def index(request, course_short_title):
         if issue.type != 'security' or issue.author == request.user \
                 or request.user.is_staff:
             data = issue.get_serializable(request.user.is_staff)
+            issue_data.append(data)
+
+    for issue in archived:
+        # Filter out any security issues, if the current user is not the owner
+        # or an admin.
+        if issue.type != 'security' or issue.author == request.user \
+                or request.user.is_staff:
+            data = issue.get_serializable(request.user.is_staff)
+            data['archived'] = True
             issue_data.append(data)
 
     data = {
@@ -95,8 +112,7 @@ def api_issue(request, course_short_title, issue_id):
         # Only staff is allowed to change the issues lane.
         if not request.user.is_staff:
             return HttpResponseForbidden()
-        new_lane = Lane.objects.get(pk=data['lane'])
-        issue.lane = new_lane
+        issue.lane = Lane.objects.get(pk=data['lane'])
 
     # Users can only edit the type, title or the body of an issue.
     if 'type' in data:
@@ -110,8 +126,12 @@ def api_issue(request, course_short_title, issue_id):
 
     issue.save()
 
+    data = issue.get_serializable(request.user.is_staff)
+    if issue.lane.archiving:
+        data['archived'] = True
+
     # Return the issue, so redux/react can update the kanban immediately.
-    return JsonResponse(issue.get_serializable(request.user.is_staff))
+    return JsonResponse(data)
 
 
 @aurora_login_required()

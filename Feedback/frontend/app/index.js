@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   let data = {};
   try {
     data = JSON.parse(initial_data);
+    console.log(data);
   } catch ($exception) {
     console.error($exception);
   }
