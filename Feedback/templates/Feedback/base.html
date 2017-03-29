@@ -52,18 +52,6 @@ $().ready(setTimeout(function() {
     $('.lane').each(function() {
         $(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
     });
-	$('.issue__type-label').each(function() {
-		if ($(this).text() == "[Bug]")  {
-			$(this).html("<i class='fa fa-bug'></i>");
-		} else if ($(this).text() == "[Feature Request]")  {
-			$(this).html("<i class='fa fa-lightbulb-o'></i>");
-		} else if ($(this).text() == "[Feedback]")  {
-			$(this).html("<i class='fa fa-commenting-o'></i>");
-		} else if ($(this).text() == "[Security]")  {
-			$(this).html("<i class='fa fa-lock'></i>");
-		}
-	});
-	$('.lane').last().find('.issue-list__item').addClass('headOnly');
 },100));
 </script>
 </body>

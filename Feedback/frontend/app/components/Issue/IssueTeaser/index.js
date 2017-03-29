@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import ReactMarkdown from 'react-markdown';
 
 import IssueLabel from '../IssueLabel';
+import IssueIcon from '../IssueIcon';
 import {ItemTypes} from '../../../constants';
 import {IssueTypes} from '../../../constants'
 
@@ -75,7 +76,6 @@ export default class IssueTeaser extends Component {
     }
 
 
-
     return connectDragSource(
       <div>
         <Link
@@ -85,7 +85,11 @@ export default class IssueTeaser extends Component {
             state: {returnTo: `/${course_short_title}/feedback`}
           }}
           className={className}>
-          <IssueLabel type={this.props.type} title={this.props.title} />
+          <div className="issue--teaser__header">
+            <span className="issue--teaser__icon">
+              <IssueIcon type={this.props.type} />
+            </span> {this.props.title}
+          </div>
           {this.renderBody()}
           {this.renderFooter()}
         </Link>

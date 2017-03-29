@@ -151,7 +151,7 @@
 	width: 100%
 }
 
-.issue__type-label {
+.issue--teaser__icon {
 	color:white;
 	background:#247F37;
 	padding:1px 3px;
@@ -160,10 +160,6 @@
 	text-align:center;
 	display:inline-block;
 	font-weight:normal;
-}
-
-.modal__window .issue__type-label {
-	display:none;
 }
 
 .issue__type-label select {

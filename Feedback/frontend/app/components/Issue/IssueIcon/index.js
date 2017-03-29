@@ -11,9 +11,6 @@ function IssueIcon(props) {
     case 'security':
       return <i className="fa fa-lock"></i>;
   }
-  return (
-    <i></i>
-  )
 }
 
 export default IssueIcon;
