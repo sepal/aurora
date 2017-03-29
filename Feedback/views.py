@@ -47,7 +47,7 @@ def index(request, course_short_title):
 
     issues = chain(issues, archived)
 
-    lanes = list(map(lambda lane: {'id': lane.pk, 'name': lane.name}, lanes))
+    lanes = list(map(lambda lane: lane.serializable, lanes))
 
     issue_data = []
     for issue in issues:

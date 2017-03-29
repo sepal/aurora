@@ -27,6 +27,21 @@ class Lane(models.Model):
 
     archiving = property(_is_last)
 
+    def _is_first(self):
+        return self.pk == Lane.objects.all().order_by('order').first().pk
+
+    inbox = property(_is_first)
+
+    def _get_serializable(self):
+        return {
+            'id': self.pk,
+            'name': self.name,
+            'inbox': self.inbox,
+            'archiving': self.archiving
+        }
+
+    serializable = property(_get_serializable)
+
 
 class Issue(models.Model):
     """
