@@ -505,3 +505,7 @@
 .lastCol {
 	margin-bottom:15px;
 }
+
+.comment--body--loading {
+	text-align: center;
+}
