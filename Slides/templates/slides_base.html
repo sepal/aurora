@@ -9,7 +9,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/slides.js"></script>
 
 
-<title>{% block head_title %}Aurora: Slides{% endblock head_title %}</title>
+<title>{% block head_title %}Aurora: Slides {{course.short_title}}{% endblock head_title %}</title>
 <!-- Bootstrap 4 -->
 <link rel="stylesheet" href="{% static 'css/bootstrap4-alpha5.min.css' %}" />
 <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css">

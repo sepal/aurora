@@ -25,7 +25,6 @@
 {% comments_boilerplate %}
 
 <script type="text/javascript">
-
   var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
   var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
   var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
@@ -37,7 +36,7 @@
   <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
 
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
-		<script> window.document.title = "Task: {{challenge.title|safe}}";</script>
+		<script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
 	<div class="challenge_description_title">{{ challenge.title|safe }}</div>
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
