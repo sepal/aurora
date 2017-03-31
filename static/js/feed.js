@@ -5,7 +5,7 @@
 var loadMore_Timer;
 
 $(function() {
-	window.document.title = "Aurora: Newsfeed";
+	window.document.title = "Aurora: Newsfeed " + course_short_title;
 	$('.feed_header').each(function() {
 		$(this).css('background-position-x', (Math.floor(Math.random() * 50) + 50) + '%');
 		$(this).css('background-position-y', (Math.floor(Math.random() * 100)) + '%');
