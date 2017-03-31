@@ -14,7 +14,6 @@
 {% block content %}
 
 <script type="text/javascript">
-
   var REVIEW_URL = "{% url 'Review:review' course_short_title=course.short_title %}";
   $('.card_status').show();
   $('.status_info').hover(function() {$('.card_status').show();},function() {$('.card_status').hide();})
@@ -29,7 +28,7 @@
       <div class="info_title">
            <b>{{ stack.title|safe }}</b>
         </div>
-		<script> window.document.title = "Challenge: {{stack.title|safe}}";</script>
+		<script> window.document.title = "Challenge: {{stack.title|safe}} ({{course.short_title}})";</script>
 		
       <div class="info_description">
           {{ stack.description|safe|urlize }}
