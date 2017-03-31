@@ -24,11 +24,12 @@ class ChapterAdmin(admin.ModelAdmin):
             None, {
                 'fields': [
                     'name',
+                    'id',
                 ]
             }
         ),
     ]
-    list_display = ('name',)
+    list_display = ('name','id',)
 
 admin.site.register(Stack, StackAdmin)
 admin.site.register(Chapter, ChapterAdmin)
