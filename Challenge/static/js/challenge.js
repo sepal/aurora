@@ -49,7 +49,7 @@ function challenge_loaded() {
     $(".submitted-content > trix-editor").attr('contenteditable', 'false');
 
     // Autosafe elaboration every x milliseconds
-    var autosave_interval = 20000
+    var autosave_interval = 10000
     window.setInterval(function() {
         var challenge_id = $('.challenge').attr('id');
         save_elaboration(challenge_id);
@@ -79,12 +79,7 @@ function real_submit_clicked() {
 function go_back() {
     var challenge_id = $('.challenge').attr('id');
     save_elaboration(challenge_id);
-
-    // Wait one second before actually redirecting to ensure
-    // the ajax request to save the elaboration gets sent
-    window.setInterval(function() {
-        location.href = document.referrer;
-    }, 1000);
+    location.href = document.referrer;
 }
 
 function revert_submit_clicked() {
@@ -111,6 +106,7 @@ function save_elaboration(challenge_id) {
     var args = {
         type: "POST",
         url: SAVE_URL,
+        async: false,
         data: data
     };
 
@@ -126,6 +122,7 @@ function submit_elaboration(challenge_id) {
     var args = {
         type: "POST",
         url: SUBMIT_URL,
+        async: false,
         data: data,
         success: function() {
             window.location.href = STACK_URL + "?id=" + $('.challenge').attr('stack');
@@ -162,6 +159,7 @@ function save_revised_elaboration(challenge_id) {
     var args = {
         type: "POST",
         url: SAVE_URL,
+        async: false,
         data: data,
     };
 
@@ -187,12 +185,5 @@ function submit_revised_elaboration(challenge_id) {
 function real_submit_revised_clicked() {
     var challenge_id = $('.challenge').attr('id');
     var saved = submit_revised_elaboration(challenge_id)
-
-    if (saved != false) {
-        // Wait one second before actually redirecting to ensure
-        // the ajax request to save the elaboration gets sent
-        window.setInterval(function() {
-            location.href = document.referrer;
-        }, 1000);
-    };
+      location.href = document.referrer;
 }
