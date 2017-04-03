@@ -24,7 +24,7 @@
         		({{ review.reviewer.first_name }} {{ review.reviewer.last_name }}) @ <span title="{{review.submission_time}}">{{review.submission_time|naturaltime}}</span>:
 				<div style="display:inline-block;float:right;margin-top:1.5px;background:#c0c0c0;color:white;position:relative;right:-8px;padding:3px 6px;">Review {{ forloop.counter }}</div>
         <div style="display:inline-block;float:right;margin-top:1.5px;background:#c0c0c0;color:white;position:relative;right:5px;padding:3px 6px;">
-          <a href="#review-{{ forloop.counter }}" rel="modal:open"> View Elaboration </a>
+          <a href="#review-{{ review.id }}" rel="modal:open"> View Elaboration </a>
         </div>
 			</div>
 	   		 <div class="author_detail hidden_detail" id="r_detail{{forloop.counter}}{{review.id}}" onclick="$('.author_detail').addClass('hidden_detail');$('#r_detail{{forloop.counter}}{{review.id}}').addClass('hidden_detail')">
@@ -65,7 +65,7 @@
           <br><br>
 		</div>
 
-    <div id="review-{{ forloop.counter }}" style="display:none;">
+    <div id="review-{{ review.id }}" style="display:none;">
       {% render_original_uploads elaboration %}
       {% if review.elaboration.elaboration_text  %}
         <div class="submitted-content">

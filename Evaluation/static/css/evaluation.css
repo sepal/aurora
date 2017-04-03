@@ -994,3 +994,7 @@ trix-editor a {
 .tab-content {
     display: none;
 }
+
+.tabs-menu li.current {
+  z-index: 1;
+}
