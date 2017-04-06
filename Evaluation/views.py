@@ -354,6 +354,17 @@ def overview(request, course_short_title=None):
     stack = elaboration.challenge.get_stack()
     stack_challenges = stack.get_challenges()
 
+    next_elaboration = None
+    try:
+        all_elaborations = list(Elaboration.get_final_evaluation_top_level_tasks(course))
+        index = all_elaborations.index(elaboration)
+        if index - 1 > 0:
+            next_elaboration = all_elaborations[index - 1]
+        else:
+            next_elaboration = None
+    except ValueError:
+        next_elaboration = None
+
     challenges = []
     for challenge in stack_challenges:
         challenge_data = {}
@@ -372,6 +383,7 @@ def overview(request, course_short_title=None):
     data['stack'] = stack
     data['challenges'] = challenges
     data['elaboration'] = elaboration
+    data['next_elaboration'] = next_elaboration
 
     evaluation = None
     lock = False

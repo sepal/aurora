@@ -46,6 +46,9 @@
                     <button class="submit_evaluation XL" id="{{ elaboration.id }}">evaluate</button>
                   {% endif %}
               {% endif %}
+              {% if next_elaboration %}
+              <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
+              {% endif %}
           </form>
         {% else %}
           <div class="evaluation" contenteditable="true" onclick="StartEvaluation({{ elaboration.id }})" onkeyup="DelayedAutoSave({{ elaboration.id }})">
