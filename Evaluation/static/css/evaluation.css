@@ -998,3 +998,7 @@ trix-editor a {
 .tabs-menu li.current {
   z-index: 1;
 }
+
+.indicators-overview {
+  float: right;
+}

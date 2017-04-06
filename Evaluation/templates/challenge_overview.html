@@ -27,7 +27,6 @@
       </div>
     </div>
   </div>
-
   {% render_original_uploads elaboration %}
   {% if elaboration.elaboration_text  %}
     <div class="submitted-content">
@@ -50,10 +49,15 @@
       </div>
   {% endif %}
 
+  <div class="indicators-overview">
+      {% include 'elaboration_indicators.html' with elaboration=elaboration %}
+  </div>
 
   <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
       {% include 'tags.html' with tagged_object=elaboration %}
   </div>
+
+
 
   <br><br><br>
   {% include 'elaboration_comments.html' with elaboration=elaboration %}
