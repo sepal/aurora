@@ -6,7 +6,7 @@
 <div class="detail_left">
 
   <span style="cursor:pointer;" onclick="$('#challenge_description_{{elaboration.challenge.id}}').slideToggle('fast');">
-    <b><i class="fa fa-toggle-down"></i> Task description</b><br><br>
+    <b><i class="fa fa-toggle-down"></i> Challenge/Task description</b><br><br>
   </span>
 
   <div id="challenge_description_{{elaboration.challenge.id}}" class="challenge_description" style="display: none;" >
@@ -27,7 +27,6 @@
       </div>
     </div>
   </div>
-
   {% render_original_uploads elaboration %}
   {% if elaboration.elaboration_text  %}
     <div class="submitted-content">
@@ -50,20 +49,26 @@
       </div>
   {% endif %}
 
+  <div class="indicators-overview">
+      {% include 'elaboration_indicators.html' with elaboration=elaboration %}
+  </div>
 
   <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
       {% include 'tags.html' with tagged_object=elaboration %}
   </div>
-  
+
+
+
   <br><br><br>
   {% include 'elaboration_comments.html' with elaboration=elaboration %}
 
   {% if challenge_data.final == False %}
     <br><br><br>
-    <span style="cursor:pointer;" onclick="$('#received_reviews').slideToggle('fast');">
+    <span style="cursor:pointer;" onclick="$('#received_reviews-{{elaboration.id}}').slideToggle('fast');$('.review_answer').each(function(){this.style.height = (this.scrollHeight+5)+'px';});
+    $('.review_answer').redraw();">
       <b><i class="fa fa-toggle-down"></i> Received Reviews</b><br><br>
     </span>
-    <div id="received_reviews" style="display:none">
+    <div id="received_reviews-{{elaboration.id}}" style="display:none">
       {% include 'reviews.html' with reviews=challenge_data.reveiced_reviews  %}
     </div>
   {% endif %}

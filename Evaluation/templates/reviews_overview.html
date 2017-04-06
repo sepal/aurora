@@ -66,7 +66,7 @@
 		</div>
 
     <div id="review-{{ review.id }}" style="display:none;">
-      {% render_original_uploads elaboration %}
+      {% render_original_uploads review.elaboration %}
       {% if review.elaboration.elaboration_text  %}
         <div class="submitted-content">
             <textarea id="evaluation-editor-{{ review.id }}" class="trix-content" style="display: none;">{{ review.elaboration.elaboration_text }}</textarea>
@@ -81,7 +81,7 @@
             Most helpful user was <b>user ID {{ review.elaboration.most_helpful_other_user }}</b> (i know, this is next to useless...)<br><br>
           {% endif %}
 
-          {% render_revised_uploads elaboration %}
+          {% render_revised_uploads review.elaboration %}
           <div class="submitted-content">
               <textarea id="evaluation-revised-editor-{{ review.id }}" class="trix-content" style="display: none;">{{ review.elaboration.revised_elaboration_text}}</textarea>
               <trix-editor class="trix-content" input="evaluation-revised-editor-{{ review.id }}"></trix-editor>

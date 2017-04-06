@@ -241,6 +241,27 @@ th {
     height: 30px;
 }
 
+.next_evaluation {
+    float: right;
+    display: block;
+    height: 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: rgb(58,201,88);
+    margin-left: 6px;
+    font-size: 11px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 2px;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    white-space: nowrap;
+    cursor: pointer;
+    padding-top: 5px;
+}
+
 .reopen_evaluation {
     float: right;
     display: block;
@@ -997,4 +1018,8 @@ trix-editor a {
 
 .tabs-menu li.current {
   z-index: 1;
+}
+
+.indicators-overview {
+  float: right;
 }

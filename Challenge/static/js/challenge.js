@@ -61,6 +61,8 @@ function challenge_loaded() {
 // #####################
 
 function submit_clicked() {
+    var challenge_id = $('.challenge').attr('id');
+    save_elaboration(challenge_id);
     $('#saved_message').hide();
     $('.submit').hide().finish();
     $('.save_back').hide().finish();

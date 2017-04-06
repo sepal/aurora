@@ -1,3 +1,9 @@
+$.fn.redraw = function(){
+  $(this).each(function(){
+    var redraw = this.offsetHeight;
+  });
+};
+
 $(document).ready(function() {
     $(".tab-content").first().css("display", "block");
 
@@ -8,8 +14,12 @@ $(document).ready(function() {
         var tab = $(this).attr("href");
         $(".tab-content").not(tab).css("display", "none");
         $(tab).fadeIn();
-    });
 
+        $(".review_answer").each(function () {
+            this.style.height = (this.scrollHeight+5)+'px';
+        });
+        $('.review_answer').redraw();
+    });
 
     $("trix-editor").attr('contenteditable', 'false');
 });
