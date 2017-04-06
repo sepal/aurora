@@ -64,8 +64,11 @@ def evaluation(request, course_short_title=None):
                     'course': course, 'complaints': 'true'}
         else:
             data = {'elaborations': elaborations, 'course': course}
-        overview = render_to_string(
-            'overview.html', data, RequestContext(request))
+
+        if selection == "final_evaluation_new":
+            overview = render_to_string('overview_new.html', data, RequestContext(request))
+        else:
+            overview = render_to_string('overview.html', data, RequestContext(request))
         count = len(elaborations)
     elif selection == 'questions':
         # get selected challenges from session
