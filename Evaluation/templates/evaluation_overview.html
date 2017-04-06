@@ -47,7 +47,7 @@
                   {% endif %}
               {% endif %}
               {% if next_elaboration %}
-              <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
+                <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
               {% endif %}
           </form>
         {% else %}
@@ -57,6 +57,9 @@
           <div class="point_label">Points</div>
           <div class="points" contenteditable="false" onkeyup="DelayedAutoSave({{ elaboration.id }})"></div>
           <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
+          {% if next_elaboration %}
+            <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
+          {% endif %}
         {% endif %}
       </div>
     </div>
