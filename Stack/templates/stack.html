@@ -168,9 +168,10 @@
 			</div>
 				{% if challenge_dict.status.status == 3 %}
 					<div class="locked {% if challenge_dict.nothing %}hard{% endif %}"><span class="white_text {% if challenge_dict.nothing %}actual{% endif %}">You received a negative review on your work
-						for this challenge. You cannot continue your work until this is resolved. {% endif %}</span><br><br>
+						for this challenge. You cannot continue your work until this is resolved. </span><br><br>
 					<i class="fa fa-lock fa-5x {% if not challenge_dict.nothing %}soft{% endif %}"></i><br>
 					{% if challenge_dict.nothing %}<span class="white_text {% if challenge_dict.nothing %}actual{% endif %}">Comment your work to get in contact with the LVA team!</span>{% endif %}</div>
+				{% endif %}
 		</div> <!-- card -->
       {% endfor %}
 
