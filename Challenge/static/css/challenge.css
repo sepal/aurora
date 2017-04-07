@@ -618,6 +618,7 @@ h1 {
 .zustimmungstext {
 	padding-left:1.5em;
 	width:80%;
+	cursor:pointer;
 }
 
 .cannot_submit {

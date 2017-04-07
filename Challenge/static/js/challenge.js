@@ -19,6 +19,10 @@ $(document).ready(function() {
 	$('.see_through').focus(function () {
 		$('.input_position').removeClass('see_through');
 	});
+	$('.zustimmungstext').click(function() {
+		$('#zustimmungs_box').prop( "checked", true );
+		$('.real_submit').removeClass('cannot_submit');
+	});
 	trixDings = document.querySelector("trix-editor");
 	document.addEventListener('trix-change',countChars);
 	document.addEventListener('trix-initialize',countChars);
