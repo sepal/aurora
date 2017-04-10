@@ -150,3 +150,63 @@
 .seen_link {display:none;}
 .mark_seen_link {display:none;}
 
+.aEvent {
+	background:#eee;
+	border-bottom:1px solid white;
+	width:100%;
+	padding:3px 3px;
+	position:relative;
+}
+
+.aEvent .aDay {
+	font-size:162%;
+	font-family:"yanone_kaffeesatz_rgregular";
+}
+
+.aEvent .aMonat {
+	font-size:162%;
+	font-family:"yanone_kaffeesatzthin";
+}
+
+.aEvent .aMonth {
+	display:inline-block;
+	float:left;
+} 
+
+.aEvent .aDay:after {
+	content:".";
+	margin-right:3px;
+}
+
+.aEvent .aContent {
+}
+
+.aEvent .aContent {
+	position:absolute;
+	left:65px;
+	font-size:13px;
+	display:inline-block;
+	font-weight:bold;
+}
+
+.aEvent .aChallenge {
+	white-space:nowrap;
+	font-weight:normal;
+}
+
+.aEvent .aChallenge i {
+	color:#666;
+	margin-right:3px;
+}
+
+.aEvent .aChallenge:before {
+	content: " " ;
+}
+
+
+.calExplain {
+	margin-left:65px;
+	margin-top:8px;
+	font-size:13px;
+}
+
