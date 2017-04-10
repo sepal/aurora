@@ -35,14 +35,14 @@
     </div>
   {% endif %}
 
-  {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
-      <h1>Revised Work</h1>
-      {% if elaboration.revised_elaboration_changelog %}
-        <b>Changelog: </b>{{ elaboration.revised_elaboration_changelog }}<br>
-        Most helpful user was <b>user ID {{ elaboration.most_helpful_other_user }}</b> (i know, this is next to useless...)<br><br>
-      {% endif %}
+  <h1>Revised Work:</h1>
+  {% if elaboration.revised_elaboration_changelog %}
+    <b>Changelog: </b>{{ elaboration.revised_elaboration_changelog }}<br>
+    Most helpful user was <b>user ID {{ elaboration.most_helpful_other_user }}</b> (i know, this is next to useless...)<br><br>
+  {% endif %}
 
-      {% render_revised_uploads elaboration %}
+  {% render_revised_uploads elaboration %}
+  {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
       <div class="submitted-content">
           <textarea id="evaluation-revised-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text}}</textarea>
           <trix-editor class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}"></trix-editor>
@@ -56,8 +56,6 @@
   <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
       {% include 'tags.html' with tagged_object=elaboration %}
   </div>
-
-
 
   <br><br><br>
   {% include 'elaboration_comments.html' with elaboration=elaboration %}

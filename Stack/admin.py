@@ -24,7 +24,6 @@ class ChapterAdmin(admin.ModelAdmin):
             None, {
                 'fields': [
                     'name',
-                    'id',
                 ]
             }
         ),
