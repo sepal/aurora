@@ -20,6 +20,12 @@
 
 </script>
 
+{% if not stack.currently_active and not user_can_enter_final_challenge %}
+  <div id="detail_area">
+    You shall not pass
+  </div>
+{% else %}
+
 <div id="detail_area">
   <div class="challenges_stack">
 	  <div class="stack_info">
@@ -29,7 +35,7 @@
            <b>{{ stack.title|safe }}</b>
         </div>
 		<script> window.document.title = "Challenge: {{stack.title|safe}} ({{course.short_title}})";</script>
-		
+
       <div class="info_description">
           {{ stack.description|safe|urlize }}
       </div>
@@ -267,4 +273,6 @@
 
   </div>
 </div>
+
+{% endif %}
 {% endblock %}
