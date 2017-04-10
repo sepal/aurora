@@ -37,7 +37,7 @@
 
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
 		<script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
-	<div class="challenge_description_title">{{ challenge.title|safe }}</div>
+	<div class="challenge_description_title">{{ challenge.title|safe }} <span style="font-weight:normal">({{challenge.points}} Pkte)</span></div>
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
 	{% endif %}
@@ -89,7 +89,7 @@
 		{% if not accepted %}
 			{% if blocked %}
 				<div class="XL" style="color:gray;">You cannot start this task now. Go back and check the status of the other tasks.  </div>
-			{% elif challenge.currently_active  %}
+			{% elif challenge.currently_active or user_can_enter_final_challenge %}
 			<div id="Caccept" class="button XL" onclick="$('.elaboration_block').slideDown('fast');$('#Caccept').slideUp('fast');$('#qa').slideUp('fast');">
 				start this task
 			</div>
@@ -98,7 +98,7 @@
 			{% endif %}
 
 		{% endif  %}
-      	{% if challenge.currently_active %}
+      	{% if challenge.currently_active or user_can_enter_final_challenge  %}
     		<div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
 			{% if challenge.accepted_files %}
     		<div class="file_upload" accepted_files="{{ challenge.accepted_files }}">

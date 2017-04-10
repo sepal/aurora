@@ -19,6 +19,10 @@ $(document).ready(function() {
 	$('.see_through').focus(function () {
 		$('.input_position').removeClass('see_through');
 	});
+	$('.zustimmungstext').click(function() {
+		$('#zustimmungs_box').prop( "checked", true );
+		$('.real_submit').removeClass('cannot_submit');
+	});
 	trixDings = document.querySelector("trix-editor");
 	document.addEventListener('trix-change',countChars);
 	document.addEventListener('trix-initialize',countChars);
@@ -95,6 +99,12 @@ function save_elaboration(challenge_id) {
     if ($("#revised-editor").length) {
         return;
     }
+
+    // Dont do anything if the editor is not present
+    if($("#original-editor").length == 0) {
+      return;
+    }
+
 
     var elaboration_text = $("#original-editor").val();
     var extra_review_question = $("#extra-review-question").val();

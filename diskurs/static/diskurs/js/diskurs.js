@@ -233,6 +233,7 @@ $(document).ready(function() {
                     if (data.success) {
                         $contentDiv.html(data.content);
                         Gifffer();
+						$('.post_button').removeClass('not_here_first');
                     } else {
                         alert(data.message);
                     }

@@ -12,9 +12,9 @@
 <div>
   <div class="pagehead">
     <div class="headline">
-	  <div class="course_selected" onclick="location.href='/'"><span style="">Aurora - </span>
+	  <div class="course_selected"><a href="/"><span style="">Aurora - </span>
 		  <span class="long_title_text">{{course.title}}</span>
-		  <span class="short_title_text">{{course.short_title}}</span></div>
+		  <span class="short_title_text">{{course.short_title}}</span><a></div>
     </div>	
     {% if user.is_authenticated %}
 
@@ -56,10 +56,10 @@
         </li>
       </ul>
 
-	  <div class="user_info" style="background-image:url('{{ user.avatar.url }}')" onclick="window.location='{% url 'User:profile' course.short_title %}'">
+	  <a href="{% url 'User:profile' course.short_title %}"><div class="user_info" style="background-image:url('{{ user.avatar.url }}')">
 		  <div class="user_nick">{{user.nickname}}</div>
 		  <div class="profile_link">Click to edit</div>
-	  </div>
+	  </div></a>
   	<a class="logout_button" id="button_sign_out" href="{% url 'User:signout' course.short_title %}">Sign out</a>
 
   </div>
