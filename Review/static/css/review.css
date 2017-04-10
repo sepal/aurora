@@ -336,7 +336,7 @@ input[type=submit] {
   pointer-events: none;
 }
 
-trix-editor {
+.submitted-content > trix-editor {
   background-color: white !important;
   pointer-events: none;
 }
