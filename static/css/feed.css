@@ -151,30 +151,45 @@
 .mark_seen_link {display:none;}
 
 .aEvent {
+	background:white;
+	border-bottom:1px solid #eee;
+	width:100%;
+	padding:3px 3px;
+	position:relative;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.aMonth {
 	background:#eee;
 	border-bottom:1px solid white;
 	width:100%;
 	padding:3px 3px;
 	position:relative;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.aEvent .aKap {
+	display: inline-block;
+}
+
+.aEvent.last {
+	border-bottom:1px solid white;
+	margin-bottom:6px;
+
 }
 
 .aEvent .aDay {
 	font-size:162%;
-	font-family:"yanone_kaffeesatz_rgregular";
-}
-
-.aEvent .aMonat {
-	font-size:162%;
 	font-family:"yanone_kaffeesatzthin";
 }
 
-.aEvent .aMonth {
-	display:inline-block;
-	float:left;
-} 
+.aMonat {
+	font-size:13px;
+}
 
 .aEvent .aDay:after {
-	content:".";
 	margin-right:3px;
 }
 
@@ -183,15 +198,11 @@
 
 .aEvent .aContent {
 	position:absolute;
-	left:65px;
+	left:35px;
 	font-size:13px;
-	display:inline-block;
-	font-weight:bold;
 }
 
 .aEvent .aChallenge {
-	white-space:nowrap;
-	font-weight:normal;
 }
 
 .aEvent .aChallenge i {
@@ -199,13 +210,10 @@
 	margin-right:3px;
 }
 
-.aEvent .aChallenge:before {
-	content: " " ;
-}
 
 
 .calExplain {
-	margin-left:65px;
+	left:35px;
 	margin-top:8px;
 	font-size:13px;
 }
