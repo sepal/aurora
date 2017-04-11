@@ -6,13 +6,9 @@ export default class Comments extends React.Component {
     issueID: React.PropTypes.number.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      comments: ''
-    };
-  }
+  state = {
+    comments: ''
+  };
 
   componentDidMount() {
     getComments(this.props.issueID).then((resp) => {
@@ -24,11 +20,21 @@ export default class Comments extends React.Component {
   }
 
   render() {
-    var my;
-    return (
-      <div>
-        <div
-          dangerouslySetInnerHTML={this.createCommentsMarkup()}></div>
+    let body = (
+      <div className="comment--body comment--body--loading">
+        <i className="fa fa-spinner fa-spin" aria-hidden="true"></i> Loading comments...
+      </div>
+    );
+    if (this.state.comments !== '') {
+      body = (
+          <div className="comment--body"
+               dangerouslySetInnerHTML={this.createCommentsMarkup()}></div>
+      );
+    }
+
+  return (
+      <div className="issue__comments">
+        {body}
       </div>
     )
   }

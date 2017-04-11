@@ -23,7 +23,7 @@ export default class IssueLabel extends React.Component {
     this.onTypeChange = this.onTypeChange.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
-    this.onBlur = this.onBlur.bind(this);
+
 
     this.state = {
       editing: false,
@@ -41,7 +41,7 @@ export default class IssueLabel extends React.Component {
       ));
 
       return (
-        <div className="issue__type-label" onBlur={this.onBlur}>
+        <div className="issue__type-label">
           <span className="issue__type-label">
             <select
               defaultValue={this.props.type}
@@ -69,8 +69,7 @@ export default class IssueLabel extends React.Component {
 
     return (
       <div onClick={this.enableEditing}>
-        <span
-          className="issue__type-label">[{label}]</span> {this.props.title}
+        {this.props.title}
       </div>
     );
   }
@@ -85,15 +84,6 @@ export default class IssueLabel extends React.Component {
   save() {
     this.props.onChange(this.state.type, this.state.title);
     this.closeEditing();
-  }
-
-  onBlur(event) {
-    if (this.state.editing === true && !this.editing) {
-      // todo: currently also called when switching to inner element, therefore
-      // deactivated.
-      //const newState = Object.assign(this.state, {'editing': false});
-      //this.setState(newState);
-    }
   }
 
   onTypeChange(event) {

@@ -1,4 +1,7 @@
 import json
+import logging
+from itertools import chain
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from AuroraProject.decorators import aurora_login_required
 from django.http import JsonResponse
@@ -32,12 +35,19 @@ def index(request, course_short_title):
     if len(lanes) == 0:
         return render(request, 'Feedback/empty.html', {'course': course})
 
-    lanes = list(map(lambda lane: {
-        'id': lane.pk, 'name': lane.name, 'issues': []}, lanes))
+    # Separately get the issues from the last lane and all the others, since
+    # the last lane is the archive lane, and we'll only get issues from the
+    # last two weeks and show less information for them.
+    last_lane = lanes[len(lanes) - 1]
+    issues = Issue.objects.exclude(lane=last_lane)
 
-    # Issues are course specific.
-    issues = Issue.objects.filter(course=course)
-    upvotes = Upvote.objects.filter(user=request.user)
+    start_date = datetime.now() - timedelta(days=14)
+    archived = Issue.objects.filter(lane=last_lane) \
+        .filter(post_date__range=(start_date, datetime.now()))
+
+    issues = chain(issues, archived)
+
+    lanes = list(map(lambda lane: lane.serializable, lanes))
 
     issue_data = []
     for issue in issues:
@@ -96,8 +106,7 @@ def api_issue(request, course_short_title, issue_id):
         # Only staff is allowed to change the issues lane.
         if not request.user.is_staff:
             return HttpResponseForbidden()
-        new_lane = Lane.objects.get(pk=data['lane'])
-        issue.lane = new_lane
+        issue.lane = Lane.objects.get(pk=data['lane'])
 
     # Users can only edit the type, title or the body of an issue.
     if 'type' in data:
@@ -142,6 +151,7 @@ def api_new_issue(request, course_short_title):
         type=data['type'],
         title=data['title'],
         body=data['body'],
+        user_agent=request.META['HTTP_USER_AGENT'],
     )
 
     issue.save()
