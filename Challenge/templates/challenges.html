@@ -8,30 +8,26 @@
 
 {% block content %}
 
+<script>
+  var course_short_title = "{{ course.short_title }}";
+</script>
+
 {% if user_enlisted_and_active %}
 
 	  <div class="not_stack">
-		  Zur Zeit stehen folgende Challenges zur Verf&uuml;gung. Mehr werden im Laufe des Semesters hinzugef&uuml;gt. Bitte beachten Sie die allgemeinen Regeln, die in <a href="http://igw.tuwien.ac.at/aurora/aurora_challenges.pdf">Arbeiten in Aurora</a> und <a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf">zum Schreiben von Reviews</a> zusammengefasst sind.
+		  Zur Zeit stehen folgende Challenges zur Verf&uuml;gung. Mehr werden im Laufe des Semesters hinzugef&uuml;gt. Bitte beachten Sie die allgemeinen Regeln, die in <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">Arbeiten in Aurora</a> zusammengefasst sind, vor allem auf den ersten beiden Seiten.
 	  </div>
-	  <!-- <div class="filterbar"><div class= "button"  style="display:inline; color:gray">sort</div>
-	  	<div class= "button" id="titleSort" style="display:inline">by title</div>&nbsp;
-	  	<div class= "button" id="statusSort" style="display:inline">by status</div>&nbsp;
-	  	<div class= "button"  id="chapterSort" style="display:inline">by chapter</div>&nbsp;
-	  	<div class= "button"  id="dateSort" style="display:inline">reset sort</div>
-	  </div>-->
 
 	  <div id="detail_area_1" class="grid_1" >
 
 <script>var x=""</script>
 
-    {% for stack in course_stacks%}
-
+    {% for stack in course_stacks %}
 <script>
 	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-minus-square half lowkey"></i> <span class="chapter_name">Chapter: </span>{{stack.stack.chapter.name}}</div>');}
 	x =  '{{stack.stack.chapter.name}}';
 </script>
-
-      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}} filter_{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
+      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active and not stack.user_can_enter_final_challenge %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}} filter_{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
 		<div class="stack_icon" style="float:right">
 		   	{% if stack.submitted %}
 		   		{% if stack.status.status == 7 %}

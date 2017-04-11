@@ -15,7 +15,7 @@ function loadTabs() {
 
 function tggle(area) {
 	statu_s = $(area).is(':visible');
-	if (statu_s) {$(area).slideUp(200)} else {$(area).slideDown(200)}	
+	if (statu_s) {$(area).slideUp(200,function() {$('#info_column').masonry('layout');})} else {$(area).slideDown(200,function() {$('#info_column').masonry('layout');})}	
 	statu_s = !statu_s;
 	var ckie = "pointC" + area + '.' + $('#the_username').data('username') + "=" + statu_s + "; expires=Tue, 18 Jan 2038";
 	document.cookie = ckie;
@@ -23,3 +23,5 @@ function tggle(area) {
 	
 	
 }
+
+

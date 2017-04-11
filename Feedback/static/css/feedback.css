@@ -331,11 +331,9 @@
 }
 
 .issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover {
-	background: #ddd;
 }
 
 .issue--teaser--owned:hover,.issue--teaser--owned:active, issue--teaser--owned:focus {
-	background:#E2E4BD;
 }
 
 .issue--teaser--preview {
@@ -487,9 +485,11 @@
 }
 .kanban__add a {
 	text-transform:uppercase;
-	color:rgb(58, 201, 88);
+	color:white;
 	text-decoration:none;
-	padding:3px;
+	display:inline-block;
+	background:rgb(58, 201, 88);
+	padding:3px 9px 3px 9px;
 	border-radius:3px;
 }
 .kanban__add a:active {
@@ -517,4 +517,29 @@
 .issue--detail__platform h2 {
 	font-weight: bold;
 	margin: 5px 0;
+}
+
+.issue-list__item {
+	border-left:3px hidden rgb(58, 201, 88);
+}
+
+.markChanged {
+	border-left:3px solid rgb(58, 201, 88);
+	border-radius: 3px;
+}
+
+.changedIssues:after {
+	content:" ";
+	margin-left:5px;
+	width:15px;
+	height:15px;
+	display:inline-block;
+	background:rgb(58, 201, 88);
+	border-radius:20px;
+	position:relative;
+	top:2px;
+}
+
+.changedIssues, .noChangedIssues {
+	float:right;	
 }

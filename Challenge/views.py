@@ -65,6 +65,7 @@ def create_context_stack(request, course_short_title):
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     context_stack = Stack.objects.get(pk=request.GET.get('id'))
     data['stack'] = context_stack
+    data['user_can_enter_final_challenge'] = user.can_enter_final_challenge(context_stack)
     data['stack_blocked'] = context_stack.is_blocked(user)
     stack_challenges = StackChallengeRelation.objects.all().filter(stack=context_stack)
     challenges_active = []
@@ -144,6 +145,7 @@ def challenges(request, course_short_title=None):
             submission_time = stack.get_final_challenge().get_elaboration(user).submission_time
         data['course_stacks'].append({
             'stack': stack,
+            'user_can_enter_final_challenge': user.can_enter_final_challenge(stack),
             'submitted': submitted,
             'submission_time': submission_time,
             'currently_active': currently_active,
@@ -211,6 +213,8 @@ def challenge(request, course_short_title=None):
     course = data['course']
     data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
     challenge = data['challenge']
+    stack = challenge.get_stack()
+    data['user_can_enter_final_challenge'] = user.can_enter_final_challenge(stack)
 
     # conditions for an inactive challenge
     # challenge is not enabled for this user

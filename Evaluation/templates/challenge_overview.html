@@ -1,0 +1,79 @@
+{% load humanize %}
+{% load render_uploads %}
+{% load comments %}
+{% comments_boilerplate %}
+
+<div class="detail_left">
+
+  <span style="cursor:pointer;" onclick="$('#challenge_description_{{elaboration.challenge.id}}').slideToggle('fast');">
+    <b><i class="fa fa-toggle-down"></i> Challenge/Task description</b><br><br>
+  </span>
+
+  <div id="challenge_description_{{elaboration.challenge.id}}" class="challenge_description" style="display: none;" >
+    <div class="challenge_description_text">
+      <b>{{ stack.title }}</b> <br>
+      {{ stack.description|safe|urlize }} <br><br>
+      {{ elaboration.challenge.description|safe|urlize }}
+    </div>
+
+    <div class="qa_section">
+      <div class="comments">
+        <span style="cursor:pointer;" onclick="$('#qa-{{ elaboration.challenge.id }}').slideToggle('fast');"><b><i class="fa fa-toggle-down"></i>
+          Task Q+A Section</b> - {% comments_count for elaboration.challenge %} comments so far<br>
+        </span>
+        <div id="qa-{{ elaboration.challenge.id }}" class="challenge_comments">
+          {% render_multi_comment_list for elaboration.challenge %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% render_original_uploads elaboration %}
+  {% if elaboration.elaboration_text  %}
+    <div class="submitted-content">
+        <textarea id="evaluation-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+        <trix-editor class="trix-content" input="evaluation-editor-{{elaboration.id}}"></trix-editor>
+    </div>
+  {% endif %}
+
+  <h1>Revised Work:</h1>
+  {% if elaboration.revised_elaboration_changelog %}
+    <b>Changelog: </b>{{ elaboration.revised_elaboration_changelog }}<br>
+    Most helpful user was <b>user ID {{ elaboration.most_helpful_other_user }}</b> (i know, this is next to useless...)<br><br>
+  {% endif %}
+
+  {% render_revised_uploads elaboration %}
+  {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
+      <div class="submitted-content">
+          <textarea id="evaluation-revised-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text}}</textarea>
+          <trix-editor class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}"></trix-editor>
+      </div>
+  {% endif %}
+
+  <div class="indicators-overview">
+      {% include 'elaboration_indicators.html' with elaboration=elaboration %}
+  </div>
+
+  <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">
+      {% include 'tags.html' with tagged_object=elaboration %}
+  </div>
+
+  <br><br><br>
+  {% include 'elaboration_comments.html' with elaboration=elaboration %}
+
+  {% if challenge_data.final == False %}
+    <br><br><br>
+    <span style="cursor:pointer;" onclick="$('#received_reviews-{{elaboration.id}}').slideToggle('fast');$('.review_answer').each(function(){this.style.height = (this.scrollHeight+5)+'px';});
+    $('.review_answer').redraw();">
+      <b><i class="fa fa-toggle-down"></i> Received Reviews</b><br><br>
+    </span>
+    <div id="received_reviews-{{elaboration.id}}" style="display:none">
+      {% include 'reviews.html' with reviews=challenge_data.reveiced_reviews  %}
+    </div>
+  {% endif %}
+</div>
+
+<div class="detail_right">
+  {% if challenge_data.final == False %}
+    {% include 'reviews_overview.html' %}
+  {% endif %}
+</div>

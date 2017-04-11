@@ -28,7 +28,7 @@ class ChapterAdmin(admin.ModelAdmin):
             }
         ),
     ]
-    list_display = ('name',)
+    list_display = ('name','id',)
 
 admin.site.register(Stack, StackAdmin)
 admin.site.register(Chapter, ChapterAdmin)

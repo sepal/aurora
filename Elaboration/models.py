@@ -33,7 +33,7 @@ class Elaboration(models.Model):
     tags = TaggableManager()
     comments = GenericRelation(Comment)
     extra_review_question = models.TextField(default='')
-    
+
     def __str__(self):
         return str(self.id)
 
@@ -598,7 +598,7 @@ class Elaboration(models.Model):
         result = Elaboration.objects.filter(
             challenge__course=course,
             comments__seen=False
-        ).distinct()
+        ).exclude(comments__visibility="private").distinct()
 
         return result
 

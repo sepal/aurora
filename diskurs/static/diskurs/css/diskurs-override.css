@@ -183,8 +183,18 @@ body {margin:0;padding:0;}
 }
 
 #diskurs button {
-	margin-right:6px!important;
+	margin-left:10px!important;
+	margin-right:2px;
 }
+
+#diskurs button:last-of-type {
+	margin-left:0px!important;
+}
+
+.not_here_first {
+	display:none;
+}
+
 
 #diskurs .votes {
 	color:gray;

@@ -25,7 +25,6 @@
 {% comments_boilerplate %}
 
 <script type="text/javascript">
-
   var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
   var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
   var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
@@ -37,8 +36,8 @@
   <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
 
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
-		<script> window.document.title = "Task: {{challenge.title|safe}}";</script>
-	<div class="challenge_description_title">{{ challenge.title|safe }}</div>
+		<script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
+	<div class="challenge_description_title">{{ challenge.title|safe }} <span style="font-weight:normal">({{challenge.points}} Pkte)</span></div>
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
 	{% endif %}
@@ -53,7 +52,7 @@
           </span>
           <div id="qa" class="challenge_comments"{% if not user.is_staff %} style="display:none"{% endif %}><br>{% if not user.is_staff %}If you have questions about the description of this task, post
             them here. The course organizers will answer as soon as possible.{% endif %}
-{% render_multi_comment_list for challenge %}
+            {% render_multi_comment_list for challenge %}
           </div>
         </div>
       </div>
@@ -68,7 +67,7 @@
 {% if review_questions %}
 		  <div class="review_questions nothere">
 			  <br>
-			  <div class="title">Your work will be reviewed by peers on the following criteria:</div>
+			  <div class="title">Your peers will review your work by answering the following questions:</div>
 			  <br>
 {% for review_question in review_questions %}
         <div class="question_container">
@@ -90,7 +89,7 @@
 		{% if not accepted %}
 			{% if blocked %}
 				<div class="XL" style="color:gray;">You cannot start this task now. Go back and check the status of the other tasks.  </div>
-			{% elif challenge.currently_active  %}
+			{% elif challenge.currently_active or user_can_enter_final_challenge %}
 			<div id="Caccept" class="button XL" onclick="$('.elaboration_block').slideDown('fast');$('#Caccept').slideUp('fast');$('#qa').slideUp('fast');">
 				start this task
 			</div>
@@ -99,7 +98,7 @@
 			{% endif %}
 
 		{% endif  %}
-      	{% if challenge.currently_active %}
+      	{% if challenge.currently_active or user_can_enter_final_challenge  %}
     		<div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
 			{% if challenge.accepted_files %}
     		<div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
@@ -185,7 +184,7 @@
       <p><strong>Additional question asked to reviewers:<strong> {{ elaboration.extra_review_question }}<p>
       {% endif %}
 	  {% else %}
-      {% render_uploads elaboration %}
+      {% render_original_uploads elaboration %}
   		<textarea id="editor_challenge" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
       <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
       {% if extra_review_question_present %}

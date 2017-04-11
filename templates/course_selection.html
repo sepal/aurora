@@ -2,9 +2,10 @@
 <html>
 <head>
   <title>Aurora</title>
-  <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
-  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
+  <link rel="shortcut icon" href="static/img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="static/img/favicon.ico" type="image/x-icon">
+  <script type="text/javascript" src="static/js/jquery-2.0.3.js"></script>
+  <script type="text/javascript" src="static/js/courseSelection.js"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/> 
 
@@ -142,23 +143,6 @@
 <body bgcolor="white">
 
 {% block content %}
-<script>
-
-$(function(){
-
-    $('body').hide().fadeIn('slow');
-
-    $('a').click(function(){
-        var link = $(this).attr('href');
-        $('body').fadeOut('slow', function(){
-            window.location.href = link;
-        });
-        return false;
-    });
-
-});
-
-</script>
 
     <div class="course_selection_background">
     </div>
@@ -170,7 +154,7 @@ $(function(){
 		{% endcomment %}
         {% for course in courses %}
         <div class="choice">
-             &rarr; <a href="{% url 'home' course.short_title %}">{{ course.title }}</a><br>
+             &rarr; <a class="xURL" href="{% url 'home' course.short_title %}">{{ course.title }}</a><br>
         </div>
         {% endfor %}
 

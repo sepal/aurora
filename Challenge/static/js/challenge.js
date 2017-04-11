@@ -19,6 +19,10 @@ $(document).ready(function() {
 	$('.see_through').focus(function () {
 		$('.input_position').removeClass('see_through');
 	});
+	$('.zustimmungstext').click(function() {
+		$('#zustimmungs_box').prop( "checked", true );
+		$('.real_submit').removeClass('cannot_submit');
+	});
 	trixDings = document.querySelector("trix-editor");
 	document.addEventListener('trix-change',countChars);
 	document.addEventListener('trix-initialize',countChars);
@@ -49,7 +53,7 @@ function challenge_loaded() {
     $(".submitted-content > trix-editor").attr('contenteditable', 'false');
 
     // Autosafe elaboration every x milliseconds
-    var autosave_interval = 20000
+    var autosave_interval = 10000
     window.setInterval(function() {
         var challenge_id = $('.challenge').attr('id');
         save_elaboration(challenge_id);
@@ -61,6 +65,8 @@ function challenge_loaded() {
 // #####################
 
 function submit_clicked() {
+    var challenge_id = $('.challenge').attr('id');
+    save_elaboration(challenge_id);
     $('#saved_message').hide();
     $('.submit').hide().finish();
     $('.save_back').hide().finish();
@@ -79,12 +85,7 @@ function real_submit_clicked() {
 function go_back() {
     var challenge_id = $('.challenge').attr('id');
     save_elaboration(challenge_id);
-
-    // Wait one second before actually redirecting to ensure
-    // the ajax request to save the elaboration gets sent
-    window.setInterval(function() {
-        location.href = document.referrer;
-    }, 1000);
+    location.href = document.referrer;
 }
 
 function revert_submit_clicked() {
@@ -99,6 +100,12 @@ function save_elaboration(challenge_id) {
         return;
     }
 
+    // Dont do anything if the editor is not present
+    if($("#original-editor").length == 0) {
+      return;
+    }
+
+
     var elaboration_text = $("#original-editor").val();
     var extra_review_question = $("#extra-review-question").val();
     var data = {
@@ -111,6 +118,7 @@ function save_elaboration(challenge_id) {
     var args = {
         type: "POST",
         url: SAVE_URL,
+        async: false,
         data: data
     };
 
@@ -126,6 +134,7 @@ function submit_elaboration(challenge_id) {
     var args = {
         type: "POST",
         url: SUBMIT_URL,
+        async: false,
         data: data,
         success: function() {
             window.location.href = STACK_URL + "?id=" + $('.challenge').attr('stack');
@@ -162,6 +171,7 @@ function save_revised_elaboration(challenge_id) {
     var args = {
         type: "POST",
         url: SAVE_URL,
+        async: false,
         data: data,
     };
 
@@ -187,12 +197,5 @@ function submit_revised_elaboration(challenge_id) {
 function real_submit_revised_clicked() {
     var challenge_id = $('.challenge').attr('id');
     var saved = submit_revised_elaboration(challenge_id)
-
-    if (saved != false) {
-        // Wait one second before actually redirecting to ensure
-        // the ajax request to save the elaboration gets sent
-        window.setInterval(function() {
-            location.href = document.referrer;
-        }, 1000);
-    };
+      location.href = document.referrer;
 }

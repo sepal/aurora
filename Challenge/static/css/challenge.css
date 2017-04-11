@@ -1,6 +1,6 @@
 .trix-content em {
 	font-style:italic!important;
-	font-weight:inherit;
+	font-weight:inherit; 
 }
 
 .unstarted {
@@ -271,7 +271,7 @@ h1 {
     font-size: 1.4em;
 	z-index:210;
 	position:relative;
-	width:410px;
+	width:610px;
 }
 
 .stack_done {
@@ -289,7 +289,7 @@ h1 {
 
 
 .shrinked {
-	height:53px;
+	height:55px;
 }
 
 @media all and (max-width: 959px) {
@@ -618,6 +618,7 @@ h1 {
 .zustimmungstext {
 	padding-left:1.5em;
 	width:80%;
+	cursor:pointer;
 }
 
 .cannot_submit {

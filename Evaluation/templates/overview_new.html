@@ -1,0 +1,84 @@
+{% load humanize %}
+{% load el_pagination_tags %}
+{% load filter %}
+
+{% block content %}
+	<div class="loading_animation">
+		<img src="{{ STATIC_URL }}img/loading3.gif">
+	</div>
+    <table class="overview_table">
+        <tr>
+            <th>student</th>
+            <th>
+                elaboration
+                <i class="fa fa-sort-amount-asc" onclick="sort('elab_asc')" style="cursor:pointer;color:gray"></i>
+                <i class="fa fa-sort-amount-desc" onclick="sort('elab_desc')"  style="cursor:pointer;color:gray"></i>
+            </th>
+            {%  if complaints %}
+                <th>
+                    last comment
+                    <i class="fa fa-sort-amount-asc" onclick="sort('post_desc')"  style="cursor:pointer;color:gray"></i>
+                    <i class="fa fa-sort-amount-desc" onclick="sort('post_asc')"  style="cursor:pointer;color:gray"></i>
+                </th>
+            {% else %}
+                <th>
+                    hand in
+                    <i class="fa fa-sort-amount-asc" onclick="sort('date_desc')"  style="cursor:pointer;color:gray"></i>
+                    <i class="fa fa-sort-amount-desc" onclick="sort('date_asc')"  style="cursor:pointer;color:gray"></i>
+                </th>
+            {% endif %}
+            <th class="indicator_field" >reviews</th>
+        </tr>
+
+        {% paginate elaborations %}
+        {% for elaboration in elaborations %}
+            <tr class="{% cycle 'darkRow' 'lightRow' %}" onclick="document.location = '{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{elaboration.id}}'">&nbsp;
+                <td>
+                  {%  if elaboration.user.avatar %}
+                  <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle">
+                    {%  endif %}
+                  {{ elaboration.user.nickname }}
+                </td>
+
+                <td>{{ elaboration.challenge.title|safe }}</td>
+                {% if complaints %}
+                    <td class="timestamp" title="{{ elaboration.get_last_post_date }}">{{ elaboration.get_last_post_date|naturaltime }}</td>
+                {% else %}
+                    <td class="timestamp" title="{{ elaboration.submission_time }}">{{ elaboration.submission_time|naturaltime}}</td>
+                {% endif %}
+                <td>
+                    {% include 'elaboration_indicators.html' with elaboration=elaboration %}
+                </td>
+            </tr>
+        {% endfor %}
+
+        {% get_pages %}
+        {% with total_pages=pages|length %}
+            {% show_current_number as actual_page %}
+            {{ pages.previous }}
+            {% if pages.previous %}
+                <div class="prev" style="color:gray">&nbsp; ({{ actual_page|add:"-1" }})</div>
+            {% endif %}
+            {{ pages.next }}
+            {% if pages.next %}
+                <div class="next" style="color:gray">({{ total_pages|subtract:actual_page }}) &nbsp; </div>
+            {% endif %}
+        {% endwith %}
+
+    </table>
+
+    <div>
+        {% if courses %}
+            <br/>
+            <div class="feed_header"  id="part_0"><i class="fa fa-toggle-down half"></i> <b>Punktestand</b></div>
+			<div class="feed_column"  id="content_part_0">
+            {% include 'points.html' %}
+			</div>
+        {% endif %}
+    </div>
+
+	<script>
+		$(".indicator:contains('0')").addClass('zero_reviews');
+	</script>
+
+{% endblock %}

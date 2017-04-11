@@ -71,6 +71,11 @@ html, body {
     font-weight:bold;
 }
 
+.feedback__head h1 a {
+	text-decoration:none;
+	color:inherit;
+}
+
 .feedback__head nav {
     float: right;
     margin-top: 20px;
