@@ -7,6 +7,9 @@ import {LaneListContainer} from '../../containers';
 
 @DragDropContext(HTML5Backend)
 export default class Feedback extends React.Component {
+  componentDidMount() {
+    kanbanReady();
+  }
   render() {
     return (
       <div className="kanban">
