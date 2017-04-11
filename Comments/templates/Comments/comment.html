@@ -46,6 +46,7 @@
        {{comment.author.matriculation_number}} - {{comment.author.first_name}} {{comment.author.last_name}}<br>
 		   <a href="mailto:{{comment.author.email}}">email</a> &mdash;
        {% send_notification_button course.short_title comment.author.id%}
+	   &mdash; <a href="https://aurora.iguw.tuwien.ac.at/admin/auth/user/?q={{comment.author.matriculation_number}}">user @ django admin</a>
        {% if not comment.author.is_staff %}
          {% if course %}
            &mdash;   <a href="{% url 'Evaluation:search_user' course.short_title %}?id={{comment.author.id}}">{{comment.author.display_name}}'s work</a>
