@@ -22,26 +22,6 @@ class Lane(models.Model):
     def __unicode__(self):
         return self.__str__()
 
-    def _is_last(self):
-        return self.pk == Lane.objects.all().order_by('-order').first().pk
-
-    archiving = property(_is_last)
-
-    def _is_first(self):
-        return self.pk == Lane.objects.all().order_by('order').first().pk
-
-    inbox = property(_is_first)
-
-    def _get_serializable(self):
-        return {
-            'id': self.pk,
-            'name': self.name,
-            'inbox': self.inbox,
-            'archiving': self.archiving
-        }
-
-    serializable = property(_get_serializable)
-
 
 class Issue(models.Model):
     """
@@ -62,7 +42,6 @@ class Issue(models.Model):
     type = models.CharField(max_length=25, choices=ISSUE_TYPE)
     title = models.CharField(max_length=100)
     body = models.TextField()
-    user_agent = models.TextField(default='')
 
     def __str__(self):
         return self.title
@@ -85,14 +64,12 @@ class Issue(models.Model):
             'type': self.type,
             'title': self.title,
             'upvotes': Upvote.objects.filter(issue=self).count(),
-            'comments': self._number_of_comments(is_staff),
-            'archived': self.lane.archiving,
-            'staff': self.author.is_staff
+            'comments': self._number_of_comments(is_staff)
         }
 
         return data
 
-    def get_serializable(self, is_staff=False):
+    def get_serializable(self, is_staff=True):
         """
         Get the full issue information with all references as a dict which can
         be serialized into json or anything else.
@@ -106,17 +83,11 @@ class Issue(models.Model):
             },
             'author': {
                 'id': self.author.pk,
-                'name': self.author.nickname,
+                'name': self.author.nickname
             },
             'post_date': self.post_date.isoformat('T'),
             'body': self.body
         })
-
-        if is_staff and self.user_agent:
-            data.update({
-                'user_agent': self.user_agent
-            })
-
         return data
 
     def upvoted(self, user):

@@ -1,6 +1,5 @@
 import Moment from 'moment';
 import React, {PropTypes, Component} from 'react';
-import platform from 'platform';
 
 import IssueLabel from '../IssueLabel'
 import IssueIcon from '../IssueIcon';
@@ -18,8 +17,7 @@ export default class IssueDetail extends Component {
     upvotes: PropTypes.number,
     comments: PropTypes.number,
     preview: PropTypes.bool,
-    body: PropTypes.string,
-    user_agent: PropTypes.string
+    body: PropTypes.string
   };
 
   constructor(props) {
@@ -35,8 +33,7 @@ export default class IssueDetail extends Component {
     const date = Moment(this.props.post_date).calendar();
     const canEdit = this.props.isAuthor || this.props.isStaff;
 
-    let upvote_action = <button onClick={this.onUpvote}><i
-      className="fa fa-thumbs-up"></i> upvote</button>;
+    let upvote_action = <button onClick={this.onUpvote}><i className="fa fa-thumbs-up"></i> upvote</button>;
     if (this.props.upvoted) {
       upvote_action = <span><i className="fa fa-thumbs-up"></i> upvoted</span>;
     }
@@ -69,10 +66,15 @@ export default class IssueDetail extends Component {
             </li>
           </ul>
         </div>
-        {this.renderPlatform()}
         <Comments issueID={this.props.id} />
       </div>
     );
+  }
+
+  renderComments() {
+    if (this.props.comments !== undefined && this.props.comments.length > 1) {
+      return <CommentList comments={this.props.comments} />
+    }
   }
 
   renderImages() {
@@ -89,40 +91,6 @@ export default class IssueDetail extends Component {
         <ul className="issue--detail__images">
           {images}
         </ul>
-      )
-    }
-  }
-
-  renderPlatform() {
-    if (this.props.user_agent !== undefined) {
-      console.log(this.props.user_agent);
-      const info = platform.parse(this.props.user_agent);
-      console.log(info);
-      let product = null;
-      if (info.product !== null) {
-        product = (
-          <li>
-            <span className="label">Device:</span> <span
-            className="value">{`${info.product}`}</span>
-          </li>
-        );
-      }
-
-      return (
-        <div className="issue--detail__platform">
-          <h2>Platform:</h2>
-          <ul>
-            <li>
-              <span className="label">Browser:</span> <span
-              className="value">{`${info.name} ${info.version}`}</span>
-            </li>
-            <li>
-              <span className="label">Operating system:</span> <span
-              className="value">{`${info.os.family} ${info.os.version}`}</span>
-            </li>
-            {product}
-          </ul>
-        </div>
       )
     }
   }

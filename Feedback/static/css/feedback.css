@@ -151,7 +151,7 @@
 	width: 100%
 }
 
-.issue--teaser__icon {
+.issue__type-label {
 	color:white;
 	background:#247F37;
 	padding:1px 3px;
@@ -160,6 +160,10 @@
 	text-align:center;
 	display:inline-block;
 	font-weight:normal;
+}
+
+.modal__window .issue__type-label {
+	display:none;
 }
 
 .issue__type-label select {
@@ -318,7 +322,7 @@
 	border-radius: 3px
 }
 
-.issue--teaser,.issue--teaser--preview,.issue--teaser--owned,.issue--teaser--security {
+.issue--teaser,.issue--teaser--preview,.issue--teaser__owned,.issue--teaser--security {
 	display: block;
 	padding: 14px;
 	border-radius: 3px;
@@ -333,7 +337,7 @@
 .issue--teaser:active,.issue--teaser:focus,.issue--teaser:hover,.issue--teaser--preview:active,.issue--teaser--preview:focus,.issue--teaser--preview:hover {
 }
 
-.issue--teaser--owned:hover,.issue--teaser--owned:active, issue--teaser--owned:focus {
+.issue--teaser__owned:hover,.issue--teaser__owned:active, issue--teaser__owned:focus {
 }
 
 .issue--teaser--preview {
@@ -375,7 +379,7 @@
 	color: #aaa;
 }
 
-.issue--teaser--owned {
+.issue--teaser__owned {
 	background:#F6F8CE;
 }
 
@@ -498,25 +502,22 @@
 }
 
 
-.issue--teaser--archived {
-	padding: 5px 14px;
+.headOnly {
+	height:25px;
+	overflow:hidden;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+
+.headOnly a.issue--teaser div, .headOnly a.issue--teaser__owned div {
+	position:relative;
+	bottom:10px;
+	font-weight:normal;
+	overflow:hidden;
 }
 
 .lastCol {
 	margin-bottom:15px;
-}
-
-.comment--body--loading {
-	text-align: center;
-}
-
-.issue--detail__platform {
-	margin-top: 14px;
-}
-
-.issue--detail__platform h2 {
-	font-weight: bold;
-	margin: 5px 0;
 }
 
 .issue-list__item {
@@ -543,3 +544,8 @@
 .changedIssues, .noChangedIssues {
 	float:right;	
 }
+
+.kanban__add {
+
+}
+

@@ -41,14 +41,10 @@ class IssueForm extends React.Component {
     let newState = Object.assign(this.state);
     if (this.state.title == '') {
       newState['title_error'] = 'Please enter a title';
-    } else {
-      newState['title_error'] = '';
     }
 
     if (this.state.body == '') {
       newState['body_error'] = 'Please describe your issue';
-    } else {
-      newState['body_error'] = '';
     }
 
     if (newState['body_error'] == '' && newState['title_error'] == '') {

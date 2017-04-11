@@ -4,7 +4,6 @@ import {Link} from 'react-router';
 import ReactMarkdown from 'react-markdown';
 
 import IssueLabel from '../IssueLabel';
-import IssueIcon from '../IssueIcon';
 import {ItemTypes} from '../../../constants';
 import {IssueTypes} from '../../../constants'
 
@@ -43,9 +42,7 @@ export default class IssueTeaser extends Component {
     canDrag: PropTypes.bool,
     upvotes: PropTypes.number,
     comments: PropTypes.number,
-    preview: PropTypes.bool,
-    archived: PropTypes.bool,
-    staff: PropTypes.bool
+    preview: PropTypes.bool
   };
 
   static defaultProps = {
@@ -53,32 +50,22 @@ export default class IssueTeaser extends Component {
     canDrag: false,
     upvotes: 0,
     comments: 0,
-    preview: false,
-    archived: false
+    preview: false
   };
 
   render() {
     const {isDragging, connectDragSource} = this.props;
+    let upvote_label = this.props.upvotes == 1 ? "upvote" : "upvotes";
+    let comment_label = this.props.comments == 1 ? "comment" : "comments";
 
-    let className = "issue--teaser";
-
-    if (this.props.preview === true) {
-      className += ' issue--teaser--preview';
-    }
-
-    if (this.props.archived === true) {
-      className += ' issue--teaser--archived';
-    }
-
-    if (this.props.staff === true) {
-      className += ' issue--teaser--staff';
-    }
-
+    let className = this.props.preview === true ? "issue--teaser--preview" : "issue--teaser";
     if (this.props.type == 'security') {
-      className += " issue--teaser--security";
+      className = "issue--teaser--security";
     } else if (this.props.isAuthor) {
-      className += " issue--teaser--owned";
+      className = "issue--teaser__owned";
     }
+
+    const body_preview = this.props.body.substring(0, 100);
 
 
     return connectDragSource(
@@ -90,47 +77,24 @@ export default class IssueTeaser extends Component {
             state: {returnTo: `/${course_short_title}/feedback`}
           }}
           className={className}>
-          <div className="issue--teaser__header">
-            <span className="issue--teaser__icon">
-              <IssueIcon type={this.props.type} />
-            </span> {this.props.title}
+          <IssueLabel type={this.props.type} title={this.props.title} />
+          <div className="issue--teaser__body">
+            <ReactMarkdown source={body_preview}
+                           disallowedTypes={['HtmlInline', 'HtmlBlock']}
+                           escapeHtml={true} />
           </div>
-          {this.renderBody()}
-          {this.renderFooter()}
-        </Link>
-      </div>
-    );
-  }
-
-  renderBody() {
-    if (!this.props.archived) {
-      const body_preview = this.props.body.substring(0, 100);
-      return (
-        <div className="issue--teaser__body">
-          <ReactMarkdown source={body_preview}
-                         disallowedTypes={['HtmlInline', 'HtmlBlock']}
-                         escapeHtml={true} />
-        </div>
-      )
-    }
-  }
-
-  renderFooter() {
-    if (!this.props.archived) {
-      let upvote_label = this.props.upvotes == 1 ? "upvote" : "upvotes";
-      let comment_label = this.props.comments == 1 ? "comment" : "comments";
-      return (
-        <div className="issue--teaser__footer">
+          <div className="issue--teaser__footer">
             <span className="issue--teaser__upvotes">
               <i
                 className="fa fa-thumbs-up"></i> {this.props.upvotes} {upvote_label}
             </span>
-          <span className="issue--teaser__comments">
+            <span className="issue--teaser__comments">
               <i
                 className="fa fa-comments"></i> {this.props.comments} {comment_label}
             </span>
-        </div>
-      );
-    }
+          </div>
+        </Link>
+      </div>
+    );
   }
 }
