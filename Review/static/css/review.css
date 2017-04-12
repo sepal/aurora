@@ -333,10 +333,12 @@ input[type=submit] {
 
 .submitted-content > trix-toolbar {
   display: none !important;
+  pointer-events: none;
 }
 
-trix-editor {
+.submitted-content > trix-editor {
   background-color: white !important;
+  pointer-events: none;
 }
 
 .submitted-content {

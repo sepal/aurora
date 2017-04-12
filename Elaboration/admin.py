@@ -45,7 +45,7 @@ class ElaborationAdmin(admin.ModelAdmin):
         ),
     ]
     list_display = ('id', 'challenge', 'user', 'creation_time', 'elaboration_text', 'submission_time', 'revised_elaboration_text','extra_review_question',)
-    search_fields = ('user__username','challenge__id',)
+    search_fields = ('user__username','challenge__id','id',)
     readonly_fields = ("creation_time",)
     actions = [export_csv]
 

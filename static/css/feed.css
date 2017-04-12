@@ -150,3 +150,71 @@
 .seen_link {display:none;}
 .mark_seen_link {display:none;}
 
+.aEvent {
+	background:white;
+	border-bottom:1px solid #eee;
+	width:100%;
+	padding:3px 3px;
+	position:relative;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.aMonth {
+	background:#eee;
+	border-bottom:1px solid white;
+	width:100%;
+	padding:3px 3px;
+	position:relative;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.aEvent .aKap {
+	display: inline-block;
+}
+
+.aEvent.last {
+	border-bottom:1px solid white;
+	margin-bottom:6px;
+
+}
+
+.aEvent .aDay {
+	font-size:162%;
+	font-family:"yanone_kaffeesatzthin";
+}
+
+.aMonat {
+	font-size:13px;
+}
+
+.aEvent .aDay:after {
+	margin-right:3px;
+}
+
+.aEvent .aContent {
+}
+
+.aEvent .aContent {
+	position:absolute;
+	left:35px;
+	font-size:13px;
+}
+
+.aEvent .aChallenge {
+}
+
+.aEvent .aChallenge i {
+	color:#666;
+	margin-right:3px;
+}
+
+
+
+.calExplain {
+	left:35px;
+	margin-top:8px;
+	font-size:13px;
+}
+
