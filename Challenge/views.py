@@ -134,7 +134,7 @@ def challenges(request, course_short_title=None):
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
 
-    course_stacks = Stack.objects.all().filter(course=course)
+    course_stacks = Stack.objects.all().filter(course=course).order_by("chapter")
     # raise Exception(course_stacks)
     data['course_stacks'] = []
     for stack in course_stacks:
