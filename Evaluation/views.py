@@ -361,7 +361,7 @@ def overview(request, course_short_title=None):
     try:
         all_elaborations = list(Elaboration.get_final_evaluation_top_level_tasks(course).order_by('submission_time'))
         next_index = all_elaborations.index(elaboration) + 1
-        if next_index <= len(all_elaborations):
+        if next_index < len(all_elaborations):
             next_elaboration = all_elaborations[next_index]
         else:
             next_elaboration = None
