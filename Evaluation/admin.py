@@ -69,7 +69,7 @@ class EvaluationAdmin(admin.ModelAdmin):
     get_tutor.short_description = 'Tutor'
     get_tutor.allow_tags = True
 
-    search_fields = ['tutor__nickname']
+    search_fields = ['tutor__nickname','submission_id','id']
     actions = [export_csv]
 
 admin.site.register(Evaluation, EvaluationAdmin)
