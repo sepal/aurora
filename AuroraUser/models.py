@@ -221,7 +221,7 @@ class AuroraUser(User):
         number_of_submitted_elaborations = len(self.get_stack_elaborations(stack))
         number_of_written_reviews = Review.objects.filter(reviewer=self, elaboration__challenge_id__in=challenge_ids).count()
 
-        has_submitted_enough_elaborations = number_of_submitted_elaborations == (number_of_total_challenges)
+        has_submitted_enough_elaborations = number_of_submitted_elaborations >= number_of_total_challenges
         has_written_enough_reviews = number_of_written_reviews >= number_of_total_reviews
         return has_written_enough_reviews and has_submitted_enough_elaborations
 
