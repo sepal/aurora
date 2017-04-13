@@ -286,7 +286,7 @@
             <trix-editor class="trix-content" input="revised-editor"></trix-editor>
               <div class="changelog">
 				  Briefly describe the changes you made to your original elaboration<br><input type="text" value="{{ elaboration.revised_elaboration_changelog}}" id="changelog"  />
-				  <br><br>Which review was most helpful for this revision:
+				  <br><br>What helped you most while writing this revision:
             	  <select id="most_helpful_other_user" name="most_helpful_other_user">
 					  <option>Please Select...</option>
            		   {% for review in elaboration.get_reviews %}
@@ -294,6 +294,7 @@
             			<option {% if review.reviewer.pk == elaboration.most_helpful_other_user %} selected {% endif %}
               			  value="{{ review.id }}">Review {{forloop.counter}}</option>
            	   	   {% endfor %}
+						<option value="-99" {% if elaboration.most_helpful_other_user == -99 %} selected {% endif %} >The work I reviewed</option>
             		  <option {% if elaboration.most_helpful_other_user == -1 %} selected {% endif %} value="-1">Tutor / LVA </option>
            	 	 </select>
 				</div>
