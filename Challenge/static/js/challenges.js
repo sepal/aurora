@@ -9,6 +9,15 @@ $(function() {
 	$('.filterbar').click(function (){
 		$('.filter_'+$(this).data('filter')).toggleClass('shrinked',300);
 		setTimeout(chapterCookieUpdate,350);
+		myIcon = $('i',this);
+		if (myIcon.hasClass('fa-angle-up')) {
+			myIcon.removeClass('fa-angle-up');
+			myIcon.addClass('fa-angle-down');
+		} else {
+			myIcon.removeClass('fa-angle-down');
+			myIcon.addClass('fa-angle-up');
+		}
+		
 	})
 	chapterCookieLoad();
 });
@@ -56,6 +65,8 @@ function chapterCookieLoad() {
 		var clickedChapters = fCookie.split(',');
 		for (var i = 0; i < clickedChapters.length; i++) {
 			$('.filter_'+clickedChapters[i]).toggleClass('shrinked',0);
+			$('.fa','#F'+clickedChapters[i]).removeClass('fa-angle-up');
+			$('.fa','#F'+clickedChapters[i]).addClass('fa-angle-down');
 		}
     }
 }

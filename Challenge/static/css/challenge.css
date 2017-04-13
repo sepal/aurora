@@ -290,6 +290,7 @@ h1 {
 
 .shrinked {
 	height:55px;
+	margin-bottom:0.5em!important;
 }
 
 @media all and (max-width: 959px) {
@@ -607,7 +608,9 @@ h1 {
 }
 
 .lowkey {
-	color:rgba(255,255,255,0.5)!important;
+	position:relative;
+	bottom:5px;
+	
 }
 
 .zustimmung {
