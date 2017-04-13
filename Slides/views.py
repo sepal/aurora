@@ -169,7 +169,8 @@ def search(request, course_short_title=None):
         queryset_slides = Slide.objects.filter(
             Q(title__icontains=query) |
             Q(text_content__icontains=query) |
-            Q(tags__icontains=query)
+            Q(tags__icontains=query) |
+            Q(lecturer_comment__icontains=query)
         ).distinct()
 
         complete_set = set(queryset_ss)

@@ -497,9 +497,9 @@ def import_data():
     e2 = elaborations[1]
     e3 = elaborations[2]
 
-    # trigger plagcheck daemon to verify documents
-    for elab in elaborations:
-        plagcheck_elaboration(elab)
+    # # trigger plagcheck daemon to verify documents
+    # for elab in elaborations:
+    #     plagcheck_elaboration(elab)
 
     # create review for elaboration
     print('adding review 1 for elaboration for challenge 1 for s0')
