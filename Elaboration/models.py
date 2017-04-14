@@ -63,7 +63,7 @@ class Elaboration(models.Model):
         return None
 
     def number_of_reviews(self):
-        return Review.objects.filter(elaboration=self, submission_time__isnull=False).count()
+        return Review.objects.filter(elaboration=self).exclude(submission_time__isnull=True).count()
 
     def number_of_reviews_with_feedback(self):
         count = 0
