@@ -38,7 +38,7 @@
   <h1>Revised Work:</h1>
   {% if elaboration.revised_elaboration_changelog %}
     <b>Changelog: </b>{{ elaboration.revised_elaboration_changelog }}<br>
-    Most helpful user was <b>user ID {{ elaboration.most_helpful_other_user }}</b> (i know, this is next to useless...)<br><br>
+    <b>{{ elaboration.most_helpful_other_user_text }}</b> helped me the most to improve my work <br><br>
   {% endif %}
 
   {% render_revised_uploads elaboration %}
