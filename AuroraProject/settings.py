@@ -416,7 +416,7 @@ if DEBUG:
     ]
 
     DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
+        'DISABLE_PANELS': False,
         'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
     }
 
