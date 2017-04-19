@@ -3,7 +3,7 @@ Pillow==3.4.2
 easy-thumbnails==2.3
 coverage==3.7.1
 django-el-pagination==2.1.2
-django-debug-toolbar==1.4
+django-debug-toolbar
 django-taggit==0.19.1
 django-suit==0.2.18
 
