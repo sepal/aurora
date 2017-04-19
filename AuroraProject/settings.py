@@ -430,6 +430,7 @@ if DEBUG:
     ## PROFILING ##
     MIDDLEWARE_CLASSES += (
         'middleware.Profiling.ProfileMiddleware',
+        'django.contrib.auth.middleware.SessionAuthenticationMiddleware'
     )
 
 try:
