@@ -1,10 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.contrib.contenttypes.fields import GenericRelation
-from django.db import models
 from django.db.models import Count, Min
 from django.contrib.contenttypes.models import ContentType
-from random import randint
-from django.core.cache import cache
 
 from Comments.models import Comment
 from Evaluation.models import Evaluation
@@ -13,13 +10,13 @@ from FileUpload.models import UploadFile
 from ReviewAnswer.models import ReviewAnswer
 from collections import Counter
 from taggit.managers import TaggableManager
-from pprint import pprint
 from Course.models import *
 from random import randint
 import logging
 
 
 logger = logging.getLogger('review')
+
 
 class Elaboration(models.Model):
     challenge = models.ForeignKey('Challenge.Challenge')

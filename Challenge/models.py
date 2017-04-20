@@ -14,6 +14,7 @@ from Course.models import Course, CourseUserRelation
 import logging
 logger = logging.getLogger(__name__)
 
+
 def challenge_image_path(instance, filename):
     name = 'challenge_%s' % instance.id
     fullname = os.path.join(instance.upload_path, name)
@@ -70,7 +71,6 @@ class Challenge(models.Model):
         6: "Waiting for evaluation of final task.",
         7: "Challenge evaluated. Points received: "
     }
-
 
     def __str__(self):
         return u'%s' % self.title

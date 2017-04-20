@@ -16,6 +16,7 @@ from Course.models import Course
 @aurora_login_required()
 def slides(request, course_short_title=None):
     """
+    :param course_short_title:
     :param request:
     :return: a view of all categories and their assigned topics.
     """
@@ -36,6 +37,7 @@ def slides(request, course_short_title=None):
 @aurora_login_required()
 def slide_topics(request, topic=None, course_short_title=None):
     """
+    :param course_short_title:
     :param request:
     :param topic: the topic to be represented
     :return: shows all SlideStacks, which are assigned to the given topic.
@@ -88,6 +90,7 @@ def slide_topics(request, topic=None, course_short_title=None):
 @aurora_login_required()
 def slide_stack(request, topic=None, slug=None, course_short_title=None):
     """
+    :param course_short_title:
     :param request:
     :param topic: defines the context. This is important for previous and next page functionality.
     :param slug: identifies the SlideStack to be displayed.
@@ -127,7 +130,7 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
 
     # find all other topics containing this SlideStack
     other_topics = []
-    this_topic = ('','search results')
+    this_topic = ('', 'search results')
     for cat in this_ss.list_category_tuples:
         if topic != cat[0] + '_' + cat[1]:
             other_topics.append(cat)
@@ -150,6 +153,7 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
 def search(request, course_short_title=None):
     """
     Searches all SlideStacks and Slides for the given text
+    :param course_short_title:
     :param request:
     :return: a view of all SlideStacks, which contain the search text
     in a variable, or has a Slide assigned that fits the search criteria.
