@@ -260,6 +260,12 @@
         </div>
 	</div>
       <div>&nbsp;</div>
+	{% if review_data.appraisal == "Not even trying" %}
+		<div class="review-went-south-action">
+			<i class="fa fa-exclamation-circle fa-2x" style="float:left;margin-right:6px;padding:2px"></i>
+			If you feel that this review comes to an unfair conclusion, write a comment in the »Discuss with LVA team« area above, and explain why you think this is wrong. We will look at it as soon as possible.
+		</div>
+	{% endif %}
 	  {% endfor %} <!-- review data -->
     </div>
 {% endif %} <!-- in reviews -->
@@ -302,6 +308,9 @@
 	      </div>
 	 	</div>
 	{% else %} <!-- this is an obscure bug fix. without this form, comments don't work on this page. no idea why :( -->
+		<div class="create_revision">
+			<div class="create_revision_text">Once your work has been reviewed, you can create a revision. </div>
+		</div>
 	{% comment %}
 	      {% if challenge.accepted_files %}
 	            <form action="/fileupload" id="dropzone" style="display:none">
