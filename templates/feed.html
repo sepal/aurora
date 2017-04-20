@@ -32,10 +32,7 @@
 			<li class="button filterbtn" id="2" title="Show only comments posted by lecturers, tutors or yourself" onclick="filterClick(this.id,'{{user.username}}');">Lecturer Comments</li>
 			<li class="button filterbtn" id="0" title="Show only comments posted after you activate this filter" onclick="markT('{{user.username}}');filterClick(this.id,'{{user.username}}')">new <span id="new_date"></span></li>
 			{% if user.is_staff %}
-			<li class="button filterbtn" id="99" title="Show only staff comments" onclick="filterClick(this.id,'{{user.username}}');"></i>[+S]</li>
-			{% endif %}
-			{% if user.is_staff %}
-			<li class="button filterbtn" id="98" title="Show no staff comments" onclick="filterClick(this.id,'{{user.username}}');"></i>[-S]</li>
+			<li class="button filterbtn" id="99" title="Show only staff comments" onclick="filterClick(this.id,'{{user.username}}');"></i>[S]</li>
 			{% endif %}
 			
 		</ul>
