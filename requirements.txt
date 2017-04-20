@@ -1,4 +1,4 @@
-Django==1.9
+Django==1.10
 Pillow==3.4.2
 easy-thumbnails==2.4.1
 coverage==3.7.1

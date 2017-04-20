@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 import Elaboration.views
 urlpatterns = [
     url(r'^save$', Elaboration.views.save_elaboration, name='save'),

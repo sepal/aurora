@@ -1,4 +1,5 @@
-from django.conf.urls import patterns, include, url
+from AuroraProject import views, settings
+from django.conf.urls import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -7,7 +8,6 @@ from AuroraProject.settings import DEBUG
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 admin.autodiscover()
 
-from AuroraProject import views, settings
 
 urlpatterns = [
     # TODO: add home without course
