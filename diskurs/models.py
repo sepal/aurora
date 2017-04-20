@@ -10,9 +10,9 @@ AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 class Post(models.Model):
     content = models.TextField('content')
-    parent_post = models.ForeignKey('self', null=True, blank=True)
-    user = models.ForeignKey(AUTH_USER_MODEL)
-    group = models.ForeignKey('Group', null=True, blank=True)
+    parent_post = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    group = models.ForeignKey('Group', null=True, blank=True, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     filter_group_id = False
@@ -53,10 +53,10 @@ class Post(models.Model):
 
 
 class Thread(models.Model):
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.TextField(max_length=512)
-    first_post = models.ForeignKey(Post)
-    user = models.ForeignKey(AUTH_USER_MODEL)
+    first_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     members_in_group = models.IntegerField(default=20)
     filter_group_id = False
@@ -80,14 +80,14 @@ class Thread(models.Model):
 
 
 class Favorite(models.Model):
-    post = models.ForeignKey(Post)
-    user = models.ForeignKey(AUTH_USER_MODEL)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class PostVote(models.Model):
-    post = models.ForeignKey(Post)
-    user = models.ForeignKey(AUTH_USER_MODEL)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     value = models.IntegerField()
 
@@ -102,7 +102,7 @@ class Group(models.Model):
 
 
 class UserGroup(models.Model):
-    group = models.ForeignKey(Group)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 

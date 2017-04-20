@@ -2,11 +2,12 @@ from django.db import models
 from taggit.managers import TaggableManager
 from django.contrib.contenttypes.models import ContentType
 
+
 class Review(models.Model):
-    elaboration = models.ForeignKey('Elaboration.Elaboration')
+    elaboration = models.ForeignKey('Elaboration.Elaboration', on_delete=models.CASCADE)
     creation_time = models.DateTimeField(auto_now_add=True)
     submission_time = models.DateTimeField(null=True)
-    reviewer = models.ForeignKey('AuroraUser.AuroraUser')
+    reviewer = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
     chosen_by = models.CharField(max_length=100, null=True, blank=True, default='random')
     tags = TaggableManager()
     extra_review_question_answer = models.TextField(default='')
@@ -25,7 +26,6 @@ class Review(models.Model):
 
     def __unicode__(self):
         return str(self.id)
-
 
     def is_evaluated(self):
         return ReviewEvaluation.objects.filter(review=self).count() > 0
@@ -52,9 +52,9 @@ class Review(models.Model):
 
 
 class ReviewEvaluation(models.Model):
-    review = models.ForeignKey('Review.Review')
+    review = models.ForeignKey('Review.Review', on_delete=models.CASCADE)
     creation_time = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey('AuroraUser.AuroraUser')
+    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
 
     HELPFUL= 'P'
     GOOD = 'D'
@@ -88,6 +88,7 @@ class ReviewEvaluation(models.Model):
     def get_negative_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
                                                appraisal=ReviewEvaluation.NEGATIVE).count()
+
     @staticmethod
     def get_review_evaluation_percent(user, course):
         number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False).count()
@@ -104,6 +105,7 @@ class ReviewEvaluation(models.Model):
         missing_ratings_ids = list(set(review_ids)-set(rated_review_ids))
 
         return Review.objects.filter(id__in=missing_ratings_ids)
+
 
 class ReviewConfig(models.Model):
     # in hours
@@ -128,4 +130,4 @@ class ReviewConfig(models.Model):
 
     @staticmethod
     def setup():
-        ReviewConfig.objects.create(candidate_offset_min = 23, candidate_offset_max = 120)
+        ReviewConfig.objects.create(candidate_offset_min=23, candidate_offset_max=120)

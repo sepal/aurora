@@ -19,8 +19,8 @@ logger = logging.getLogger('review')
 
 
 class Elaboration(models.Model):
-    challenge = models.ForeignKey('Challenge.Challenge')
-    user = models.ForeignKey('AuroraUser.AuroraUser')
+    challenge = models.ForeignKey('Challenge.Challenge', on_delete=models.CASCADE)
+    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
     creation_time = models.DateTimeField(auto_now_add=True)
     elaboration_text = models.TextField(default='')
     revised_elaboration_text = models.TextField(default='')

@@ -27,8 +27,8 @@ def get_thumbnail_path(instance, filename):
 
 
 class UploadFile(models.Model):
-    user = models.ForeignKey('AuroraUser.AuroraUser')
-    elaboration = models.ForeignKey('Elaboration.Elaboration')
+    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
+    elaboration = models.ForeignKey('Elaboration.Elaboration', on_delete=models.CASCADE)
     elaboration_version = models.TextField(default='original')
     creation_time = models.DateTimeField(auto_now_add=True)
     upload_file = models.FileField(upload_to=get_upload_path)
