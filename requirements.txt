@@ -10,7 +10,7 @@ django-taggit==0.19.1
 django-suit==0.2.18
 
 # plugcheck at aurora side
-django-celery==3.1.17
+django-celery==3.2.1
 
 #diskurs
 django-markup==1.0
