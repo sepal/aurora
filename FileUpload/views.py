@@ -3,7 +3,6 @@ import os
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.template import RequestContext
 from django.core.files import File
 from tempfile import NamedTemporaryFile
 from PIL import ImageFile, Image, ImageOps
@@ -17,6 +16,7 @@ from django.conf import settings
 
 import logging
 logger = logging.getLogger(__name__)
+
 
 @login_required()
 def file_upload(request):
@@ -53,6 +53,7 @@ def file_upload(request):
         return HttpResponse(user.avatar.name)
     response = {'id': upload_file.id, 'url': upload_file.upload_file.url, 'thumbnail_url': upload_file.thumbnail.url}
     return HttpResponse(json.dumps(response))
+
 
 def create_thumbnail(file, filename, save_function):
     parser = ImageFile.Parser()
@@ -106,6 +107,7 @@ def all_files(request):
             })
     return HttpResponse(json.dumps(data))
 
+
 @login_required()
 def original_files(request):
     user = request.user
@@ -127,6 +129,7 @@ def original_files(request):
                 'id': upload_file.id,
             })
     return HttpResponse(json.dumps(data))
+
 
 @login_required()
 def revised_files(request):
