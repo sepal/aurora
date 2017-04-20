@@ -95,10 +95,22 @@
 	font-size:85%;
 }
 
+.toolbar > .filterbtn {
+	background:white;
+	box-shadow: 0px 1px 1px rgba(0,0,0,0.2) ;
+}
+
+.toolbar > .hilited {
+	background:rgb(58, 201, 88);
+	box-shadow: 0px 1px 1px rgba(0,0,0,0.2) inset ;
+}
+
 .toolbar {
 	background-color:#eee;
 	padding: 2px 0 4px 0.5em;
 }
+
+
 
 .toolbar .fa {
 	color:gray;
