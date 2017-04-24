@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q, Sum, Count
 
 from Elaboration.models import Elaboration
-from Stack.models import Stack, StackChallengeRelation
 from Course.models import Course
 from Challenge.models import Challenge
 from AuroraUser.models import AuroraUser
@@ -234,9 +233,6 @@ def final_tasks(course):
         data['id'] = id
         data['title'] = (
             Challenge.objects.get(pk=id).title
-        )
-        data['challenge'] = (
-            Challenge.objects.get(pk=id).get_stack().title
         )
         data['evaluated'] = (
             Evaluation.objects
