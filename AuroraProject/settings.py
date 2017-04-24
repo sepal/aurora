@@ -137,7 +137,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                #'django.core.context_processors.request',
+                'django.core.context_processors.request',
             ],
         },
     },
@@ -178,6 +178,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django.contrib.humanize',
+    'django_comments',
     # third party apps
     'easy_thumbnails',
     # own apps

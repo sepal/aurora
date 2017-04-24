@@ -3,6 +3,7 @@ from django.conf.urls import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.conf.urls import url, include
 from django.conf.urls.static import static
 from AuroraProject.settings import DEBUG
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -20,6 +21,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^comment/', include('Comments.urls', namespace='Comments')),
+    url(r'^comments/', include('django_comments.urls')),
 
     url(r'result_users', views.result_users, name='result_users'),
     url(r'result_elabs_nonfinal', views.result_elabs_nonfinal, name='result_elabs_nonfinal'),

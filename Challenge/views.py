@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.template import RequestContext
 from django.http import Http404
 from Course.models import Course
 
@@ -18,16 +17,16 @@ logger = logging.getLogger(__name__)
 
 @aurora_login_required()
 def stack(request, course_short_title=None):
-    context = create_context_stack(request, course_short_title)
-    return render(request, 'stack.html', context)
+    data = create_data_stack(request, course_short_title)
+    return render(request, 'stack.html', data)
 
 
 @aurora_login_required()
 def my_review(request, course_short_title=None):
-    context = create_context_myreview(request, course_short_title)
-    return render(request, 'my_reviews.html', context)
+    data = create_data_myreview(request, course_short_title)
+    return render(request, 'my_reviews.html', data)
 
-def create_context_myreview(request, course_short_title):
+def create_data_myreview(request, course_short_title):
         data = {}
 
         if 'id' not in request.GET:
@@ -56,18 +55,18 @@ def create_context_myreview(request, course_short_title):
         return data
 
 
-def create_context_stack(request, course_short_title):
+def create_data_stack(request, course_short_title):
     data = {}
 
     if 'id' not in request.GET:
         return data
 
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
-    context_stack = Stack.objects.get(pk=request.GET.get('id'))
-    data['stack'] = context_stack
-    data['user_can_enter_final_challenge'] = user.can_enter_final_challenge(context_stack)
-    data['stack_blocked'] = context_stack.is_blocked(user)
-    stack_challenges = StackChallengeRelation.objects.all().filter(stack=context_stack)
+    data_stack = Stack.objects.get(pk=request.GET.get('id'))
+    data['stack'] = data_stack
+    data['user_can_enter_final_challenge'] = user.can_enter_final_challenge(data_stack)
+    data['stack_blocked'] = data_stack.is_blocked(user)
+    stack_challenges = StackChallengeRelation.objects.all().filter(stack=data_stack)
     challenges_active = []
     challenges_inactive = []
     for stack_challenge in stack_challenges:
@@ -127,23 +126,23 @@ def create_context_stack(request, course_short_title):
 
 @aurora_login_required()
 def challenges(request, course_short_title=None):
-    context = {}
+    data = {}
 
     course = Course.get_or_raise_404(short_title=course_short_title)
-    context['course'] = course
+    data['course'] = course
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
-    context['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
 
     course_stacks = Stack.objects.all().filter(course=course).order_by("chapter")
     # raise Exception(course_stacks)
-    context['course_stacks'] = []
+    data['course_stacks'] = []
     for stack in course_stacks:
         submitted = stack.get_final_challenge().submitted_by_user(user)
         submission_time = None
         currently_active = stack.currently_active()
         if submitted:
             submission_time = stack.get_final_challenge().get_elaboration(user).submission_time
-        context['course_stacks'].append({
+        data['course_stacks'].append({
             'stack': stack,
             'user_can_enter_final_challenge': user.can_enter_final_challenge(stack),
             'submitted': submitted,
@@ -153,10 +152,10 @@ def challenges(request, course_short_title=None):
             'points': stack.get_points_earned(user),
             'is_started': stack.is_started(user),
         })
-    return render(request, 'challenges.html', context)
+    return render(request, 'challenges.html', data)
 
 
-def create_context_challenge(request, course_short_title):
+def create_data_challenge(request, course_short_title):
     data = {}
     course = Course.get_or_raise_404(short_title=course_short_title)
     data['course'] = course
@@ -200,21 +199,21 @@ def create_context_challenge(request, course_short_title):
             if challenge.is_in_lock_period(request.user, course):
                 data['lock'] = challenge.is_in_lock_period(request.user, course)
 #        else:
-#            context_stack = Stack.objects.get(pk=request.GET.get('id'))
-#            data['blocked'] = context_stack.is_blocked(user)
+#            data_stack = Stack.objects.get(pk=request.GET.get('id'))
+#            data['blocked'] = data_stack.is_blocked(user)
 
     return data
 
 
 @aurora_login_required()
 def challenge(request, course_short_title=None):
-    context = create_context_challenge(request, course_short_title)
+    data = create_data_challenge(request, course_short_title)
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
-    course = context['course']
-    context['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
-    challenge = context['challenge']
+    course = data['course']
+    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
+    challenge = data['challenge']
     stack = challenge.get_stack()
-    context['user_can_enter_final_challenge'] = user.can_enter_final_challenge(stack)
+    data['user_can_enter_final_challenge'] = user.can_enter_final_challenge(stack)
 
     # conditions for an inactive challenge
     # challenge is not enabled for this user
@@ -224,14 +223,14 @@ def challenge(request, course_short_title=None):
     # challenge is not final challenge or the previous challenge has not enough user reviews
     final_challenge_condition = not challenge.is_final_challenge() or not challenge.prerequisite.has_enough_user_reviews(user)
     if challenge_condition and user_condition and final_challenge_condition:
-        return render(request, 'challenge_inactive.html', context)
-    if 'elaboration' in context:
-        data = create_context_view_review(request, context)
+        return render(request, 'challenge_inactive.html', data)
+    if 'elaboration' in data:
+        data = create_data_view_review(request, data)
 
-    return render(request, 'challenge.html', context)
+    return render(request, 'challenge.html', data)
 
 
-def create_context_view_review(request, data):
+def create_data_view_review(request, data):
     if 'id' in request.GET:
         user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
         challenge = Challenge.objects.get(pk=request.GET.get('id'))

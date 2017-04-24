@@ -15,3 +15,5 @@ django-celery==3.2.1
 #diskurs
 django-markup==1.0
 markdown==2.6.5
+
+django-contrib-comments
