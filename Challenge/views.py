@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.http import Http404
 from Course.models import Course
@@ -18,14 +18,14 @@ logger = logging.getLogger(__name__)
 
 @aurora_login_required()
 def stack(request, course_short_title=None):
-    data = create_context_stack(request, course_short_title)
-    return render_to_response('stack.html', data, context_instance=RequestContext(request))
+    context = create_context_stack(request, course_short_title)
+    return render(request, 'stack.html', context)
 
 
 @aurora_login_required()
 def my_review(request, course_short_title=None):
-    data = create_context_myreview(request, course_short_title)
-    return render_to_response('my_reviews.html', data, context_instance=RequestContext(request))
+    context = create_context_myreview(request, course_short_title)
+    return render(request, 'my_reviews.html', context)
 
 def create_context_myreview(request, course_short_title):
         data = {}
@@ -127,23 +127,23 @@ def create_context_stack(request, course_short_title):
 
 @aurora_login_required()
 def challenges(request, course_short_title=None):
-    data = {}
+    context = {}
 
     course = Course.get_or_raise_404(short_title=course_short_title)
-    data['course'] = course
+    context['course'] = course
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
-    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
+    context['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
 
     course_stacks = Stack.objects.all().filter(course=course).order_by("chapter")
     # raise Exception(course_stacks)
-    data['course_stacks'] = []
+    context['course_stacks'] = []
     for stack in course_stacks:
         submitted = stack.get_final_challenge().submitted_by_user(user)
         submission_time = None
         currently_active = stack.currently_active()
         if submitted:
             submission_time = stack.get_final_challenge().get_elaboration(user).submission_time
-        data['course_stacks'].append({
+        context['course_stacks'].append({
             'stack': stack,
             'user_can_enter_final_challenge': user.can_enter_final_challenge(stack),
             'submitted': submitted,
@@ -153,7 +153,7 @@ def challenges(request, course_short_title=None):
             'points': stack.get_points_earned(user),
             'is_started': stack.is_started(user),
         })
-    return render_to_response('challenges.html', data, context_instance=RequestContext(request))
+    return render(request, 'challenges.html', context)
 
 
 def create_context_challenge(request, course_short_title):
@@ -208,13 +208,13 @@ def create_context_challenge(request, course_short_title):
 
 @aurora_login_required()
 def challenge(request, course_short_title=None):
-    data = create_context_challenge(request, course_short_title)
+    context = create_context_challenge(request, course_short_title)
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
-    course = data['course']
-    data['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
-    challenge = data['challenge']
+    course = context['course']
+    context['user_enlisted_and_active'] = user.enlisted_and_active_for_course(course)
+    challenge = context['challenge']
     stack = challenge.get_stack()
-    data['user_can_enter_final_challenge'] = user.can_enter_final_challenge(stack)
+    context['user_can_enter_final_challenge'] = user.can_enter_final_challenge(stack)
 
     # conditions for an inactive challenge
     # challenge is not enabled for this user
@@ -224,11 +224,11 @@ def challenge(request, course_short_title=None):
     # challenge is not final challenge or the previous challenge has not enough user reviews
     final_challenge_condition = not challenge.is_final_challenge() or not challenge.prerequisite.has_enough_user_reviews(user)
     if challenge_condition and user_condition and final_challenge_condition:
-        return render_to_response('challenge_inactive.html', data, context_instance=RequestContext(request))
-    if 'elaboration' in data:
-        data = create_context_view_review(request, data)
+        return render(request, 'challenge_inactive.html', context)
+    if 'elaboration' in context:
+        data = create_context_view_review(request, context)
 
-    return render_to_response('challenge.html', data, context_instance=RequestContext(request))
+    return render(request, 'challenge.html', context)
 
 
 def create_context_view_review(request, data):
