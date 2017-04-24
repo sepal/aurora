@@ -133,7 +133,7 @@
 		<br><br>
 	    <table width=100%>
 	        <tr>
-				<td><b>top level tasks</b></td>
+				<td><b>finished challenges</b></td>
 				<td width=10% align="right"><i class="fa fa-check-circle"></i></td>
 	            <td width=10% align="right"><i class="fa fa-circle-o"></i></td>
 	            <td width=10% align="right">&sum;</td>
@@ -141,7 +141,8 @@
 	    {% for task in final_tasks %}
 		    <tr style="background:{%cycle '#eee' 'white'%}">
 	            <td>
-	                {{ task.title|truncatechars:55}}
+	                {{ task.challenge|truncatechars:40}}
+
 	            </td>
 	            <td align="right">
 	               {{ task.evaluated }}
