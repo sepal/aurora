@@ -6,6 +6,7 @@ from AuroraUser import views
 
 admin.autodiscover()
 
+app_name = 'aurora_user'
 urlpatterns = [
    # namespace comes from main urls.py
    url(r'^login/$', views.login, name='login'),

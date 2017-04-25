@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from .views import (file_remove, file_upload, all_files, original_files, revised_files)
 
+
+app_name = 'file_upload'
 urlpatterns = [
     url(r'^fileupload$', file_upload, name='file_upload'),
     url(r'^fileupload/all$', all_files, name='all_files'),
