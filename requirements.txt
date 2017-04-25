@@ -1,19 +1,19 @@
-Django==1.10.7
-Pillow==3.4.2
+Django==1.9.13
+Pillow==4.1.0
 easy-thumbnails==2.4.1
-coverage==3.7.1
+coverage==4.3.4
 distribute
-django-el-pagination==2.1.2
-psycopg2==2.6.1
-six==1.6
-django-taggit==0.19.1
-django-suit==0.2.23
+django-el-pagination==3.1.0
+psycopg2==2.7.1
+six==1.10
+django-taggit==0.22.1
+django-suit==0.2.25
 
 # plugcheck at aurora side
 django-celery==3.2.1
 
 #diskurs
-django-markup==1.0
-markdown==2.6.5
+django-markup==1.2
+markdown==2.6.8
 
 django-contrib-comments
