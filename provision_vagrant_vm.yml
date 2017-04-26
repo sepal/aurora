@@ -49,12 +49,12 @@
     become: yes
     become_user: postgres
 
-  - apt: pkg=python-pip
+  - apt: pkg=python3-pip
   - apt: pkg=python3
   - apt: pkg=python3-dev
   - pip: name=virtualenv
   - name: create virtualenv
-    command: virtualenv {{ py3env }} -p python3
+    command: virtualenv -p /usr/bin/python3 {{ py3env }}
              creates={{ py3env }}
     become: yes
 #    become_user: ubuntu
