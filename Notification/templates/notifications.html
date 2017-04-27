@@ -17,14 +17,16 @@
 {% load humanize %}
 {% load static %}
 
+<div class="notiTop">
 	{% if feed_token %}
     <div class="RSS">
-    	<a rel="alternate" type="application/atom+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button><i class="fa fa-rss-square fa-2x"></i></button></a>
+    	<a rel="alternate" type="application/atom+xml" href="{% url 'Notification:feed' course_short_title=course.short_title token=feed_token.token %}"><button> notification RSS-Feed <i class="fa fa-rss-square fa-2x"></i></button></a>
     </div>
 	{% endif %}
 
 
   {% if notifications|length > 0 %}<button id="read_all_button" class="irrelevant">Mark all as read</button>{% else %} <button class="irrelevant" style="color:black">nothing here</button> {% endif %}
+</div>
   
  </div>
  

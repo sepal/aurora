@@ -2,9 +2,16 @@
 	float:right;
 }
 
+.RSS i {
+	vertical-align:middle;
+}
 .notificationList {
 	margin-top:15px;
 	clear:both;
+}
+
+.notiTop {
+	max-width:960px;
 }
 
 .notification.read {

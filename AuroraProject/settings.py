@@ -416,7 +416,7 @@ if DEBUG:
     ]
 
     DEBUG_TOOLBAR_CONFIG = {
-        'DISABLE_PANELS': False,
+        'INTERCEPT_REDIRECTS': False,
         'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
     }
 
@@ -430,7 +430,6 @@ if DEBUG:
     ## PROFILING ##
     MIDDLEWARE_CLASSES += (
         'middleware.Profiling.ProfileMiddleware',
-        'django.contrib.auth.middleware.SessionAuthenticationMiddleware'
     )
 
 try:

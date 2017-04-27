@@ -643,3 +643,12 @@ form {
 .new_word_count::before {
 	content:'Word count: ';
 }
+
+.review-went-south-action {
+	background:#BA0000;
+	color:white;
+	padding:10px 14px;
+	font-weight:bold;
+	border-radius:200px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(255, 255, 255, 0.5) inset;
+}
