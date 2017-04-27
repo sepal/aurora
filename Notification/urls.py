@@ -2,6 +2,8 @@ from django.conf.urls import url
 import Notification.views
 import Notification.feed
 
+
+app_name = 'notification'
 urlpatterns = [
    url(r'^write$', Notification.views.write_notification, name='write'),
    url(r'^send$', Notification.views.send_notification, name='send'),

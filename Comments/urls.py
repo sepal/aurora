@@ -1,6 +1,7 @@
-from django.conf.urls import url, patterns
+from django.conf.urls import url
 from Comments import views
 
+app_name = 'comments'
 urlpatterns = [
     url(r'^feed/$', views.feed, name='feed'),
     url(r'^bookmarks/$', views.bookmarks, name='bookmarks'),

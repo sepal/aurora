@@ -1,13 +1,14 @@
-from django.conf.urls import patterns, include, url
+from . import views, settings
+
+from django.conf.urls import include, url
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.conf.urls.static import static
-from AuroraProject.settings import DEBUG
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 admin.autodiscover()
 
-from AuroraProject import views, settings
 
 urlpatterns = [
     # TODO: add home without course
@@ -17,7 +18,7 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 
     url(r'^comment/', include('Comments.urls', namespace='Comments')),
 
@@ -49,9 +50,3 @@ urlpatterns = [
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
-
-if DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
