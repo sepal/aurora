@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import Http404
 
 from operator import attrgetter
+from functools import reduce
 from django.utils import timezone
 
 # Create your views here.
@@ -158,19 +159,19 @@ def search(request, course_short_title=None):
     query = request.GET.get("q")
     if query:
 
-        # if query == 'register new slides'
+        query_words = query.split(' ')
 
         queryset_ss = SlideStack.objects.filter(
-            Q(title__icontains=query) |
-            Q(tags__icontains=query) |
-            Q(categories__icontains=query)
+            reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(tags__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(categories__icontains=word) for word in query_words])
         ).distinct()
 
         queryset_slides = Slide.objects.filter(
-            Q(title__icontains=query) |
-            Q(text_content__icontains=query) |
-            Q(tags__icontains=query) |
-            Q(lecturer_comment__icontains=query)
+            reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(text_content__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(tags__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(lecturer_comment__icontains=word) for word in query_words])
         ).distinct()
 
         complete_set = set(queryset_ss)
