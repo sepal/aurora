@@ -17,8 +17,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('issue', models.ForeignKey(to='Feedback.Issue')),
-                ('user', models.ForeignKey(to='AuroraUser.AuroraUser')),
+                ('issue', models.ForeignKey(to='Feedback.Issue', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to='AuroraUser.AuroraUser', on_delete=models.CASCADE)),
             ],
             options={
             },

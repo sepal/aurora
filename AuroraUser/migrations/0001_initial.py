@@ -16,7 +16,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AuroraUser',
             fields=[
-                ('user_ptr', models.OneToOneField(primary_key=True, auto_created=True, parent_link=True, to=settings.AUTH_USER_MODEL, serialize=False)),
+                ('user_ptr', models.OneToOneField(primary_key=True, auto_created=True, parent_link=True,
+                                                  to=settings.AUTH_USER_MODEL, serialize=False, on_delete=models.CASCADE)),
                 ('nickname', models.CharField(null=True, blank=True, max_length=100)),
                 ('last_activity', models.DateTimeField(auto_now_add=True)),
                 ('statement', models.TextField(blank=True)),

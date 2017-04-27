@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='slidestack',
             name='course',
-            field=models.ForeignKey(to='Course.Course', default=1),
+            field=models.ForeignKey(to='Course.Course', default=1, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

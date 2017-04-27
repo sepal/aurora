@@ -22,8 +22,8 @@ class Migration(migrations.Migration):
                 ('points', models.IntegerField(null=True)),
                 ('image', models.ImageField(blank=True, upload_to=Challenge.models.challenge_image_path, null=True)),
                 ('accepted_files', models.CharField(blank=True, max_length=100, default='image/*,application/pdf')),
-                ('course', models.ForeignKey(to='Course.Course')),
-                ('prerequisite', models.ForeignKey(blank=True, null=True, to='Challenge.Challenge')),
+                ('course', models.ForeignKey(to='Course.Course', on_delete=models.CASCADE)),
+                ('prerequisite', models.ForeignKey(blank=True, null=True, to='Challenge.Challenge', on_delete=models.CASCADE)),
             ],
         ),
     ]

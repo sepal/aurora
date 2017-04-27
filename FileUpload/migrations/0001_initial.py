@@ -20,8 +20,8 @@ class Migration(migrations.Migration):
                 ('creation_time', models.DateTimeField(auto_now_add=True)),
                 ('upload_file', models.FileField(upload_to=FileUpload.models.get_upload_path)),
                 ('thumbnail', models.ImageField(blank=True, upload_to=FileUpload.models.get_thumbnail_path, null=True)),
-                ('elaboration', models.ForeignKey(to='Elaboration.Elaboration')),
-                ('user', models.ForeignKey(to='AuroraUser.AuroraUser')),
+                ('elaboration', models.ForeignKey(to='Elaboration.Elaboration', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to='AuroraUser.AuroraUser', on_delete=models.CASCADE)),
             ],
             options={
             },

@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('title', models.CharField(max_length=100)),
                 ('description', models.TextField()),
-                ('course', models.ForeignKey(to='Course.Course')),
+                ('course', models.ForeignKey(to='Course.Course', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -28,8 +28,8 @@ class Migration(migrations.Migration):
             name='StackChallengeRelation',
             fields=[
                 ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
-                ('challenge', models.ForeignKey(to='Challenge.Challenge')),
-                ('stack', models.ForeignKey(to='Stack.Stack')),
+                ('challenge', models.ForeignKey(to='Challenge.Challenge', on_delete=models.CASCADE)),
+                ('stack', models.ForeignKey(to='Stack.Stack', on_delete=models.CASCADE)),
             ],
             options={
             },
