@@ -1,6 +1,4 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q, Sum, Count
 
@@ -19,8 +17,8 @@ from Comments.models import Comment
 def statistics(request, course_short_title=None):
     data = {}
     course = Course.get_or_raise_404(course_short_title)
-    data = create_stat_data(course,data)
-    return render_to_response('statistics.html', data, context_instance=RequestContext(request))
+    data = create_stat_data(course, data)
+    return render(request, 'statistics.html', data)
 
 def create_stat_data(course, data):
     data['course'] = course
@@ -52,6 +50,7 @@ def create_stat_data(course, data):
     data['not_evaluated_final_tasks'] = not_evaluated_final_tasks(course)
     data['final_tasks'] = final_tasks(course)
     return data
+
 
 def students_with_at_least_one_submission(course):
     final_challenge_ids = Challenge.get_final_challenge_ids()
