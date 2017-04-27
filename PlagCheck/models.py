@@ -142,7 +142,7 @@ class Result(models.Model):
     """Stores the result of a check of one document.
     """
 
-    doc = models.ForeignKey(Document, on_delete=models.CASCADE)
+    doc = models.ForeignKey(Document)
     created = models.DateTimeField(auto_now_add=True, blank=False)
     hash_count = models.IntegerField()
     submission_time = models.DateTimeField(blank=False)
@@ -161,11 +161,11 @@ class Suspicion(models.Model):
 
     DEFAULT_STATE = SuspicionState.SUSPECTED
 
-    suspect_doc = models.ForeignKey(Document, related_name='suspicion_suspect', on_delete=models.CASCADE)
-    similar_doc = models.ForeignKey(Document, related_name='suspicion_similar', on_delete=models.CASCADE)
+    suspect_doc = models.ForeignKey(Document, related_name='suspicion_suspect')
+    similar_doc = models.ForeignKey(Document, related_name='suspicion_similar')
     similarity = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
-    result = models.ForeignKey(Result, on_delete=models.CASCADE)
+    result = models.ForeignKey(Result)
     state = models.CharField(max_length=2, default=DEFAULT_STATE.value, choices=SuspicionState.choices())
     match_count = models.IntegerField()
 
@@ -258,7 +258,7 @@ class Reference(models.Model):
     Holds a hash and links it to the document where it is appearing.
     """
     hash = models.CharField(db_index=True, max_length=255)
-    suspect_doc = models.ForeignKey(Document, on_delete=models.CASCADE)
+    suspect_doc = models.ForeignKey(Document)
 
     # TODO: this causes a integrity error when inserting hashes, why?
     # class Meta:

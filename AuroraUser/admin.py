@@ -1,7 +1,6 @@
 from django.contrib import admin
 from AuroraUser.models import *
 
-
 class AuroraUserAdmin(admin.ModelAdmin):
     fieldsets = [
         (

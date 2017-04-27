@@ -452,21 +452,6 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 		z-index:32761;
 	}
 	
-	.unread_notifications {
-		border-radius:32px;
-		background-color: rgba(255,255,255,0.5);
-		text-align:center;
-	}
-
-	.unread_notifications > a {
-		font-size:20px;
-		height:32px;
-		position:relative;
-		width:32px;
-		bottom:-4px;
-		display:block;
-		vertical-align:middle;
-	}
 
 	.pagehead {
 	    position: fixed;
@@ -614,8 +599,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 	.unread_notifications > a {
 		display:inline-block;
 		position:relative;
-		width:30px;
-		color:black;
+		width:36px;
 	}
 }
 

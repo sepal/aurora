@@ -16,7 +16,7 @@ class SlideStack(models.Model):
     pub_date        = models.DateTimeField(default=timezone.now)
     tags            = models.CharField(max_length=240, blank=True, null=True)
     categories      = models.TextField(max_length=500, blank=True, null=True)
-    course          = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course          = models.ForeignKey(Course)
 
     @property
     def slides(self):
@@ -79,7 +79,7 @@ class Slide(models.Model):
     text_content    = models.TextField(blank=True, null=True)
     lecturer_comment = models.TextField(blank=True, null=True)
     tags            = models.CharField(max_length=240, blank=True, null=True)
-    slide_stack     = models.ForeignKey(SlideStack, on_delete=models.CASCADE)
+    slide_stack     = models.ForeignKey(SlideStack)
 
     def __str__(self):
         return self.title

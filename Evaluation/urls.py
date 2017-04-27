@@ -1,8 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import patterns, url
 
 import Evaluation.views
 
-app_name = 'evaluation'
 urlpatterns = [
     url(r'^$', Evaluation.views.evaluation, name='home'),
     url(r'^detail$', Evaluation.views.detail, name='detail'),

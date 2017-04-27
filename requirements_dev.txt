@@ -1,14 +1,11 @@
-Django==1.9.13
-Pillow==4.1.0
-easy-thumbnails==2.4.1
-coverage==4.3.4
-distribute
-django-el-pagination==3.1.0
-django-debug-toolbar==1.7
-psycopg2==2.7.1
-django-taggit==0.22.1
-django-suit==0.2.25
-six==1.10
+Django==1.7
+Pillow==3.4.2
+easy-thumbnails==2.3
+coverage==3.7.1
+django-el-pagination==2.1.2
+django-debug-toolbar==1.4
+django-taggit==0.19.1
+django-suit==0.2.18
 
 # needed for plagcheck worker side
 django-celery==3.2.1
@@ -17,7 +14,5 @@ flower==0.9.1
 ddt==1.1.1
 
 #diskurs
-django-markup==1.2
-markdown==2.6.8
-
-django-contrib-comments
+django-markup==1.0
+markdown==2.6.5

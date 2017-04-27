@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import Http404
 
 from operator import attrgetter
+from functools import reduce
 from django.utils import timezone
 
 # Create your views here.
@@ -16,7 +17,6 @@ from Course.models import Course
 @aurora_login_required()
 def slides(request, course_short_title=None):
     """
-    :param course_short_title:
     :param request:
     :return: a view of all categories and their assigned topics.
     """
@@ -37,7 +37,6 @@ def slides(request, course_short_title=None):
 @aurora_login_required()
 def slide_topics(request, topic=None, course_short_title=None):
     """
-    :param course_short_title:
     :param request:
     :param topic: the topic to be represented
     :return: shows all SlideStacks, which are assigned to the given topic.
@@ -90,7 +89,6 @@ def slide_topics(request, topic=None, course_short_title=None):
 @aurora_login_required()
 def slide_stack(request, topic=None, slug=None, course_short_title=None):
     """
-    :param course_short_title:
     :param request:
     :param topic: defines the context. This is important for previous and next page functionality.
     :param slug: identifies the SlideStack to be displayed.
@@ -122,15 +120,15 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
                     stop = True
 
         if ind > 0:
-            nxt = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind - 1].slug,
+            prev = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind - 1].slug,
                                                         "course_short_title": course_short_title})
         if ind < len(used_slide_stacks) - 1:
-            prev = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind + 1].slug,
+            nxt = reverse("Slides:slidestack", kwargs={"topic": topic, "slug": used_slide_stacks[ind + 1].slug,
                                                        "course_short_title": course_short_title})
 
     # find all other topics containing this SlideStack
     other_topics = []
-    this_topic = ('', 'search results')
+    this_topic = ('','search results')
     for cat in this_ss.list_category_tuples:
         if topic != cat[0] + '_' + cat[1]:
             other_topics.append(cat)
@@ -153,7 +151,6 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
 def search(request, course_short_title=None):
     """
     Searches all SlideStacks and Slides for the given text
-    :param course_short_title:
     :param request:
     :return: a view of all SlideStacks, which contain the search text
     in a variable, or has a Slide assigned that fits the search criteria.
@@ -162,19 +159,19 @@ def search(request, course_short_title=None):
     query = request.GET.get("q")
     if query:
 
-        # if query == 'register new slides'
+        query_words = query.split(' ')
 
         queryset_ss = SlideStack.objects.filter(
-            Q(title__icontains=query) |
-            Q(tags__icontains=query) |
-            Q(categories__icontains=query)
+            reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(tags__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(categories__icontains=word) for word in query_words])
         ).distinct()
 
         queryset_slides = Slide.objects.filter(
-            Q(title__icontains=query) |
-            Q(text_content__icontains=query) |
-            Q(tags__icontains=query) |
-            Q(lecturer_comment__icontains=query)
+            reduce(lambda x, y: x & y, [Q(title__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(text_content__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(tags__icontains=word) for word in query_words]) |
+            reduce(lambda x, y: x & y, [Q(lecturer_comment__icontains=word) for word in query_words])
         ).distinct()
 
         complete_set = set(queryset_ss)

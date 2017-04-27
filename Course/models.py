@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from datetime import datetime, date
 #from Challenge.models import Challenge
-
+import logging
 
 class Course(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -19,9 +19,9 @@ class Course(models.Model):
     def __str__(self):
         return str(self.title)
 
-    # def get_course_challenges(self):
-    #     challenges = Challenge.models.Challenge.objects.filter(course=self)
-    #     return list(challenges)
+    def get_course_challenges(self):
+        challenges = Challenge.models.Challenge.objects.filter(course=self)
+        return list(challenges)
 
     def user_is_enlisted(self, user):
         try:
@@ -52,8 +52,8 @@ class Course(models.Model):
 
 
 class CourseUserRelation(models.Model):
-    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user = models.ForeignKey('AuroraUser.AuroraUser')
+    course = models.ForeignKey(Course)
     active = models.BooleanField(default=True)
     review_karma = models.DecimalField(max_digits=20, decimal_places=19, default=0.0)
     review_group = models.PositiveSmallIntegerField(default=1)

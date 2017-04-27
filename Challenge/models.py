@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import os
+import logging
 
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
@@ -12,7 +13,6 @@ from Course.models import Course, CourseUserRelation
 
 import logging
 logger = logging.getLogger(__name__)
-
 
 def challenge_image_path(instance, filename):
     name = 'challenge_%s' % instance.id
@@ -27,13 +27,13 @@ class Challenge(models.Model):
     upload_path = 'challenge'
     title = models.CharField(max_length=100)
     subtitle = models.CharField(max_length=100)
-    prerequisite = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+    prerequisite = models.ForeignKey('self', null=True, blank=True)
     description = models.TextField()
     points = models.IntegerField(null=True)
     image = models.ImageField(upload_to=challenge_image_path, null=True, blank=True)
     # This is a comma separated list of mime types or file extensions. Eg.: image/*,application/pdf,.psd.
     accepted_files = models.CharField(max_length=100, default="image/*,application/pdf", blank=True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course)
     comments = GenericRelation(Comment)
 
     NOT_ENABLED = -1
@@ -70,6 +70,7 @@ class Challenge(models.Model):
         6: "Waiting for evaluation of final task.",
         7: "Challenge evaluated. Points received: "
     }
+
 
     def __str__(self):
         return u'%s' % self.title

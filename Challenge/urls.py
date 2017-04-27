@@ -1,8 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import patterns, url
 
 import Challenge.views
 
-app_name = 'challenge'
 urlpatterns = [
     url(r'^stack$', Challenge.views.stack, name='stack'),
     url(r'^challenge$', Challenge.views.challenge, name='challenge'),

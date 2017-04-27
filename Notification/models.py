@@ -10,8 +10,8 @@ from AuroraUser.models import AuroraUser
 
 
 class Notification(models.Model):
-    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
-    course = models.ForeignKey('Course.Course', on_delete=models.CASCADE)
+    user = models.ForeignKey('AuroraUser.AuroraUser')
+    course = models.ForeignKey('Course.Course')
     text = models.CharField(max_length=100)
     image_url = models.CharField(max_length=100, default=os.path.join(STATIC_URL, 'img', 'info.jpg'))
     link = models.CharField(max_length=100, default="")
@@ -62,7 +62,7 @@ class Notification(models.Model):
 
 
 class FeedToken(models.Model):
-    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('AuroraUser.AuroraUser')
     token = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
 
     @staticmethod

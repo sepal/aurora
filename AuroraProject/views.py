@@ -65,14 +65,13 @@ def course_selection(request):
     data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
     return render_to_response('course_selection.html', data)
 
-
 @aurora_login_required()
 def home(request, course_short_title=None):
 
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     course = Course.get_or_raise_404(course_short_title)
     data = get_points(request, user, course)
-    data = create_stat_data(course, data)
+    data = create_stat_data(course,data)
     data['user_is_top_reviewer'] = False
 
     data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)

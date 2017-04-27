@@ -55,9 +55,9 @@ class Issue(models.Model):
         ('security', 'Security')
     )
 
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    author = models.ForeignKey(AuroraUser, on_delete=models.CASCADE)
-    lane = models.ForeignKey(Lane, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course)
+    author = models.ForeignKey(AuroraUser)
+    lane = models.ForeignKey(Lane)
     post_date = models.DateTimeField(auto_now_add=True, blank=True)
     type = models.CharField(max_length=25, choices=ISSUE_TYPE)
     title = models.CharField(max_length=100)
@@ -137,8 +137,8 @@ class Upvote(models.Model):
     Model which saves who up voted which issue.
     """
 
-    user = models.ForeignKey(AuroraUser, on_delete=models.CASCADE)
-    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    user = models.ForeignKey(AuroraUser)
+    issue = models.ForeignKey(Issue)
     created = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):

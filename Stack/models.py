@@ -5,9 +5,9 @@ from datetime import datetime, date
 class Stack(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    course = models.ForeignKey('Course.Course', on_delete=models.CASCADE)
+    course = models.ForeignKey('Course.Course')
     chapter = models.ForeignKey(
-        'Stack.Chapter', null=True, blank=True, default=None, on_delete=models.CASCADE)
+        'Stack.Chapter', null=True, blank=True, default=None)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
 
@@ -102,11 +102,11 @@ class Stack(models.Model):
     def active_status_date(self):
         now = datetime.now()
         if now <= self.start_date:
-            # return 'STARTS AT ' + self.start_date.strftime('%d.%m.%Y %H:%M')
+#            return 'STARTS AT ' + self.start_date.strftime('%d.%m.%Y %H:%M')
             return self.start_date
         if now >= self.end_date:
             return self.end_date
-            # return 'ended ' + self.end_date.strftime('%d.%m.%Y %H:%M')
+#            return 'ended ' + self.end_date.strftime('%d.%m.%Y %H:%M')
 
     def active_status_text(self):
         now = datetime.now()
@@ -114,14 +114,13 @@ class Stack(models.Model):
             return "available"
         if now >= self.end_date:
             return "ended"
-
     def __str__(self):
         return u'%s' % self.title
 
 
 class StackChallengeRelation(models.Model):
-    stack = models.ForeignKey('Stack.Stack', on_delete=models.CASCADE)
-    challenge = models.ForeignKey('Challenge.Challenge', on_delete=models.CASCADE)
+    stack = models.ForeignKey('Stack.Stack')
+    challenge = models.ForeignKey('Challenge.Challenge')
 
 
 class Chapter(models.Model):

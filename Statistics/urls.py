@@ -1,8 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import patterns, url
 
 import Statistics.views
 
-app_name = 'statistics'
 urlpatterns = [
     url(r'^$', Statistics.views.statistics, name='home'),
 ]

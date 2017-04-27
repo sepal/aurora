@@ -19,9 +19,8 @@ from Comments.models import Comment
 def statistics(request, course_short_title=None):
     data = {}
     course = Course.get_or_raise_404(course_short_title)
-    data = create_stat_data(course, data)
+    data = create_stat_data(course,data)
     return render_to_response('statistics.html', data, context_instance=RequestContext(request))
-
 
 def create_stat_data(course, data):
     data['course'] = course
@@ -41,10 +40,10 @@ def create_stat_data(course, data):
     data['review_evaluations_good'] = review_evaluations_good(course)
     data['review_evaluations_bad'] = review_evaluations_bad(course)
     data['review_evaluations_negative'] = review_evaluations_negative(course)
-    data['review_evaluations_helpful_ratio'] = data['review_evaluations_helpful'] / data['review_evaluations'] * 100
-    data['review_evaluations_good_ratio'] = data['review_evaluations_good'] / data['review_evaluations'] * 100
-    data['review_evaluations_bad_ratio'] = data['review_evaluations_bad'] / data['review_evaluations'] * 100
-    data['review_evaluations_negative_ratio'] = data['review_evaluations_negative'] / data['review_evaluations'] * 100
+    data['review_evaluations_helpful_ratio'] = data['review_evaluations_helpful']/data['review_evaluations']*100
+    data['review_evaluations_good_ratio'] = data['review_evaluations_good']/data['review_evaluations']*100
+    data['review_evaluations_bad_ratio'] = data['review_evaluations_bad']/data['review_evaluations']*100
+    data['review_evaluations_negative_ratio'] = data['review_evaluations_negative']/data['review_evaluations']*100
     data['reviews'] = reviews(course)
     data['commenter_top_25'] = commenter_top_x(course, 25)
     data['tutors'] = tutor_statistics(course)
@@ -53,7 +52,6 @@ def create_stat_data(course, data):
     data['not_evaluated_final_tasks'] = not_evaluated_final_tasks(course)
     data['final_tasks'] = final_tasks(course)
     return data
-
 
 def students_with_at_least_one_submission(course):
     final_challenge_ids = Challenge.get_final_challenge_ids()
@@ -70,10 +68,10 @@ def students_with_at_least_one_submission(course):
 
 def started_challenges(course):
     elaborations = (
-        # Elaboration.objects.filter(challenge__course=course).
-        #     .exclude(Q(elaboration_text='') & Q(uploadfile__isnull=True))
-        #     .count()
-        Elaboration.objects.filter(challenge__course=course).exclude(elaboration_text='').count()
+        Elaboration.objects
+            .filter(challenge__course=course)
+            .exclude(Q(elaboration_text='') & Q(uploadfile__isnull=True))
+            .count()
     )
     return elaborations
 
@@ -100,13 +98,12 @@ def students_with_x_or_more_points(course, x):
 
 
 def review_evaluations(course):
-    review_evaluations = (ReviewEvaluation.objects
-                          .filter(review__elaboration__challenge__course=course)
-                          .count()
-                          )
+    review_evaluations = ( ReviewEvaluation.objects
+        .filter(review__elaboration__challenge__course=course)
+        .count()
+    )
     review_evaluations += 1 if review_evaluations == 0 else 0
     return review_evaluations
-
 
 def review_evaluations_helpful(course):
     return (
@@ -115,7 +112,6 @@ def review_evaluations_helpful(course):
             .filter(appraisal=ReviewEvaluation.HELPFUL)
             .count()
     )
-
 
 def review_evaluations_good(course):
     return (
