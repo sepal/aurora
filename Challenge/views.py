@@ -1,5 +1,4 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.http import Http404
 from Course.models import Course
 
@@ -16,16 +15,18 @@ from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 import logging
 logger = logging.getLogger(__name__)
 
+
 @aurora_login_required()
 def stack(request, course_short_title=None):
     data = create_context_stack(request, course_short_title)
-    return render_to_response('stack.html', data, context_instance=RequestContext(request))
+    return render(request, 'stack.html', data)
 
 
 @aurora_login_required()
 def my_review(request, course_short_title=None):
     data = create_context_myreview(request, course_short_title)
-    return render_to_response('my_reviews.html', data, context_instance=RequestContext(request))
+    return render(request, 'my_reviews.html', data)
+
 
 def create_context_myreview(request, course_short_title):
         data = {}
@@ -153,7 +154,7 @@ def challenges(request, course_short_title=None):
             'points': stack.get_points_earned(user),
             'is_started': stack.is_started(user),
         })
-    return render_to_response('challenges.html', data, context_instance=RequestContext(request))
+    return render(request, 'challenges.html', data)
 
 
 def create_context_challenge(request, course_short_title):
@@ -224,11 +225,11 @@ def challenge(request, course_short_title=None):
     # challenge is not final challenge or the previous challenge has not enough user reviews
     final_challenge_condition = not challenge.is_final_challenge() or not challenge.prerequisite.has_enough_user_reviews(user)
     if challenge_condition and user_condition and final_challenge_condition:
-        return render_to_response('challenge_inactive.html', data, context_instance=RequestContext(request))
+        return render(request, 'challenge_inactive.html', data)
     if 'elaboration' in data:
         data = create_context_view_review(request, data)
 
-    return render_to_response('challenge.html', data, context_instance=RequestContext(request))
+    return render(request, 'challenge.html', data)
 
 
 def create_context_view_review(request, data):

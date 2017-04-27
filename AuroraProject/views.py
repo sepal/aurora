@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
@@ -63,7 +62,8 @@ def course_selection(request):
         return redirect(reverse("User:login", args=(course, )))
 
     data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
-    return render_to_response('course_selection.html', data)
+    return render(request, 'course_selection.html', data)
+
 
 @aurora_login_required()
 def home(request, course_short_title=None):
@@ -89,9 +89,8 @@ def home(request, course_short_title=None):
     data['extra_points_earned_by_rating_reviews'] = user.extra_points_earned_by_rating_reviews(course)
     data['total_extra_points_earned'] = user.total_extra_points_earned(course)
     faq_list = Faq.get_faqs(course_short_title)
-    context = RequestContext(request, {'newsfeed': data['course'], 'faq_list': faq_list})
 
-    return render_to_response('home.html', data, context)
+    return render(request, 'home.html', data)
 
 
 def time_to_unix_string(time):
@@ -230,6 +229,7 @@ def result_reviews(request):
 
     return HttpResponse(result, mimetype="text/plain; charset=utf-8")
 
+
 @csrf_exempt
 @staff_member_required
 def add_tags(request, course_short_title=None):
@@ -241,7 +241,8 @@ def add_tags(request, course_short_title=None):
     taggable_object = content_type.get_object_for_this_type(pk=object_id)
     taggable_object.add_tags_from_text(text)
 
-    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+    return render(request, 'tags.html', {'tagged_object': taggable_object})
+
 
 @csrf_exempt
 @staff_member_required
@@ -254,7 +255,7 @@ def remove_tag(request, course_short_title=None):
     taggable_object = content_type.get_object_for_this_type(pk=object_id)
     taggable_object.remove_tag(tag)
 
-    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+    return render(request, 'tags.html', {'tagged_object': taggable_object})
 
 
 @login_required()
