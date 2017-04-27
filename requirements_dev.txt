@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 Django>=1.8,<1.9
-=======
-Django==1.7
->>>>>>> 65c68d0dc5dee7e3cc455ab742284869aab6171a
 Pillow==3.4.2
 easy-thumbnails==2.3
 coverage==3.7.1

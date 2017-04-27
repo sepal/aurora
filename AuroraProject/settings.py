@@ -132,6 +132,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'middleware.exception_logging_middleware.ExceptionLoggingMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -416,7 +417,7 @@ if DEBUG:
     ]
 
     DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
+        'DISABLE_PANELS': False,
         'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
     }
 
