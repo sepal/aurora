@@ -2,7 +2,7 @@ from django.db import models
 
 
 class ReviewQuestion(models.Model):
-    challenge = models.ForeignKey('Challenge.Challenge')
+    challenge = models.ForeignKey('Challenge.Challenge', on_delete=models.CASCADE)
     order = models.SmallIntegerField()
     text = models.TextField(null=True)
     boolean_answer = models.BooleanField(default=False)

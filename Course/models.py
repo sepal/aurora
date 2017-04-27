@@ -52,8 +52,8 @@ class Course(models.Model):
 
 
 class CourseUserRelation(models.Model):
-    user = models.ForeignKey('AuroraUser.AuroraUser')
-    course = models.ForeignKey(Course)
+    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     review_karma = models.DecimalField(max_digits=20, decimal_places=19, default=0.0)
     review_group = models.PositiveSmallIntegerField(default=1)
