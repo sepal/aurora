@@ -5,11 +5,9 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
-<<<<<<< HEAD
 from django.template import RequestContext
-=======
->>>>>>> 8f5985625112f6ecb5f3e5b6980a18025760ffed
 from django.contrib.admin.views.decorators import staff_member_required
+from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from taggit.models import TaggedItem
@@ -68,9 +66,9 @@ def evaluation(request, course_short_title=None):
             data = {'elaborations': elaborations, 'course': course}
 
         if selection == "final_evaluation_new":
-            overview = render(request, 'overview_new.html', data)
+            overview = render_to_string('overview_new.html', context=data, request=request)
         else:
-            overview = render(request, 'overview.html', data)
+            overview = render_to_string('overview.html', context=data, request=request)
         count = len(elaborations)
     elif selection == 'questions':
         # get selected challenges from session
@@ -78,7 +76,7 @@ def evaluation(request, course_short_title=None):
         for serialized_challenge in serializers.deserialize('json', request.session.get('challenges', {})):
             challenges.append(serialized_challenge.object)
         count = len(challenges)
-        overview = render(request, 'questions.html', {'challenges': challenges})
+        overview = render_to_string('questions.html', context={'challenges': challenges}, request=request)
     elif selection == 'plagcheck_suspicions':
         suspicion_list = Suspicion.objects.filter(
             state=SuspicionState.SUSPECTED.value,
@@ -95,7 +93,7 @@ def evaluation(request, course_short_title=None):
             'suspicions_count': count,
         }
 
-        overview = render(request, 'plagcheck_suspicions.html', context)
+        overview = render_to_string('plagcheck_suspicions.html', context=context, request=request)
 
     challenges = Challenge.objects.all()
 
@@ -130,7 +128,8 @@ def missing_reviews(request, course_short_title=None):
     request.session['count'] = len(elaborations)
 
     return render(request, 'evaluation.html',
-                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
+                              {'overview': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course},
+                                                            request=request),
                                'count_missing_reviews': request.session.get('count', '0'),
                                'stabilosiert_missing_reviews': 'stabilosiert',
                                'selection': request.session['selection'],
@@ -157,7 +156,8 @@ def non_adequate_work(request, course_short_title=None):
     request.session['count'] = len(elaborations)
 
     return render(request, 'evaluation.html',
-                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
+                              {'overview': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course},
+                                                            request=request),
                                'count_non_adequate_work': request.session.get('count', '0'),
                                'stabilosiert_non_adequate_work': 'stabilosiert',
                                'selection': request.session['selection'],
@@ -184,7 +184,8 @@ def top_level_tasks(request, course_short_title=None):
     request.session['count'] = len(elaborations)
 
     return render(request, 'evaluation.html',
-                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
+                              {'overview': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course},
+                                                            request=request),
                                'count_top_level_tasks': request.session.get('count', '0'),
                                'stabilosiert_top_level_tasks': 'stabilosiert',
                                'selection': request.session['selection'],
@@ -211,7 +212,8 @@ def final_evaluation_top_level_tasks(request, course_short_title=None):
     request.session['final_evaluation_count'] = len(elaborations)
 
     return render(request, 'evaluation.html',
-                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
+                              {'overview': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course},
+                                                            request=request),
                                'count_final_evaluation_top_level_tasks': request.session.get('final_evaluation_count', '0'),
                                'stabilosiert_final_evaluation_top_level_tasks': 'stabilosiert',
                                'selection': request.session['selection'],
@@ -237,7 +239,8 @@ def final_evaluation_new(request, course_short_title=None):
     request.session['final_evaluation_count'] = len(elaborations)
 
     return render(request, 'evaluation.html',
-                              {'overview': render(request, 'overview_new.html', {'elaborations': elaborations, 'course': course}),
+                              {'overview': render_to_string('overview_new.html', context={'elaborations': elaborations, 'course': course},
+                                                            request=request),
                                'count_final_evaluation_new': request.session.get('final_evaluation_count', '0'),
                                'stabilosiert_final_evaluation_new': 'stabilosiert',
                                'selection': request.session['selection'],
@@ -261,8 +264,8 @@ def complaints(request, course_short_title=None):
     request.session['count'] = len(elaborations)
 
     return render(request, 'evaluation.html',
-                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course,
-                                                                             'complaints': 'true'}),
+                              {'overview': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course, 'complaints': 'true'},
+                                                            request=request),
                                'count_complaints': request.session.get('count', '0'),
                                'stabilosiert_complaints': 'stabilosiert',
                                'selection': request.session['selection'],
@@ -298,7 +301,8 @@ def awesome(request, course_short_title=None):
     request.session['count'] = len(elaborations)
 
     return render(request, 'evaluation.html',
-                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
+                              {'overview': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course},
+                                                            request=request),
                                'count_awesome': request.session.get('count', '0'),
                                'selected_task': selected_challenge,
                                'stabilosiert_awesome': 'stabilosiert',
@@ -324,7 +328,8 @@ def questions(request, course_short_title=None):
 
     return render(request, 'evaluation.html',
                               {'challenges': challenges,
-                               'overview': render(request, 'questions.html', {'challenges': challenges, 'course': course}),
+                               'overview': render_to_string('questions.html', context={'challenges': challenges, 'course': course},
+                                                            request=request),
                                'count_questions': request.session.get('count', '0'),
                                'stabilosiert_questions': 'stabilosiert',
                                'selection': request.session['selection'],
@@ -496,7 +501,7 @@ def detail(request, course_short_title=None):
     params['count_prev'] = count_prev
     params['course'] = course
 
-    detail_html = render(request, 'detail.html', params)
+    detail_html = render_to_string('detail.html', context=params, request=request)
 
     challenges = Challenge.objects.all()
     return render(request, 'evaluation.html', {'challenges': challenges, 'course': course, 'detail_html': detail_html})
@@ -577,7 +582,8 @@ def others(request, course_short_title=None):
             evaluation = Evaluation.objects.get(
                 submission=elaboration, submission_time__isnull=False)
 
-    return render(request, 'others.html', {'elaboration': elaboration, 'evaluation': evaluation, 'next': next, 'prev': prev})
+    return render(request, 'others.html',
+                              {'elaboration': elaboration, 'evaluation': evaluation, 'next': next, 'prev': prev})
 
 
 @aurora_login_required()
@@ -802,8 +808,7 @@ def load_task(request, course_short_title=None):
     reviews = Review.objects.filter(
         elaboration=elaboration, submission_time__isnull=False)
 
-    return render(request, 'task_s.html', {'stack_elaborations': stack_elaborations, 'elaboration': elaboration,
-                                           'reviews': reviews, 'stack': 'stack', 'course': course})
+    return render(request, 'task_s.html', {'stack_elaborations': stack_elaborations, 'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course': course})
 
 
 @require_POST
@@ -922,9 +927,11 @@ def sort(request, course_short_title=None):
     request.session['count'] = len(elaborations)
 
     data = {
-        'overview_html': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
-        'menu_html': render(request, 'menu.html', {'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
-            'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course}),
+        'overview_html': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course}, request=request),
+        'menu_html': render_to_string('menu.html', context={
+            'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
+            'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course,
+        }, request=request),
         'selection': request.session['selection']
     }
 
@@ -1087,7 +1094,7 @@ def plagcheck_suspicions(request, course_short_title=None):
     request.session['count'] = count
 
     return render(request, 'evaluation.html', {
-        'overview': render(request, 'plagcheck_suspicions.html', context),
+        'overview': render_to_string('plagcheck_suspicions.html', context=context, request=request),
         'course': course,
         'stabilosiert_plagcheck_suspicions': 'stabilosiert',
         'count_plagcheck_suspicions': count,
@@ -1131,7 +1138,7 @@ def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
         state=SuspicionState.SUSPECTED.value).count()
 
     return render(request, 'evaluation.html', {
-        'detail_html': render(request, 'plagcheck_compare.html', context),
+        'detail_html': render_to_string('plagcheck_compare.html', context=context, request=request),
         'course': course,
         'stabilosiert_plagcheck_suspicions': 'stabilosiert',
         'count_plagcheck_suspicions': suspicions_count,

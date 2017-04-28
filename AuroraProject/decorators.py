@@ -7,6 +7,7 @@ from django.utils.six.moves.urllib.parse import urlparse
 from django.shortcuts import resolve_url
 from Course.models import Course
 
+
 def aurora_login_required():
     """
     Decorator for views that checks that the user is authenticated by checking
