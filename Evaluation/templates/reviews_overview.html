@@ -26,6 +26,10 @@
         <div style="display:inline-block;float:right;margin-top:1.5px;background:#c0c0c0;color:white;position:relative;right:5px;padding:3px 6px;">
           <a href="#review-{{ review.id }}" rel="modal:open"> View Elaboration </a>
         </div>
+        <br>
+        <div style="display:inline-block;float:right;margin-top:1.5px;position:relative;right:-8px;padding:3px 6px;">
+          {% include 'elaboration_indicators.html' with elaboration=review.elaboration %}
+        </div>
 			</div>
 	   		 <div class="author_detail hidden_detail" id="r_detail{{forloop.counter}}{{review.id}}" onclick="$('.author_detail').addClass('hidden_detail');$('#r_detail{{forloop.counter}}{{review.id}}').addClass('hidden_detail')">
 	   			 <img src='{{review.reviewer.avatar.url}}'>
