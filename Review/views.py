@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.http import HttpResponse, Http404
 
 from AuroraProject.decorators import aurora_login_required
@@ -59,13 +58,13 @@ def create_context_review(request):
 def review(request, course_short_title):
     data = create_context_review(request)
     data['course'] = Course.get_or_raise_404(course_short_title)
-    return render_to_response('review.html', data, context_instance=RequestContext(request))
+    return render(request, 'review.html', data)
 
 
 def create_context_extra_review(request):
     data = {}
     if 'id' in request.GET:
-        user = RequestContext(request)['user']
+        user = request.user
         challenge = Challenge.objects.get(pk=request.GET.get('id'))
         elaboration = Elaboration.objects.get(pk=request.GET.get('elaboration_id'))
         if not challenge.is_enabled_for_user(user):
@@ -88,7 +87,7 @@ def create_context_extra_review(request):
 def extra_review(request, course_short_title):
     data = create_context_extra_review(request)
     data['course'] = Course.get_or_raise_404(course_short_title)
-    return render_to_response('review.html', data, context_instance=RequestContext(request))
+    return render(request, 'review.html', data)
 
 
 @aurora_login_required()

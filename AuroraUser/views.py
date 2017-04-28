@@ -2,8 +2,7 @@ from django.views.decorators.http import require_GET, require_POST
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login as django_login, logout, authenticate
-from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from AuroraUser.models import AuroraUser
 from django.core.urlresolvers import reverse
@@ -74,9 +73,9 @@ def login(request, course_short_title=None):
 
     if 'error_message' in request.GET:
         data.update({'error_message': request.GET['error_message']})
-        return render_to_response('login.html', data, context_instance=RequestContext(request))
+        return render(request, 'login.html', data)
     else:
-        return render_to_response('login.html', data, context_instance=RequestContext(request))
+        return render(request, 'login.html', data)
 
 
 @require_GET
@@ -97,11 +96,9 @@ def sso_auth_callback(request):
 
     if user is None:
         return redirect(reverse('course_selection'))
-        # return render_to_response('login.html', {'error_message': 'Your user is not enrolled with this system'}, context_instance=RequestContext(request))
 
     if not user.is_active:
         return redirect(reverse('course_selection'))
-        # return render_to_response('login.html', {'error_message': 'Your user has been deactivated'}, context_instance=RequestContext(request))
 
     django_login(request, user)
 
@@ -133,7 +130,8 @@ def profile(request, course_short_title):
         'feed_token': feed_token,
     }
 
-    return render_to_response('profile.html', context, context_instance=RequestContext(request))
+    return render(request, 'profile.html', context)
+
 
 @aurora_login_required()
 def profile_save(request, course_short_title):
@@ -179,6 +177,7 @@ def profile_save(request, course_short_title):
     data['statement'] = user.statement
     return HttpResponse(json.dumps(data))
 
+
 def is_valid_email(email, text_limit):
     from django.core.validators import validate_email
     from django.core.exceptions import ValidationError
@@ -189,25 +188,6 @@ def is_valid_email(email, text_limit):
         return True
     except ValidationError:
         return False
-
-
-@DeprecationWarning
-@aurora_login_required()
-def course(request):
-    user = request.user
-    response_data = {}
-    if request.method == 'POST':
-        try:
-            course = Course.objects.get(short_title=request.POST['short_title'])
-            if not course.user_is_enlisted(user):
-                raise Http404
-        except:
-            raise Http404
-        if course:
-            user.last_selected_course = course
-            user.save()
-        response_data['success'] = True
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 @aurora_login_required()

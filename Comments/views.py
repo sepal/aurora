@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.shortcuts import render
-from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
@@ -88,8 +87,7 @@ def post_reply(request):
 @login_required()
 def edit_comment(request):
     data = request.POST
-    context = RequestContext(request)
-    requester = context['user']
+    requester = request.user
 
     try:
         comment = Comment.objects.get(id=data['comment_id'])

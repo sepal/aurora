@@ -20,6 +20,7 @@ def statistics(request, course_short_title=None):
     data = create_stat_data(course, data)
     return render(request, 'statistics.html', data)
 
+
 def create_stat_data(course, data):
     data['course'] = course
     data['students'] = AuroraUser.objects.filter(is_staff=False, is_superuser=False).count()

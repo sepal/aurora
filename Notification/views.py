@@ -1,7 +1,6 @@
 from django.core import urlresolvers
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
+from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 
 from AuroraProject.decorators import aurora_login_required
@@ -43,7 +42,7 @@ def notifications(request, course_short_title=None):
     except FeedToken.DoesNotExist:
         data['feed_token'] = None
 
-    return render_to_response('notifications.html', data, context_instance=RequestContext(request))
+    return render(request, 'notifications.html', data)
 
 
 @aurora_login_required()
@@ -55,7 +54,7 @@ def write_notification(request, course_short_title=None):
         'user_id': request.GET['user'],
         'course_short_title': course_short_title,
     }
-    return render_to_response('send_notification.html', data, context_instance=RequestContext(request))
+    return render(request, 'send_notification.html', data)
 
 
 @aurora_login_required()
