@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.loader import render_to_string
