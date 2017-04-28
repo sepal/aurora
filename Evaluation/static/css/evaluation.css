@@ -1021,7 +1021,8 @@ trix-editor a {
 }
 
 .indicators-overview {
-  float: right;
+  /*float: right;*/
+  margin-bottom: 10px;
 }
 
 .modal.modal-elaboration {
