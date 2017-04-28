@@ -65,7 +65,8 @@
           <br><br>
 		</div>
 
-    <div id="review-{{ review.id }}" style="display:none;">
+    <div id="review-{{ review.id }}" class="modal-elaboration" style="display:none;">
+      {% include 'user_info.html' with user=review.elaboration.user %}
       {% render_original_uploads review.elaboration %}
       {% if review.elaboration.elaboration_text  %}
         <div class="submitted-content">

@@ -51,6 +51,9 @@
 
   <div class="indicators-overview">
       {% include 'elaboration_indicators.html' with elaboration=elaboration %}
+      <script>
+    		$(".indicator:contains('0')").addClass('zero_reviews');
+    	</script>
   </div>
 
   <div class="tags tags-{{ elaboration.get_content_type_id }}-{{ elaboration.id }}">

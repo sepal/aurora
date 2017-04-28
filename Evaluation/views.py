@@ -366,7 +366,7 @@ def overview(request, course_short_title=None):
         else:
             next_elaboration = None
     except ValueError:
-        next_elaboration = None
+        next_elaboration = all_elaborations[0]
 
     challenges = []
     for challenge in stack_challenges:

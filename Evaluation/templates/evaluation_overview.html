@@ -19,7 +19,7 @@
       {% include 'user_info.html' with user=elaboration_user %}
     </div>
 
-    <div class="detail-right">
+    <div class="detail_right">
       <h1 class="overview-header">Evaluation</h1>
       <div class="evaluation-container">
         {% if evaluation %}
@@ -29,11 +29,13 @@
             {% if evaluation.submission_time %}
               <div class="evaluation eval_done">{{ evaluation.evaluation_text|safe }}</div>
               <div class="point_label">points assigned</div><div class="points eval_done">{{ evaluation.evaluation_points }}</div>
-              <div class="spacer"></div>
-
+              <br><br>
               <div class="submission_date">
                 <span title="{{ evaluation.submission_time }}">evaluated {{ evaluation.submission_time|naturaltime }}</span>
-                <button class="reopen_evaluation" id="{{ elaboration.id }}">Reopen</button>
+                <button class="reopen_evaluation XL" id="{{ elaboration.id }}">Reopen</button>
+                {% if next_elaboration %}
+                  <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
+                {% endif %}
               </div>
             {% else %}
                 <div class="evaluation" id="evaluation" {% if not lock %} contenteditable="true" onclick="StartEvaluation({{ elaboration.id }})"{% endif %}
@@ -45,9 +47,9 @@
                   {% if not lock %}
                     <button class="submit_evaluation XL" id="{{ elaboration.id }}">evaluate</button>
                   {% endif %}
-              {% endif %}
-              {% if next_elaboration %}
-                <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
+                  {% if next_elaboration %}
+                    <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
+                  {% endif %}
               {% endif %}
           </form>
         {% else %}
@@ -69,9 +71,13 @@
       <ul class="tabs-menu">
         {% for challenge_data in challenges %}
           {% if forloop.first %}
-            <li class="current"><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
+            <li class="current">
+              <a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a>
+            </li>
           {% else %}
-            <li><a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a></li>
+            <li>
+              <a href="#tabs-{{challenge_data.challenge.id}}">{{ challenge_data.challenge.title }}</a>
+            </li>
           {% endif %}
         {% endfor %}
       </ul>

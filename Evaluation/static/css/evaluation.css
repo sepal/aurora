@@ -1023,3 +1023,7 @@ trix-editor a {
 .indicators-overview {
   float: right;
 }
+
+.modal.modal-elaboration {
+  max-width: 800px;
+}
