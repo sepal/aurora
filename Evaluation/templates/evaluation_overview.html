@@ -17,6 +17,24 @@
     <div class="detail_left">
       <h1 class="overview-header">User</h1>
       {% include 'user_info.html' with user=elaboration_user %}
+
+      <div class="tags">
+        <b>Elaboration Tags: </b>
+        {% for elaboration in user.get_elaborations %}
+          {% for tag in elaboration.tags.names %}
+            <span class="overview-tag">{{tag}}</div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+
+      <div class="tags">
+      <b>Review Tags: </b>
+        {% for review in elaboration_user.get_reviews %}
+          {% for tag in review.tags.names %}
+            <span class="overview-tag">{{tag}}</span>
+          {% endfor %}
+        {% endfor %}
+      </div>
     </div>
 
     <div class="detail_right">
