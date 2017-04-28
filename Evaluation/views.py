@@ -5,9 +5,11 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
+<<<<<<< HEAD
 from django.template import RequestContext
+=======
+>>>>>>> 8f5985625112f6ecb5f3e5b6980a18025760ffed
 from django.contrib.admin.views.decorators import staff_member_required
-from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from taggit.models import TaggedItem
@@ -66,9 +68,9 @@ def evaluation(request, course_short_title=None):
             data = {'elaborations': elaborations, 'course': course}
 
         if selection == "final_evaluation_new":
-            overview = render_to_string('overview_new.html', data, RequestContext(request))
+            overview = render(request, 'overview_new.html', data)
         else:
-            overview = render_to_string('overview.html', data, RequestContext(request))
+            overview = render(request, 'overview.html', data)
         count = len(elaborations)
     elif selection == 'questions':
         # get selected challenges from session
@@ -76,8 +78,7 @@ def evaluation(request, course_short_title=None):
         for serialized_challenge in serializers.deserialize('json', request.session.get('challenges', {})):
             challenges.append(serialized_challenge.object)
         count = len(challenges)
-        overview = render_to_string(
-            'questions.html', {'challenges': challenges}, RequestContext(request))
+        overview = render(request, 'questions.html', {'challenges': challenges})
     elif selection == 'plagcheck_suspicions':
         suspicion_list = Suspicion.objects.filter(
             state=SuspicionState.SUSPECTED.value,
@@ -94,12 +95,11 @@ def evaluation(request, course_short_title=None):
             'suspicions_count': count,
         }
 
-        overview = render_to_string(
-            'plagcheck_suspicions.html', context, RequestContext(request))
+        overview = render(request, 'plagcheck_suspicions.html', context)
 
     challenges = Challenge.objects.all()
 
-    return render_to_response('evaluation.html',
+    return render(request, 'evaluation.html',
                               {'challenges': challenges,
                                'overview': overview,
                                'count_' + request.session.get('selection', ''): count,
@@ -108,8 +108,7 @@ def evaluation(request, course_short_title=None):
                                'selected_challenge': request.session.get('selected_challenge'),
                                'selected_user': request.session.get('selected_user'),
                                'selected_task': request.session.get('selected_task'),
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -130,15 +129,13 @@ def missing_reviews(request, course_short_title=None):
     request.session['selection'] = 'missing_reviews'
     request.session['count'] = len(elaborations)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
+    return render(request, 'evaluation.html',
+                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
                                'count_missing_reviews': request.session.get('count', '0'),
                                'stabilosiert_missing_reviews': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -159,15 +156,13 @@ def non_adequate_work(request, course_short_title=None):
     request.session['selection'] = 'non_adequate_work'
     request.session['count'] = len(elaborations)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
+    return render(request, 'evaluation.html',
+                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
                                'count_non_adequate_work': request.session.get('count', '0'),
                                'stabilosiert_non_adequate_work': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -188,15 +183,13 @@ def top_level_tasks(request, course_short_title=None):
     request.session['selection'] = 'top_level_tasks'
     request.session['count'] = len(elaborations)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
+    return render(request, 'evaluation.html',
+                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
                                'count_top_level_tasks': request.session.get('count', '0'),
                                'stabilosiert_top_level_tasks': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -217,15 +210,13 @@ def final_evaluation_top_level_tasks(request, course_short_title=None):
     request.session['selection'] = 'final_evaluation_top_level_tasks'
     request.session['final_evaluation_count'] = len(elaborations)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
+    return render(request, 'evaluation.html',
+                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
                                'count_final_evaluation_top_level_tasks': request.session.get('final_evaluation_count', '0'),
                                'stabilosiert_final_evaluation_top_level_tasks': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 @aurora_login_required()
 @staff_member_required
@@ -245,15 +236,13 @@ def final_evaluation_new(request, course_short_title=None):
     request.session['selection'] = 'final_evaluation_new'
     request.session['final_evaluation_count'] = len(elaborations)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview_new.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
+    return render(request, 'evaluation.html',
+                              {'overview': render(request, 'overview_new.html', {'elaborations': elaborations, 'course': course}),
                                'count_final_evaluation_new': request.session.get('final_evaluation_count', '0'),
                                'stabilosiert_final_evaluation_new': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -271,15 +260,14 @@ def complaints(request, course_short_title=None):
     request.session['selection'] = 'complaints'
     request.session['count'] = len(elaborations)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course, 'complaints': 'true'},
-                                                            RequestContext(request)),
+    return render(request, 'evaluation.html',
+                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course,
+                                                                             'complaints': 'true'}),
                                'count_complaints': request.session.get('count', '0'),
                                'stabilosiert_complaints': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -309,16 +297,14 @@ def awesome(request, course_short_title=None):
     request.session['selected_challenge'] = 'task...'
     request.session['count'] = len(elaborations)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
+    return render(request, 'evaluation.html',
+                              {'overview': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
                                'count_awesome': request.session.get('count', '0'),
                                'selected_task': selected_challenge,
                                'stabilosiert_awesome': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -336,16 +322,14 @@ def questions(request, course_short_title=None):
     request.session['selection'] = 'questions'
     request.session['count'] = len(challenges)
 
-    return render_to_response('evaluation.html',
+    return render(request, 'evaluation.html',
                               {'challenges': challenges,
-                               'overview': render_to_string('questions.html', {'challenges': challenges, 'course': course},
-                                                            RequestContext(request)),
+                               'overview': render(request, 'questions.html', {'challenges': challenges, 'course': course}),
                                'count_questions': request.session.get('count', '0'),
                                'stabilosiert_questions': 'stabilosiert',
                                'selection': request.session['selection'],
                                'course': course
-                               },
-                              context_instance=RequestContext(request))
+                               })
 
 
 @aurora_login_required()
@@ -399,9 +383,7 @@ def overview(request, course_short_title=None):
     data['evaluation'] = evaluation
     data['evaluation_locked'] = lock
 
-    return render_to_response('evaluation_overview.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'evaluation_overview.html', data)
 
 
 @aurora_login_required()
@@ -514,12 +496,10 @@ def detail(request, course_short_title=None):
     params['count_prev'] = count_prev
     params['course'] = course
 
-    detail_html = render_to_string(
-        'detail.html', params, RequestContext(request))
+    detail_html = render(request, 'detail.html', params)
 
     challenges = Challenge.objects.all()
-    return render_to_response('evaluation.html', {'challenges': challenges, 'course': course, 'detail_html': detail_html},
-                              context_instance=RequestContext(request))
+    return render(request, 'evaluation.html', {'challenges': challenges, 'course': course, 'detail_html': detail_html})
 
 
 @aurora_login_required()
@@ -564,7 +544,7 @@ def stack(request, course_short_title=None):
     stack_elaborations = elaboration.user.get_stack_elaborations(
         elaboration.challenge.get_stack())
 
-    return render_to_response('tasks.html', {'stack_elaborations': stack_elaborations}, RequestContext(request))
+    return render(request, 'tasks.html', {'stack_elaborations': stack_elaborations})
 
 
 @aurora_login_required()
@@ -597,10 +577,7 @@ def others(request, course_short_title=None):
             evaluation = Evaluation.objects.get(
                 submission=elaboration, submission_time__isnull=False)
 
-    return render_to_response('others.html',
-                              {'elaboration': elaboration, 'evaluation': evaluation,
-                                  'next': next, 'prev': prev},
-                              RequestContext(request))
+    return render(request, 'others.html', {'elaboration': elaboration, 'evaluation': evaluation, 'next': next, 'prev': prev})
 
 
 @aurora_login_required()
@@ -608,10 +585,9 @@ def others(request, course_short_title=None):
 def challenge_txt(request, course_short_title=None):
     elaboration = Elaboration.objects.get(
         pk=request.session.get('elaboration_id', ''))
-    return render_to_response('challenge_txt.html',
+    return render(request, 'challenge_txt.html',
                               {'challenge': elaboration.challenge,
-                                  'stack': elaboration.challenge.get_stack()},
-                              RequestContext(request))
+                                  'stack': elaboration.challenge.get_stack()})
 
 
 @aurora_login_required()
@@ -620,7 +596,7 @@ def user_detail(request, course_short_title=None):
     user = Elaboration.objects.get(
         pk=request.session.get('elaboration_id', '')).user
     display_points = request.session.get('display_points', 'error')
-    return render_to_response('user.html', {'user': user, 'course_short_title': course_short_title}, RequestContext(request))
+    return render(request, 'user.html', {'user': user, 'course_short_title': course_short_title})
 
 
 @csrf_exempt
@@ -809,8 +785,7 @@ def load_reviews(request, course_short_title=None):
     reviews = Review.objects.filter(
         elaboration=elaboration, submission_time__isnull=False)
 
-    return render_to_response('task.html', {'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course': course},
-                              RequestContext(request))
+    return render(request, 'task.html', {'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course': course})
 
 
 @aurora_login_required()
@@ -827,8 +802,8 @@ def load_task(request, course_short_title=None):
     reviews = Review.objects.filter(
         elaboration=elaboration, submission_time__isnull=False)
 
-    return render_to_response('task_s.html', {'stack_elaborations': stack_elaborations, 'elaboration': elaboration, 'reviews': reviews, 'stack': 'stack', 'course': course},
-                              RequestContext(request))
+    return render(request, 'task_s.html', {'stack_elaborations': stack_elaborations, 'elaboration': elaboration,
+                                           'reviews': reviews, 'stack': 'stack', 'course': course})
 
 
 @require_POST
@@ -887,7 +862,7 @@ def reviewlist(request, course_short_title=None):
     reviews = Review.objects.filter(reviewer=elaboration.user, submission_time__isnull=False).order_by(
         'elaboration__challenge__id')
 
-    return render_to_response('reviewlist.html', {'reviews': reviews}, RequestContext(request))
+    return render(request, 'reviewlist.html', {'reviews': reviews})
 
 
 @aurora_login_required()
@@ -947,11 +922,9 @@ def sort(request, course_short_title=None):
     request.session['count'] = len(elaborations)
 
     data = {
-        'overview_html': render_to_string('overview.html', {'elaborations': elaborations, 'course': course}, RequestContext(request)),
-        'menu_html': render_to_string('menu.html', {
-            'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
-            'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course,
-        }, RequestContext(request)),
+        'overview_html': render(request, 'overview.html', {'elaborations': elaborations, 'course': course}),
+        'menu_html': render(request, 'menu.html', {'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
+            'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course}),
         'selection': request.session['selection']
     }
 
@@ -1088,7 +1061,7 @@ def similarities(request, course_short_title=None):
         'open_new_window': True,
     }
 
-    return render_to_response('plagcheck_suspicions.html', context, RequestContext(request))
+    return render(request, 'plagcheck_suspicions.html', context)
 
 
 @csrf_exempt
@@ -1113,14 +1086,13 @@ def plagcheck_suspicions(request, course_short_title=None):
     request.session['selection'] = 'plagcheck_suspicions'
     request.session['count'] = count
 
-    return render_to_response('evaluation.html', {
-        'overview': render_to_string('plagcheck_suspicions.html', context, RequestContext(request)),
+    return render(request, 'evaluation.html', {
+        'overview': render(request, 'plagcheck_suspicions.html', context),
         'course': course,
         'stabilosiert_plagcheck_suspicions': 'stabilosiert',
         'count_plagcheck_suspicions': count,
         'selection': request.session['selection'],
-    },
-        context_instance=RequestContext(request))
+    })
 
 
 @csrf_exempt
@@ -1158,13 +1130,12 @@ def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
     suspicions_count = Suspicion.objects.filter(
         state=SuspicionState.SUSPECTED.value).count()
 
-    return render_to_response('evaluation.html', {
-        'detail_html': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
+    return render(request, 'evaluation.html', {
+        'detail_html': render(request, 'plagcheck_compare.html', context),
         'course': course,
         'stabilosiert_plagcheck_suspicions': 'stabilosiert',
         'count_plagcheck_suspicions': suspicions_count,
-    },
-        context_instance=RequestContext(request))
+    })
 
 
 @csrf_exempt
