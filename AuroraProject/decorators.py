@@ -38,7 +38,7 @@ def aurora_login_required():
             except (IndexError, Course.DoesNotExist):
                 raise LookupError("aurora_login_required - can only be used when the url contains the course.")
 
-            if request.user.is_authenticated() and (request.user.is_staff or course.user_is_enlisted(request.user)):
+            if request.user.is_authenticated and (request.user.is_staff or course.user_is_enlisted(request.user)):
                 return view_func(request, *args, **kwargs)
 
             path = request.build_absolute_uri()
