@@ -50,7 +50,7 @@ def course_selection(request):
     if next_url:
         request.session['next_url'] = next_url
 
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         if 'sKey' in request.GET:
             from AuroraUser.views import sso_auth_callback
             return sso_auth_callback(request)
