@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.shortcuts import render
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
@@ -9,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from django import forms
 from django.utils import timezone
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.contrib.contenttypes.models import ContentType
 import json
 from AuroraUser.models import AuroraUser
@@ -20,9 +19,7 @@ from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 from Comments.models import Comment, CommentsConfig, CommentList, Vote, CommentReferenceObject
 from Course.models import Course
 from Notification.models import Notification
-#from Slides.models import Slide
-from AuroraProject.settings import SECRET_KEY, LECTURER_USERNAME
-from local_settings import LECTURER_SECRET
+
 
 
 class CommentForm(forms.Form):
@@ -140,7 +137,6 @@ def create_comment(form, request):
 
     homeURL = form.cleaned_data['uri']
 
-    context = RequestContext(request)
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     ref_type_id = form.cleaned_data['reference_type_id']
     ref_obj_id = form.cleaned_data['reference_id']
@@ -427,5 +423,4 @@ def feed(request):
 def bookmarks(request):
     requester = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     comment_list = Comment.query_bookmarks(requester)
-    template = 'Comments/bookmarks_list.html'
-    return render_to_response(template, {'comment_list': comment_list}, context_instance=RequestContext(request))
+    return render(request, 'Comments/bookmarks_list.html', {'comment_list': comment_list})

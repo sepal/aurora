@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from Comments.models import Comment, CommentList
 from Comments.views import CommentForm, ReplyForm
 from django.template.loader import render_to_string
-from AuroraUser.models import AuroraUser
 
 register = template.Library()
 

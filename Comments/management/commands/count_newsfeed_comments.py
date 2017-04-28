@@ -3,6 +3,7 @@ from Comments.models import Comment
 from Comments.models import CommentReferenceObject
 from django.contrib.contenttypes.models import ContentType
 
+
 class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         ref_object = CommentReferenceObject.objects.get(name='newsfeed')
