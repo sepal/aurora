@@ -92,6 +92,7 @@
               <trix-editor class="trix-content" input="evaluation-revised-editor-{{ review.id }}"></trix-editor>
           </div>
       {% endif %}
+      {% include 'elaboration_indicators.html' with elaboration=review.elaboration %}
     </div>
     {% endfor %}
 
