@@ -180,7 +180,7 @@ def create_context_challenge(request, course_short_title):
                 # TODO notify someone
                 logger.error("Found multiple elaborations")
 
-            elaboration = elaborations.first();
+            elaboration = elaborations.first()
         else:
             elaboration = Elaboration.objects.create(challenge=challenge, user=user)
 
