@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^comment/', include('Comments.urls', namespace='Comments')),
+    url(r'^comments/', include('django_comments_xtd.urls')),
 
     url(r'result_users', views.result_users, name='result_users'),
     url(r'result_elabs_nonfinal', views.result_elabs_nonfinal, name='result_elabs_nonfinal'),

@@ -179,6 +179,8 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     # third party apps
     'easy_thumbnails',
+    'django_comments',
+    'django_comments_xtd',
     # own apps
     'AuroraUser',
     'Challenge',
@@ -203,6 +205,33 @@ INSTALLED_APPS = (
     'django_markup',
     'Feedback'
 )
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'preview': {'size': (640, 480)},
+        'full-res': {'size': (1920, 1080)},
+    },
+}
+
+## COMMENTS ##
+
+COMMENTS_APP = 'django_comments_xtd'
+
+# Either enable sending mail messages to the console:
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Or set up the EMAIL_* settings so that Django can send emails:
+EMAIL_HOST = "smtp.mail.com"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = "alias@mail.com"
+EMAIL_HOST_PASSWORD = "yourpassword"
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "Helpdesk <helpdesk@yourdomain>"
+
+COMMENTS_XTD_CONFIRM_MAIL = False
+COMMENTS_XTD_MAX_THREAD_LEVEL = 2
+
+
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -422,13 +451,6 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'DISABLE_PANELS': False,
         'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
-    }
-
-    THUMBNAIL_ALIASES = {
-        '': {
-            'preview': {'size': (640, 480)},
-            'full-res': {'size': (1920, 1080)},
-        },
     }
 
     ## PROFILING ##

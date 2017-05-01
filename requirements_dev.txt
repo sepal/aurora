@@ -18,3 +18,6 @@ ddt==1.1.1
 #diskurs
 django-markup==1.0
 markdown==2.6.5
+
+django-comments-xtd
+django-contrib-comments
