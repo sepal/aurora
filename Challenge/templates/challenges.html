@@ -44,7 +44,7 @@
 			{% endif %}
 		</div>
 		<div class="title">
-			<b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks
+			<b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks, max. {{ stack.possible }} Points
 		</div>
 		<div>
 			{% if stack.currently_active %}Available until {{stack.stack.end_date|date:'j.n., G:i'}} ({{stack.stack.end_date|naturaltime}}){% else %}Not currently active{% endif %}
