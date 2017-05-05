@@ -43,11 +43,18 @@ $(function() {
             type: "POST",
             url: "./submit_evaluation/",
             data: data,
+            async: false,
             error: function() {
                 alert('error submitting evaluation');
             },
             success: function() {
-                window.location.reload();
+              var next = $(event.target).data('next-id');
+              if(next) {
+                window.location.href = "./overview?elaboration_id=" + next;
+              } else {
+                  window.location.reload();
+              }
+
             }
         };
         $.ajax(args);

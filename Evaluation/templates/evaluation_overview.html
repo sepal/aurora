@@ -63,6 +63,9 @@
                 <div class="point_label">Points</div><div class="points" {% if not lock %} contenteditable="true" {% endif %} onkeyup="DelayedAutoSave({{ elaboration.id }})">
                   {% if evaluation.evaluation_points %}{{ evaluation.evaluation_points }}{% endif %}</div>
                   {% if not lock %}
+                    {% if next_elaboration %}
+                      <button class="submit_evaluation XL" id="{{ elaboration.id }}" data-next-id="{{next_elaboration.id}}">evaluate + next</button>
+                    {% endif %}
                     <button class="submit_evaluation XL" id="{{ elaboration.id }}">evaluate</button>
                   {% endif %}
                   {% if next_elaboration %}
@@ -76,6 +79,9 @@
           </div>
           <div class="point_label">Points</div>
           <div class="points" contenteditable="false" onkeyup="DelayedAutoSave({{ elaboration.id }})"></div>
+          {% if next_elaboration %}
+            <button class="submit_evaluation XL" id="{{ elaboration.id }}" data-next-id="{{next_elaboration.id}}">evaluate + next</button>
+          {% endif %}
           <button class="submit_evaluation XL" id="{{ elaboration.id }}" next="{{ next }}">evaluate{% if next %} + next{% endif %}</button>
           {% if next_elaboration %}
             <a class="next_evaluation XL" href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{next_elaboration.id}}">next</button>
