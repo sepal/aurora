@@ -119,11 +119,20 @@ class Elaboration(models.Model):
         if not final_challenge:
             return False
 
-        final_challenge_elaboration = final_challenge.get_elaboration(self.user)
-        if final_challenge_elaboration and final_challenge_elaboration.is_submitted():
-            return False
+        # Disabled for a more detailed check using `final_challenge_submitted`
+        # final_challenge_elaboration = final_challenge.get_elaboration(self.user)
+        # if final_challenge_elaboration and final_challenge_elaboration.is_submitted():
+        #     return False
 
         return True
+
+    def final_challenge_submitted(self):
+        final_challenge = self.challenge.get_final_challenge()
+        final_challenge_elaboration = final_challenge.get_elaboration(self.user)
+        if final_challenge_elaboration and final_challenge_elaboration.is_submitted():
+            return True
+        else:
+            return False
 
     def has_revision(self):
         if self.elaboration_text != self.revised_elaboration_text or self.revised_elaboration_changelog:
