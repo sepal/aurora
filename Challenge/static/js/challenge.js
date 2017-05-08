@@ -170,7 +170,7 @@ function save_revised_elaboration(challenge_id) {
 
     var args = {
         type: "POST",
-        url: SAVE_URL,
+        url: SAVE_REVISION_URL,
         async: false,
         data: data,
     };
