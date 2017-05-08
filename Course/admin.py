@@ -29,6 +29,9 @@ class CourseUserRelationAdmin(admin.ModelAdmin):
                     'user',
                     'course',
                     'active',
+                    'review_karma', 
+                    'review_group',
+                    'top_reviewer',
                 ]
             }
         ),
