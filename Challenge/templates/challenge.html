@@ -135,7 +135,8 @@
 		</div>
       {% if not blocked %}
         {% if lock %}
-        	<span style="color:gray;float:right;padding-top:3px;">Enter for evaluation on {{ lock }} or later</span>
+        	<span style="color:gray;float:right;padding-top:3px;position:relative">Enter for evaluation on {{ lock }} or later<button style="font-size:110%" onClick="javascript:$('#explain').show()">WHY not now?</button><div style="display:none;position:relative;" id="explain">You have handed in another challenge recently. You have to wait a certain <br>time  before handing in another one. You can find a detailled explanation in <br>the <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">aurora</a> pdf</div></span>
+			
         {% else %}
 			<button id="EWfE" class="{% if not lock %} submit {% endif %}XL R" {% if lock %}disabled="disabled" style="color:darkred;"{% endif %}>
 		<span class="large_screen">
