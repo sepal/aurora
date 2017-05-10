@@ -26,19 +26,19 @@
 			</div>
 		</div>
         {% endif %}
+		{% comment %}
 
     {% if user_is_top_reviewer %}
       <div class="sidebar_item">
         <div class="feed_header"  id="part_5">
           <i class="fa fa-angle-up fa-2x half"></i> <b>Extra Reviews</b>
         </div>
-		{% comment %}
         <div class="feed_column"  id="content_part_5">
           {% include 'extra_reviews.html' %}
   		</div>
-		{% endcomment %}
       </div>
     {% endif %}
+		{% endcomment %}
 
 		{% if user.is_staff %}
 		<div class="sidebar_item">
@@ -109,71 +109,7 @@
 			</div>
 	        <div class="feed_column" id="content_part_3">
 
-				{% comment %}
 
-				<table width="100%">
-				{% if course.short_title == "gsi" %}
-					<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
-						<td width="17%" align="right"></td>
-						<td width="17%" align="right">8</td>
-						<td width="17%" align="right">15</td>
-						<td width="17%" align="right">22</td>
-						<td width="18%" align="right">29</td>
-						<td witdh="2%"></td></tr>
-					<tr><td>April</td>
-						<td></td>
-						<td align="right">5</td>
-						<td align="right" style="color:silver">12</td>
-						<td align="right" style="color:silver">19</td>
-						<td align="right">26</td>
-						<td witdh="2%"></td></tr>
-					<tr bgcolor="#EEE"><td>Mai</td>
-						<td align="right">3</td>
-						<td align="right">10</td>
-						<td align="right">17</td>
-						<td align="right">24</td>
-						<td align="right">31</td>
-						<td witdh="2%"></td></tr>
-					<tr><td>Juni</td>
-						<td></td>
-						<td align="right">7</td>
-						<td align="right">14</td>
-						<td align="right">21</td>
-						<td align="right">28</td>
-						<td witdh="2%"></td></tr>
-				{% else %}
-					<tr bgcolor="#EEE"><td width="10%">M&auml;rz</td>
-						<td width="17%" align="right"></td>
-						<td width="17%" align="right" style="color:silver">7</td>
-						<td width="17%" align="right">14</td>
-						<td width="17%" align="right">21</td>
-						<td width="17%" align="right">28</td>
-					<tr><td>April</td>
-						<td></td>
-						<td align="right">4</td>
-						<td align="right" style="color:silver">11</td>
-						<td align="right" style="color:silver">18</td>
-						<td align="right">25</td></tr>
-					<tr bgcolor="#EEE"><td>Mai</td>
-						<td align="right">2</td>
-						<td align="right">9</td>
-						<td align="right">16</td>
-						<td align="right">23</td>
-						<td align="right">30</td>
-					<tr><td>Juni</td>
-						<td width="17%" align="right"></td>
-						<td align="right">6</td>
-						<td align="right">13</td>
-						<td align="right" style="color:gray">20</td>
-						<td align="right" style="color:silver">27</td>
-						<td witdh="2%"></td></tr>
-				{% endif %}
-				</table>
-				<br>
-				<span class="maybe" style="font-size:90%">* diese termine sind als reserve geplant. nach momentanen planungsstand findet da keine vorlesung statt. </span>
-				<br>
-				
-				{% endcomment %}
 				{% if course.short_title == "hci" %}
 			<div class="aMonth"><span class="aMonat">März</span></div>
 			
@@ -201,39 +137,42 @@
 				
 			<div class="aEvent last"><span class="aDay">25</span>
 				<span class="aContent"><span class="aKap">Kap1:</span> <b>Design rules and the user-centred design process</b>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>Conceptual Models [14]</span>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>Simplify [13]</span></span></div>
+					<span class="aChallenge"><i class="fa fa-pencil"></i>Conceptual Models [14]</span></div>
 				
 			<div class="aMonth"><span class="aMonat">Mai</span></div>
 
 			<div class="aEvent"><span class="aDay">2</span>
+				<span class="aContent"><span class="aKap">Kap 1 <span class="aChallenge"><i class="fa fa-pencil"></i>Simplify [13]</span> + Kap2:</span> <b>Understanding the user, gathering requirements</b>
+					</div>
+
+			<div class="aEvent"><span class="aDay">9</span>
 				<span class="aContent"><span class="aKap">Kap2:</span> <b>Understanding the user, gathering requirements</b>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Cultural Probes [18]</span></span></div>
 				
-			<div class="aEvent"><span class="aDay">9</span>
+			<div class="aEvent"><span class="aDay">16</span>
 				<span class="aContent"><span class="aKap">Kap2:</span> <b>Prototyping</b> <br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Persona und Szenario [18]</span> 
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Design with Intent [13]</span></span></div>
 				
-			<div class="aEvent"><span class="aDay">16</span>
+			<div class="aEvent"><span class="aDay">23</span>
 				<span class="aContent"><span class="aKap">Kap3:</span> <b>Prototyping continued und Ubicomp</b> <br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Prototyping [18]</span></span></div>
 				
-			<div class="aEvent"><span class="aDay">23</span>
+			<div class="aEvent"><span class="aDay">30</span>
 				<span class="aContent"><span class="aKap">Kap3:</span> <b>Ubicomp</b><br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Ubicomp/Beyond the Desktop [19]</span></span></div>
+
+			<div class="aMonth"><span class="aMonat">Juni</span></div>
 				
-			<div class="aEvent last"><span class="aDay">30</span>
+			<div class="aEvent last"><span class="aDay">13</span>
 				<span class="aContent"><span class="aKap">Kap4:</span> <b>Evaluation</b><br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Thinking out loud [13]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Interviews [13]</span></span></div>
 				
-			<div class="aMonth"><span class="aMonat">Juni</span></div>
-
-			<div class="aEvent last"><span class="aDay">13</span>
+			<div class="aEvent last"><span class="aDay">20</span>
 				<span class="aContent">Zusammenfassung, Ausblick</span></div>
 
-			<div class="calExplain">Die Challenges werden jeweils im Laufe der Woche nach der jeweiligen Vorlesung freigeschalten. Die Zahl in eckigen Klammern gibt die geplante Punktezahl an und können eventuell leicht abweichen.</div>
+			<div class="calExplain">Die <i class="fa fa-pencil"></i>Challenges werden jeweils im Laufe der Woche nach der jeweiligen Vorlesung freigeschalten. Die Zahl in eckigen Klammern gibt die geplante Punktezahl an und können eventuell leicht abweichen.</div>
 
 
 
@@ -305,7 +244,7 @@
 			<div class="aEvent last"><span class="aDay">28</span><span class="aMonat"></span>
 				<span class="aContent"><b>Zusammenfassung, Ausblick</b></span></span></div>
 
-			<div class="calExplain">Die Challenges werden jeweils im Laufe der Woche nach der jeweiligen Vorlesung freigeschalten. Die Zahl in eckigen Klammern gibt die geplante Punktezahl an und können eventuell leicht abweichen. Jedes Thema mit Challenges entspricht jeweils einem Kapitel</div>
+			<div class="calExplain">Die <i class="fa fa-pencil"></i>Challenges werden jeweils im Laufe der Woche nach der jeweiligen Vorlesung freigeschalten. Die Zahl in eckigen Klammern gibt die geplante Punktezahl an und können eventuell leicht abweichen. Jedes Thema mit Challenges entspricht jeweils einem Kapitel</div>
 				{% endif %}
 			</div>
 		</div>
