@@ -323,8 +323,10 @@ h1 {
 		width:100%;
 		cursor:pointer;
 		text-shadow:0 0 3px black;
+		overflow:hidden;
+		white-space:nowrap;
 	}
-
+	
 	.stack {
 		box-sizing: border-box;
 	    padding: 10px 10px 5px 10px;
@@ -361,7 +363,7 @@ h1 {
 .filterbar i {
 	float:right;
 	padding-right:8px;
-	text-shadow:none;
+	text-shadow: 0 0 3px black, 0 0 4px black, 0 0 2px black;
 }
 
 @media all and (min-width: 960px) {
