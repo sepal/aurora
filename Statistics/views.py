@@ -235,7 +235,8 @@ def final_tasks(course):
         data['title'] = (
             Challenge.objects.get(pk=id).title
         )
-        a = Challenge.objects.get(pk=id).get_stack()
+        data['fullchallenge'] = (
+            Challenge.objects.get(pk=id).get_stack()
         data['challenge'] = (
             Challenge.objects.get(pk=id).get_stack().title
         )
