@@ -237,6 +237,7 @@ def final_tasks(course):
         )
         data['fullchallenge'] = (
             Challenge.objects.get(pk=id).get_stack()
+        )
         data['challenge'] = (
             Challenge.objects.get(pk=id).get_stack().title
         )
