@@ -108,7 +108,7 @@ class Challenge(models.Model):
         if stack_challenge_relation:
             return stack_challenge_relation[0].stack
         else:
-            return None
+            return stack_challenge_relation[0].stack
 
     def is_first_challenge(self):
         return not self.prerequisite  # challenge without prerequisite is the first challenge
