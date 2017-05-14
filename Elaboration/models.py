@@ -116,7 +116,7 @@ class Elaboration(models.Model):
             return False
 
         final_challenge = self.challenge.get_final_challenge()
-        if not final_challenge:
+        if self == final_challenge:
             return False
 
         # Disabled for a more detailed check using `final_challenge_submitted`
