@@ -40,7 +40,7 @@
                   {{ elaboration.user.nickname }}
                 </td>
 
-                <td>{{ elaboration.challenge.title|safe }}</td>
+                <td>{{ elaboration.challenge.get_stack.title|safe }}</td>
                 {% if complaints %}
                     <td class="timestamp" title="{{ elaboration.get_last_post_date }}">{{ elaboration.get_last_post_date|naturaltime }}</td>
                 {% else %}

@@ -53,22 +53,37 @@
  }
 
 .comment_form > p > select, .add_reply_form > p > select {
-	float:left;
+	float:right;
     -webkit-appearance:none;
     -moz-appearance:none;
     appearance:none;
 	background-color:white;
-	border:none;
-	border-radius:0;
+	border:1px dotted gray;
+	border-radius:2px;
 	padding:2px 4px;
 	text-transform:uppercase;
-	color:rgb(58,201,88);
 	font-size:11px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	position:relative;
+	bottom:1px;
+}
+
+#button_add_comment::after, #button_post_reply::after {
+	color:darkgray;
+	content:"   visible to";
+	
 }
 
 #button_post_reply,#button_cancel_reply,#id_visibility,#edit_save,#edit_cancel {
 	cursor:pointer;
+}
+
+#id_visibility {
+	margin-left:0px;
+}
+
+#id_visibility::before {
+	content:"x";
 }
 
 .comment_form > button,#edit_save,#edit_cancel, .add_reply_form > button {
@@ -82,7 +97,6 @@
 	color:rgb(58,201,88);
 	font-size:11px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-
 }
 
 .comments {
