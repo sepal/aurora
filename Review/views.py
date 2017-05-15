@@ -13,6 +13,8 @@ from ReviewQuestion.models import ReviewQuestion
 from ReviewAnswer.models import ReviewAnswer
 from Notification.models import Notification
 from Review.models import ReviewConfig
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 
 import logging
 logger = logging.getLogger(__name__)
@@ -37,6 +39,7 @@ def create_context_review(request):
                 review.save()
             else:
                 return data
+
         data['review'] = review
         data['stack_id'] = challenge.get_stack().id
         review_questions = ReviewQuestion.objects.filter(challenge=challenge).order_by("order")
@@ -105,7 +108,13 @@ def review_answer(request, course_short_title):
             if not challenge.is_enabled_for_user(user):
                 raise Http404
             if not review == Review.get_open_review(challenge, user):
-                raise Http404
+                redirect_link = reverse('Challenge:challenge', kwargs={'course_short_title': course_short_title}) + "?id=" + str(
+                    challenge.id)
+                return redirect(redirect_link)
+            if not review.submission_time == None:
+                redirect_link = reverse('Challenge:challenge', kwargs={'course_short_title': course_short_title}) + "?id=" + str(
+                    challenge.id)
+                return redirect(redirect_link)
         except:
             raise Http404
         review.appraisal = data['appraisal']
@@ -131,7 +140,7 @@ def review_answer(request, course_short_title):
             ReviewAnswer(review=review, review_question=review_question, text=text).save()
             # send notifications
         review.submission_time = datetime.now()
-    
+
         if 'extra_review_question_answer' in data:
             review.extra_review_question_answer = data['extra_review_question_answer']
 
