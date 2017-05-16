@@ -65,7 +65,7 @@
               <a href="javascript:tggle('.extra_list');void(0);" style="color:black;text-decoration:none">
                   <i style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Extra Points</td>
             {% if review_evaluation_data.review_evaluation_percent > 0.8 %}
-	   		 <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned|add "1"}}<span style="visibility:hidden;display:none">XX</span></td>
+	   		 <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden;display:none">XX</span></td>
 			 {% else %}
 	   		 <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden;display:none">XX</span></td>
 			 {% endif %}
