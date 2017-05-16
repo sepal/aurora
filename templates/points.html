@@ -64,7 +64,11 @@
           <td class="letztezeile sum">
               <a href="javascript:tggle('.extra_list');void(0);" style="color:black;text-decoration:none">
                   <i style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Extra Points</td>
-          <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden;display:none">XX</span></td>
+            {% if review_evaluation_data.review_evaluation_percent > 0.8 %}
+	   		 <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned|add "1"}}<span style="visibility:hidden;display:none">XX</span></td>
+			 {% else %}
+	   		 <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden;display:none">XX</span></td>
+			 {% endif %}
       </tr>
     </table>
     <div class="extra_list" style="display:none">
@@ -77,9 +81,14 @@
           <td>Comments</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_comments }}</td>
         </tr>
+            {% if review_evaluation_data.review_evaluation_percent > 0.8 %}
         <tr class="pZeile1">
           <td>Rating Reviews</td>
-          <td class="punkte">{{ stack_data.extra_points_earned_by_rating_reviews }}</td>
+            {% if review_evaluation_data.review_evaluation_percent > 0.8 %}
+          <td class="punkte">1</td>
+		  {% else %}
+          <td class="punkte">0</td>
+			 {% endif %}
         </tr>
       </table>
     </div>
