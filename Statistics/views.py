@@ -170,6 +170,12 @@ def tutor_statistics(course):
                 .filter(tutor__id=tutor['id'])
                 .count()
         )
+        tutor['all_evaluations'] = (
+            Evaluation.objects
+                .filter(submission_time__isnull=False)
+                .filter(tutor__id=tutor['id'])
+                .count()
+        )
         tutor['reviews'] = (
             Review.objects
                 .filter(elaboration__challenge__course=course)
