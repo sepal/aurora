@@ -6,7 +6,6 @@
   {% load humanize %}
 {% endblock %}
 
-
 {% for stack_data in stacks %}
   {% if stack_data.course_title == course.title %}
   <div class="points_table">
@@ -19,7 +18,7 @@
         <tr class="sum">
           <td class="letztezeile sum">
 			  <a href="javascript:tggle('.final_list');void(0);" style="color:black;text-decoration:none">
-				  <i  style="{% if stack in stack_data.course_stacks %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> Awarded points so far</a></td>
+				  <i  style="{% if stack in stack_data.course_stacks %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-angle-down fa-lger"></i> Awarded points so far</a></td>
           <td class="letztezeile punkte"><span style="color:gray">{{ stack_data.evaluated_points_available_total }}</span> &nbsp;{{ stack_data.evaluated_points_earned_total }}</td>
         </tr>
 		</table><div class="final_list"  style="display:none"><table>
@@ -63,7 +62,7 @@
       <tr class="sum">
           <td class="letztezeile sum">
               <a href="javascript:tggle('.extra_list');void(0);" style="color:black;text-decoration:none">
-                  <i style="color:#3AC958" class="fa fa-caret-square-o-down"></i> Extra Points</td>
+                  <i style="color:#3AC958" class="fa fa-angle-down fa-lger"></i> Extra Points</td>
           <td class="letztezeile punkte">{{ stack_data.total_extra_points_earned }}<span style="visibility:hidden;display:none">XX</span></td>
       </tr>
     </table>
@@ -90,14 +89,14 @@
 		{% if stack_data.submitted_points_available_total == 0 %}
 	        <tr class="sum">
 	          <td class="letztezeile sum" style="color:gray">
-				  	<i  style="visibility:hidden" class="fa fa-caret-square-o-down"></i> In Evaluation</td>
+				  	<i  style="visibility:hidden" class="fa fa-angle-down fa-2x"></i> In Evaluation</td>
 	          <td class="letztezeile punkte" style="color:gray">&ndash;<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
 	        </tr>
 		{% else %}
 	        <tr class="sum">
 	          <td class="letztezeile sum">
 				  <a href="javascript:tggle('.sub_list');void(0);" style="color:black;text-decoration:none">
-				  	<i  style="color:#3AC958" class="fa fa-caret-square-o-down"></i> In Evaluation</td>
+				  	<i  style="color:#3AC958" class="fa fa-angle-down fa-lger"></i> In Evaluation</td>
 	          <td class="letztezeile punkte">{{ stack_data.submitted_points_available_total }}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
 	        </tr>
 			</table><div class="sub_list" style="display:none"><table>
@@ -108,7 +107,12 @@
 	                <a style="text-decoration:none; color:black;"
 	                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
 	                  <i style="color:gray" class="fa fa-circle-o"></i>
-	                  <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
+	                  <abbr title="{{stack.stack.get_final_challenge.id}}">{{ stack.stack.title|truncatechars:40 }}</abbr>
+					  {% for task in final_tasks %}
+					  {% if task.id = stack.stack.get_final_challenge.id %}
+					  	<abbr title="waiting for eval.+already evaluated" style="color:gray">({{task.not_evaluated}}+{{task.evaluated}})
+					  {% endif %}
+					  {% endfor %}
 	                </a>
 	              </td>
 	              <td class="punkte" style="vertical-align:bottom;">
@@ -122,11 +126,11 @@
 		{% if stack_data.started_points_available_total == 0 %}
 	        <tr class="sum">
 	          <td class="letztezeile sum" style="color:gray">
-				  	<i  style="visibility:hidden" class="fa fa-caret-square-o-down"></i> Work in progress</td>
+				  	<i  style="visibility:hidden" class="fa fa-angle-down fa-lger"></i> Work in progress</td>
 	          <td class="letztezeile punkte" style="color:gray">&ndash;<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
 	        </tr>
 		{% else %}
-			<tr class="sum"><td class="sum"><a href="javascript:tggle('.work_list');void(0);" style="color:black;text-decoration:none"><i style="color:#3AC958" class="fa fa-caret-square-o-down"></i> <span>Work in progress</span></a></td>
+			<tr class="sum"><td class="sum"><a href="javascript:tggle('.work_list');void(0);" style="color:black;text-decoration:none"><i style="color:#3AC958" class="fa fa-angle-down fa-lger"></i> <span>Work in progress</span></a></td>
 			          <td class="sum punkte">{{ stack_data.started_points_available_total }}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td></tr>
 			</table><div class="work_list"  style="display:none"><table>
 	        {% for stack in stack_data.course_stacks %} <!-- loop 4: challenges started -->
@@ -157,14 +161,14 @@
 		{% endif %}
         <tr class="sum">
           <td  style="color:gray">
-			 <i style="color:rgba(0,0,0,0);" class="fa fa-caret-square-o-down"></i> Optimistic Sum</td>
+			 <i style="color:rgba(0,0,0,0);" class="fa fa-angle-down fa-lger"></i> Optimistic Sum</td>
           <td class="punkte" style="vertical-align:bottom;color:gray"><span style="color:lightgray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;&nbsp;{{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total}}
 		  </td>
 	  	</tr>
 {% comment %}
         <tr>
           <td  style="color:gray;padding:0px 9px 5px 9px">
-			 <i style="color:rgba(0,0,0,0);" class="fa fa-caret-square-o-down"></i> Overly Optimistic Sum</td>
+			 <i style="color:rgba(0,0,0,0);" class="fa fa-angle-down fa-lger"></i> Overly Optimistic Sum</td>
           <td class="punkte" style="vertical-align:bottom;color:gray;padding:0px 9px 5px 9px">
 		   {{stack_data.evaluated_points_earned_total|add:stack_data.started_points_available_total|add:stack_data.submitted_points_available_total}}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span>
 		  </td>
@@ -272,7 +276,7 @@
 			<td colspan=3>
 
 		  <a href="javascript:tggle('.rev_list');void(0);" style="color:black;text-decoration:none;font-weight:bold">
-			  <i  style="{% if review_evaluation_data.reviews_missing_evaluation %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-caret-square-o-down"></i> {{review_evaluation_data.reviews_missing_evaluation|length}} Unevaluated Review{{review_evaluation_data.reviews_missing_evaluation|pluralize}}</a></td>
+			  <i  style="{% if review_evaluation_data.reviews_missing_evaluation %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-angle-down fa-lger"></i> {{review_evaluation_data.reviews_missing_evaluation|length}} Unevaluated Review{{review_evaluation_data.reviews_missing_evaluation|pluralize}}</a></td>
 		  </td></table>
 
 		  <div class="rev_list"  style="display:none"><table>
@@ -287,3 +291,5 @@
     </div>
   {% endif %}
 {% endfor %}
+
+
