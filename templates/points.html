@@ -107,7 +107,7 @@
 	                <a style="text-decoration:none; color:black;"
 	                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
 	                  <i style="color:gray" class="fa fa-circle-o"></i>
-	                  <abbr title="{{stack.stack.get_final_challenge.id}}">{{ stack.stack.title|truncatechars:37 }}</abbr>
+	                  <abbr title="{{stack.stack.get_final_challenge.id}}">{{ stack.stack.title|truncatechars:36 }}</abbr>
 					  {% for task in final_tasks %}
 					  {% if task.id = stack.stack.get_final_challenge.id %}
 					  	<abbr title="waiting for eval.+already evaluated" style="color:gray">({{task.not_evaluated}}+{{task.evaluated}})
