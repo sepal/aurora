@@ -359,7 +359,6 @@ def overview(request, course_short_title=None):
 
     next_elaboration = None
     try:
-        # all_elaborations = list(Elaboration.get_final_evaluation_top_level_tasks(course).order_by('submission_time'))
         elaborations = Elaboration.get_final_evaluation_top_level_tasks(course) | Elaboration.objects.filter(id=elaboration.id)
         all_elaborations = list(elaborations.order_by('submission_time'))
 
@@ -369,7 +368,7 @@ def overview(request, course_short_title=None):
         else:
             next_elaboration = None
     except ValueError:
-        next_elaboration = all_elaborations[0]
+        next_elaboration = None
 
     challenges = []
     for challenge in stack_challenges:
