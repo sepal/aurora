@@ -359,12 +359,16 @@ def overview(request, course_short_title=None):
 
     next_elaboration = None
     try:
-        elaborations = Elaboration.get_final_evaluation_top_level_tasks(course) | Elaboration.objects.filter(id=elaboration.id)
-        all_elaborations = list(elaborations.order_by('submission_time'))
+        # elaborations = Elaboration.get_final_evaluation_top_level_tasks(course) | Elaboration.objects.filter(id=elaboration.id)
+        # all_elaborations = list(elaborations.order_by('submission_time'))
 
-        next_index = all_elaborations.index(elaboration) + 1
-        if next_index < len(all_elaborations):
-            next_elaboration = all_elaborations[next_index]
+        elaborations = []
+        for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
+            elaborations.append(serialized_elaboration.object)
+
+        next_index = elaborations.index(elaboration) + 1
+        if next_index < len(elaborations):
+            next_elaboration = elaborations[next_index]
         else:
             next_elaboration = None
     except ValueError:
@@ -950,6 +954,50 @@ def sort(request, course_short_title=None):
 
     data = {
         'overview_html': render_to_string('overview.html', {'elaborations': elaborations, 'course': course}, RequestContext(request)),
+        'menu_html': render_to_string('menu.html', {
+            'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
+            'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course,
+        }, RequestContext(request)),
+        'selection': request.session['selection']
+    }
+
+    return HttpResponse(json.dumps(data))
+
+# TODO: Do we really want to submit the users current list to server and
+# then sort it there?
+@aurora_login_required()
+@staff_member_required
+def sort_new(request, course_short_title=None):
+    course = Course.get_or_raise_404(short_title=course_short_title)
+
+    elaborations = []
+    for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
+        elaborations.append(serialized_elaboration.object)
+
+    if request.GET.get('data', '') == "date_asc":
+        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
+    if request.GET.get('data', '') == "date_desc":
+        elaborations.sort(
+            key=lambda elaboration: elaboration.submission_time, reverse=True)
+    if request.GET.get('data', '') == "elab_asc":
+        elaborations.sort(key=lambda elaboration: elaboration.challenge.title)
+    if request.GET.get('data', '') == "elab_desc":
+        elaborations.sort(
+            key=lambda elaboration: elaboration.challenge.title, reverse=True)
+    if request.GET.get('data', '') == "post_asc":
+        elaborations.sort(
+            key=lambda elaboration: elaboration.get_last_post_date())
+    if request.GET.get('data', '') == "post_desc":
+        elaborations.sort(
+            key=lambda elaboration: elaboration.get_last_post_date(), reverse=True)
+
+    # store selected elaborations in session
+    request.session['elaborations'] = serializers.serialize(
+        'json', elaborations)
+    request.session['count'] = len(elaborations)
+
+    data = {
+        'overview_html': render_to_string('overview_new.html', {'elaborations': elaborations, 'course': course}, RequestContext(request)),
         'menu_html': render_to_string('menu.html', {
             'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
             'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course,
