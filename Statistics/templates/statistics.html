@@ -51,15 +51,23 @@
 			</tr>
 			<tr>
 				<td>
-					average
+					ok
 				</td>
 				<td width=75 align="right">
-					{{ review_evaluations_default }}
+					{{ review_evaluations_good}}
+				</td><td></td>
+			</tr>
+			<tr>
+				<td>
+					meaningless
+				</td>
+				<td width=75 align="right">
+					{{ review_evaluations_bad}}
 				</td><td></td>
 			</tr>
 			<tr>
 				<td style="border-bottom:1px solid silver">
-					meaningless/offensive
+					minimalist/offensive
 				</td>
 				<td width=75 align="right" style="border-bottom:1px solid silver">
 					{{ review_evaluations_negative }}
@@ -101,24 +109,37 @@
 		</table>
 	</td><td  width=33%  valign=top  style="padding:1em">
 	    <table class="tutor-table" width=100%>
+				
+	        <tr>
+	            <td width="">
+	                <b></b></td>
+	            <td colspan="2" align="right">
+	               evaluations</td>
+				<td>
+	        </tr>
 	        <tr>
 	            <td width="">
 	                <b>tutor metrics</b></td>
-	            <td width="75" align="right">
-	               evals</td>
-	            <td width="75" align="right">
-	               reviews</td>
-	            <td width="75" align="right">
+	            <td width="50" align="right">
+	               {{course.short_title}}</td>
+	            <td width="50" align="right">
+	               both</td>
+	            <td width="50" align="right">
+	               rev.</td>
+	            <td width="50" align="right">
 	               comm.</td>
 	        </tr>
 	    {% for tutor in tutors %}
-			{% if tutor.id > 0 and tutor.id < 17 %}
+			{% if tutor.id > 0 and tutor.id < 1000 %}
 		        <tr style="background:{%cycle '#eee' 'white'%}">
 		            <td>
 		                {{ tutor.first_name }} {{tutor.last_name}}
 		            </td>
 		            <td align="right">
 		                {{ tutor.evaluations }}
+		            </td>
+		            <td align="right">
+		                {{ tutor.all_evaluations }}
 		            </td>
 		            <td align="right">
 		                {{ tutor.reviews }}

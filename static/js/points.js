@@ -10,6 +10,7 @@ function loadTabs() {
 	if (z=='true') {$('.sub_list').show(0);}
 	z = getCookie('pointC.work_list.'+$('#the_username').data('username'))
 	if (z=='true') {$('.work_list').show(0);}
+	$('#info_column').masonry('layout');
 }
 
 
