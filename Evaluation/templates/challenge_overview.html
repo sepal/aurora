@@ -59,8 +59,10 @@
         <textarea id="evaluation-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
         <trix-editor class="trix-content" input="evaluation-editor-{{elaboration.id}}" id="evaluation-editor-{{elaboration.id}}"></trix-editor><br>
 		<div class="new_word_count">
+{% comment %}
 			<script> document.write(countChars("{{elaboration.elaboration_text}}"));
 			</script>
+{% endcomment %}
 		</div>
     </div>
   {% endif %}
@@ -78,8 +80,10 @@
           <trix-editor class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}"></trix-editor>
 		  <br>
   		<div class="new_word_count">
+{% comment %}
   			<script> document.write(countChars("{{elaboration.revised_elaboration_text}}"));
   			</script>
+{% endcomment %}
   		</div>
 		  
       </div>
