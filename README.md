@@ -38,23 +38,3 @@ next generation of the portfolio
 - have fun hacking!
 
 p.s. we use [PyCharm](https://www.jetbrains.com/pycharm/) for development. They provide free educational licences for owners of university email addresses.
-
-### running aurora on your host machine
-
-If you use pyCharm, pyCharm automatically installs the python requirements from `requirements.txt`. But actually
-`requirements.txt` contains production python packages including postgres modules. There is a `requirements_dev.txt`
-for development purposes, which you would have to set manually.
-See the settings at `File | Settings | Tools | Python Integrated Tools`
-
-- system requirements: python3, gcc or xcode and python3 headers.
-- python requirements: pip, virtualenv, invoke
-- Create a virtualenv:
-  - Fastest way:  `invoke virtualenv && source .venv/bin/activate`
-  - Either via pyCharm `File | Settings | Project (aurora) | Project interpreter` `Create VirtualEnv` (Be sure to select python3)
-  - Or via command line: `virtualenv --python python3 .venv`
-  - PyCharm: Select the created virtual environment for the django run configuration. Makes it possible to run the server from within pyCharm with the
-play button.
-- Install project dependencies: `invoke deps`
-- Setup databases: `invoke clean -p`
-- Run celery: `invoke celery`
-- Run server: `python manage.py runserver`
