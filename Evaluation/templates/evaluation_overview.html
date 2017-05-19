@@ -14,21 +14,20 @@
 {% block content %}
 <div class="content">
   <div id="sticky-info">
-    <div class="detail_left">
+    <div class="detail_left_new">
       <h1 class="overview-header">User</h1>
       {% include 'user_info.html' with user=elaboration_user %}
-
-      <div class="tags">
-        <b>Elaboration Tags: </b>
-        {% for elaboration in user.get_elaborations %}
+      <div class="tags new_overview_tags">
+	  <i class="fa fa-pencil "></i>
+        {% for elaboration in elaboration_user.get_elaborations %}
           {% for tag in elaboration.tags.names %}
-            <span class="overview-tag">{{tag}}</div>
+            <span class="overview-tag">{{tag}}</span>
           {% endfor %}
         {% endfor %}
       </div>
 
-      <div class="tags">
-      <b>Review Tags: </b>
+      <div class="tags new_overview_tags">
+	  <i class="fa fa-eye "></i>
         {% for review in elaboration_user.get_reviews %}
           {% for tag in review.tags.names %}
             <span class="overview-tag">{{tag}}</span>
@@ -37,9 +36,9 @@
       </div>
     </div>
 
-    <div class="detail_right">
+    <div class="detail_right_new">
       <h1 class="overview-header">Evaluation</h1>
-      <div class="evaluation-container">
+      <div class="evaluation-container-new">
         {% if evaluation %}
           {% if user.is_superuser %} Feedback written by <b>{{ evaluation.tutor.username }}</b>{% else %} Written feedback {% endif %}
           <form method="post">
