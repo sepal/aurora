@@ -13,9 +13,6 @@ next generation of the portfolio
 
   `(py3env)vagrant@vagrant-ubuntu-trusty-64:/vagrant$`
 
-- you'll need a `local_settings.py` overwriting some settings from `AuroraProject/config.py` with your local needs.
-  or copy the demo settings: `cp local_settings.example.py local_settings.py`
-
 - create the database schema `python manage.py migrate`
 - collect all static files in one place `python manage.py collectstatic`
 - populate the database with some test data `python manage.py populate_demo_data`
