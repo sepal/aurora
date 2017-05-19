@@ -1,7 +1,5 @@
 # Aurora
 
-next generation of the portfolio
-
 ## Getting started
 
 - Install [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/)
