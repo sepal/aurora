@@ -181,7 +181,7 @@ var Lightbox = (function ($) {
 
 				if (this._$galleryItems.length === 1) return;
 
-				if (this._galleryIndex === 0) return;else //circular
+				if (this._galleryIndex === 0) this._galleryIndex = this._$galleryItems.length - 1;else //circular
 					this._galleryIndex--;
 
 				this._config.onNavigate.call(this, 'left', this._galleryIndex);
@@ -193,7 +193,7 @@ var Lightbox = (function ($) {
 
 				if (this._$galleryItems.length === 1) return;
 
-				if (this._galleryIndex === this._$galleryItems.length - 1) return;else //circular
+				if (this._galleryIndex === this._$galleryItems.length - 1) this._galleryIndex = 0;else //circular
 					this._galleryIndex++;
 
 				this._config.onNavigate.call(this, 'right', this._galleryIndex);
