@@ -152,6 +152,7 @@ def challenges(request, course_short_title=None):
             'currently_active': currently_active,
             'status': stack.get_status_text(user),
             'points': stack.get_points_earned(user),
+            'possible': stack.get_points_available(),
             'is_started': stack.is_started(user),
         })
     return render(request, 'challenges.html', data)

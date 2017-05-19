@@ -16,8 +16,7 @@
 		 <p>So far, {{ evaluated_final_tasks }} challenges have been evaluated, 
 		 and {{ not_evaluated_final_tasks }} challenges are currently awaiting final evaluation.</p>
 		 {% if stack_data.evaluated_points_earned_total > 39 %}<p>You are one of <script> x = {{stack_data.evaluated_points_earned_total}};x=Math.round((x-2.5)/5)*5;
-		 if(x>55) document.write({{ students_with_more_than_60_points }})
-		 else if(x>59) document.write({{ students_with_more_than_60_points }})
+		 if(x>59) document.write({{ students_with_more_than_60_points }})
 		 else if(x>52) document.write({{ students_with_more_than_53_points }})
 		 else if(x>46) document.write({{ students_with_more_than_47_points }})
 		 else if(x>39) document.write({{ students_with_more_than_40_points }})
@@ -27,4 +26,6 @@
 		 </td></tr></table>
 	{% endif %}
 {% endfor %}
+
+
 </div>

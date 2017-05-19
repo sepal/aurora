@@ -1,3 +1,4 @@
+
 {% load staticfiles %}
 {% load comments_xtd %}
 
@@ -19,7 +20,7 @@
 {% endblock %}
 
 {% block content %}
-
+    {% comments_boilerplate %}
 
 
     <div id="comments_column_1">
@@ -35,10 +36,7 @@
 		</ul>
 		<div id="lindicator" style="display:none;float:right;position:relative;top:15px;color:silver;font-size:9px"><i class="fa fa-spinner fa-pulse fa-fw"></i>
 </div>
-{#        {% render_xtdcomment_tree for newsfeed %}#}
+{#        {% render_multi_comment_list for newsfeed %}#}
 		</div>
     </div>
 {% endblock content %}
-
-
-

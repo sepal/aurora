@@ -267,12 +267,6 @@ h1 {
 	position:relative;
 }
 
-.stack .title {
-    font-size: 1.4em;
-	z-index:210;
-	position:relative;
-	width:610px;
-}
 
 .stack_done {
 	display:none;
@@ -294,6 +288,13 @@ h1 {
 }
 
 @media all and (max-width: 959px) {
+	.stack .title {
+	    font-size: 1.2em;
+		z-index:210;
+		position:relative;
+		width:800px;
+	}
+
 	.chapter_name {
 		display:none;
 	}
@@ -323,8 +324,10 @@ h1 {
 		width:100%;
 		cursor:pointer;
 		text-shadow:0 0 3px black;
+		overflow:hidden;
+		white-space:nowrap;
 	}
-
+	
 	.stack {
 		box-sizing: border-box;
 	    padding: 10px 10px 5px 10px;
@@ -361,10 +364,17 @@ h1 {
 .filterbar i {
 	float:right;
 	padding-right:8px;
-	text-shadow:none;
+	text-shadow: 0 0 3px black, 0 0 4px black, 0 0 2px black;
 }
 
 @media all and (min-width: 960px) {
+	.stack .title {
+	    font-size: 1.4em;
+		z-index:210;
+		position:relative;
+		width:800px;
+	}
+
 	.challenge_description_text {
 		padding:0.25em;
 	}

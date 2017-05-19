@@ -184,18 +184,24 @@ function submit_revised_elaboration(challenge_id) {
 
     if (isNaN(review_id)) {
         alert("Please select something from the »most helpful« menu, thank you!");
-        return false
+        return false;
     }
     if (changelog.length < 15) {
         alert("Please write a meaningful changelog, thank you!");
-        return false
+        return false;
     }
 
-    save_revised_elaboration(challenge_id)
+    save_revised_elaboration(challenge_id);
 }
 
 function real_submit_revised_clicked() {
     var challenge_id = $('.challenge').attr('id');
     var saved = submit_revised_elaboration(challenge_id)
-      location.href = document.referrer;
+    if (saved != false) {
+        // Wait one second before actually redirecting to ensure
+        // the ajax request to save the elaboration gets sent
+        window.setInterval(function() {
+            location.href = document.referrer;
+        }, 1000);
+    };
 }

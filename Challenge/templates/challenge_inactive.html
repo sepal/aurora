@@ -17,8 +17,8 @@
 {% if elaboration.is_submitted %}
     <i class="fa fa-toggle-down"></i>
 {% endif %}
-    {{ challenge.title|safe }}
-    </div>
+		<script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
+	{{ challenge.title|safe }} <span style="font-weight:normal"> ({{challenge.points}} Pkte)</span></div>
     <div class="challenge_description" >
       {{ challenge.description|safe|urlize }}
       <div class="qa_section">
