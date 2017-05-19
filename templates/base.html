@@ -9,7 +9,7 @@
 <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/autosize.min.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.3.custom.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}trix/trix.css">
@@ -22,8 +22,8 @@
 <body content="text/html">
 
 <script>
-	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
-	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
+    autosize($('#commentTextarea'));
+	autosize($('#replyTextarea'));
 </script>
 
 {% block navigation %}
