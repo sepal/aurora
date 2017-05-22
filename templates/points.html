@@ -221,7 +221,7 @@
                     {% endif %}
                     )">
               <script>document.write(ar)</script>%
-              as »Helpful« (&empty; is {{review_evaluations_helpful_ratio|floatformat:"0"}}%)
+              as »Helpful« (&empty; is {{review_evaluations_helpful_ratio|floatformat:-1}}%)
             </span>
             <br>
             <span
@@ -233,7 +233,7 @@
                     {% endif %}
                     )">
               <script>document.write(br)</script>%
-              as »OK« (&empty; is {{review_evaluations_good_ratio|floatformat:"0"}}%)
+              as »OK« (&empty; is {{review_evaluations_good_ratio|floatformat:-1}}%)
             </span>
             <br>
             <span
@@ -245,7 +245,7 @@
                     {% endif %}
                     )">
               <script>document.write(cr)</script>%
-              as »Meaningless« (&empty; is {{review_evaluations_bad_ratio|floatformat:"0"}}%)
+              as »Meaningless« (&empty; is {{review_evaluations_bad_ratio|floatformat:-1}}%)
             </span>
             <br>
             <span
@@ -257,7 +257,7 @@
                     {% endif %}
                     )">
               <script>document.write(dr)</script>%
-              as »Minimalist/offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
+              as »Minimalist/offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:-1}}%)
             </span>
           </td>
         </tr>
