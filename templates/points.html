@@ -23,7 +23,7 @@
         </tr>
 		</table><div class="final_list"  style="display:none"><table>
 				{% for stack in stack_data.course_stacks %} <!-- loop 1: evaluated, valid challenges -->
-		          {% if stack.is_submitted and stack.status.status == "Evaluated." and stack.points_earned != 0 %}
+		          {% if stack.is_submitted and stack.status.status == 7 and stack.points_earned != 0 %}
 		            <tr class="pZeile{{ forloop.parentloop.counter }}">
 		              <td class="stack_name">
 		                <a style="text-decoration:none; color:black;"
@@ -84,6 +84,7 @@
     </div>
 
 
+
     <table>
 
 		{% if stack_data.submitted_points_available_total == 0 %}
@@ -101,7 +102,7 @@
 	        </tr>
 			</table><div class="sub_list" style="display:none"><table>
 	        {% for stack in stack_data.course_stacks %} <!-- loop 3: challenges in evaluation -->
-	          {% if stack.is_submitted and stack.status.status != "Evaluated." %}
+	          {% if stack.is_submitted and stack.status.status != 7 %}
 	            <tr class="pZeile{{ forloop.parentloop.counter }}">
 	              <td class="stack_name">
 	                <a style="text-decoration:none; color:black;"
