@@ -18,7 +18,7 @@
         <tr class="sum">
           <td class="letztezeile sum">
 			  <a href="javascript:tggle('.final_list');void(0);" style="color:black;text-decoration:none">
-				  <i  style="{% if stack in stack_data.course_stacks %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-angle-down fa-lger"></i> Awarded points so far</a></td>
+				  <i  style="{% if stack_data.evaluated_points_earned_total %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-angle-down fa-lger"></i> Awarded points so far</a></td>
           <td class="letztezeile punkte"><span style="color:gray">{{ stack_data.evaluated_points_available_total }}</span> &nbsp;{{ stack_data.evaluated_points_earned_total }}</td>
         </tr>
 		</table><div class="final_list"  style="display:none"><table>
@@ -33,7 +33,7 @@
 		                </a>
 		              </td>
 		              <td class="punkte" style="vertical-align:bottom;">
-		                {{ stack.points_earned }}/{{ stack.points_available }}
+		                {{ stack.points_available }}&nbsp;&nbsp;{{ stack.points_earned }}
 		              </td>
 		            </tr>
 		          {% endif %}
@@ -69,15 +69,15 @@
     <div class="extra_list" style="display:none">
       <table>
         <tr class="pZeile1">
-          <td>Writing Reviews</td>
+          <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Writing Reviews</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_reviews }}</td>
         </tr>
         <tr class="pZeile1">
-          <td>Comments</td>
+          <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Comments</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_comments }}</td>
         </tr>
         <tr class="pZeile1">
-          <td>Rating Reviews</td>
+          <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Rating Reviews</td>
           <td class="punkte">{{ stack_data.extra_points_earned_by_rating_reviews }}</td>
         </tr>
       </table>
@@ -90,7 +90,7 @@
 		{% if stack_data.submitted_points_available_total == 0 %}
 	        <tr class="sum">
 	          <td class="letztezeile sum" style="color:gray">
-				  	<i  style="visibility:hidden" class="fa fa-angle-down fa-2x"></i> In Evaluation</td>
+				  	<i  style="visibility:hidden" class="fa fa-angle-down fa-lger"></i> In Evaluation</td>
 	          <td class="letztezeile punkte" style="color:gray">&ndash;<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
 	        </tr>
 		{% else %}
@@ -163,7 +163,7 @@
         <tr class="sum">
           <td  style="color:gray">
 			 <i style="color:rgba(0,0,0,0);" class="fa fa-angle-down fa-lger"></i> Optimistic Sum</td>
-          <td class="punkte" style="vertical-align:bottom;color:gray"><span style="color:lightgray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;&nbsp;{{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total}}
+          <td class="punkte" style="vertical-align:bottom;color:gray"><span style="color:lightgray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;&nbsp;{{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total|add:stack_data.total_extra_points_earned}}
 		  </td>
 	  	</tr>
 {% comment %}
