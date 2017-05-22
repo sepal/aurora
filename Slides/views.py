@@ -191,7 +191,7 @@ def search(request, course_short_title=None):
 
         title = 'nothing found'
         if len(complete_list) != 0:
-            title = 'results found for "' + query + '":'
+            title = 'results found:'
 
     context = {
         "title": title,
