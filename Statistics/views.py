@@ -4,6 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q, Sum, Count
 
+from AuroraProject.decorators import aurora_login_required
 from Elaboration.models import Elaboration
 from Stack.models import Stack, StackChallengeRelation
 from Course.models import Course
@@ -16,7 +17,8 @@ from Comments.models import Comment
 
 # @staff_member_required
 
-@user_passes_test(lambda u: u.is_superuser)
+@aurora_login_required()
+@staff_member_required
 def statistics(request, course_short_title=None):
     data = {}
     course = Course.get_or_raise_404(course_short_title)

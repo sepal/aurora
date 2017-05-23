@@ -15,3 +15,38 @@ table {
 .review-evaluation-table {
     width: 600px;
 }
+
+.scoretable {
+	width:100%;
+	position:relative;
+}
+
+
+.scoretable td {
+	
+}
+
+.Raglin {
+	text-align:center;
+}
+
+.scoretable td span {
+	display:block;
+	height:40px;
+	width:40px;
+	border-radius:200px;
+	border:2px solid black;
+	background:white;
+	text-align:center;
+	padding-top:9px;
+    box-sizing: border-box;
+}
+
+
+.aLine {
+	display:block;
+	width:80%;
+	position:relative;
+	top:28px;
+	border:1px dotted black;
+}

@@ -108,6 +108,7 @@
 			{% endfor %}
 		</table>
 	</td><td  width=33%  valign=top  style="padding:1em">
+ {% if user.is_superuser %} 
 	    <table class="tutor-table" width=100%>
 				
 	        <tr>
@@ -151,6 +152,27 @@
 			{% endif %}
 	    {% endfor %}
 	    </table>
+{% else %}
+	experimental: your tutor evaluation count position 
+	<hr class="aLine">
+	<table width="100%" class="scoretable">
+	    <tr>
+		{% for tutor in tutors|dictsortreversed:"evaluations" %}
+			{% if forloop.first %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% if forloop.counter = 2 %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% if tutor.nickname = user.nickname %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+		{% endfor %}
+	    {% for tutor in tutors|dictsortreversed:"evaluations" %}
+			{% if forloop.revcounter = 2 %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% if forloop.last %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+		{% endfor %}
+		</tr>
+		<tr>
+			<td colspan="2">highest count</td>
+			<td>&nbsp;&nbsp;you</td>
+			<td colspan="2" class="Raglin">lowest count</td>
+	</table>
+{% endif %}
 		<br><br>
 	    <table width=100%>
 	        <tr>
