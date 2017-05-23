@@ -27,7 +27,7 @@ table {
 }
 
 .Raglin {
-	text-align:center;
+	text-align:right;
 }
 
 .scoretable td span {
@@ -40,18 +40,27 @@ table {
 	text-align:center;
 	padding-top:9px;
     box-sizing: border-box;
+	margin: 0 auto;
 }
 
 
-.aLine {
+.aLine1 {
 	display:block;
 	width:80%;
 	position:relative;
-	top:28px;
-	border:1px dotted black;
+	top:40px;
+	border:1px solid black;
 }
 
-.you {
+.aLine2 {
+	display:block;
+	width:60%;
+	position:relative;
+	top:30px;
+	border:2px dotted white;
+}
+
+.you,.youX {
 	color:white;
 	background:black!important;
 }
