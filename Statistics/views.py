@@ -50,6 +50,7 @@ def create_stat_data(course, data):
     data['reviews'] = reviews(course)
     data['commenter_top_25'] = commenter_top_x(course, 25)
     data['tutors'] = tutor_statistics(course)
+    data['tutors0'] = tutor_statistics_reduced(course)
     data['review_evaluating_students_top_10'] = review_evaluating_students_top_x(course, 10)
     data['evaluated_final_tasks'] = evaluated_final_tasks(course)
     data['not_evaluated_final_tasks'] = not_evaluated_final_tasks(course)
@@ -162,6 +163,9 @@ def commenter_top_x(course, x):
     return commenters
 
 
+def notZero(tutor):
+    return tutor['all_evaluations'] != 0
+    
 def tutor_statistics(course):
     tutors = AuroraUser.objects.filter(is_staff=True).values('id', 'nickname', 'first_name', 'last_name').order_by('id')
     for tutor in tutors:
@@ -190,6 +194,12 @@ def tutor_statistics(course):
                 .count()
         )
     return tutors
+
+def tutor_statistics_reduced(course):
+    tutors = tutor_statistics(course)
+    new_tutors = [item for item in tutors if notZero(item)]
+    return new_tutors
+
 
 
 def review_evaluating_students_top_x(course, x):

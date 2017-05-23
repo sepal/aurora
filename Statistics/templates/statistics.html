@@ -157,14 +157,14 @@
 	<hr class="aLine">
 	<table width="100%" class="scoretable">
 	    <tr>
-		{% for tutor in tutors|dictsortreversed:"all_evaluations" %}
+		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 			{% if forloop.first %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 			{% if forloop.counter = 2 %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 		{% endfor %}
-		{% for tutor in tutors|dictsortreversed:"all_evaluations" %}
+		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 			{% if tutor.nickname = user.nickname %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 		{% endfor %}
-	    {% for tutor in tutors|dictsortreversed:"evaluations" %}
+	    {% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 			{% if forloop.revcounter = 2 %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 			{% if forloop.last %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 		{% endfor %}
