@@ -162,7 +162,7 @@
 			{% if forloop.counter = 2 %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 		{% endfor %}
 		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
-			{% if tutor.nickname = user.nickname %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% if tutor.nickname = user.nickname %}<td width="20%"><span class="you">{{tutor.all_evaluations}}</span></td>{% endif %}
 		{% endfor %}
 	    {% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 			{% if forloop.revcounter = 2 %}<td width="20%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
