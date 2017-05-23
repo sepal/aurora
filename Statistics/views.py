@@ -165,7 +165,10 @@ def commenter_top_x(course, x):
 
 def notZero(tutor):
     return tutor['all_evaluations'] != 0
-    
+
+def notFake(tutor):
+    return tutor['all_evaluations'] != 0 or tutor['reviews'] != 0 or tutor['comments'] != 0
+        
 def tutor_statistics(course):
     tutors = AuroraUser.objects.filter(is_staff=True).values('id', 'nickname', 'first_name', 'last_name').order_by('id')
     for tutor in tutors:
@@ -193,7 +196,8 @@ def tutor_statistics(course):
                 .filter(author__id=tutor['id'])
                 .count()
         )
-    return tutors
+    new_tutors = [item for item in tutors if notFake(item)]
+    return new_tutors
 
 def tutor_statistics_reduced(course):
     tutors = tutor_statistics(course)
