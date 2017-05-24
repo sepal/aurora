@@ -109,11 +109,13 @@
 	                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
 	                  <i style="color:gray" class="fa fa-circle-o"></i>
 	                  <abbr title="{{stack.stack.get_final_challenge.id}}">{{ stack.stack.title|truncatechars:36 }}</abbr>
+					  {% comment %}
 					  {% for task in final_tasks %}
 					  {% if task.id = stack.stack.get_final_challenge.id %}
 					  	<abbr title="waiting for eval.+already evaluated" style="color:gray">({{task.not_evaluated}}+{{task.evaluated}})
 					  {% endif %}
 					  {% endfor %}
+					  {% endcomment %}
 	                </a>
 	              </td>
 	              <td class="punkte" style="vertical-align:bottom;">
