@@ -17,6 +17,8 @@ from pprint import pprint
 from Course.models import *
 from random import randint
 import logging
+from functools import lru_cache
+from memoize import memoize
 
 
 logger = logging.getLogger('review')
@@ -49,6 +51,7 @@ class Elaboration(models.Model):
             return True
         return False
 
+    @memoize(timeout=5)
     def is_evaluated(self):
         evaluation = self.get_evaluation()
         if evaluation:
@@ -56,6 +59,7 @@ class Elaboration(models.Model):
                 return True
         return False
 
+    @memoize(timeout=5)
     def get_evaluation(self):
         evaluation = Evaluation.objects.filter(submission=self)
         if evaluation.exists():
