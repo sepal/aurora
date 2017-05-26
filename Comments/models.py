@@ -204,7 +204,7 @@ class Comment(models.Model):
     #         comment.requester = requester
 
     @staticmethod
-    @memoize(timeout=2)
+    @memoize(timeout=5)
     def set_flags(comment_set, requester):
         for comment in comment_set:
             comment.requester = requester
