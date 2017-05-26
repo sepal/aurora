@@ -47,7 +47,7 @@
             <a href="{% url 'Evaluation:home' course.short_title %}">Evaluation</a></li>
         {% endif %}
 
-        {% if user.is_superuser %}
+        {% if user.is_staff %}
           <li id="statistics-li">
             <a href="{% url 'Statistics:home' course.short_title %}">Statistics</a></li>
         {% endif %}
@@ -92,7 +92,7 @@
           <li id="evaluation-li-bottom"><a href="{% url 'Evaluation:home' course.short_title %}"><i class="fa fa-star-half-empty"></i><div class="icontext">Eval</div></a></li>
         {% endif %}
 
-        {% if user.is_superuser %}
+        {% if user.is_staff %}
           <li id="statistics-li-bottom"><a href="{% url 'Statistics:home' course.short_title %}"><i class="fa fa-bar-chart"></i><div class="icontext">Stats</div></a></li>
         {% endif %}
         <li id="notifications-li-bottom" class="unread_notifications">
