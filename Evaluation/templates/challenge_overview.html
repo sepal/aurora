@@ -3,13 +3,37 @@
 {% load comments %}
 {% comments_boilerplate %}
 
-<div class="detail_left">
+<script>
+	
+	function countChars(x) {
+		return (x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+	}
+	
+</script>
+
+<div class="detail_left_bottom">
   <br>
+{% comment %} 
+ <div class="new_overview_task_title"><b>{{elaboration.challenge.title}}</b> ({{stack.title}})</div>
+{% endcomment %} 
+  
+  {% if challenge_data.final == False %}
+  <div class="indicators-overview" style="float:right;position:relative;top:-5px;background:white;padding:4px 3px 3px 4px;border-radius:15px 4px 4px 15px">
+      {% include 'elaboration_indicators.html' with elaboration=elaboration %}
+	  <div>
+    	  	<script>
+    			$(".indicator:contains('0')").addClass('zero_reviews');
+    		</script>
+		</div>
+  </div>
+  {% endif %}
   <span style="cursor:pointer;" onclick="$('#challenge_description_{{elaboration.challenge.id}}').slideToggle('fast');">
     <b><i class="fa fa-toggle-down"></i> Challenge/Task description</b><br><br>
   </span>
 
   <div id="challenge_description_{{elaboration.challenge.id}}" class="challenge_description" style="display: none;" >
+	  
+	  
     <div class="challenge_description_text">
       <b>{{ stack.title }}</b> <br>
       {{ stack.description|safe|urlize }} <br><br>
@@ -28,18 +52,18 @@
     </div>
   </div>
 
-  <div class="indicators-overview">
-      {% include 'elaboration_indicators.html' with elaboration=elaboration %}
-      <script>
-    		$(".indicator:contains('0')").addClass('zero_reviews');
-    	</script>
-  </div>
 
   {% render_original_uploads elaboration %}
   {% if elaboration.elaboration_text  %}
-    <div class="submitted-content">
+    <div class="submitted-content" style="position:relative">
         <textarea id="evaluation-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
-        <trix-editor class="trix-content" input="evaluation-editor-{{elaboration.id}}"></trix-editor>
+        <trix-editor class="trix-content" input="evaluation-editor-{{elaboration.id}}" id="evaluation-editor-{{elaboration.id}}"></trix-editor><br>
+		<div class="new_word_count">
+{% comment %}
+			<script> document.write(countChars("{{elaboration.elaboration_text}}"));
+			</script>
+{% endcomment %}
+		</div>
     </div>
   {% endif %}
 
@@ -51,9 +75,17 @@
 
   {% render_revised_uploads elaboration %}
   {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
-      <div class="submitted-content">
+      <div class="submitted-content" style="position:relative">
           <textarea id="evaluation-revised-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text}}</textarea>
           <trix-editor class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}"></trix-editor>
+		  <br>
+  		<div class="new_word_count">
+{% comment %}
+  			<script> document.write(countChars("{{elaboration.revised_elaboration_text}}"));
+  			</script>
+{% endcomment %}
+  		</div>
+		  
       </div>
   {% endif %}
 

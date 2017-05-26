@@ -69,6 +69,17 @@
 	margin-top:0.5em;
 }
 
+.review_overview_review_questions {
+	color:#999;
+}
+
+.review_overview_review_questions .review_answer {
+	border:0;
+}
+
+.review_overview_review_questions textarea,.review_overview_review_questions input {
+	color:black;
+}
 .question_container div {
 /*	color:#666; */
 }
@@ -136,7 +147,7 @@ input[type=submit] {
 	padding:1px;
 }
 
-.overview_left, .overview_right, .detail_left, .detail_right {
+.overview_left, .overview_right, .detail_left, .detail_right,.detail_left_new, .detail_right_new, .detail_left_bottom {
     background-color: #E7FFCF;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -176,6 +187,32 @@ th {
     padding: 10px;
 }
 
+.detail_left_bottom {
+    float: left;
+    width: 49%;
+    padding: 0 10px;
+	border-radius: 0 0 9px 9px;
+}
+
+.detail_left_new {
+	background-color:white;
+    float: left;
+    width: 49%;
+    padding: 0 10px;
+	border-radius: 9px 9px 0 0;
+	margin-bottom:12px;
+}
+
+.detail_left_new .gravatar {
+	display:none;
+}
+
+.detail_right_new {
+    float: right;
+    width: 49%;
+    background-color: white;
+    padding: 0 10px;
+}
 .detail_right {
     float: right;
     width: 49%;
@@ -202,6 +239,8 @@ th {
 	clear:both;
 }
 
+.evaluation-container-new {
+}
 .points, .evaluation {
 	border:1px solid rgba(0,0,0,0.2);
     border-radius: 5px;
@@ -229,7 +268,7 @@ th {
 }
 
 .evaluation {
-    min-height: 80px;
+    min-height: 88px;
     margin-bottom: 20px;
     padding: 5px;
 	overflow: hidden;
@@ -912,9 +951,21 @@ td.diff_header {
     border-radius:0 3px 3px 0;
 }
 
+
 .tags, .tag_list {
     clear:both;
     width:80%;
+}
+
+.review_overview_tags {
+	margin-top:9px;
+}
+
+.new_overview_tags {
+	width:99%;
+	padding:3px;
+	border-radius:3px;
+	margin-top:3px;
 }
 
 .tag {
@@ -945,6 +996,16 @@ td.diff_header {
   height: 1.85em;
   padding: 3px 3px 3px 3px;
   display: inline-block;
+}
+
+.new_overview_tags i {
+	color:white;
+	background:gray;
+	padding:2px;
+	width:14px;
+	height:14px;
+	border-radius:3px;
+	margin-right:4px;
 }
 
 .tag-load-reviews {
@@ -982,6 +1043,13 @@ trix-editor a {
   font-size: 1.5em;
 }
 
+.new_overview_task_title {
+	margin-bottom:12px;
+	font-size:120%;
+	width:100%;
+	border-bottom:black;
+}
+
 .content {
   margin: 10px;
 }
@@ -990,39 +1058,43 @@ trix-editor a {
     height: 30px;
     float: left;
     clear: both;
+	width:100%;
+	background:#E7FFCF;
 }
 
 .tabs-menu li {
     height: 30px;
     line-height: 30px;
     float: left;
-    margin-right: 10px;
-    background-color: #ccc;
-    border-top: 1px solid #d4d4d1;
-    border-right: 1px solid #d4d4d1;
-    border-left: 1px solid #d4d4d1;
+    margin-right: 0px;
+	width:20%;
+    background-color: #E7FFCF;
+	overflow:hidden;
+	border-right:4px solid white;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	white-space:nowrap;
 }
 
 .tabs-menu li.current {
     position: relative;
-    background-color: #fff;
-    border-bottom: 1px solid #fff;
+	background-color:#fff;
     z-index: 5;
+	border-bottom:none;
 }
 
 .tabs-menu li a {
-    padding: 10px;
-    text-transform: uppercase;
-    color: #fff;
+    padding: 10px 5px;
+    color: rgb(58, 201, 88);
     text-decoration: none;
 }
 
 .tabs-menu .current a {
-    color: #2e7da3;
+    color: black;
+	font-weight:bold;
 }
 
 .tab {
-    border: 1px solid #d4d4d1;
     background-color: #fff;
     float: left;
     margin-bottom: 20px;

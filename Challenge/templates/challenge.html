@@ -37,7 +37,7 @@
 
     <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
 		<script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
-	<div class="challenge_description_title">{{ challenge.title|safe }} <span style="font-weight:normal"> ({{challenge.points}} points) <a href="../stack?id={{challenge.get_stack.id}}"><i class="fa fa-arrow-circle-right button"></i></a> {{challenge.get_stack.title}}</span></div>
+	<div class="challenge_description_title">{{ challenge.title|safe }} <span style="font-weight:normal"> ({{challenge.points}} points) <a href="../challenge/stack?id={{challenge.get_stack.id}}" style="text-decoration: none;color:black"><i class="fa fa-arrow-circle-right button"></i> {{challenge.get_stack.title}}</span></a></div>
 	{% if elaboration.is_submitted %}
 		<button style="font-size:16px" class="R"> toggle details </button>
 	{% endif %}

@@ -15,3 +15,52 @@ table {
 .review-evaluation-table {
     width: 600px;
 }
+
+.scoretable {
+	width:100%;
+	position:relative;
+}
+
+
+.scoretable td {
+	
+}
+
+.Raglin {
+	text-align:right;
+}
+
+.scoretable td span {
+	display:block;
+	height:40px;
+	width:40px;
+	border-radius:200px;
+	border:2px solid black;
+	background:white;
+	text-align:center;
+	padding-top:9px;
+    box-sizing: border-box;
+	margin: 0 auto;
+}
+
+
+.aLine1 {
+	display:block;
+	width:80%;
+	position:relative;
+	top:40px;
+	border:1px solid black;
+}
+
+.aLine2 {
+	display:block;
+	width:60%;
+	position:relative;
+	top:30px;
+	border:2px dotted white;
+}
+
+.you,.youX {
+	color:white;
+	background:black!important;
+}
