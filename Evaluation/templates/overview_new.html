@@ -11,23 +11,22 @@
             <th>student</th>
             <th>
                 elaboration
-                <i class="fa fa-sort-amount-asc" onclick="sort('elab_asc')" style="cursor:pointer;color:gray"></i>
-                <i class="fa fa-sort-amount-desc" onclick="sort('elab_desc')"  style="cursor:pointer;color:gray"></i>
+                <i class="fa fa-sort-amount-asc elab_asc" onclick="sort_new('elab_asc')" style="cursor:pointer;color:gray"></i>
+                <i class="fa fa-sort-amount-desc elab_desc" onclick="sort_new('elab_desc')"  style="cursor:pointer;color:gray"></i>
             </th>
             {%  if complaints %}
                 <th>
                     last comment
-                    <i class="fa fa-sort-amount-asc" onclick="sort('post_desc')"  style="cursor:pointer;color:gray"></i>
-                    <i class="fa fa-sort-amount-desc" onclick="sort('post_asc')"  style="cursor:pointer;color:gray"></i>
+                    <i class="fa fa-sort-amount-asc post_desc" onclick="sort_new('post_desc')"  style="cursor:pointer;color:gray"></i>
+                    <i class="fa fa-sort-amount-desc post_asc" onclick="sort_new('post_asc')"  style="cursor:pointer;color:gray"></i>
                 </th>
             {% else %}
                 <th>
                     hand in
-                    <i class="fa fa-sort-amount-asc" onclick="sort('date_desc')"  style="cursor:pointer;color:gray"></i>
-                    <i class="fa fa-sort-amount-desc" onclick="sort('date_asc')"  style="cursor:pointer;color:gray"></i>
+                    <i class="fa fa-sort-amount-asc date_desc" onclick="sort_new('date_desc')"  style="cursor:pointer;color:gray"></i>
+                    <i class="fa fa-sort-amount-desc date_asc" onclick="sort_new('date_asc')"  style="cursor:pointer;color:gray"></i>
                 </th>
             {% endif %}
-            <th class="indicator_field" >reviews</th>
         </tr>
 
         {% paginate elaborations %}
@@ -46,9 +45,6 @@
                 {% else %}
                     <td class="timestamp" title="{{ elaboration.submission_time }}">{{ elaboration.submission_time|naturaltime}}</td>
                 {% endif %}
-                <td>
-                    {% include 'elaboration_indicators.html' with elaboration=elaboration %}
-                </td>
             </tr>
         {% endfor %}
 
@@ -79,6 +75,15 @@
 
 	<script>
 		$(".indicator:contains('0')").addClass('zero_reviews');
+
+    $(document).ready(function() {
+      current_sort = localStorage.getItem('current_sort');
+      if (current_sort) {
+        $('.' + current_sort).css('color', '#3AC958');
+      }
+
+    });
+
 	</script>
 
 {% endblock %}
