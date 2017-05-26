@@ -163,7 +163,7 @@
 				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
 				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 			{% elif forloop.counter = 2 %}
-				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="you">{{tutor.all_evaluations}}</span></td>  <style>.you {visibility:hidden!important;}</style>
+				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td>  <style>.you {visibility:hidden!important;}</style>
 				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 			{% endif %}
 		{% endfor %}
