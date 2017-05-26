@@ -6,6 +6,7 @@ django-el-pagination==2.1.2
 django-debug-toolbar==1.4
 django-taggit==0.19.1
 django-suit==0.2.18
+django-debug-toolbar==1.4
 
 # needed for plagcheck worker side
 django-celery==3.2.1
