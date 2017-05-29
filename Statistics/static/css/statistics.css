@@ -21,6 +21,12 @@ table {
 	position:relative;
 }
 
+.center {
+	border:2px solid white!important;
+	width:60px!important;
+	font-weight:bold;
+}
+
 
 .scoretable td {
 	
