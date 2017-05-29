@@ -114,7 +114,7 @@
 	<hr class="aLine2">
 	<table width="100%" class="scoretable">
 	    <tr>
-		{% for tutor in tutors|dictsortreversed:"all_evaluations" %}
+		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 			{% if forloop.first %}
 				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
 				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
@@ -124,7 +124,7 @@
 			{% endif %}
 		{% endfor %}
 		<td width="40%"><span class="center">&#216; {{averageTutor|floatformat:1}}</span></td>
-	    {% for tutor in tutors|dictsortreversed:"all_evaluations" %}
+	    {% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 			{% if forloop.revcounter = 2 %}
 				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
 				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
@@ -133,7 +133,7 @@
 				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
 			{% endif %}
 		{% endfor %}
-		{% for tutor in tutors|dictsortreversed:"all_evaluations" %}
+		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 			{% if tutor.nickname = user.nickname %}<td width="40%"><span class="you">{{tutor.all_evaluations}}</span></td>{% endif %}
 		{% endfor %}
 		</tr>
