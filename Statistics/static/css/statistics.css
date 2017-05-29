@@ -52,16 +52,18 @@ table {
 
 .aLine1 {
 	display:block;
-	width:80%;
+	width:75%;
 	position:relative;
+	left:-5px;
 	top:40px;
 	border:1px solid black;
 }
 
 .aLine2 {
 	display:block;
-	width:60%;
+	width:40%;
 	position:relative;
+	left:-10px;
 	top:30px;
 	border:2px dotted white;
 }
