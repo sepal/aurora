@@ -21,10 +21,15 @@ $(document).ready(function() {
         });
         $('.review_answer').redraw();
     });
-
-    $("trix-editor").attr('contenteditable', 'false');
+	$("trix-editor").attr('contenteditable', 'false');
+	document.addEventListener('trix-initialize',EcountChars);
 });
 
+function EcountChars() {
+	var trixDings = document.querySelector("trix-editor");
+	var x = trixDings.editor.getDocument().toString();
+	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+}
 
 $(function() {
     $(".submit_evaluation").click(function(event) {
