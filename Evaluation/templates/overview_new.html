@@ -33,10 +33,15 @@
         {% for elaboration in elaborations %}
             <tr class="{% cycle 'darkRow' 'lightRow' %}" onclick="document.location = '{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{elaboration.id}}'">&nbsp;
                 <td>
+{% if user.is_superuser %}  
                   {%  if elaboration.user.avatar %}
                   <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle">
                     {%  endif %}
                   {{ elaboration.user.nickname }}
+{% else %}
+                  <img class="gravatar" src="{{ STATIC_URL }}img/nobody.png" style="vertical-align:middle">
+			username anonymized
+{% endif %}
                 </td>
 
                 <td>{{ elaboration.challenge.get_stack.title|safe }}</td>
