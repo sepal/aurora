@@ -77,9 +77,9 @@
   {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
       <div class="submitted-content" style="position:relative">
           <textarea id="evaluation-revised-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text}}</textarea>
-          <trix-editor class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}"></trix-editor>
+          <trix-editor id="trix2" class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}"></trix-editor>
 		  <br>
-  		<div class="new_word_count">
+  		<div class="new_word_count new_word_count_2">
   		</div>
 		  
       </div>
