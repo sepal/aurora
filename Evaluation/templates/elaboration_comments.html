@@ -1,8 +1,19 @@
 {% load comments %}
 
 {% if elaboration %}
+ {% if user.is_superuser %} 
+ 
     <div class="comments">
         <b>Discuss this work with {{ elaboration.user.first_name }} {{ elaboration.user.last_name }} ({{ elaboration.user.nickname }})</b>
         {% render_multi_comment_list for elaboration %}
     </div>
+    
+  {% else %}
+  
+    <div class="comments">
+        <b>Discuss this work with the author</b>
+        {% render_multi_comment_list for elaboration %}
+    </div>
+ 
+  {% endif %}
 {% endif %}
