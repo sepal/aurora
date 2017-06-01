@@ -29,6 +29,9 @@ function EcountChars() {
 	var trixDings = document.querySelector("trix-editor");
 	var x = trixDings.editor.getDocument().toString();
 	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+	trixDings = document.querySelector("#trix2");
+	x = trixDings.editor.getDocument().toString();
+	$('.new_word_count_2').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
 }
 
 $(function() {
