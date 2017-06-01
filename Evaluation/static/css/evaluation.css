@@ -1055,11 +1055,12 @@ trix-editor a {
 }
 
 .tabs-menu {
-    height: 30px;
-    float: left;
-    clear: both;
+	height: 30px;
+	float: left;
+	clear: both;
 	width:100%;
 	background:#E7FFCF;
+	margin-top:18px;
 }
 
 .tabs-menu li {
@@ -1067,7 +1068,7 @@ trix-editor a {
     line-height: 30px;
     float: left;
     margin-right: 0px;
-	width:20%;
+	width:19%;
     background-color: #E7FFCF;
 	overflow:hidden;
 	border-right:4px solid white;
