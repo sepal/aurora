@@ -1,3 +1,6 @@
+
+ {% if user.is_superuser %} 
+
 <img class="gravatar" src="{{ user.avatar.url }}" style="vertical-align:middle"
 onclick="$('#top_detail').toggleClass('hidden_detail')">
 {{ user.nickname }} ({{ user.first_name }} {{ user.last_name }}/{{ user.username }})
@@ -15,3 +18,17 @@ onclick="$('#top_detail').toggleClass('hidden_detail')">
         {% include 'tags.html' with tagged_object=user %}
     </div>
 </div>
+
+{% else %}
+
+<img class="gravatar" src="{{ STATIC_URL }}img/nobody.png" style="vertical-align:middle"
+onclick="$('#top_detail').toggleClass('hidden_detail')">
+user info anonymized
+<div class="author_detail staff_detail" id="top_detail" style="overflow:auto; height:auto;">
+    <img src='{{nobody.png}}'>
+    <div class="tags tags-{{ user.get_content_type_id }}-{{ user.id }}">
+        {% include 'tags.html' with tagged_object=user %}
+    </div>
+</div>
+
+{% endif %}
