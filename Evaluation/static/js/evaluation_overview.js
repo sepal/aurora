@@ -16,7 +16,8 @@ $(document).ready(function() {
         $(tab).fadeIn();
 
         $(".review_answer").each(function () {
-            this.style.height = (this.scrollHeight+5)+'px';
+    	    if (this.value == "") {this.style.height = '5px';} 
+    	    else {this.style.height = (this.scrollHeight+5)+'px';}
         });
         $('.review_answer').redraw();
     });
