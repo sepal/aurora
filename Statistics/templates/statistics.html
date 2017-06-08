@@ -108,6 +108,42 @@
 			{% endfor %}
 		</table>
 	</td><td  width=33%  valign=top  style="padding:1em">
+
+	<div style="position:relative">experimental: your tutor evaluation count position </div>
+	<hr class="aLine1">
+	<hr class="aLine2">
+	<table width="100%" class="scoretable">
+	    <tr>
+		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
+			{% if forloop.first %}
+				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
+				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% elif forloop.counter = 2 %}
+				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td>  <style>.you {visibility:hidden!important;}</style>
+				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% endif %}
+		{% endfor %}
+		<td width="40%"><span class="center">&#216; {{averageTutor|floatformat:1}}</span></td>
+	    {% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
+			{% if forloop.revcounter = 2 %}
+				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
+				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% elif forloop.revcounter = 1 %}
+				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
+				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
+			{% endif %}
+		{% endfor %}
+	</tr>
+		<tr>
+			<td colspan="2"><br>highest count</td>
+			<td style="text-align:center"><br>&#9899; you:
+		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
+			{% if tutor.nickname = user.nickname %}{{tutor.all_evaluations}}{% endif %}
+		{% endfor %}
+			</td>
+			<td colspan="2" class="Raglin"><br>lowest count</td>
+	</table>
+	<br><br>
  {% if user.is_superuser %} 
 	    <table class="tutor-table" width=100%>
 				
@@ -152,39 +188,6 @@
 			{% endif %}
 	    {% endfor %}
 	    </table>
-{% else %}
-	<div style="position:relative">experimental: your tutor evaluation count position </div>
-	<hr class="aLine1">
-	<hr class="aLine2">
-	<table width="100%" class="scoretable">
-	    <tr>
-		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
-			{% if forloop.first %}
-				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
-				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
-			{% elif forloop.counter = 2 %}
-				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="you">{{tutor.all_evaluations}}</span></td>  <style>.you {visibility:hidden!important;}</style>
-				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
-			{% endif %}
-		{% endfor %}
-		{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
-			{% if tutor.nickname = user.nickname %}<td width="40%"><span class="you">{{tutor.all_evaluations}}</span></td>{% endif %}
-		{% endfor %}
-	    {% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
-			{% if forloop.revcounter = 2 %}
-				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
-				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
-			{% elif forloop.revcounter = 1 %}
-				{% if tutor.nickname = user.nickname %}<td width="15%"><span class="youX">{{tutor.all_evaluations}}</span></td> <style>.you {visibility:hidden!important;}</style>
-				{% else %}<td width="15%"><span>{{tutor.all_evaluations}}</span></td>{% endif %}
-			{% endif %}
-		{% endfor %}
-		</tr>
-		<tr>
-			<td colspan="2"><br>highest count</td>
-			<td style="text-align:center"><br>&#9899; you</td>
-			<td colspan="2" class="Raglin"><br>lowest count</td>
-	</table>
 {% endif %}
 		<br><br>
 	    <table width=100%>

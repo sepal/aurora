@@ -16,14 +16,23 @@ $(document).ready(function() {
         $(tab).fadeIn();
 
         $(".review_answer").each(function () {
-            this.style.height = (this.scrollHeight+5)+'px';
+    	    if (this.value == "") {this.style.height = '0px';} 
+    	    else {this.style.height = (this.scrollHeight)+'px';}
         });
         $('.review_answer').redraw();
     });
-
-    $("trix-editor").attr('contenteditable', 'false');
+	$("trix-editor").attr('contenteditable', 'false');
+	document.addEventListener('trix-initialize',EcountChars);
 });
 
+function EcountChars() {
+	var trixDings = document.querySelector("trix-editor");
+	var x = trixDings.editor.getDocument().toString();
+	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+	trixDings = document.querySelector("#trix2");
+	x = trixDings.editor.getDocument().toString();
+	$('.new_word_count_2').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+}
 
 $(function() {
     $(".submit_evaluation").click(function(event) {
