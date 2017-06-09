@@ -1,20 +1,19 @@
+{% if user.is_superuser %} 
 
- {% if user.is_superuser %} 
-
-<img class="gravatar" src="{{ user.avatar.url }}" style="vertical-align:middle"
+<img class="gravatar" src="{{ author.avatar.url }}" style="vertical-align:middle"
 onclick="$('#top_detail').toggleClass('hidden_detail')">
-{{ user.nickname }} ({{ user.first_name }} {{ user.last_name }}/{{ user.username }})
+{{ author.nickname }} ({{ author.first_name }} {{ author.last_name }}/{{ author.username }})
 <div class="author_detail staff_detail" id="top_detail" style="overflow:auto; height:auto;">
-    <img src='{{user.avatar.url}}'>
-    <span class="nick">{{user.nickname}}</span><br>
-    &quot;{{user.statement|urlizetrunc:50}}&quot;<br>
-    {{user.matriculation_number}} - {{user.first_name}} {{user.last_name}}<br>
-    <a href="mailto:{{user.email}}">{{user.email}}</a> &mdash;
-    {% with notification_user_id=user.id course_short_title=course.short_title  %}
+    <img src='{{author.avatar.url}}'>
+    <span class="nick">{{author.nickname}}</span><br>
+    &quot;{{author.statement|urlizetrunc:50}}&quot;<br>
+    {{author.matriculation_number}} - {{author.first_name}} {{author.last_name}}<br>
+    <a href="mailto:{{author.email}}">{{author.email}}</a> &mdash;
+    {% with notification_user_id=author.id course_short_title=course.short_title  %}
         {% include "send_notification_button.html" %}
     {% endwith %}
-    &mdash;   <a href="{% url 'Evaluation:search_user' course_short_title=course.short_title %}?id={{user.id}}">{{user.nickname}}'s work</a>
-    <div class="tags tags-{{ user.get_content_type_id }}-{{ user.id }}">
+    &mdash;   <a href="{% url 'Evaluation:search_user' course_short_title=course.short_title %}?id={{author.id}}">{{author.nickname}}'s work</a>
+    <div class="tags tags-{{ author.get_content_type_id }}-{{ author.id }}">
         {% include 'tags.html' with tagged_object=user %}
     </div>
 </div>
@@ -26,7 +25,7 @@ onclick="$('#top_detail').toggleClass('hidden_detail')">
 user info anonymized
 <div class="author_detail staff_detail" id="top_detail" style="overflow:auto; height:auto;">
     <img src='{{nobody.png}}'>
-    <div class="tags tags-{{ user.get_content_type_id }}-{{ user.id }}">
+    <div class="tags tags-{{ author.get_content_type_id }}-{{ author.id }}">
         {% include 'tags.html' with tagged_object=user %}
     </div>
 </div>

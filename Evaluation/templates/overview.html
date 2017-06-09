@@ -36,7 +36,7 @@
                 <td>
 {% if user.is_superuser %}  
                   {%  if elaboration.user.avatar %}
-                  <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle">
+               	   <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle">
                     {%  endif %}
                   {{ elaboration.user.nickname }}
 {% else %}
