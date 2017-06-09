@@ -16,7 +16,7 @@
   <div id="sticky-info">
     <div class="detail_left_new">
       <h1 class="overview-header">User</h1>
-      {% include 'user_info.html' with user=elaboration_user %}
+      {% include 'user_info.html' with author=elaboration_user %}
       <div class="tags new_overview_tags">
 	  <i class="fa fa-pencil "></i>
         {% for elaboration in elaboration_user.get_elaborations %}

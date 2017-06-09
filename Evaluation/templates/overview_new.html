@@ -33,6 +33,7 @@
         {% for elaboration in elaborations %}
             <tr class="{% cycle 'darkRow' 'lightRow' %}" onclick="document.location = '{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{elaboration.id}}'">&nbsp;
                 <td>
+			    {{user}}
 {% if user.is_superuser %}  
                   {%  if elaboration.user.avatar %}
                   <img class="gravatar" src="{{ elaboration.user.avatar.url }}" style="vertical-align:middle">
