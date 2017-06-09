@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime, date
-
+from functools import lru_cache
 
 class Stack(models.Model):
     title = models.CharField(max_length=100)
@@ -11,22 +11,26 @@ class Stack(models.Model):
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
 
+    @lru_cache(maxsize=128)
     def get_first_challenge(self):
         for relation in StackChallengeRelation.objects.filter(stack=self):
             return relation.challenge.get_first_challenge()
         return None
 
+    @lru_cache(maxsize=128)
     def get_final_challenge(self):
         for relation in StackChallengeRelation.objects.filter(stack=self):
             return relation.challenge.get_final_challenge()
         return None
 
+    @lru_cache(maxsize=128)
     def get_challenges(self):
         challenges = []
         for relation in StackChallengeRelation.objects.filter(stack=self):
             challenges.append(relation.challenge)
         return challenges
 
+    @lru_cache(maxsize=128)
     def get_challenge_image_urls(self):
         challenge_image_urls = []
         for challenge in self.get_challenges():
@@ -58,6 +62,7 @@ class Stack(models.Model):
             points += challenge.points
         return points
 
+    @lru_cache(maxsize=128)
     def get_last_available_challenge(self, user):
         available_challenge = None
         for challenge in self.get_challenges():
@@ -65,6 +70,7 @@ class Stack(models.Model):
                 available_challenge = challenge
         return available_challenge
 
+    @lru_cache(maxsize=128)
     def get_status_text(self, user):
         last_available_challenge = self.get_last_available_challenge(user)
         # TODO: workaround to avoid exception when a user with no stack relations logs in
@@ -73,6 +79,7 @@ class Stack(models.Model):
             return None
         return last_available_challenge.get_status_text(user)
 
+    @lru_cache(maxsize=128)
     def is_blocked(self, user):
         for challenge in self.get_challenges():
             if not challenge.is_final_challenge():
@@ -82,6 +89,7 @@ class Stack(models.Model):
                         return True
         return False
 
+    @lru_cache(maxsize=128)
     def has_enough_peer_reviews(self, user):
         for challenge in self.get_challenges():
             if not challenge.is_final_challenge():

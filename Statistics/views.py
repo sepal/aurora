@@ -13,6 +13,7 @@ from AuroraUser.models import AuroraUser
 from Evaluation.models import Evaluation
 from Review.models import Review, ReviewEvaluation
 from Comments.models import Comment
+from memoize import memoize
 
 
 # @staff_member_required
@@ -25,6 +26,7 @@ def statistics(request, course_short_title=None):
     data = create_stat_data(course,data)
     return render_to_response('statistics.html', data, context_instance=RequestContext(request))
 
+@memoize(timeout=10)
 def create_stat_data(course, data):
     data['course'] = course
     data['students'] = AuroraUser.objects.filter(is_staff=False, is_superuser=False).count()
@@ -169,7 +171,7 @@ def notZero(tutor):
 
 def notFake(tutor):
     return tutor['all_evaluations'] != 0 or tutor['reviews'] != 0 or tutor['comments'] != 0
-        
+
 def tutor_statistics(course):
     tutors = AuroraUser.objects.filter(is_staff=True).values('id', 'nickname', 'first_name', 'last_name').order_by('id')
     for tutor in tutors:

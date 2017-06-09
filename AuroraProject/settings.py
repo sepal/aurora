@@ -164,6 +164,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     # third party apps
     'easy_thumbnails',
+    'memoize',
     # own apps
     'AuroraUser',
     'Challenge',

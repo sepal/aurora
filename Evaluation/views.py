@@ -28,6 +28,7 @@ from Stack.models import Stack
 from Notification.models import Notification
 from PlagCheck.models import Suspicion, SuspicionState, Result, Document
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
+from functools import lru_cache
 
 
 @aurora_login_required()
