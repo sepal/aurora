@@ -51,7 +51,7 @@ class Elaboration(models.Model):
             return True
         return False
 
-    @memoize(timeout=5)
+    # @memoize(timeout=5)
     def is_evaluated(self):
         evaluation = self.get_evaluation()
         if evaluation:
@@ -59,7 +59,7 @@ class Elaboration(models.Model):
                 return True
         return False
 
-    @memoize(timeout=5)
+    # @memoize(timeout=5)
     def get_evaluation(self):
         evaluation = Evaluation.objects.filter(submission=self)
         if evaluation.exists():

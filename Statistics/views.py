@@ -26,7 +26,7 @@ def statistics(request, course_short_title=None):
     data = create_stat_data(course,data)
     return render_to_response('statistics.html', data, context_instance=RequestContext(request))
 
-@memoize(timeout=10)
+# @memoize(timeout=10)
 def create_stat_data(course, data):
     data['course'] = course
     data['students'] = AuroraUser.objects.filter(is_staff=False, is_superuser=False).count()
