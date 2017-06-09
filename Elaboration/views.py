@@ -37,8 +37,26 @@ def save_elaboration(request, course_short_title):
             elaboration.revised_elaboration_text = elaboration_text
             elaboration.extra_review_question = extra_review_question
             elaboration.save()
+        else:
+            raise Http404
+    else:
+        Elaboration.objects.get_or_create(challenge=challenge, user=user, elaboration_text=elaboration_text)
 
-        elif elaboration.is_submitted() and elaboration.can_be_revised:
+    return HttpResponse()
+
+@csrf_exempt
+def save_revision(request, course_short_title):
+    challenge_id = request.POST['challenge_id']
+    challenge = Challenge.objects.get(id=challenge_id)
+    user = request.user
+    if not challenge.is_enabled_for_user(user) and not challenge.is_final_challenge():
+        raise Http404
+
+    # check if elaboration exists
+    if Elaboration.objects.filter(challenge=challenge, user=user).exists():
+        elaboration = Elaboration.objects.all().filter(challenge=challenge, user=user).order_by('id').latest('creation_time')
+
+        if elaboration.is_submitted() and elaboration.can_be_revised:
             elaboration.revised_elaboration_text = request.POST['revised_elaboration_text']
 
             if 'revised_elaboration_changelog' in request.POST:
@@ -56,7 +74,6 @@ def save_elaboration(request, course_short_title):
             elaboration.save()
         else:
             raise Http404
-
     else:
         Elaboration.objects.get_or_create(challenge=challenge, user=user, elaboration_text=elaboration_text)
 
