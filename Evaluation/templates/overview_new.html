@@ -40,7 +40,7 @@
                   {{ elaboration.user.nickname }}
 {% else %}
                   <img class="gravatar" src="{{ STATIC_URL }}img/nobody.png" style="vertical-align:middle">
-			username anonymized
+			{{ elaboration.user.matriculation_number }}
 {% endif %}
                 </td>
 
