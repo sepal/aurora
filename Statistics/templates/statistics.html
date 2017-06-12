@@ -136,8 +136,9 @@
 	</tr>
 		<tr>
 			<td colspan="2"><br>highest count</td>
+			<td style="text-align:center"><br>
 			{% if not user.is_superuser %} 
-			<td style="text-align:center"><br>&#9899; you:
+				&#9899; you:
 				{% for tutor in tutors0|dictsortreversed:"all_evaluations" %}
 					{% if tutor.nickname = user.nickname %}{{tutor.all_evaluations}}{% endif %}
 				{% endfor %}
