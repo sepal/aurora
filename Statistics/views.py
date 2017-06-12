@@ -170,10 +170,10 @@ def notZero(tutor):
     return tutor['all_evaluations'] != 0
 
 def notFake(tutor):
-    return tutor['all_evaluations'] != 0 or tutor['reviews'] != 0 or tutor['comments'] != 0
+    return (tutor['all_evaluations'] != 0 or tutor['reviews'] != 0 or tutor['comments'] != 0) and not tutor['is_superuser']
 
 def tutor_statistics(course):
-    tutors = AuroraUser.objects.filter(is_staff=True).values('id', 'nickname', 'first_name', 'last_name').order_by('id')
+    tutors = AuroraUser.objects.filter(is_staff=True).values('id', 'nickname', 'first_name', 'last_name','is_superuser').order_by('id')
     for tutor in tutors:
         tutor['evaluations'] = (
             Evaluation.objects
