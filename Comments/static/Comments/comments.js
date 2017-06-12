@@ -569,28 +569,33 @@ var COMMENTS = (function(my, $, purgsLoadFilter) {
                 if (comment_list_updates.length > 0) {
                     my.handleCommentListUpdates(comment_list_updates);
                     purgsLoadFilter();
+			        $('#lindicator').fadeOut(200);
                 }
                 if (json.polling_active_interval) {
                     my.POLLING.active_interval = json.polling_active_interval;
+			        $('#lindicator').fadeOut(200);
                 }
                 if (json.polling_idle_interval) {
                     my.POLLING.idle_interval = json.polling_idle_interval;
+			        $('#lindicator').fadeOut(200);
                 }
             },
             error: function() {
                 my.POLLING.increase_interval();
+		        $('#lindicator').fadeOut(200);
             },
             complete: function() {
                 if (keepPolling === true) {
                     my.POLLING.resetTimer();
+			        $('#lindicator').fadeOut(200);
                 }
             },
             beforeSend: function(xhr) {
                 var csrftoken = my.getCsrfToken();
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
+		        $('#lindicator').fadeOut(200);
             }
         });
-        $('#lindicator').fadeOut(200);
     };
 
     my.findCommentListByRef = function(ref_id, ref_type) {
