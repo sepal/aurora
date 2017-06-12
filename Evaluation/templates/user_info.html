@@ -14,7 +14,7 @@ onclick="$('#top_detail').toggleClass('hidden_detail')">
     {% endwith %}
     &mdash;   <a href="{% url 'Evaluation:search_user' course_short_title=course.short_title %}?id={{author.id}}">{{author.nickname}}'s work</a>
     <div class="tags tags-{{ author.get_content_type_id }}-{{ author.id }}">
-        {% include 'tags.html' with tagged_object=user %}
+        {% include 'tags.html' with tagged_object=author %}
     </div>
 </div>
 
