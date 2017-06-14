@@ -2,6 +2,7 @@
 {% load render_uploads %}
 {% load static %}
 {% load comments %}
+{% load notification %}
 {% comments_boilerplate %}
 
 {% block additional_headers %}
@@ -56,6 +57,10 @@
                 {% endfor %}
             </div>
             <div class="spacer"></div>
+            {% if suspect_elaboration %}
+                {% send_notification_button course.short_title suspect_elaboration.user.id %}
+            {% endif %}
+            <div class="spacer"></div>
             <div>
                 <form name="suspicion_state" method="post"
                       action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspicion_id=suspicion.id %}">
@@ -74,7 +79,7 @@
             <div class="plagcheck_compare_label">Source document</div>
             <div class="spacer"></div>
             {% if similar_elaboration %}
-                {% include 'elaboration_info.html' with elaboration=suspicion.similar_doc.elaboration %}
+                {% include 'elaboration_info.html' with elaboration=similar_elaboration %}
             {% endif %}
             <div class="plagcheck_compare_info">
                 {% for key, value in suspicion.similar_doc.document_info.items %}
@@ -87,6 +92,10 @@
                     <div class="info"><label>{{ key }}:</label> {{ value }}</div>
                 {% endfor %}
             </div>
+            <div class="spacer"></div>
+            {% if similar_elaboration %}
+                {% send_notification_button course.short_title similar_elaboration.user.id %}
+            {% endif %}
         </div>
         <div class="clear"></div>
         <div class="plagcheck_verification_info">
@@ -122,6 +131,7 @@
                 </div>
 
                 {% if similar_elaboration %}
+
                     <div class="tags tags-{{ suspicion.similar_doc.elaboration.get_content_type_id }}-{{ suspicion.similar_doc.elaboration.id }}">
                         {% include 'tags.html' with tagged_object=suspicion.similar_doc.elaboration %}
                     </div>
