@@ -104,7 +104,7 @@
                     <div id="suspect_processed"></div>
                 </div>
 
-                {% if suspect_has_elaboration %}
+                {% if suspect_elaboration %}
                     <div class="tags tags-{{ suspicion.suspect_doc.elaboration.get_content_type_id }}-{{ suspicion.suspect_doc.elaboration.id }}">
                         {% include 'tags.html' with tagged_object=suspicion.suspect_doc.elaboration %}
                     </div>
@@ -120,6 +120,16 @@
                     <div id="similar_orig" class="text_disabled"></div>
                     <div id="similar_processed"></div>
                 </div>
+
+                {% if similar_elaboration %}
+                    <div class="tags tags-{{ suspicion.similar_doc.elaboration.get_content_type_id }}-{{ suspicion.similar_doc.elaboration.id }}">
+                        {% include 'tags.html' with tagged_object=suspicion.similar_doc.elaboration %}
+                    </div>
+                    <br />
+                    <div class="spacer"></div>
+
+                    {% include 'elaboration_comments.html' with elaboration=suspicion.similar_doc.elaboration %}
+                {% endif %}
             </div>
         </div>
     </div>

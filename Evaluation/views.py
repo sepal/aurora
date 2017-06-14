@@ -1136,11 +1136,14 @@ def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
         suspect_doc__submission_time__gt=course.start_date,
     )
 
+    # pass no elaboration if one of the documents is from an older database
     try:
         similar_elaboration = suspicion.similar_doc.elaboration
-        suspect_elaboration = suspicion.suspect_doc.elaboration
     except Elaboration.DoesNotExist:
         similar_elaboration = None
+    try:
+        suspect_elaboration = suspicion.suspect_doc.elaboration
+    except Elaboration.DoesNotExist:
         suspect_elaboration = None
 
     context = {
