@@ -1,0 +1,1 @@
+# All plagcheck related views are inside Evaluation app, just templates are used from this app directory
