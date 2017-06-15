@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from datetime import datetime, date
-#from Challenge.models import Challenge
+from Stack.models import *
 import logging
 
 class Course(models.Model):
@@ -22,6 +22,9 @@ class Course(models.Model):
     def get_course_challenges(self):
         challenges = Challenge.models.Challenge.objects.filter(course=self)
         return list(challenges)
+
+    def get_course_chapter_ids(self):
+        return Stack.objects.filter(course=self).distinct('chapter_id').values_list('chapter_id', flat=True)
 
     def user_is_enlisted(self, user):
         try:

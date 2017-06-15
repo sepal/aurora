@@ -228,6 +228,19 @@ class AuroraUser(User):
         has_written_enough_reviews = number_of_written_reviews >= number_of_total_reviews
         return has_written_enough_reviews and has_submitted_enough_elaborations
 
+    def can_enter_final_challenge_performant(self, stack):
+        challenge_ids = StackChallengeRelation.objects.filter(stack=stack).values_list('challenge_id', flat=True)
+
+        number_of_total_challenges = len(challenge_ids) - 1
+        number_of_total_reviews = number_of_total_challenges * 3
+
+        number_of_submitted_elaborations = Elaboration.objects.filter(user=self, submission_time__isnull=False, challenge_id__in=challenge_ids).count()
+        number_of_written_reviews = Review.objects.filter(reviewer=self, elaboration__challenge_id__in=challenge_ids).count()
+
+        has_submitted_enough_elaborations = number_of_submitted_elaborations >= number_of_total_challenges
+        has_written_enough_reviews = number_of_written_reviews >= number_of_total_reviews
+        return has_written_enough_reviews and has_submitted_enough_elaborations
+
     def get_gravatar(self):
         filename = "avatar_" + str(self.id)
         if not os.path.isdir(os.path.join(MEDIA_ROOT,self.upload_path)):
