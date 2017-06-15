@@ -1,0 +1,22 @@
+{% load notification %}
+
+<div class="plagcheck_compare_label">{{ label }} document</div>
+<div class="spacer"></div>
+{% if elab %}
+    {% include 'elaboration_info.html' with elaboration=elab %}
+{% endif %}
+<div class="plagcheck_compare_info">
+    {% for key, value in doc.document_info.items %}
+        <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+    {% endfor %}
+</div>
+<div class="spacer"></div>
+<div class="plagcheck_compare_info">
+    {% for key, value in doc.plagcheck_info.items %}
+        <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+    {% endfor %}
+</div>
+<div class="spacer"></div>
+{% if elab %}
+    {% send_notification_button course.short_title elab.user.id %}
+{% endif %}

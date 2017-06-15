@@ -2,7 +2,6 @@
 {% load render_uploads %}
 {% load static %}
 {% load comments %}
-{% load notification %}
 {% comments_boilerplate %}
 
 {% block additional_headers %}
@@ -37,30 +36,25 @@
                 <div class="no-paginator next">no next</div>
             {% endif %}
         </div>
+
         <div class="clear"></div>
 
         <div class="plagcheck_info_left">
-            <div class="plagcheck_compare_label">Suspicious document</div>
+            {% include "compare_info.html" with elab=suspect_elaboration doc=suspicion.suspect_doc label='Suspicious' %}
+        </div>
+        <div class="plagcheck_info_right">
+            {% include "compare_info.html" with elab=similar_elaboration doc=suspicion.similar_doc label='Source' %}
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="plagcheck_verification_info">
+            {% for key, value in suspicion.suspicion_info.items %}
+                <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+            {% endfor %}
+
             <div class="spacer"></div>
-            {% if suspect_elaboration %}
-                {% include 'elaboration_info.html' with elaboration=suspicion.suspect_doc.elaboration %}
-            {% endif %}
-            <div class="plagcheck_compare_info">
-                {% for key, value in suspicion.suspect_doc.document_info.items %}
-                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                {% endfor %}
-            </div>
-            <div class="spacer"></div>
-            <div class="plagcheck_compare_info">
-                {% for key, value in suspicion.suspect_doc.plagcheck_info.items %}
-                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                {% endfor %}
-            </div>
-            <div class="spacer"></div>
-            {% if suspect_elaboration %}
-                {% send_notification_button course.short_title suspect_elaboration.user.id %}
-            {% endif %}
-            <div class="spacer"></div>
+
             <div>
                 <form name="suspicion_state" method="post"
                       action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspicion_id=suspicion.id %}">
@@ -73,73 +67,17 @@
                     </select>
                 </form>
             </div>
-            <div class="spacer"></div>
         </div>
-        <div class="plagcheck_info_right">
-            <div class="plagcheck_compare_label">Source document</div>
-            <div class="spacer"></div>
-            {% if similar_elaboration %}
-                {% include 'elaboration_info.html' with elaboration=similar_elaboration %}
-            {% endif %}
-            <div class="plagcheck_compare_info">
-                {% for key, value in suspicion.similar_doc.document_info.items %}
-                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                {% endfor %}
-            </div>
-            <div class="spacer"></div>
-            <div class="plagcheck_compare_info">
-                {% for key, value in suspicion.similar_doc.plagcheck_info.items %}
-                    <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-                {% endfor %}
-            </div>
-            <div class="spacer"></div>
-            {% if similar_elaboration %}
-                {% send_notification_button course.short_title similar_elaboration.user.id %}
-            {% endif %}
-        </div>
-        <div class="clear"></div>
-        <div class="plagcheck_verification_info">
-            {% for key, value in suspicion.suspicion_info.items %}
-                <div class="info"><label>{{ key }}:</label> {{ value }}</div>
-            {% endfor %}
-        </div>
+
         <div class="spacer"></div>
         <div class="clear"></div>
+
         <div class="plagcheck_text">
             <div class="plagcheck_text_left">
-                <input type="checkbox" id="show_suspect_orig" value="1">Show original</input>
-                <div class="plagcheck_compare_text">
-                    <div id="suspect_orig" class="text_disabled"></div>
-                    <div id="suspect_processed"></div>
-                </div>
-
-                {% if suspect_elaboration %}
-                    <div class="tags tags-{{ suspicion.suspect_doc.elaboration.get_content_type_id }}-{{ suspicion.suspect_doc.elaboration.id }}">
-                        {% include 'tags.html' with tagged_object=suspicion.suspect_doc.elaboration %}
-                    </div>
-                    <br />
-                    <div class="spacer"></div>
-
-                    {% include 'elaboration_comments.html' with elaboration=suspicion.suspect_doc.elaboration %}
-                {% endif %}
+                {% include 'compare_text.html' with elab=suspect_elaboration id_prefix='suspect' %}
             </div>
             <div class="plagcheck_text_right">
-                <input type="checkbox" id="show_similar_orig" value="1">Show original</input>
-                <div class="plagcheck_compare_text">
-                    <div id="similar_orig" class="text_disabled"></div>
-                    <div id="similar_processed"></div>
-                </div>
-
-                {% if similar_elaboration %}
-
-                    <div class="tags tags-{{ suspicion.similar_doc.elaboration.get_content_type_id }}-{{ suspicion.similar_doc.elaboration.id }}">
-                        {% include 'tags.html' with tagged_object=suspicion.similar_doc.elaboration %}
-                    </div>
-                    <br />
-                    <div class="spacer"></div>
-
-                    {% include 'elaboration_comments.html' with elaboration=suspicion.similar_doc.elaboration %}
-                {% endif %}
+                {% include 'compare_text.html' with elab=similar_elaboration id_prefix='similar' %}
             </div>
         </div>
     </div>
