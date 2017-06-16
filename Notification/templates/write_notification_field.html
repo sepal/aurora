@@ -1,0 +1,27 @@
+{% load static %}
+{% block additional_headers %}
+  <link rel="stylesheet" href="{% static 'css/notification.css' %}" type="text/css" media="screen"/>
+  <script type="text/javascript" src="{% static 'js/notification.js' %}"></script>
+{% endblock %}
+
+<i class="fa fa-external-link"></i>
+
+{% url "Notification:write" course_short_title as notify_url %}
+
+<div id="notification_field_outer">
+    <a href="#" onClick="open_notification_field(this)"
+       class="notification_link" title="send a notification to this user">
+      Send Notification
+    </a>
+    <div id="notification_field">
+        <form>
+            {% csrf_token %}
+            <input name="user_id" hidden value="{{ notification_user_id }}"/>
+            <textarea rows="2" name="message" placeholder="Message" maxlength="99" style="width:100%;font-size:14px;padding:3px">{{ text }}</textarea><br>
+            <div style="background:gray;color:white">Beware: Notifications must not exceed 100 chars!</div>
+
+            <br/>
+            <input type="button" value="Submit" onclick="send_notification(this, '{{ course_short_title }}')">
+        </form>
+    </div>
+</div>
