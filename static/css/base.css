@@ -357,10 +357,9 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 
 @media only screen and (min-width: 960px) {
 	.course_selected {
-	    font-family: 'yanone_kaffeesatzthin';
+	    font-family: 'yanone_kaffeesatz_rgregular';
 	    color: white; /*rgb(110,184,99);*/
 	    font-size: 30px;
-		font-weight:bold;
 		cursor:pointer;
 		/*z-index:4201;*/
 		display:inline;
