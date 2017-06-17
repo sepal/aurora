@@ -5,9 +5,12 @@ from django.template.loader import render_to_string
 from django.http import Http404
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.urlresolvers import reverse
 
 from Elaboration.models import Elaboration
 from PlagCheck.models import Suspicion, SuspicionState, Result, Document
+
+from django.template import Template, Context
 
 def render_to_string_suspicions_view(request, course, options=None):
     suspicion_list = Suspicion.suspicion_list_by_request(request, course)
@@ -16,7 +19,6 @@ def render_to_string_suspicions_view(request, course, options=None):
         suspect_elab_filter = options.pop('filter_by_suspect_elaboration')
         if suspect_elab_filter:
             suspicion_list = suspicion_list.filter(suspect_doc__elaboration_id=suspect_elab_filter)
-
 
     count = suspicion_list.count()
 
@@ -43,16 +45,25 @@ def render_to_string_suspicions_view(request, course, options=None):
     }
 
 notification_templates_suspect = {
-    SuspicionState.PLAGIARISM.value: "suspect plagiarism text",
-    SuspicionState.SUSPECTED.value: "suspect suspected text",
-    SuspicionState.CITED.value: "suspect cited text",
+    SuspicionState.PLAGIARISM.value: """Your elaboration from challange {{ elaboration.challenge.title }}
+    has been marked as PLAGIARISM. You will be contacted.""",
+    SuspicionState.SUSPECTED.value: """Your elaboration from challange {{ elaboration.challenge.title }}
+    has been marked as SUSPECTED. Your elaboration will be verified.""",
 }
 
 notification_templates_similar = {
-    SuspicionState.PLAGIARISM.value: "similar plagiarism text",
-    SuspicionState.SUSPECTED.value: "similar suspected text",
-    SuspicionState.CITED.value: "similar cited text",
+    SuspicionState.PLAGIARISM.value: """Your elaboration from challange {{ elaboration.challenge.title }}
+    has been plagiarised by another user. You will be contacted.""",
+    SuspicionState.SUSPECTED.value: """Your elaboration from challange {{ elaboration.challenge.title }}
+    has been suspected to be plagiarised by another user. The suspected elaboration will be verified.""",
 }
+
+def render_notification_strings(notification_templates, context):
+    rendered = {}
+    _context = Context(context)
+    for key, value in notification_templates.items():
+        rendered[key] = Template(value).render(_context)
+    return rendered
 
 def render_to_string_compare_view(request, course, suspicion_id):
     suspicion = Suspicion.objects.get(pk=suspicion_id)
@@ -63,15 +74,33 @@ def render_to_string_compare_view(request, course, suspicion_id):
         suspect_doc__submission_time__gt=course.start_date,
     )
 
+    challenge_base_url = reverse('Challenge:challenge', kwargs={'course_short_title': course.short_title})
+
     # pass no elaboration if one of the documents is from an older database
+    similar_challenge_link = None
+    suspect_challenge_link = None
     try:
         similar_elaboration = suspicion.similar_doc.elaboration
+        similar_challenge_link = challenge_base_url + "?id=" + str(similar_elaboration.challenge.id)
     except Elaboration.DoesNotExist:
         similar_elaboration = None
     try:
         suspect_elaboration = suspicion.suspect_doc.elaboration
+        suspect_challenge_link = challenge_base_url + "?id=" + str(similar_elaboration.challenge.id)
     except Elaboration.DoesNotExist:
         suspect_elaboration = None
+
+    suspect_context = {
+        'user': suspect_elaboration.user,
+        'suspicion': suspicion,
+        'elaboration': suspect_elaboration,
+    }
+
+    similar_context = {
+        'user': similar_elaboration.user,
+        'suspicion': suspicion,
+        'elaboration': similar_elaboration,
+    }
 
     context = {
         'course': course,
@@ -82,8 +111,10 @@ def render_to_string_compare_view(request, course, suspicion_id):
         'prev_suspicion_id': prev_suspicion_id,
         'similar_elaboration': similar_elaboration,
         'suspect_elaboration': suspect_elaboration,
-        'notification_templates_suspect': notification_templates_suspect,
-        'notification_templates_similar': notification_templates_similar,
+        'notification_templates_suspect': render_notification_strings(notification_templates_suspect, suspect_context),
+        'notification_templates_similar': render_notification_strings(notification_templates_similar, similar_context),
+        'similar_challenge_link': similar_challenge_link,
+        'suspect_challenge_link': suspect_challenge_link,
     }
 
     # number of suspicious documents
