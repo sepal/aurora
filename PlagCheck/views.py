@@ -44,18 +44,18 @@ def render_to_string_suspicions_view(request, course, options=None):
         'count': count,
     }
 
+# BEWARE: Notification texts must not exceed 100 characters
 notification_templates_suspect = {
-    SuspicionState.PLAGIARISM.value: """Your elaboration from challange {{ elaboration.challenge.title }}
-    has been marked as PLAGIARISM. You will be contacted.""",
-    SuspicionState.SUSPECTED.value: """Your elaboration from challange {{ elaboration.challenge.title }}
-    has been marked as SUSPECTED. Your elaboration will be verified.""",
+    SuspicionState.PLAGIARISM.value: "Your elaboration from challange {{ elaboration.challenge.title }} "
+    "has been marked as PLAGIARISM. You will be contacted.",
+    SuspicionState.SUSPECTED.value: "Your elaboration from challange {{ elaboration.challenge.title }} "
+    "has been marked as SUSPECTED and will be verified.",
 }
-
 notification_templates_similar = {
-    SuspicionState.PLAGIARISM.value: """Your elaboration from challange {{ elaboration.challenge.title }}
-    has been plagiarised by another user. You will be contacted.""",
-    SuspicionState.SUSPECTED.value: """Your elaboration from challange {{ elaboration.challenge.title }}
-    has been suspected to be plagiarised by another user. The suspected elaboration will be verified.""",
+    SuspicionState.PLAGIARISM.value: "Your elaboration from challange {{ elaboration.challenge.title }} "
+    "has been plagiarised by another user. You will be contacted.",
+    SuspicionState.SUSPECTED.value: "Your elaboration from challange {{ elaboration.challenge.title }} "
+    "has been suspected to be plagiarised by another user.",
 }
 
 def render_notification_strings(notification_templates, context):
