@@ -1,16 +1,14 @@
-# All plagcheck related views are inside Evaluation app, just templates are used from this app directory
-
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.http import Http404
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
 
 from Elaboration.models import Elaboration
-from PlagCheck.models import Suspicion, SuspicionState, Result, Document
+from PlagCheck.models import Suspicion, SuspicionState
 
 from django.template import Template, Context
+
 
 def render_to_string_suspicions_view(request, course, options=None):
     suspicion_list = Suspicion.suspicion_list_by_request(request, course)
@@ -33,8 +31,7 @@ def render_to_string_suspicions_view(request, course, options=None):
     }
 
     if options:
-        context.update(options);
-
+        context.update(options)
 
     request.session['selection'] = 'plagcheck_suspicions'
     request.session['count'] = count
@@ -58,12 +55,14 @@ notification_templates_similar = {
     "has been suspected to be plagiarised by another user.",
 }
 
+
 def render_notification_strings(notification_templates, context):
     rendered = {}
     _context = Context(context)
     for key, value in notification_templates.items():
         rendered[key] = Template(value).render(_context)
     return rendered
+
 
 def render_to_string_compare_view(request, course, suspicion_id):
     suspicion = Suspicion.objects.get(pk=suspicion_id)
@@ -126,6 +125,7 @@ def render_to_string_compare_view(request, course, suspicion_id):
         'count': suspicions_count,
     }
 
+
 @staff_member_required
 def set_suspicion_state(request, suspicion_id, suspicion_state):
 
@@ -136,6 +136,7 @@ def set_suspicion_state(request, suspicion_id, suspicion_state):
     suspicion.save()
 
     return JsonResponse({})
+
 
 @staff_member_required
 def get_suspicion_state(request, suspicion_id):
