@@ -18,7 +18,7 @@
 </div>
 <div class="spacer"></div>
 {% if elab %}
-    {% write_notification_field course.short_title elab.user.id %}
+    {% write_notification_field course_short_title=course.short_title user_id=elab.user.id link=challenge_link%}
 {% endif %}
 {% if notification_templates %}
     <div id="notification_templates" hidden>
@@ -27,3 +27,4 @@
         {% endfor %}
     </div>
 {% endif %}
+<div id="challenge_url" hidden>{{ challenge_url }}</div>

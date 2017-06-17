@@ -40,10 +40,10 @@
         <div class="clear"></div>
 
         <div class="plagcheck_info_left">
-            {% include "compare_info.html" with elab=suspect_elaboration doc=suspicion.suspect_doc label='Suspicious' notification_templates=notification_templates_suspect %}
+            {% include "compare_info.html" with elab=suspect_elaboration doc=suspicion.suspect_doc label='Suspicious' notification_templates=notification_templates_suspect challenge_link=suspect_challenge_link %}
         </div>
         <div class="plagcheck_info_right">
-            {% include "compare_info.html" with elab=similar_elaboration doc=suspicion.similar_doc label='Source' notification_templates=notification_templates_similar %}
+            {% include "compare_info.html" with elab=similar_elaboration doc=suspicion.similar_doc label='Source' notification_templates=notification_templates_similar challenge_link=similar_challenge_link %}
         </div>
 
         <div class="clear"></div>

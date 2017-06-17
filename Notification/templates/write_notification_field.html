@@ -14,7 +14,10 @@
     <div id="notification_field">
         <form>
             {% csrf_token %}
-            <input name="user_id" hidden value="{{ notification_user_id }}"/>
+            <input name="user_id" hidden value="{{ user_id }}"/>
+            {% if link %}
+                <input name="link" hidden value="{{ link }}"/>
+            {% endif %}
             <textarea rows="2" name="message" placeholder="Message" maxlength="99" style="width:100%;font-size:14px;padding:3px">{{ text }}</textarea><br>
             <div style="background:gray;color:white">Beware: Notifications must not exceed 100 chars!</div>
 

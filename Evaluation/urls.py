@@ -41,5 +41,4 @@ urlpatterns = [
 
     url(r'^plagcheck/$', Evaluation.views.plagcheck_suspicions, name='plagcheck_suspicions'),
     url(r'^plagcheck/(?P<suspicion_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
-    url(r'^plagcheck/(?P<suspicion_id>\d+)/save_state/$', Evaluation.views.plagcheck_compare_save_state, name='plagcheck_compare_save_state'),
 ]
