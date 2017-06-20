@@ -23,6 +23,7 @@ function file_upload_loaded() {
             });
 			this.on("queuecomplete",function(){
 				$('#EWfE').prop('disabled', false).addClass('submit').removeClass('nonsubmit');
+				location.reload();
 			});
 			this.on("drop",function(){
 				$('#EWfE').prop('disabled', true).removeClass('submit').addClass('nonsubmit');
