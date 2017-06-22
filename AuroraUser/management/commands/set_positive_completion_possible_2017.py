@@ -16,44 +16,43 @@ class Command(BaseCommand):
         set_positive_completion_possible_2017()
 
 def set_positive_completion_possible_2017():
+
+    # der richtige kommand lautet so: hat von zwei kapiteln, die schon abgelaufen sind,
+    # keine challenge abgegeben bzw hand-in ready (all reviews are in, es fehlt nur noch final task-abgabe)
+
+    ended_chapters_gsi = [6, 7, 9, 10, 11, 12]
+    ended_chapters_hci = [1, 2, 3]
+
     for course in Course.objects.all():
-        ended_stacks = Stack.objects.all().filter(course=course, end_date__lt=date.today())
-        course_chapter_ids = []
-
-        for stack in ended_stacks:
-            course_chapter_ids.append(stack.chapter_id)
-
-        course_chapter_ids = list(set(course_chapter_ids))
-
-        # if course.short_title == 'gsi':
-        #     failed_course_tag = 'durchgefallen_gsi'
-        # else:
-        #     failed_course_tag = 'durchgefallen_bhci'
+        if(course.short_title == "gsi"):
+            ended_chapters = ended_chapters_gsi
+        else:
+            ended_chapters = ended_chapters_hci
 
         for user in AuroraUser.objects.filter(is_staff=False, is_superuser=False):
+            finished_chapters = 0
             try:
                 relation = CourseUserRelation.objects.get(user=user, course=course)
             except:
                 continue
 
-            chapter_failed_stacks = dict.fromkeys(course_chapter_ids, 0)
-            total_failed_count = 0
+            for chapter_id in ended_chapters:
+                chapter_stacks = Stack.objects.all().filter(course=course, chapter_id=chapter_id)
+                finished_chapter = False
 
-            for stack in ended_stacks:
-                if not user.can_enter_final_challenge_performant(stack):
-                    chapter_failed_stacks[stack.chapter_id] = chapter_failed_stacks[stack.chapter_id] + 1
+                for stack in chapter_stacks:
+                    if finished_chapter == True:
+                        continue
 
-            for failed_count in chapter_failed_stacks.values():
-                if failed_count >= 2:
-                    total_failed_count += 1
+                    if user.can_enter_final_challenge_performant(stack):
+                        finished_chapter = True
+                        finished_chapters += 1
 
-            failed_course_by_tag = False
-            # tags = user.tags.names()
-            # if failed_course_tag in tags:
-            #     failed_course_by_tag = True
-
-            failed = failed_course_by_tag or (total_failed_count >= 2)
+            failed = finished_chapters < 2
             relation.positive_completion_possible = (not failed)
             relation.save()
+
+            if (failed):
+                print("Disabled user " + str(user) + " for course " + course.short_title)
 
         print("Processed all users for " + course.title)
