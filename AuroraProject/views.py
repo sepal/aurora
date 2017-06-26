@@ -21,7 +21,7 @@ from ReviewAnswer.models import ReviewAnswer
 from Elaboration.models import Elaboration
 from Evaluation.views import get_points
 from Challenge.models import Challenge
-from Statistics.views import create_stat_data
+#from Statistics.views import create_stat_data
 from Elaboration.views import get_extra_review_data
 from Faq.models import Faq
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
