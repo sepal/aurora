@@ -67,7 +67,7 @@ def course_selection(request):
 
 @aurora_login_required()
 def home(request, course_short_title=None):
-"""
+    """
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     course = Course.get_or_raise_404(course_short_title)
     data = get_points(request, user, course)
@@ -92,7 +92,8 @@ def home(request, course_short_title=None):
     context = RequestContext(request, {'newsfeed': data['course'], 'faq_list': faq_list})
 
     return render_to_response('home.html', data, context)
-"""
+    """
+    return render_to_response('')
 
 def time_to_unix_string(time):
     if time is None:
