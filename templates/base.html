@@ -1,10 +1,13 @@
+{% comment %}
 {% load static %}
+{% endcomment %}
 
 <!DOCTYPE html>
 <html>
 <head>
   <title>Aurora</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/> 
+{% comment %}
 
 <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" type="image/x-icon">
@@ -18,10 +21,10 @@
 
   {% block additional_headers %}
   {% endblock %}
-
+{% endcomment %}
 </head>
 <body content="text/html">
-
+{% comment %}
 <script>
 	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
 	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
@@ -38,6 +41,7 @@
   <div class="nothing_to_see_move_on" data-points="{{ sum }}" id="the_points"></div>
   <script type="text/javascript" src="{{ STATIC_URL }}lightbox/js/lightbox.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}trix/trix.js"></script>
+{% endcomment %}
 
 </body>
 </html>
