@@ -93,7 +93,7 @@ def home(request, course_short_title=None):
 
     return render_to_response('home.html', data, context)
     """
-    return render_to_response('')
+    return render_to_response('home.html',[],[])
 
 def time_to_unix_string(time):
     if time is None:
