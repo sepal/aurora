@@ -16,4 +16,5 @@ urlpatterns = [
    url(r'^profile/save/$', views.profile_save, name='save'),
    url(r'^sso_auth_callback$', views.sso_auth_callback),
    url(r'^create_feed_token/$', views.create_feed_token, name='create_feed_token'),
+   url(r'^work/$', views.work, name='work'),
 ]

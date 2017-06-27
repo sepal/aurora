@@ -9,6 +9,8 @@
     {% include 'feed.html' %}
 
     <div id="info_column">
+
+    {% comment %}
         {% if not user.is_staff %}
 		<div class="sidebar_item">
             <div class="feed_header"  id="part_0"><i class="fa fa-angle-up fa-2x half"></i> <b>Your work</b></div>
@@ -26,6 +28,7 @@
 			</div>
 		</div>
         {% endif %}
+    {% endcomment %}
 		{% comment %}
 
     {% if user_is_top_reviewer %}
@@ -112,33 +115,33 @@
 
 				{% if course.short_title == "hci" %}
 			<div class="aMonth"><span class="aMonat">März</span></div>
-			
+
 			<div class="aEvent"><span class="aDay">7</span>
 				<span class="aContent"><span class="aKap">Kap1:</span> <b>Kick-Off</b><br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Einführungschallenge</span></span></span></span></div>
-				
+
 			<div class="aEvent"><span class="aDay">14</span>
 				<span class="aContent"><span class="aKap">Kap1:</span> <b>Designing with the user in mind</b> <br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Interaktionsdesign: Berufsbilder [17]</span></span></div>
-				
+
 			<div class="aEvent"><span class="aDay">21</span>
 				<span class="aContent"><span class="aKap">Kap1:</span> <b>&#3232;_&#3232;</b><br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Design Metaphors and Fails [10]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Feler [<span style="display:inline-block;transform:rotate(180deg)">8</span>]</span></span></div>
-				
+
 			<div class="aEvent last"><span class="aDay">28</span>
 				<span class="aContent"><span class="aKap">Kap4:</span> <b>Wahrnehmung</b> <br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Psychologische Wahrnehmungstheorien [10]</span></span></div>
-				
+
 			<div class="aMonth"><span class="aMonat">April</span></div>
 
 			<div class="aEvent"><span class="aDay">4</span>
 				<span class="aContent"><span class="aKap">Kap4:</span> <b>Gender, Barrierefreiheit</b></span></div>
-				
+
 			<div class="aEvent last"><span class="aDay">25</span>
 				<span class="aContent"><span class="aKap">Kap1:</span> <b>Design rules and the user-centred design process</b>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Conceptual Models [14]</span></div>
-				
+
 			<div class="aMonth"><span class="aMonat">Mai</span></div>
 
 			<div class="aEvent"><span class="aDay">2</span>
@@ -148,28 +151,28 @@
 			<div class="aEvent"><span class="aDay">9</span>
 				<span class="aContent"><span class="aKap">Kap2:</span> <b>Understanding the user, gathering requirements</b>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Cultural Probes [18]</span></span></div>
-				
+
 			<div class="aEvent"><span class="aDay">16</span>
 				<span class="aContent"><span class="aKap">Ausgefallen</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Kap2: Persona &amp; Szenario [18]</span></span></div>
 
 			<div class="aEvent"><span class="aDay">23</span>
-				<span class="aContent"><span class="aKap"></span> <b>Prototyping &amp; Ubicomp</b> 
+				<span class="aContent"><span class="aKap"></span> <b>Prototyping &amp; Ubicomp</b>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Kap2: Design w. Intent [13]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Kap3: Prototyping [18]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Kap3: Ubicomp [19]</span>
 				</span></div>
-				
+
 			<div class="aEvent"><span class="aDay">30</span>
 				<span class="aContent"><span class="aKap"></span> <b>Evaluation</b>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Kap4: Thinking out loud [13]</span><br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Kap4: Interviews [13]</span></span></div>
 
 			<div class="aMonth"><span class="aMonat">Juni</span></div>
-				
+
 			<div class="aEvent last"><span class="aDay">13</span>
 				<span class="aContent">Zusammenfassung, Ausblick</span></div>
-				
+
 			<div class="aEvent last"><span class="aDay">20</span>
 				<span class="aContent">Reservetermin</span></div>
 
@@ -181,64 +184,64 @@
 
 
 
-				
+
 			<div class="aMonth"><span class="aMonat">März</span></div>
 
 			<div class="aEvent"><span class="aDay">8</span>
 				<span class="aContent"><b>Kick-Off, Geschichte</b><br>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Einführungschallenge</span></span></span></span></div>
-				
+
 			<div class="aEvent"><span class="aDay">15</span>
 				<span class="aContent"><b>Pre-scientific thinking</b> </span></div>
-				
+
 			<div class="aEvent"><span class="aDay">22</span>
 				<span class="aContent"><b>Computers in Society</b> </span></div>
-				
+
 			<div class="aEvent last"><span class="aDay">29</span>
 				<span class="aContent"><b>Scientific thinking</b><br>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>Paradigmen [12]</span> 
+					<span class="aChallenge"><i class="fa fa-pencil"></i>Paradigmen [12]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Korrelation/Kausalität [8]</span></span></div>
-					
+
 			<div class="aMonth"><span class="aMonat">April</span></div>
-				
+
 			<div class="aEvent"><span class="aDay">5</span>
 				<span class="aContent"><b>Mathematical thinking</b> </span></div>
-				
+
 			<div class="aEvent last"><span class="aDay">26</span>
 				<span class="aContent"><b>Computational thinking </b><br>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>Play a game [8]</span> 
+					<span class="aChallenge"><i class="fa fa-pencil"></i>Play a game [8]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Make a Challenge [12]</span></span></div>
-				
+
 			<div class="aMonth"><span class="aMonat">Mai</span></div>
 
 			<div class="aEvent"><span class="aDay">3</span>
 				<span class="aContent"><b>Design thinking</b> </span></div>
-				
+
 			<div class="aEvent"><span class="aDay">10</span>
 				<span class="aContent"><b>Design thinking</b> <br>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>Design Thinking Tryout [8]</span> 
+					<span class="aChallenge"><i class="fa fa-pencil"></i>Design Thinking Tryout [8]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>»Design Thinking« vs »Design« [14]</span></span></div>
-				
+
 			<div class="aEvent"><span class="aDay">17</span>
 				<span class="aContent"><b>Creative thinking</b> <br>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>Über Kreativität [8]</span> 
+					<span class="aChallenge"><i class="fa fa-pencil"></i>Über Kreativität [8]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Kreativitätstechniken [12]</span></span></div>
-				
+
 			<div class="aEvent"><span class="aDay">24</span>
 				<span class="aContent"><b>Critical thinking</b> <br>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>Logical Fallacies [8]</span> 
+					<span class="aChallenge"><i class="fa fa-pencil"></i>Logical Fallacies [8]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>Bias Busters Game [14]</span></span></div>
-				
+
 			<div class="aEvent last"><span class="aDay">31</span>
 				<span class="aContent"><b>Responsible thinking</b> <br>
-					<span class="aChallenge"><i class="fa fa-pencil"></i>TBD [8]</span> 
+					<span class="aChallenge"><i class="fa fa-pencil"></i>TBD [8]</span>
 					<span class="aChallenge"><i class="fa fa-pencil"></i>TBD [12]</span></span></div>
-				
+
 			<div class="aMonth"><span class="aMonat">Juni</span></div>
 
 			<div class="aEvent"><span class="aDay">7</span>
 				<span class="aContent"><b>Criminal thinking</b> </span></span></div>
-				
+
 			<div class="aEvent"><span class="aDay">21</span><span class="aMonat"></span>
 				<span class="aContent"><b>Computers in Society</b> </span></span></div>
 
