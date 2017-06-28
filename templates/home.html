@@ -10,26 +10,29 @@
 
     <div id="info_column">
 
-    {% comment %}
         {% if not user.is_staff %}
 		<div class="sidebar_item">
             <div class="feed_header"  id="part_0"><i class="fa fa-angle-up fa-2x half"></i> <b>Your work</b></div>
 			<div class="feed_column"  id="content_part_0">
+    {% comment %}
             	{% include 'points.html' %}
           		{% include 'public_stats.html' %}
+    {% endcomment %}
+    				»Your work« wurde aus performancetechnischen Gründen auf eine eigene Seite verschoben. Klicken Sie auf <a href="work">»Your Work«</a> in der Navigation. <br><br> 
 			</div>
 		</div>
 		{% else %}
 		<div class="sidebar_item">
             <div class="feed_header"  id="part_0"><i class="fa fa-angle-up fa-2x half"></i> <b>Your work</b></div>
 			<div class="feed_column"  id="content_part_0">
+    {% comment %}
             	{% include 'admin_points.html' %}
 			{% include 'public_stats.html' %}
+    {% endcomment %}
 			</div>
 		</div>
         {% endif %}
-    {% endcomment %}
-		{% comment %}
+    {% comment %}
 
     {% if user_is_top_reviewer %}
       <div class="sidebar_item">
@@ -41,7 +44,7 @@
   		</div>
       </div>
     {% endif %}
-		{% endcomment %}
+    {% endcomment %}
 
 		{% if user.is_staff %}
 		<div class="sidebar_item">
