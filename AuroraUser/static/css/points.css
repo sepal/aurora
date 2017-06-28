@@ -1,0 +1,100 @@
+.subheader {
+	background:#eee;
+}
+
+.points_table {
+    width: 100%;
+    /*margin-top:1em;*/
+    /*margin-left:1em;*/
+    /*margin-right: 40px;*/
+    border: 0px;
+    margin-bottom: 1em;
+}
+
+.points_table table {
+    width: 100%;
+    height: 100%;
+}
+
+.points_table th {
+    vertical-align: top;
+    text-align: left;
+    padding: 9px;
+    font-size: 1em;
+    font-family: Arial;
+    color: #000000;
+    background-color: #eee;
+    font-size: 14px;
+}
+
+.points_table td {
+    vertical-align: middle;
+    text-align: left;
+    padding: 4px 9px;
+    font-size: 1em;
+    font-family: Arial;
+    font-weight: normal;
+    color: #000000;
+    font-size: 14px;
+}
+
+.punkte {
+	text-align:right!important;
+}
+
+.points_table tr.lineL td {
+
+}
+
+.points_table td {
+}
+
+.letztezeile {
+}
+
+.slides {
+}
+
+.header {
+}
+
+.sum td {
+    font-weight: bold;
+}
+
+.lineD {
+    background: #ddd;
+}
+
+.lineH {
+
+}
+
+.final_list,.work_list,.sub_list,.rev_list {
+	display:none;
+	border-radius:0 0 3px 3px;
+	background:#eee;
+	margin-bottom:0.5em;
+	border-top:1px dotted silver;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1) inset;
+}
+
+.tr_border_L {
+	border-left:3px groove lightgray;
+	border-top:3px groove lightgray;
+	border-top-left-radius:3px;
+}
+
+.tr_border_R {
+	border-right:1px solid lightgray;
+	border-top:1px solid lightgray;
+	border-top-right-radius:3px;
+}
+
+.fa-lger {
+	font-size:125%;
+}
+
+
+
+
