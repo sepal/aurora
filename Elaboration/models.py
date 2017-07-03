@@ -204,7 +204,7 @@ class Elaboration(models.Model):
         final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
         missing_reviews = (
             Elaboration.objects
-            .filter(submission_time__lte=datetime.now() - timedelta(days=0), user__is_staff=False,
+            .filter(submission_time__lte=datetime.now() - timedelta(days=1), user__is_staff=False,
                     challenge__course=course)
             .annotate(num_reviews=Count('review'))
             .exclude(challenge__id__in=final_challenge_ids)
