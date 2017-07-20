@@ -427,8 +427,12 @@ def detail(request, course_short_title=None):
     if 'elaboration_id' not in request.GET:
         raise Http404
 
-    elaboration = Elaboration.objects.get(
-        pk=request.GET.get('elaboration_id', ''))
+    try:
+        elaboration_id = int(request.GET.get('elaboration_id', ''))
+    except ValueError:
+        raise Http404()
+
+    elaboration = Elaboration.objects.get(pk=elaboration_id)
     # store selected elaboration_id in session
     request.session['elaboration_id'] = elaboration.id
 
