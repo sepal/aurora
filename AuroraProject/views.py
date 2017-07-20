@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.csrf import csrf_exempt
@@ -60,7 +60,12 @@ def course_selection(request):
     # if a next_url is defined.
     course = course_from_next_url(next_url)
     if next_url and course:
-        return redirect(reverse("User:login", args=(course, )))
+        try:
+            redirect_url = reverse("User:login", args=(course, ))
+        except NoReverseMatch:
+            pass
+        else:
+            return redirect(redirect_url)
 
     data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
     return render_to_response('course_selection.html', data)
