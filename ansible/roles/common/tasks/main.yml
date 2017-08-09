@@ -1,0 +1,35 @@
+---
+- include: postgresql.yml
+
+- name: add epel repo for extra packages from fedora
+  yum: name=epel-release
+
+- name: install vim
+  yum: name=vim
+
+- name: install nginx
+  yum: name=nginx
+
+- name: install python packages
+  yum: name={{ item }}
+  with_items:
+    - python34
+    - python34-devel
+    - python-devel
+    - python34-pip
+
+- name: install libjpeg-devel
+  yum: name=libjpeg-devel
+
+- name: install zlib-devel
+  yum: name=zlib-devel
+
+- name: install uwsgi packages
+  yum: name={{ item }}
+  with_items:
+    - uwsgi
+    - uwsgi-plugin-python3
+    - uwsgi-logger-file
+
+- name: install rabbitmq-server
+  yum: name=rabbitmq-server

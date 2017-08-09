@@ -1,0 +1,46 @@
+---
+# This is run as user `vagrant`
+# Sets up virtualenv and installs requirements
+
+- name: upgrade pip to latest version
+  pip: name=pip
+       extra_args=--upgrade
+       executable=pip3
+  become: true
+  become_user: root
+
+- name: install virtualenv
+  pip: name=virtualenv
+  become: true
+  become_user: root
+
+- name: create virtualenv
+  command: virtualenv -p /usr/bin/python3 {{ py3env }}
+           creates={{ py3env }}
+
+# ipython not working with python manage.py shell anymore :(
+- name: install ipython into virtualenv
+  pip: name=ipython
+       virtualenv={{ py3env }}
+
+- name: install psycopg2 into virtualenv
+  pip: name=psycopg2
+       virtualenv={{ py3env }}
+
+- name: install invoke into virtualenv
+  pip: name=invoke
+       virtualenv={{ py3env }}
+
+- name: install project requirements
+  pip: requirements=/vagrant/requirements_dev.txt
+       virtualenv={{ py3env }}
+
+- name: build sherlock
+  shell: python3 setup.py sdist
+  args:
+    chdir: /vagrant/PlagCheck/hashing/sherlock
+
+- name: install sherlock into virtualenv
+  pip: name=/vagrant/PlagCheck/hashing/sherlock/dist/sherlock-1.0.tar.gz
+       virtualenv={{ py3env }}
+

@@ -1,0 +1,34 @@
+# Excluding `postgres*` from CentOS repos according to 
+# https://wiki.postgresql.org/wiki/YUM_Installation
+- name: exclude postgresql* from CentOS default base repos
+  yum_repository:
+        name: base
+        file: CentOS-Base
+        description: CentOS-$releasever - Base
+        mirrorlist: http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra
+        gpgcheck: 1
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+        exclude: postgresql*
+
+- name: exclude postgresql* from CentOS default updates repos
+  yum_repository:
+        name: updates
+        file: CentOS-Base
+        description: CentOS-$releasever - Updates
+        mirrorlist: http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra
+        gpgcheck: 1
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+        exclude: postgresql*
+
+- name: Add official postgres repo
+  yum: name=https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+
+- name: install postgresql packages
+  yum: name={{ item }}
+  with_items:
+    - postgresql96-devel
+    - postgresql96
+    - postgresql96-server
+    - postgresql96-contrib
+    - pg_activity
+

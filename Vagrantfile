@@ -5,13 +5,14 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.provision "shell" do |s|
-    s.path = "bootstrap_ansible.sh"
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "ansible/vagrant.yml"
   end
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "centos/7"
 
   config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--pae", "on"]

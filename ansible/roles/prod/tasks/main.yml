@@ -1,0 +1,28 @@
+---
+- name: install server maintenance and monitoring tools
+  yum: name={{ item }}
+  with_items:
+    - etckeeper
+    - nano
+    - yumcron
+    - logwatch
+    - fail2ban
+    - tmpwatch
+    - ntp
+    - system-storage-manager 
+    - monit 
+    - net-tools
+
+- name: install backupninja packages
+  yum: name={{ item }}
+  with_items:
+    - backupninja
+    - sysreporter
+    - dialog
+
+- name: install selinux debugging utils
+  yum: name={{ item }}
+  with_items:
+    - policycoreutils-python
+    - setroubleshoot-server
+
