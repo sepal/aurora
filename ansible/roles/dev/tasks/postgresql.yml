@@ -30,3 +30,13 @@
   become: yes
   become_user: postgres
 
+- name: make sure user can authenticate via md5 (ident/peer won\'t work)
+  lineinfile:
+    path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
+    line: 'host	{{dbname}}	{{dbuser}}	127.0.0.1/32	md5'
+  notify: restart postgresql
+
+- lineinfile:
+    path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
+    line: 'host	{{dbname}}	{{dbuser}}	::1/128	md5'
+  notify: restart postgresql
