@@ -32,11 +32,14 @@
 
 - name: make sure user can authenticate via md5 (ident/peer won\'t work)
   lineinfile:
+    regexp: 'host[\s]+all[\s]+all[\s]+127.0.0.1/32[\s]+ident'
     path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
     line: 'host	{{dbname}}	{{dbuser}}	127.0.0.1/32	md5'
   notify: restart postgresql
 
-- lineinfile:
+- name: make sure user can authenticate via md5 (ident/peer won\'t work)
+  lineinfile:
+    regexp: 'host[\s]+all[\s]+all[\s]+::1/128[\s]+ident'
     path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
-    line: 'host	{{dbname}}	{{dbuser}}	::1/128	md5'
+    line: 'host	{{dbname}}	{{dbuser}}	::1/128         md5'
   notify: restart postgresql
