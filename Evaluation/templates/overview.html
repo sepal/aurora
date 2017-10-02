@@ -56,6 +56,14 @@
             </tr>
         {% endfor %}
 
+        {% if user.is_superuser %}
+            {% with 'Evaluation:'|add:selection as url_name %}
+                <a href="{% url url_name course_short_title=course.short_title mode='export' %}">
+                    export
+                </a>
+            {% endwith %}
+        {% endif %}
+
         {% get_pages %}
         {% with total_pages=pages|length %}
             {% show_current_number as actual_page %}

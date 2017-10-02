@@ -14,8 +14,12 @@ from taggit.models import TaggedItem
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
+
+from django.views.generic import TemplateView
 
 from AuroraProject.decorators import aurora_login_required
+from AuroraProject.views import CourseMixin
 from Challenge.models import Challenge
 from Course.models import Course, CourseUserRelation
 from Elaboration.models import Elaboration
@@ -113,240 +117,189 @@ def evaluation(request, course_short_title=None):
                               context_instance=RequestContext(request))
 
 
-@aurora_login_required()
-@staff_member_required
-def missing_reviews(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    elaborations = Elaboration.get_missing_reviews(course)
+class EvaluationView(CourseMixin, TemplateView):
+    #template_name = "evaluation.html"
+    #template_name = "evaluation_list_detail.html"
+    mode_template_names = {
+        "overview": "evaluation.html",
+        "export": "evaluation_export.html",
+    }
+    overview_template_name = "overview.html"
+    def __init__(self, *args, **kwargs):
+        return super().__init__(*args, **kwargs)
 
-    # sort elaborations by submission time
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
+    @method_decorator(aurora_login_required())
+    @method_decorator(staff_member_required)
+    def dispatch(self, *args, **kwargs):
+        self.mode = kwargs.get("mode", "overview")
+        self.elaborations = self._get_elaborations()
+        self._update_session()
 
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['selection'] = 'missing_reviews'
-    request.session['count'] = len(elaborations)
+        return super().dispatch(*args, **kwargs)
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
-                               'count_missing_reviews': request.session.get('count', '0'),
-                               'stabilosiert_missing_reviews': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
+    def get_template_names(self):
+        return (self.mode_template_names[self.mode],)
 
+    def _update_session(self):
+        # store selected elaborations in session
+        self.request.session['elaborations'] = serializers.serialize(
+            'json', self.elaborations)
+        self.request.session['selection'] = self.selection_name
+        self.request.session['count'] = len(self.elaborations)
+        self.request.session.update(self.get_extra_session())
 
-@aurora_login_required()
-@staff_member_required
-def non_adequate_work(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    elaborations = Elaboration.get_non_adequate_work(course)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            "overview": render_to_string(self.overview_template_name,
+                                         self.get_overview_context_data(),
+                                         RequestContext(self.request)),
+            "count_" + self.selection_name: self.request.session.get('count', '0'),
+            "stabilosiert_" + self.selection_name: 'stabilosiert',
+            "selection": self.selection_name,
+            "course": self.course,
+            "elaborations": self.elaborations,
+        })
 
-    # sort elaborations by submission time
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
+        return context
 
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['selection'] = 'non_adequate_work'
-    request.session['count'] = len(elaborations)
+    def get_extra_session(self):
+        return {}
 
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
-                               'count_non_adequate_work': request.session.get('count', '0'),
-                               'stabilosiert_non_adequate_work': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
+    def get_elaborations(self):
+        raise NotImplemented
 
+    def _get_elaborations(self):
+        elaborations = self.get_elaborations()
 
-@aurora_login_required()
-@staff_member_required
-def top_level_tasks(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    elaborations = Elaboration.get_top_level_tasks(course)
+        # sort elaborations by submission time
+        if type(elaborations) == list:
+            elaborations.sort(key=lambda elaboration: elaboration.submission_time)
+        else:
+            elaborations = elaborations.order_by('submission_time')
 
-    # sort elaborations by submission time
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
+        return elaborations
 
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['selection'] = 'top_level_tasks'
-    request.session['count'] = len(elaborations)
-
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
-                               'count_top_level_tasks': request.session.get('count', '0'),
-                               'stabilosiert_top_level_tasks': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
+    def get_overview_context_data(self):
+        return {
+            'elaborations': self.elaborations,
+            'course': self.course,
+            "selection": self.selection_name,
+        }
 
 
-@aurora_login_required()
-@staff_member_required
-def final_evaluation_top_level_tasks(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    elaborations = Elaboration.get_final_evaluation_top_level_tasks(course)
+class MissingReviewsView(EvaluationView):
+    selection_name = "missing_reviews"
+    def get_elaborations(self):
+        return Elaboration.get_missing_reviews(self.course)
 
-    # sort elaborations by submission time
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
-
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['selection'] = 'final_evaluation_top_level_tasks'
-    request.session['final_evaluation_count'] = len(elaborations)
-
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
-                               'count_final_evaluation_top_level_tasks': request.session.get('final_evaluation_count', '0'),
-                               'stabilosiert_final_evaluation_top_level_tasks': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
-
-@aurora_login_required()
-@staff_member_required
-def final_evaluation_new(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    elaborations = Elaboration.get_final_evaluation_top_level_tasks(course)
-
-    # sort elaborations by submission time
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
-
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['selection'] = 'final_evaluation_new'
-    request.session['final_evaluation_count'] = len(elaborations)
-
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview_new.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
-                               'count_final_evaluation_new': request.session.get('final_evaluation_count', '0'),
-                               'stabilosiert_final_evaluation_new': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
+missing_reviews = MissingReviewsView.as_view()
 
 
-@aurora_login_required()
-@staff_member_required
-def complaints(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    elaborations = list(Elaboration.get_complaints(course))
+class NonAdequateWorkView(EvaluationView):
+    selection_name = "non_adequate_work"
+    def get_elaborations(self):
+        return Elaboration.get_non_adequate_work(self.course)
 
-    # sort elaborations by last comment time
-    elaborations.sort(key=lambda elaboration: elaboration.get_last_post_date())
-
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['selection'] = 'complaints'
-    request.session['count'] = len(elaborations)
-
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course, 'complaints': 'true'},
-                                                            RequestContext(request)),
-                               'count_complaints': request.session.get('count', '0'),
-                               'stabilosiert_complaints': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
+non_adequate_work = NonAdequateWorkView.as_view()
 
 
-@aurora_login_required()
-@staff_member_required
-def awesome(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    selected_challenge = request.session.get('selected_challenge', 'task...')
-    if selected_challenge != 'task...':
-        selected_challenge = selected_challenge[
-            :(selected_challenge.rindex('(') - 1)]
-        challenge = Challenge.objects.get(
-            title=selected_challenge, course=course)
-        elaborations = Elaboration.get_awesome_challenge(course, challenge)
-    else:
-        elaborations = Elaboration.get_awesome(course)
+class TopLevelTasksView(EvaluationView):
+    selection_name = "top_level_tasks"
+    def get_elaborations(self):
+        return Elaboration.get_top_level_tasks(self.course)
 
-    # sort elaborations by submission time
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
-
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['selection'] = 'awesome'
-    request.session['selected_challenge'] = 'task...'
-    request.session['count'] = len(elaborations)
-
-    return render_to_response('evaluation.html',
-                              {'overview': render_to_string('overview.html', {'elaborations': elaborations, 'course': course},
-                                                            RequestContext(request)),
-                               'count_awesome': request.session.get('count', '0'),
-                               'selected_task': selected_challenge,
-                               'stabilosiert_awesome': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
+top_level_tasks = TopLevelTasksView.as_view()
 
 
-@aurora_login_required()
-@staff_member_required
-def questions(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    challenges = Challenge.get_questions(course)
+class FinalEvaluationTopLevelTasksView(EvaluationView):
+    selection_name = "final_evaluation_top_level_tasks"
+    def get_elaborations(self):
+        return Elaboration.get_final_evaluation_top_level_tasks(self.course)
 
-    # store selected challenges in session
-    request.session['challenges'] = serializers.serialize('json', challenges)
+final_evaluation_top_level_tasks = FinalEvaluationTopLevelTasksView.as_view()
 
-    # store selected elaborations in session
-    elaborations = []
-    request.session['elaborations'] = elaborations
-    request.session['selection'] = 'questions'
-    request.session['count'] = len(challenges)
 
-    return render_to_response('evaluation.html',
-                              {'challenges': challenges,
-                               'overview': render_to_string('questions.html', {'challenges': challenges, 'course': course},
-                                                            RequestContext(request)),
-                               'count_questions': request.session.get('count', '0'),
-                               'stabilosiert_questions': 'stabilosiert',
-                               'selection': request.session['selection'],
-                               'course': course
-                               },
-                              context_instance=RequestContext(request))
+class FinalEvaluationNewView(EvaluationView):
+    selection_name = "final_evaluation_new"
+    overview_template_name = "overview_new.html"
+    def get_elaborations(self):
+        return Elaboration.get_final_evaluation_top_level_tasks(self.course)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        count = self.request.session.get('final_evaluation_count', '0')
+        context["count_final_evaluation_new"] = count
+        return context
+
+final_evaluation_new = FinalEvaluationNewView.as_view()
+
+
+class ComplaintsView(EvaluationView):
+    selection_name = "complaints"
+    def get_elaborations(self):
+        return Elaboration.get_complaints(self.course)
+
+    def get_overview_context_data(self):
+        context = super().get_overview_context_data()
+        context["complaints"] = "true"
+        return context
+
+complaints = ComplaintsView.as_view()
+
+
+class AwesomeView(EvaluationView):
+    selection_name = "awesome"
+    def get_elaborations(self):
+        selected_challenge = self.request.session.get('selected_challenge', 'task...')
+        if selected_challenge != 'task...':
+            selected_challenge = selected_challenge[
+                :(selected_challenge.rindex('(') - 1)]
+            challenge = Challenge.objects.get(
+                title=selected_challenge, course=self.course)
+            elaborations = Elaboration.get_awesome_challenge(self.course, challenge)
+        else:
+            elaborations = Elaboration.get_awesome(self.course)
+        self.selected_challenge = selected_challenge
+        return elaborations
+
+    def get_extra_session(self):
+        return {
+            "selected_challenge": "task..."
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["selected_challenge"] = self.selected_challenge
+        return context
+
+awesome = AwesomeView.as_view()
+
+
+class QuestionsView(EvaluationView):
+    selection_name = "questions"
+    overview_template_name = "questions.html"
+    def get_elaborations(self):
+        self.challenges = Challenge.get_questions(self.course)
+        return []
+
+    def get_overview_context_data(self):
+        context = super().get_overview_context_data()
+        context["challenges"] = self.challenges
+        return context
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["challenges"] = self.challenges
+        return context
+
+    def get_extra_session(self):
+        return {
+            "challenges": serializers.serialize('json', self.challenges),
+            "count": len(self.challenges),
+        }
+
+questions = QuestionsView.as_view()
 
 
 @aurora_login_required()
