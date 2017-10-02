@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q, Sum, Count
 
 from AuroraProject.decorators import aurora_login_required
