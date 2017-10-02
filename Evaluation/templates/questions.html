@@ -16,7 +16,7 @@
             </div>
             <div class="challenge-description">
               <div class="challenge-headline">{{ challenge.title|safe }}</div>
-                {{ challenge.description|safe }}
+                {{ challenge.description|safe|urlize }}
             </div>
 			<br><a href="/admin/Challenge/challenge/{{challenge.id}}" class="edit-link" >edit task text</a>
         </div>

@@ -3,6 +3,7 @@
 ## Getting started
 
 - Install [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/)
+- Install [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) `vagrant plugin install vagrant-vbguest`
 - Clone the project `git clone git@github.com:martflu/aurora.git`
 - cd to your project folder `cd aurora`
 - start the vagrant box `vagrant up` (this will take quite a while and download a lot of data)

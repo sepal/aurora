@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Django>=1.11,<1.12
 Pillow==4.1.0
 easy-thumbnails==2.4.1
@@ -8,6 +9,18 @@ django-taggit==0.22.1
 django-suit==0.2.25
 six==1.10
 psycopg2==2.7.1
+=======
+Django==1.7
+Pillow==3.4.2
+easy-thumbnails==2.3
+coverage==3.7.1
+django-el-pagination==2.1.2
+django-debug-toolbar==1.4
+django-taggit==0.19.1
+django-suit==0.2.18
+django-debug-toolbar==1.4
+django-memoize==2.1.0
+>>>>>>> ff0700a0aafbdba42ec7b5b13f0c055c10dc80c7
 
 # needed for plagcheck worker side
 django-celery==3.2.1

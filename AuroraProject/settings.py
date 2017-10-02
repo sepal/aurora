@@ -181,6 +181,7 @@ INSTALLED_APPS = (
     'easy_thumbnails',
     'django_comments',
     'django_comments_xtd',
+    # 'memoize',
     # own apps
     'AuroraUser',
     'Challenge',

@@ -4,7 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models import Q, Count, Max
 import re
 from taggit.managers import TaggableManager
-
+from memoize import memoize
 
 class CommentList(models.Model):
     """
@@ -111,11 +111,13 @@ class Comment(models.Model):
         self.set_tags_from_text()
 
     @property
+    # @memoize(timeout=5)
     def score(self):
         up_votes = self.votes.filter(direction=Vote.UP).count()
         down_votes = self.votes.filter(direction=Vote.DOWN).count()
         return up_votes - down_votes
 
+    # @memoize(timeout=5)
     def responses(self):
         responses = self.children.order_by('post_date')
         responses = Comment.filter_visible(responses, self.requester)
@@ -202,6 +204,7 @@ class Comment(models.Model):
     #         comment.requester = requester
 
     @staticmethod
+    # @memoize(timeout=5)
     def set_flags(comment_set, requester):
         for comment in comment_set:
             comment.requester = requester

@@ -21,24 +21,24 @@
        	 	<div style="margin-top:1.5px;padding:3px 0px; float:right;">
          	   <span style="">{% include 'elaboration_indicators.html' with elaboration=review.elaboration %}</span>
         	</div>
-			<div style="padding:7px 0 7px 0;width:100%;border-bottom:1px solid gray">
-				<span title="{{review.submission_time}}" >Review {{ forloop.counter }}: {{review.submission_time|naturaltime}}</span> - <a href="#review-{{ review.id }}" rel="modal:open"> View Elaboration </a>
-			</div>
+		<div style="padding:7px 0 7px 0;width:100%;border-bottom:1px solid gray">
+			<span title="{{review.submission_time}}" >Review {{ forloop.counter }}: {{review.submission_time|naturaltime}}</span> - <a href="#review-{{ review.id }}" rel="modal:open"> View Elaboration </a>
+		</div>
 			<br>
 
-			 <div class="review_overview_review_questions">
+		<div class="review_overview_review_questions">
 	            {% render_review_answers_staff review.id %}
-				{% if review.elaboration.extra_review_question %}
+			{% if review.elaboration.extra_review_question %}
 	            <div class="question_container">
 	              <div style="color:gray">
 	                {{ review.elaboration.extra_review_question }}
 	                <textarea class="review_answer" readonly>{{ review.extra_review_question_answer }}</textarea>
 	              </div>
 	            </div>
-				{% else %}
-				<div class="question_container">No extra question</div>
-				{% endif %}
-			</div>
+			{% else %}
+			<div class="question_container">No extra question</div>
+			{% endif %}
+		</div>
 
         	<div class="appraisal eval_appraisal ">
             	<input type="radio" id="X1{{forloop.counter}}{{review.id}}" name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'A')" {% if review.appraisal == 'A' %} checked {% endif %}/><label for="X1{{forloop.counter}}{{review.id}}" id="X1t">Exceptional</label>
@@ -52,7 +52,7 @@
 			  <br><br>
 	</div>
     <div id="review-{{ review.id }}" class="modal-elaboration" style="display:none;">
-      {% include 'user_info.html' with user=review.elaboration.user %}
+      {% include 'user_info.html' with author=review.elaboration.user %}
       {% render_original_uploads review.elaboration %}
       {% if review.elaboration.elaboration_text  %}
         <div class="submitted-content">

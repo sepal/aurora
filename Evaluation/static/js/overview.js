@@ -163,3 +163,11 @@ function sort(param) {
        update_overview(data);
    });
 }
+
+function sort_new(param) {
+   localStorage.setItem('current_sort', param);
+   var url = './sort_new?data=' + param;
+   $.get(url, function (data) {
+       update_overview(data);
+   });
+}

@@ -17,6 +17,8 @@ from pprint import pprint
 from Course.models import *
 from random import randint
 import logging
+from functools import lru_cache
+from memoize import memoize
 
 
 logger = logging.getLogger('review')
@@ -49,6 +51,7 @@ class Elaboration(models.Model):
             return True
         return False
 
+    # @memoize(timeout=5)
     def is_evaluated(self):
         evaluation = self.get_evaluation()
         if evaluation:
@@ -56,6 +59,7 @@ class Elaboration(models.Model):
                 return True
         return False
 
+    # @memoize(timeout=5)
     def get_evaluation(self):
         evaluation = Evaluation.objects.filter(submission=self)
         if evaluation.exists():
@@ -119,11 +123,20 @@ class Elaboration(models.Model):
         if self == final_challenge:
             return False
 
-        final_challenge_elaboration = final_challenge.get_elaboration(self.user)
-        if final_challenge_elaboration and final_challenge_elaboration.is_submitted():
-            return False
+        # Disabled for a more detailed check using `final_challenge_submitted`
+        # final_challenge_elaboration = final_challenge.get_elaboration(self.user)
+        # if final_challenge_elaboration and final_challenge_elaboration.is_submitted():
+        #     return False
 
         return True
+
+    def final_challenge_submitted(self):
+        final_challenge = self.challenge.get_final_challenge()
+        final_challenge_elaboration = final_challenge.get_elaboration(self.user)
+        if final_challenge_elaboration and final_challenge_elaboration.is_submitted():
+            return True
+        else:
+            return False
 
     def has_revision(self):
         if self.elaboration_text != self.revised_elaboration_text or self.revised_elaboration_changelog:

@@ -10,6 +10,7 @@ from Stack.models import StackChallengeRelation
 from Review.models import Review
 from Elaboration.models import Elaboration
 from Course.models import Course, CourseUserRelation
+from memoize import memoize
 
 import logging
 logger = logging.getLogger(__name__)
@@ -85,6 +86,7 @@ class Challenge(models.Model):
         else:
             return None
 
+    # @memoize(timeout=2)
     def get_elaboration(self, user):
         elaborations = Elaboration.objects.filter(challenge=self, user=user).order_by("-creation_time")
 
@@ -103,6 +105,7 @@ class Challenge(models.Model):
             return False
         return elaboration.is_started()
 
+    # @memoize(timeout=2)
     def get_stack(self):
         stack_challenge_relation = StackChallengeRelation.objects.filter(challenge=self)
         if stack_challenge_relation:
@@ -110,6 +113,7 @@ class Challenge(models.Model):
         else:
             return None
 
+    # @memoize(timeout=2)
     def is_first_challenge(self):
         return not self.prerequisite  # challenge without prerequisite is the first challenge
 
@@ -144,6 +148,7 @@ class Challenge(models.Model):
         )
         return final_challenge_ids
 
+    # @memoize(timeout=2)
     def is_final_challenge(self):
         final_challenge = self.get_final_challenge()
 
@@ -152,6 +157,7 @@ class Challenge(models.Model):
 
         return False
 
+    # @memoize(timeout=2)
     def get_first_challenge(self):
 
         first = Challenge.objects.raw('''
@@ -168,6 +174,7 @@ class Challenge(models.Model):
         ''', [self.id])
         return first[0]
 
+    # @memoize(timeout=2)
     def get_final_challenge(self):
         final = Challenge.objects.raw('''
             WITH RECURSIVE challenge_tree(id, prerequisite_id, depth) AS (
@@ -217,6 +224,7 @@ class Challenge(models.Model):
             'next': next_text
         }
 
+    # @memoize(timeout=5)
     def is_enabled_for_user(self, user):
         # if user is not enlisted for the course the challenge is in,
         # the challenge can not be enabled for the user
@@ -310,7 +318,7 @@ class Challenge(models.Model):
         return result
 
     def is_in_lock_period(self, user, course):
-        PERIOD = 1
+        PERIOD = 999
         START_YEAR = 2017
         START_MONTH = 3
         START_DAY = 1

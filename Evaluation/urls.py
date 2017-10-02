@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^autocomplete_user/$', Evaluation.views.autocomplete_user),
     url(r'^search/$', Evaluation.views.search),
     url(r'^sort$', Evaluation.views.sort),
+    url(r'^sort_new$', Evaluation.views.sort_new),
     url(r'^set_appraisal/$', Evaluation.views.set_appraisal),
     url(r'^review_answer/$', Evaluation.views.review_answer),
     url(r'^load_reviews/$', Evaluation.views.load_reviews),

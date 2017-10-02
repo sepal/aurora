@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.csrf import csrf_exempt
@@ -59,7 +59,12 @@ def course_selection(request):
     # if a next_url is defined.
     course = course_from_next_url(next_url)
     if next_url and course:
-        return redirect(reverse("User:login", args=(course, )))
+        try:
+            redirect_url = reverse("User:login", args=(course, ))
+        except NoReverseMatch:
+            pass
+        else:
+            return redirect(redirect_url)
 
     data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
     return render(request, 'course_selection.html', data)
@@ -70,20 +75,23 @@ def home(request, course_short_title=None):
 
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
     course = Course.get_or_raise_404(course_short_title)
-    data = get_points(request, user, course)
-    data = create_stat_data(course,data)
-    data['user_is_top_reviewer'] = False
+    data = {}
+    data['course'] = course
 
-    data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
-    data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
-    data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
-    if user.is_top_reviewer(course):
-        # data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
-        # data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
-        # data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
-        data['user_is_top_reviewer'] = True
-        # Expensive function, therefor only execute if user is top reviewer
-        data = get_extra_review_data(user, course, data)
+    # data = get_points(request, user, course)
+    # data = create_stat_data(course,data)
+    # data['user_is_top_reviewer'] = False
+    #
+    # data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
+    # data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
+    # data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
+    # if user.is_top_reviewer(course):
+    #     # data['number_of_extra_reviews'] = user.number_of_extra_reviews(course)
+    #     # data['reviews_until_next_extra_point'] = user.number_of_reviews_until_next_extra_point(course)
+    #     # data['extra_points_earned_with_reviews'] = user.extra_points_earned_with_reviews(course)
+    #     data['user_is_top_reviewer'] = True
+    #     # Expensive function, therefor only execute if user is top reviewer
+    #     data = get_extra_review_data(user, course, data)
 
     data['extra_points_earned_with_comments'] = user.extra_points_earned_with_comments(course)
     data['extra_points_earned_by_rating_reviews'] = user.extra_points_earned_by_rating_reviews(course)

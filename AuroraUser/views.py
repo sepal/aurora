@@ -8,6 +8,9 @@ from AuroraUser.models import AuroraUser
 from django.core.urlresolvers import reverse
 from Course.models import Course
 from django.conf import settings
+from Evaluation.views import get_points
+from Statistics.views import create_stat_data
+from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 from AuroraProject.decorators import aurora_login_required
 from Notification.models import FeedToken
@@ -200,3 +203,15 @@ def create_feed_token(request, course_short_title):
     }
 
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+@aurora_login_required()
+def work(request, course_short_title):
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
+    course = Course.get_or_raise_404(course_short_title)
+
+    data = get_points(request, user, course)
+    data = create_stat_data(course,data)
+
+    context = RequestContext(request, data)
+
+    return render_to_response('work.html', data, context)

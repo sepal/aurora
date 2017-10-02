@@ -1,0 +1,5 @@
+---
+py3env: /home/vagrant/py3env
+dbname: aurora
+dbuser: aurora_dbuser
+dbpassword: nosecret

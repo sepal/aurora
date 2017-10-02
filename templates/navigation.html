@@ -14,8 +14,8 @@
     <div class="headline">
 	  <div class="course_selected"><a href="/"><span style="">Aurora - </span>
 		  <span class="long_title_text">{{course.title}}</span>
-		  <span class="short_title_text">{{course.short_title}}</span><a></div>
-    </div>	
+		  <span class="short_title_text">{{course.short_title}}</span></a></div>
+    </div>
     {% if user.is_authenticated %}
 
       <ul>
@@ -31,8 +31,11 @@
 		{% endif %}
 
         <li id="slides-li">
+          <a href="{% url 'User:work' course.short_title %}">Your work</a></li>
+
+        <li id="slides-li">
           <a href="{% url 'Slides:slides' course.short_title %}">Slides</a></li>
-			
+
 		{% if course.short_title == "gsi" %}
 	        <li id="diskurs-li">
 	          <a href="{% url 'diskurs:index' course.short_title %}">Discourse</a></li>
@@ -47,7 +50,7 @@
             <a href="{% url 'Evaluation:home' course.short_title %}">Evaluation</a></li>
         {% endif %}
 
-        {% if user.is_superuser %}
+        {% if user.is_staff %}
           <li id="statistics-li">
             <a href="{% url 'Statistics:home' course.short_title %}">Statistics</a></li>
         {% endif %}
@@ -78,7 +81,7 @@
 
         <li id="slides-li-bottom">
           <a href="{% url 'Slides:slides' course.short_title %}"><i class="fa fa-tv "></i><div class="icontext">Slides</div></a></li>
-			
+
 		{% if course.short_title == "gsi" %}
 	        <li id="diskurs-li-bottom">
 	          <a href="{% url 'diskurs:index' course.short_title %}"><i class="fa fa-comment-o "></i><div class="icontext">Diskurs</div></a></li>
@@ -92,13 +95,13 @@
           <li id="evaluation-li-bottom"><a href="{% url 'Evaluation:home' course.short_title %}"><i class="fa fa-star-half-empty"></i><div class="icontext">Eval</div></a></li>
         {% endif %}
 
-        {% if user.is_superuser %}
+        {% if user.is_staff %}
           <li id="statistics-li-bottom"><a href="{% url 'Statistics:home' course.short_title %}"><i class="fa fa-bar-chart"></i><div class="icontext">Stats</div></a></li>
         {% endif %}
         <li id="notifications-li-bottom" class="unread_notifications">
           <a id="unread_notifications_bottom"  class="unread_notifications_display" href="{% url 'Notification:list' course.short_title %}">{{ unread_notifications|length }}</a>
         </li>
-		
+
       </ul>
     {% endif %}
   </div>

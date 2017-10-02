@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block additional_headers %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/work.css" type="text/css" media="screen"/>
+{% endblock %}
+
+{% block content %}
+
+<div class="yourWorkTemp">
+
+{% include 'temp_points.html' %}
+{% include 'temp_public_stats.html' %}
+
+</div>
+
+{% endblock %}

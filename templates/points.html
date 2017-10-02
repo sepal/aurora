@@ -18,12 +18,12 @@
         <tr class="sum">
           <td class="letztezeile sum">
 			  <a href="javascript:tggle('.final_list');void(0);" style="color:black;text-decoration:none">
-				  <i  style="{% if stack in stack_data.course_stacks %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-angle-down fa-lger"></i> Awarded points so far</a></td>
+				  <i  style="{% if stack_data.evaluated_points_earned_total %}color:#3AC958{% else %}color:#ccc{% endif %}" class="fa fa-angle-down fa-lger"></i> Awarded points so far</a></td>
           <td class="letztezeile punkte"><span style="color:gray">{{ stack_data.evaluated_points_available_total }}</span> &nbsp;{{ stack_data.evaluated_points_earned_total }}</td>
         </tr>
 		</table><div class="final_list"  style="display:none"><table>
 				{% for stack in stack_data.course_stacks %} <!-- loop 1: evaluated, valid challenges -->
-		          {% if stack.is_submitted and stack.status.status == "Evaluated." and stack.points_earned != 0 %}
+		          {% if stack.is_submitted and stack.status.status == 7 and stack.points_earned != 0 %}
 		            <tr class="pZeile{{ forloop.parentloop.counter }}">
 		              <td class="stack_name">
 		                <a style="text-decoration:none; color:black;"
@@ -33,7 +33,7 @@
 		                </a>
 		              </td>
 		              <td class="punkte" style="vertical-align:bottom;">
-		                {{ stack.points_earned }}/{{ stack.points_available }}
+		                {{ stack.points_available }}&nbsp;&nbsp;{{ stack.points_earned }}
 		              </td>
 		            </tr>
 		          {% endif %}
@@ -69,19 +69,20 @@
     <div class="extra_list" style="display:none">
       <table>
         <tr class="pZeile1">
-          <td>Writing Reviews</td>
+          <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Writing Reviews</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_reviews }}</td>
         </tr>
         <tr class="pZeile1">
-          <td>Comments</td>
+          <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Comments</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_comments }}</td>
         </tr>
         <tr class="pZeile1">
-          <td>Rating Reviews</td>
+          <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Rating Reviews</td>
           <td class="punkte">{{ stack_data.extra_points_earned_by_rating_reviews }}</td>
         </tr>
       </table>
     </div>
+
 
 
     <table>
@@ -89,7 +90,7 @@
 		{% if stack_data.submitted_points_available_total == 0 %}
 	        <tr class="sum">
 	          <td class="letztezeile sum" style="color:gray">
-				  	<i  style="visibility:hidden" class="fa fa-angle-down fa-2x"></i> In Evaluation</td>
+				  	<i  style="visibility:hidden" class="fa fa-angle-down fa-lger"></i> In Evaluation</td>
 	          <td class="letztezeile punkte" style="color:gray">&ndash;<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
 	        </tr>
 		{% else %}
@@ -101,18 +102,20 @@
 	        </tr>
 			</table><div class="sub_list" style="display:none"><table>
 	        {% for stack in stack_data.course_stacks %} <!-- loop 3: challenges in evaluation -->
-	          {% if stack.is_submitted and stack.status.status != "Evaluated." %}
+	          {% if stack.is_submitted and stack.status.status != 7 %}
 	            <tr class="pZeile{{ forloop.parentloop.counter }}">
 	              <td class="stack_name">
 	                <a style="text-decoration:none; color:black;"
 	                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
 	                  <i style="color:gray" class="fa fa-circle-o"></i>
 	                  <abbr title="{{stack.stack.get_final_challenge.id}}">{{ stack.stack.title|truncatechars:36 }}</abbr>
+					  {% comment %}
 					  {% for task in final_tasks %}
 					  {% if task.id = stack.stack.get_final_challenge.id %}
 					  	<abbr title="waiting for eval.+already evaluated" style="color:gray">({{task.not_evaluated}}+{{task.evaluated}})
 					  {% endif %}
 					  {% endfor %}
+					  {% endcomment %}
 	                </a>
 	              </td>
 	              <td class="punkte" style="vertical-align:bottom;">
@@ -162,7 +165,7 @@
         <tr class="sum">
           <td  style="color:gray">
 			 <i style="color:rgba(0,0,0,0);" class="fa fa-angle-down fa-lger"></i> Optimistic Sum</td>
-          <td class="punkte" style="vertical-align:bottom;color:gray"><span style="color:lightgray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;&nbsp;{{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total}}
+          <td class="punkte" style="vertical-align:bottom;color:gray"><span style="color:lightgray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;&nbsp;{{stack_data.evaluated_points_earned_total|add:stack_data.submitted_points_available_total|add:stack_data.total_extra_points_earned}}
 		  </td>
 	  	</tr>
 {% comment %}
@@ -220,7 +223,7 @@
                     {% endif %}
                     )">
               <script>document.write(ar)</script>%
-              as »Helpful« (&empty; is {{review_evaluations_helpful_ratio|floatformat:"0"}}%)
+              as »Helpful« (&empty; is {{review_evaluations_helpful_ratio|floatformat:-1}}%)
             </span>
             <br>
             <span
@@ -232,7 +235,7 @@
                     {% endif %}
                     )">
               <script>document.write(br)</script>%
-              as »OK« (&empty; is {{review_evaluations_good_ratio|floatformat:"0"}}%)
+              as »OK« (&empty; is {{review_evaluations_good_ratio|floatformat:-1}}%)
             </span>
             <br>
             <span
@@ -244,7 +247,7 @@
                     {% endif %}
                     )">
               <script>document.write(cr)</script>%
-              as »Meaningless« (&empty; is {{review_evaluations_bad_ratio|floatformat:"0"}}%)
+              as »Meaningless« (&empty; is {{review_evaluations_bad_ratio|floatformat:-1}}%)
             </span>
             <br>
             <span
@@ -256,7 +259,7 @@
                     {% endif %}
                     )">
               <script>document.write(dr)</script>%
-              as »Minimalist/offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:"0"}}%)
+              as »Minimalist/offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:-1}}%)
             </span>
           </td>
         </tr>

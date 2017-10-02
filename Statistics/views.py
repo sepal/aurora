@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q, Sum, Count
 
+from AuroraProject.decorators import aurora_login_required
 from Elaboration.models import Elaboration
 from Stack.models import Stack, StackChallengeRelation
 from Course.models import Course
@@ -10,11 +11,13 @@ from AuroraUser.models import AuroraUser
 from Evaluation.models import Evaluation
 from Review.models import Review, ReviewEvaluation
 from Comments.models import Comment
+from memoize import memoize
 
 
 # @staff_member_required
 
-@user_passes_test(lambda u: u.is_superuser)
+@aurora_login_required()
+@staff_member_required
 def statistics(request, course_short_title=None):
     data = {}
     course = Course.get_or_raise_404(course_short_title)
@@ -22,6 +25,7 @@ def statistics(request, course_short_title=None):
     return render(request, 'statistics.html', data)
 
 
+# @memoize(timeout=10)
 def create_stat_data(course, data):
     data['course'] = course
     data['students'] = AuroraUser.objects.filter(is_staff=False, is_superuser=False).count()
@@ -47,6 +51,8 @@ def create_stat_data(course, data):
     data['reviews'] = reviews(course)
     data['commenter_top_25'] = commenter_top_x(course, 25)
     data['tutors'] = tutor_statistics(course)
+    data['tutors0'] = tutor_statistics_reduced(course)
+    data['averageTutor'] = tutor_statistics_average(data['tutors0'])
     data['review_evaluating_students_top_10'] = review_evaluating_students_top_x(course, 10)
     data['evaluated_final_tasks'] = evaluated_final_tasks(course)
     data['not_evaluated_final_tasks'] = not_evaluated_final_tasks(course)
@@ -160,8 +166,14 @@ def commenter_top_x(course, x):
     return commenters
 
 
+def notZero(tutor):
+    return tutor['all_evaluations'] != 0
+
+def notFake(tutor):
+    return (tutor['all_evaluations'] != 0 or tutor['reviews'] != 0 or tutor['comments'] != 0) and not tutor['is_superuser']
+
 def tutor_statistics(course):
-    tutors = AuroraUser.objects.filter(is_staff=True).values('id', 'nickname', 'first_name', 'last_name').order_by('id')
+    tutors = AuroraUser.objects.filter(is_staff=True).values('id', 'nickname', 'first_name', 'last_name','is_superuser').order_by('id')
     for tutor in tutors:
         tutor['evaluations'] = (
             Evaluation.objects
@@ -187,8 +199,19 @@ def tutor_statistics(course):
                 .filter(author__id=tutor['id'])
                 .count()
         )
-    return tutors
+    new_tutors = [item for item in tutors if notFake(item)]
+    return new_tutors
 
+def tutor_statistics_reduced(course):
+    tutors = tutor_statistics(course)
+    new_tutors = [item for item in tutors if notZero(item)]
+    return new_tutors
+
+def tutor_statistics_average(tutors):
+    sume = 0
+    for tutor in tutors:
+        sume = sume + tutor['all_evaluations']
+    return sume / len(tutors)
 
 def review_evaluating_students_top_x(course, x):
     students = (

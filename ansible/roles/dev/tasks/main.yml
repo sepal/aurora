@@ -1,0 +1,17 @@
+---
+- include: postgresql.yml
+
+- include: python.yml
+  become: true
+  become_user: vagrant
+
+- name: add automatic activation of virtualenv to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc
+              line=". {{ py3env }}/bin/activate"
+  become: true
+  become_user: vagrant
+
+- lineinfile: dest=/home/vagrant/.bashrc
+              line='cd /vagrant'
+  become: true
+  become_user: vagrant

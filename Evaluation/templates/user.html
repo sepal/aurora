@@ -1,5 +1,6 @@
 
 {% block content %}
+ {% if user.is_superuser %} 
   <div class="author_detail staff_detail" id="top_detail" style="overflow:auto; height:auto;">
     <img src='{{user.avatar.url}}'>
     <span class="nick">{{user.nickname}}</span><br>
@@ -7,7 +8,11 @@
     {{user.matriculation_number}} - {{user.first_name}} {{user.last_name}}<br>
     <a href="mailto:{{user.email}}">{{user.email}}</a> &mdash;
   </div>
+{% else %}
 
+{{user.matriculation_number}}<br><br>
+
+{% endif %}
   <br>
 
   <h1>User Tags</h1>
