@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import {DragSource} from 'react-dnd';
 import {Link} from 'react-router';
 import ReactMarkdown from 'react-markdown';

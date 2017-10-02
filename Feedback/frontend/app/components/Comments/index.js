@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {getComments} from '../../api';
 
 export default class Comments extends React.Component {
   static propTypes = {
-    issueID: React.PropTypes.number.isRequired
+    issueID: PropTypes.number.isRequired
   };
 
   state = {

@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import InputElement from '../InputElement';
 
 export default class TextArea extends InputElement {
   static propTypes = {
-    name: React.PropTypes.string,
-    label: React.PropTypes.string,
-    rows: React.PropTypes.number,
-    onChange: React.PropTypes.func
+    name: PropTypes.string,
+    label: PropTypes.string,
+    rows: PropTypes.number,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {
@@ -33,4 +34,4 @@ export default class TextArea extends InputElement {
       </div>
     );
   }
-};
+}
