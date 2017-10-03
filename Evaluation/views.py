@@ -70,6 +70,8 @@ def evaluation(request, course_short_title=None):
         else:
             data = {'elaborations': elaborations, 'course': course}
 
+        data["selection"] = selection
+
         if selection == "final_evaluation_new":
             overview = render_to_string('overview_new.html', data, RequestContext(request))
         else:
@@ -107,9 +109,10 @@ def evaluation(request, course_short_title=None):
     return render_to_response('evaluation.html',
                               {'challenges': challenges,
                                'overview': overview,
-                               'count_' + request.session.get('selection', ''): count,
-                               'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert',
+                               'count_' + selection: count,
+                               'stabilosiert_' + selection: 'stabilosiert',
                                'course': course,
+                               'selection': selection,
                                'selected_challenge': request.session.get('selected_challenge'),
                                'selected_user': request.session.get('selected_user'),
                                'selected_task': request.session.get('selected_task'),
@@ -131,7 +134,9 @@ class EvaluationView(CourseMixin, TemplateView):
     @method_decorator(aurora_login_required())
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):
-        self.mode = kwargs.get("mode", "overview")
+        self.mode = kwargs.get("mode")
+        if self.mode is None:
+            self.mode = "overview"
         self.elaborations = self._get_elaborations()
         self._update_session()
 
