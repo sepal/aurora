@@ -4,7 +4,7 @@ import {changeIssue, upvoteIssue} from '../actions/issueActions';
 
 const mapStateToProps = (state, ownProps) => {
   const issue = state.issues.filter(issue => {
-    return issue.id == ownProps.params.id
+    return issue.id == ownProps.match.params.id
   })[0];
 
   return {

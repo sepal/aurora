@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {DragSource} from 'react-dnd';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 import IssueLabel from '../IssueLabel';

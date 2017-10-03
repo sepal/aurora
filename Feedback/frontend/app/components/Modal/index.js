@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, withRouter} from 'react-router-dom';
 
-export default class Modal extends React.Component {
+class Modal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -9,6 +9,11 @@ export default class Modal extends React.Component {
   }
 
   render() {
+    const pathPattern = new RegExp(`^(/${this.props.course}/feedback/?)$`, 'gi');
+    if (this.props.location.pathname.match(pathPattern)) {
+      return (<div></div>);
+    }
+
     return (
       <div className="modal" onClick={this.close}>
         <div className="modal__window" onClick={this.eventHandler}>
@@ -35,3 +40,5 @@ export default class Modal extends React.Component {
     event.stopPropagation();
   }
 }
+
+export default withRouter(props => <Modal {...props} />);
