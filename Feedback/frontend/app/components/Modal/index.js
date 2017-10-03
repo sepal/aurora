@@ -1,14 +1,30 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link, withRouter, Redirect} from 'react-router-dom';
 
 class Modal extends React.Component {
   constructor(props) {
     super(props);
 
     this.close = this.close.bind(this);
+
+    this.state = {
+      closed: false,
+    }
+  }
+
+  componentWillReceiveProps() {
+    this.setState({
+      closed: false
+    });
   }
 
   render() {
+    if (this.state.closed) {
+      return (
+        <Redirect to={`/${this.props.course}/feedback/`}/>
+      )
+    }
+
     const pathPattern = new RegExp(`^(/${this.props.course}/feedback/?)$`, 'gi');
     if (this.props.location.pathname.match(pathPattern)) {
       return (<div></div>);
@@ -33,11 +49,18 @@ class Modal extends React.Component {
   }
 
   close(event) {
-    this.props.onClose();
+    this.setState({
+      closed: true
+    });
   }
 
   eventHandler(event) {
     event.stopPropagation();
+  }
+
+  onIndex() {
+    const pathPattern = new RegExp(`^(/${this.props.course}/feedback/?)$`, 'gi');
+    return this.props.location.pathname.match(pathPattern);
   }
 }
 
