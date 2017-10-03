@@ -96,9 +96,7 @@ export default class IssueDetail extends Component {
 
   renderPlatform() {
     if (this.props.user_agent !== undefined) {
-      console.log(this.props.user_agent);
       const info = platform.parse(this.props.user_agent);
-      console.log(info);
       let product = null;
       if (info.product !== null) {
         product = (
