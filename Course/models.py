@@ -12,6 +12,7 @@ class Course(models.Model):
     course_number = models.CharField(max_length=100, unique=True)
     start_date = models.DateField(default=datetime.now, blank=True)
     end_date = models.DateField(default=datetime.now, blank=True)
+    tuwel_course_id = models.PositiveSmallIntegerField(null=False)
 
     def __unicode__(self):
         return str(self.title)
