@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils.functional import cached_property
+from django.template import RequestContext
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
@@ -18,16 +20,27 @@ from Evaluation.models import Evaluation
 from Review.models import Review
 from ReviewAnswer.models import ReviewAnswer
 from Elaboration.models import Elaboration
-from Evaluation.views import get_points
 from Challenge.models import Challenge
-from Statistics.views import create_stat_data
-from Elaboration.views import get_extra_review_data
+# unused, and therefore commented out because importing app views means they
+# can't import this module properly
+#from Evaluation.views import get_points
+#from Statistics.views import create_stat_data
+#from Elaboration.views import get_extra_review_data
 from Faq.models import Faq
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+class CourseMixin:
+    course_kwarg_name = "course_short_title"
+    @cached_property
+    def course(self):
+        course_short_title = self.kwargs.get(self.course_kwarg_name)
+        course = Course.get_or_raise_404(short_title=course_short_title)
+        return course
 
 
 def course_from_next_url(next):

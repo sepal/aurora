@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block additional_headers %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/evaluation.css" type="text/css" media="screen"/>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/detail.js"></script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="detail_left">
+  {% for elaboration in elaborations %}
+    {% include 'elaboration_info.html' with elaboration=elaboration %}
+    {% if elaboration.elaboration_text %}
+      <div class="spacer"></div>
+      <div class="submitted-content">
+        <textarea id="evaluation-editor" class="trix-content" style="display: none;">
+          {{ elaboration.elaboration_text }}
+        </textarea>
+        <trix-editor class="trix-content" input="evaluation-editor"></trix-editor>
+      </div>
+    {% elif elaboration.revised_elaboration_text %}
+      <div class="spacer"></div>
+      <div class="submitted-content">
+        <textarea id="evaluation-editor" class="trix-content" style="display: none;">
+          {{ elaboration.revised_elaboration_text }}
+        </textarea>
+        <trix-editor class="trix-content" input="evaluation-editor"></trix-editor>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% endblock %}
