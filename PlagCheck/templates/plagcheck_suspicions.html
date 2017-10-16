@@ -25,6 +25,9 @@
             <table class="overview_table">
                 <tr>
                     <th>student</th>
+                    <th>year</th>
+                    <th>copied from</th>
+                    <th>year</th>
                     <th>elaboration</th>
                     <th>similarity</th>
                     <th>date found</th>
@@ -35,6 +38,9 @@
                     <tr class="{% cycle 'darkRow' 'lightRow' %}"
                         onclick="window.open('{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspicion_id=suspicion.id %}?{{ request.GET.urlencode }}' {% if open_new_window %} ,'_blank' {% else %}, '_self' {% endif %})">&nbsp;
                         <td><img class="gravatar" src="{{ suspicion.suspect_doc.user.avatar.url }}" style="vertical-align:middle"> {{ suspicion.suspect_doc.user.nickname }}</td>
+                        <td>{{ suspicion.suspect_doc.submission_time.date.year }}</td>
+                        <td><img class="gravatar" src="{{ suspicion.similar_doc.user.avatar.url }}" style="vertical-align:middle"> {{ suspicion.similar_doc.user.nickname }}</td>
+                        <td>{{ suspicion.similar_doc.submission_time.date.year }}</td>
                         <td>{{ suspicion.suspect_doc.elaboration.challenge.title|safe }}</td>
                         <td>{{ suspicion.similarity }}</td>
                         <td>{{ suspicion.created|naturaltime }}</td>
