@@ -24,5 +24,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(set_tuwel_ids),
+        migrations.RunPython(set_tuwel_ids, lambda a, s: None),
     ]

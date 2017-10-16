@@ -111,6 +111,8 @@ def home(request, course_short_title=None):
     data['total_extra_points_earned'] = user.total_extra_points_earned(course)
     faq_list = Faq.get_faqs(course_short_title)
 
+    data["all_courses"] = Course.objects.all()
+
     return render(request, 'home.html', data)
 
 

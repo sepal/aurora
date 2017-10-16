@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='course',
             name='tuwel_course_id',
-            field=models.PositiveSmallIntegerField(default=None, null=True),
+            field=models.PositiveIntegerField(default=None, null=True),
         ),
     ]

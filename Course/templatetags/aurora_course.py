@@ -3,14 +3,22 @@ from django import template
 
 register = template.Library()
 
-
-TUWEL_URL_TEMPLATE = "https://tuwel.tuwien.ac.at/course/view.php?id={tuwel_course_id}"
 COURSE_FEED_TEMPLATE_NAME_TEMPLATE = "course_feed_{short_title}.html"
 
 
-@register.simple_tag
-def tuwel_url(course):
-    return TUWEL_URL_TEMPLATE.format(tuwel_course_id=course.tuwel_course_id)
+@register.inclusion_tag("course_stream_link.html")
+def course_stream_link(course):
+    return {"course": course}
+
+
+@register.inclusion_tag("course_mailto_link.html")
+def course_mailto_link(course):
+    return {"course": course}
+
+
+@register.inclusion_tag("course_tuwel_link.html")
+def course_tuwel_link(course):
+    return {"course": course}
 
 
 @register.simple_tag

@@ -47,8 +47,10 @@
             <a target="_blank" href="https://auri1-gsi.pbworks.com/w/page/77253689/FrontPage">Aurora Wiki</a><br>
             <i style="color:gray" class="fa fa-arrow-right"></i>
             TUWEL
-            <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5575">gsi</a>
-            <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5581">bhci</a><br><br>
+            {% for a_course in all_courses %}
+              {% course_tuwel_link a_course %}
+            {% endfor %}
+            <br><br>
             <i style="color:gray" class="fa fa-arrow-right"></i>
             <a href="/admin">django admin</a><br><br>
           </p>
@@ -111,19 +113,11 @@
           - Sollten sie eine Frage haben, die nur sie betrifft, dann schreiben
           sie uns bitte eine email:
         </p><br>
-        {% if course.short_title == "gsi" %}
-          <p>
-            <i>
-              <a href="mailto:gsi@igw.tuwien.ac.at">gsi@igw.tuwien.ac.at</a>
-            </i>
-          </p>
-        {% else %}
-          <p>
-            <i>
-              <a href="mailto:bhci@igw.tuwien.ac.at">bhci@igw.tuwien.ac.at</a>
-            </i>
-          </p>
-        {% endif %}<br>
+        <p>
+          <i>
+            {% course_mailto_link course %}
+          </i>
+        </p><br>
         <p>
           - Sie können auch in die LVA-Sprechstunde kommen: Mi 10-12h, Michael
           Urbanek, Argentinierstr. 8, 2. Stock, Mitte.
@@ -135,19 +129,9 @@
         <p>
           Während der Vorlesungszeit steht ein Video-Stream zur Verfügung,
           mit dem Sie die Vorlesung remote verfolgen können: <br><br>
-          {% if course.short_title == "gsi" %}
-            &nbsp;&nbsp;&nbsp;
-            <i class="fa fa-angle-double-right"></i>
-            <a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363094">
-              GSI live stream
-            </a>
-          {% else %}
-            &nbsp;&nbsp;&nbsp;
-            <i class="fa fa-angle-double-right"></i>
-            <a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363079">
-              BHCI live stream
-            </a>
-          {% endif %}
+          &nbsp;&nbsp;&nbsp;
+          <i class="fa fa-angle-double-right"></i>
+          {% course_stream_link course %}
         </p><br>
         <p>
           Ausserdem zeichnen wir diese Streams auf; Sie finden die
