@@ -37,7 +37,7 @@ def render_to_string_suspicions_view(request, course, options=None):
     request.session['count'] = count
 
     return {
-        'html': render_to_string('plagcheck_suspicions.html', context, RequestContext(request)),
+        'html': render_to_string('plagcheck_suspicions.html', context, request),
         'count': count,
     }
 
@@ -121,7 +121,7 @@ def render_to_string_compare_view(request, course, suspicion_id):
         state=SuspicionState.SUSPECTED.value).count()
 
     return {
-        'html': render_to_string('plagcheck_compare.html', context, RequestContext(request)),
+        'html': render_to_string('plagcheck_compare.html', context, request),
         'count': suspicions_count,
     }
 
