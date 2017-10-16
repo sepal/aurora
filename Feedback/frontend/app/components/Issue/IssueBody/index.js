@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
 class IssueBody extends React.Component {
   static propTypes = {
-    body: React.PropTypes.string,
-    className: React.PropTypes.string,
-    editable: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
+    body: PropTypes.string,
+    className: PropTypes.string,
+    editable: PropTypes.bool,
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load aurora_course %}
+
 {% block additional_headers %}
   <script type="text/javascript" src="{{ STATIC_URL }}js/masonry.pkgd.min.js"></script>
 {% endblock %}
@@ -10,170 +12,166 @@
 
   <div id="info_column">
 
-  {% if not user.is_staff %}
+    {% if not user.is_staff %}
+      <div class="sidebar_item">
+        <div class="feed_header"  id="part_0">
+          <i class="fa fa-angle-up fa-2x half"></i>
+          <b>Your work</b>
+        </div>
+        <div class="feed_column"  id="content_part_0">
+          »Your work« wurde aus performancetechnischen Gründen auf eine eigene
+          Seite verschoben. Klicken Sie auf <a href="work">»Your Work«</a> in der
+          Navigation.
+          <br><br>
+        </div>
+      </div>
+    {% else %}
+      <div class="sidebar_item">
+        <div class="feed_header"  id="part_0">
+          <i class="fa fa-angle-up fa-2x half"></i>
+          <b>Your work</b>
+        </div>
+        <div class="feed_column"  id="content_part_0">
+        </div>
+      </div>
+    {% endif %}
+    {% if user.is_staff %}
+      <div class="sidebar_item">
+        <div class="feed_header" id="part_X">
+          <i class="fa fa-angle-up half fa-2x"></i>
+          <b>LVA-Team Ressources </b>
+        </div>
+        <div class="feed_column" id="content_part_X">
+          <p>
+            <i style="color:gray" class="fa fa-arrow-right"></i>
+            <a target="_blank" href="https://auri1-gsi.pbworks.com/w/page/77253689/FrontPage">Aurora Wiki</a><br>
+            <i style="color:gray" class="fa fa-arrow-right"></i>
+            TUWEL
+            <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5575">gsi</a>
+            <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5581">bhci</a><br><br>
+            <i style="color:gray" class="fa fa-arrow-right"></i>
+            <a href="/admin">django admin</a><br><br>
+          </p>
+        </div>
+      </div>
+    {%  endif %}
     <div class="sidebar_item">
-      <div class="feed_header"  id="part_0">
+      <div class="feed_header" id="part_1">
         <i class="fa fa-angle-up fa-2x half"></i>
-        <b>Your work</b>
+        <b>General Information </b>
       </div>
-      <div class="feed_column"  id="content_part_0">
-        »Your work« wurde aus performancetechnischen Gründen auf eine eigene
-        Seite verschoben. Klicken Sie auf <a href="work">»Your Work«</a> in der
-        Navigation.
-        <br><br>
-      </div>
-    </div>
-  {% else %}
-    <div class="sidebar_item">
-      <div class="feed_header"  id="part_0">
-        <i class="fa fa-angle-up fa-2x half"></i>
-        <b>Your work</b>
-      </div>
-      <div class="feed_column"  id="content_part_0">
-      </div>
-    </div>
-  {% endif %}
-  {% if user.is_staff %}
-    <div class="sidebar_item">
-      <div class="feed_header" id="part_X">
-        <i class="fa fa-angle-up half fa-2x"></i>
-        <b>LVA-Team Ressources </b>
-      </div>
-      <div class="feed_column" id="content_part_X">
+      <div class="feed_column" id="content_part_1">
         <p>
-          <i style="color:gray" class="fa fa-arrow-right"></i>
-          <a target="_blank" href="https://auri1-gsi.pbworks.com/w/page/77253689/FrontPage">Aurora Wiki</a><br>
-          <i style="color:gray" class="fa fa-arrow-right"></i>
-          TUWEL
-          <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5575">gsi</a>
-          <a target="_blank" href="https://tuwel.tuwien.ac.at/course/view.php?id=5581">bhci</a><br><br>
-          <i style="color:gray" class="fa fa-arrow-right"></i>
-          <a href="/admin">django admin</a><br><br>
-        </p>
-      </div>
-    </div>
-  {%  endif %}
-  <div class="sidebar_item">
-    <div class="feed_header" id="part_1">
-      <i class="fa fa-angle-up fa-2x half"></i>
-      <b>General Information </b>
-    </div>
-    <div class="feed_column" id="content_part_1">
-      <p>
-        Alle wesentlichen Informationen über die <b>Leistungsanforderungen,
-        Notenermittlung,</b> Arbeiten in Aurora, Schreiben von Reviews,
-        Zitieren etc. finden Sie in
-        <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">
-        Arbeiten in Aurora</a> (version vom 11.5.2017).
-      </p><br>
-      <p>
-        Der
-        <a href="http://igw.tuwien.ac.at/aurora/plagiatsleitfaden.pdf">Plagiatsleitfaden
-        der TU Wien erklärt ausführlich, was Plagiate sind. </a>
-      </p><br>
-      <p>
-        Hinweis: Diese Seite wird mit Mozilla- und Webkit-Browsern
-        <b>(Firefox, Safari, Chrome)</b> entwickelt und getestet. Bitte
-        verwenden sie Aurora mit einem dieser Browser. F&uuml;r alle anderen
-        Browser &uuml;bernehmen wir keine Garantie. Melden Sie eventuelle
-        Probleme auf unterstützten Browsern gegebenenfalls im
-        &raquo;Bugs&amp;Feedback&laquo;-Bereich.
-      </p><br>
-      <p>
-        <b>Support:</b>
-      </p><br>
-      <p>
-        Wenn sie Probleme haben, sich nicht auskennen oder Hilfe
-        ben&ouml;tigen, so stehen ihnen folgende Informationsquellen zur
-        Verf&uuml;gung:
-      </p><br>
-      <p>
-        - Lesen sie die Sidebar sorgf&auml;tig. Die Informationen hier werden
-        immer wieder aktualisiert.
-      </p>
-      <p>
-        - Wenn sie Fragen zu einem Task haben, dann nutzen sie bitte die
-        M&ouml;glichkeit, bei den Beschreibungen der Tasks mit dem LVA-Team
-        zu diskutieren.
-      </p>
-      <p>
-        - Wenn sie mit einem Review oder einer Bewertung nicht zufrieden
-        sind, dann nutzen sie bitte die dort angegliederten Kommentare, um
-        mit uns dar&uuml;ber zu reden.
-      </p>
-      <p>
-        - Wenn sie eine andere Frage haben, die im allgemeinen Interesse ist,
-        dann posten sie diese hier im Newsfeed.
-      </p>
-      <p>
-        - Sollten sie eine Frage haben, die nur sie betrifft, dann schreiben
-        sie uns bitte eine email:
-      </p><br>
-      {% if course.short_title == "gsi" %}
+          Alle wesentlichen Informationen über die <b>Leistungsanforderungen,
+          Notenermittlung,</b> Arbeiten in Aurora, Schreiben von Reviews,
+          Zitieren etc. finden Sie in
+          <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">
+          Arbeiten in Aurora</a> (version vom 11.5.2017).
+        </p><br>
         <p>
-          <i>
-            <a href="mailto:gsi@igw.tuwien.ac.at">gsi@igw.tuwien.ac.at</a>
-          </i>
-        </p>
-      {% else %}
+          Der
+          <a href="http://igw.tuwien.ac.at/aurora/plagiatsleitfaden.pdf">Plagiatsleitfaden
+          der TU Wien erklärt ausführlich, was Plagiate sind. </a>
+        </p><br>
         <p>
-          <i>
-            <a href="mailto:bhci@igw.tuwien.ac.at">bhci@igw.tuwien.ac.at</a>
-          </i>
+          Hinweis: Diese Seite wird mit Mozilla- und Webkit-Browsern
+          <b>(Firefox, Safari, Chrome)</b> entwickelt und getestet. Bitte
+          verwenden sie Aurora mit einem dieser Browser. F&uuml;r alle anderen
+          Browser &uuml;bernehmen wir keine Garantie. Melden Sie eventuelle
+          Probleme auf unterstützten Browsern gegebenenfalls im
+          &raquo;Bugs&amp;Feedback&laquo;-Bereich.
+        </p><br>
+        <p>
+          <b>Support:</b>
+        </p><br>
+        <p>
+          Wenn sie Probleme haben, sich nicht auskennen oder Hilfe
+          ben&ouml;tigen, so stehen ihnen folgende Informationsquellen zur
+          Verf&uuml;gung:
+        </p><br>
+        <p>
+          - Lesen sie die Sidebar sorgf&auml;tig. Die Informationen hier werden
+          immer wieder aktualisiert.
         </p>
-      {% endif %}<br>
-      <p>
-        - Sie können auch in die LVA-Sprechstunde kommen: Mi 10-12h, Michael
-        Urbanek, Argentinierstr. 8, 2. Stock, Mitte.
-{% comment %}           <br><br> {% endcomment %}
-      </p><br>
-      <p>
-        <b>Video-Stream:</b>
-      </p><br>
-      <p>
-        Während der Vorlesungszeit steht ein Video-Stream zur Verfügung,
-        mit dem Sie die Vorlesung remote verfolgen können: <br><br>
+        <p>
+          - Wenn sie Fragen zu einem Task haben, dann nutzen sie bitte die
+          M&ouml;glichkeit, bei den Beschreibungen der Tasks mit dem LVA-Team
+          zu diskutieren.
+        </p>
+        <p>
+          - Wenn sie mit einem Review oder einer Bewertung nicht zufrieden
+          sind, dann nutzen sie bitte die dort angegliederten Kommentare, um
+          mit uns dar&uuml;ber zu reden.
+        </p>
+        <p>
+          - Wenn sie eine andere Frage haben, die im allgemeinen Interesse ist,
+          dann posten sie diese hier im Newsfeed.
+        </p>
+        <p>
+          - Sollten sie eine Frage haben, die nur sie betrifft, dann schreiben
+          sie uns bitte eine email:
+        </p><br>
         {% if course.short_title == "gsi" %}
-          &nbsp;&nbsp;&nbsp;
-          <i class="fa fa-angle-double-right"></i>
-          <a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363094">
-            GSI live stream
-          </a>
+          <p>
+            <i>
+              <a href="mailto:gsi@igw.tuwien.ac.at">gsi@igw.tuwien.ac.at</a>
+            </i>
+          </p>
         {% else %}
-          &nbsp;&nbsp;&nbsp;
-          <i class="fa fa-angle-double-right"></i>
-          <a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363079">
-            BHCI live stream
-          </a>
-        {% endif %}
-      </p><br>
-      <p>
-        Ausserdem zeichnen wir diese Streams auf; Sie finden die
-        Aufzeichnungen in tuwel. Beachten Sie bitte, dass man dazu physisch
-        oder zumindest logisch (VPN oder so) im Netz der TU sein muss!
-      </p><br>
+          <p>
+            <i>
+              <a href="mailto:bhci@igw.tuwien.ac.at">bhci@igw.tuwien.ac.at</a>
+            </i>
+          </p>
+        {% endif %}<br>
+        <p>
+          - Sie können auch in die LVA-Sprechstunde kommen: Mi 10-12h, Michael
+          Urbanek, Argentinierstr. 8, 2. Stock, Mitte.
+  {% comment %}           <br><br> {% endcomment %}
+        </p><br>
+        <p>
+          <b>Video-Stream:</b>
+        </p><br>
+        <p>
+          Während der Vorlesungszeit steht ein Video-Stream zur Verfügung,
+          mit dem Sie die Vorlesung remote verfolgen können: <br><br>
+          {% if course.short_title == "gsi" %}
+            &nbsp;&nbsp;&nbsp;
+            <i class="fa fa-angle-double-right"></i>
+            <a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363094">
+              GSI live stream
+            </a>
+          {% else %}
+            &nbsp;&nbsp;&nbsp;
+            <i class="fa fa-angle-double-right"></i>
+            <a href="https://tuwel.tuwien.ac.at/mod/rssplayer/view.php?id=363079">
+              BHCI live stream
+            </a>
+          {% endif %}
+        </p><br>
+        <p>
+          Ausserdem zeichnen wir diese Streams auf; Sie finden die
+          Aufzeichnungen in tuwel. Beachten Sie bitte, dass man dazu physisch
+          oder zumindest logisch (VPN oder so) im Netz der TU sein muss!
+        </p><br>
+      </div>
     </div>
-  </div>
-  <div class="sidebar_item">
-    <div class="feed_header" id="part_2">
-      <i class="fa fa-angle-up fa-2x half"></i>
-      <b>Frequently Asked Questions</b>
+    <div class="sidebar_item">
+      <div class="feed_header" id="part_2">
+        <i class="fa fa-angle-up fa-2x half"></i>
+        <b>Frequently Asked Questions</b>
+      </div>
+      <div class="feed_column" id="content_part_2">
+        {% include "faq.html" %}
+      </div>
     </div>
-    <div class="feed_column" id="content_part_2">
-      {% include "faq.html" %}
-    </div>
-  </div>
-  <div class="sidebar_item">
-    <div class="feed_header" id="part_3">
-      <i class="fa fa-angle-up fa-2x half"></i>
-      <b>Course plan {{ course.short_title|upper }}</b>
-    </div>
+    <div class="sidebar_item">
+      <div class="feed_header" id="part_3">
+        <i class="fa fa-angle-up fa-2x half"></i>
+        <b>Course plan {{ course.short_title|upper }}</b>
+      </div>
       <div class="feed_column" id="content_part_3">
-        {% if course.short_title == "hci" %}
-          {% include "course_feed_hci.html" %}
-        {% else %}
-          {% include "course_feed_gsi.html" %}
-        {% endif %}
+        {% include_course_feed course %}
       </div>
     </div>
     <br><br><br><br><br>

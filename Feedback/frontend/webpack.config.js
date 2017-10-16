@@ -1,6 +1,5 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const validate = require('webpack-validator');
 const parts = require('./lib/parts');
 
 // Define the input and output paths. Since django collects all static files
@@ -13,43 +12,26 @@ const PATHS = {
 
 // Common config for all build types.
 const common = {
+  context: path.resolve(__dirname, PATHS.app),
   entry: {
-    feedback: PATHS.app
+    feedback: './index.js'
   },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [{
+          loader: "babel-loader",
+        }]
+      }
+    ]
+  },
+  plugins: [],
   output: {
     path: PATHS.build,
     filename: path.join(PATHS.js, '[name].js')
   },
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-    alias: {
-      // We're using react-lite since we don't need server side rendering. This
-      // library is a lot smaller.
-      // 'react': 'react-lite',
-      // 'react-dom': 'react-lite'
-    }
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        // Enable caching for improved performance during development // It uses default OS directory by default. If you need
-        // something more custom, pass a path to it.
-        // I.e., babel?cacheDirectory=<path>
-        loaders: ['babel?cacheDirectory'],
-        // Parse only app files! Without this it will go through
-        // the entire project. In addition to being slow,
-        // that will most likely result in an error.
-        include: PATHS.app
-      },
-      {
-        // Required by react-markdown
-        test: /\.json$/,
-        loader: 'json'
-      }
-    ]
-  },
-  plugins: []
 };
 
 var config;
@@ -81,5 +63,4 @@ switch (process.env.npm_lifecycle_event) {
       }
     );
 }
-
-module.exports = validate(config);
+module.exports = config;

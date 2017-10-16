@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {IssueTypes} from '../../../constants';
 
 export default class IssueLabel extends React.Component {
   static propTypes = {
-    type: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
-    editable: React.PropTypes.bool,
-    onChange: React.PropTypes.func
+    type: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    editable: PropTypes.bool,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {

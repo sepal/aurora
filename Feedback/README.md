@@ -36,7 +36,7 @@ The provided vagrant box comes with nodejs, so you also should be able
 to compile the frontend code with the provided tools there. You still
 need to install the dependencies:
 ```
-cd Feedback/static/frontend
+cd Feedback/frontend
 npm install
 ```
 
