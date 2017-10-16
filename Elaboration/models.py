@@ -435,7 +435,11 @@ class Elaboration(models.Model):
                 .exclude(user=user)
                 .exclude(id__in=already_submitted_reviews_ids)
             ).order_by('num_reviews')
-            chosen_candidate = candidates[0]
+            if len(candidates) > 0:
+                chosen_candidate = candidates[0]
+            else:
+                logger.error('No dummy elaborations found for review')
+                return
 
         return { 'chosen_by': 'random', 'candidate': chosen_candidate }
 
