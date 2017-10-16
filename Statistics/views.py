@@ -209,6 +209,9 @@ def tutor_statistics_reduced(course):
     return new_tutors
 
 def tutor_statistics_average(tutors):
+    if len(tutors) <= 0:
+        return 0
+
     sume = 0
     for tutor in tutors:
         sume = sume + tutor['all_evaluations']

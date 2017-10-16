@@ -212,6 +212,4 @@ def work(request, course_short_title):
     data = get_points(request, user, course)
     data = create_stat_data(course,data)
 
-    context = RequestContext(request, data)
-
-    return render_to_response('work.html', data, context)
+    return render(request, 'work.html', data)
