@@ -1,4 +1,5 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 
 import {TextInput, TextArea, Select, Submit} from '../../forms';
 import {IssueTypes} from '../../../constants'
@@ -15,11 +16,18 @@ class IssueForm extends React.Component {
       title: '',
       body: '',
       title_error: '',
-      body_error: ''
+      body_error: '',
+      submitted: false
     }
   }
 
   render() {
+    if (this.state.submitted) {
+      return (
+        <Redirect to={`/${course_short_title}/feedback`}/>
+      )
+    }
+
     return (
       <div>
         <form>
@@ -53,11 +61,9 @@ class IssueForm extends React.Component {
 
     if (newState['body_error'] == '' && newState['title_error'] == '') {
       this.props.createIssue(this.state.type, this.state.title, this.state.body);
-      this.props.router.push(`/${course_short_title}/feedback`)
-
-    } else {
-      this.setState(newState);
+      newState['submitted'] = true;
     }
+    this.setState(newState);
   }
 
   updateChange(key, value) {

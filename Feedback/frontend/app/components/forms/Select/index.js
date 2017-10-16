@@ -1,14 +1,15 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import InputElement from '../InputElement';
 
 export default class Select extends InputElement {
   static propTypes = {
-    name: React.PropTypes.string,
-    label: React.PropTypes.string,
-    options: React.PropTypes.object,
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func
+    name: PropTypes.string,
+    label: PropTypes.string,
+    options: PropTypes.object,
+    value: PropTypes.string,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {

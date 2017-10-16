@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const Submit = function (props) {
@@ -9,8 +10,8 @@ const Submit = function (props) {
 };
 
 Submit.propTypes = {
-  value: React.PropTypes.string,
-  onClick: React.PropTypes.func
+  value: PropTypes.string,
+  onClick: PropTypes.func
 };
 
 Submit.defaultProps = {
