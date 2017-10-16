@@ -1,12 +1,12 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import {LaneListContainer} from '../../containers';
 
 @DragDropContext(HTML5Backend)
-export default class Feedback extends React.Component {
+export default class Kanban extends React.Component {
   componentDidMount() {
     kanbanReady();
   }
