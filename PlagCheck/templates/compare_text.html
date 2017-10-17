@@ -1,0 +1,15 @@
+<input type="checkbox" id="show_{{ id_prefix }}_orig" value="1">Show original</input>
+<div class="plagcheck_compare_text">
+    <div id="{{ id_prefix }}_orig" class="text_disabled"></div>
+    <div id="{{ id_prefix }}_processed"></div>
+</div>
+
+{% if elab %}
+    <div class="tags tags-{{ elab.get_content_type_id }}-{{ elab.id }}">
+        {% include 'tags.html' with tagged_object=elab %}
+    </div>
+    <br />
+    <div class="spacer"></div>
+
+    {% include 'elaboration_comments.html' with elaboration=elab %}
+{% endif %}

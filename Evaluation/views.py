@@ -30,7 +30,7 @@ from ReviewAnswer.models import ReviewAnswer
 from ReviewQuestion.models import ReviewQuestion
 from Stack.models import Stack
 from Notification.models import Notification
-from PlagCheck.models import Suspicion, SuspicionState, Result, Document
+from PlagCheck.views import render_to_string_compare_view, render_to_string_suspicions_view
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 from functools import lru_cache
 
@@ -85,22 +85,7 @@ def evaluation(request, course_short_title=None):
         count = len(challenges)
         overview = render_to_string('questions.html', context={'challenges': challenges}, request=request)
     elif selection == 'plagcheck_suspicions':
-        suspicion_list = Suspicion.objects.filter(
-            state=SuspicionState.SUSPECTED.value,
-            #suspect_doc__submission_time__range=(course.start_date, course.end_date),
-            suspect_doc__submission_time__gt=course.start_date,
-        )
-
-        count = suspicion_list.count()
-
-        context = {
-            'course': course,
-            'suspicions': suspicion_list,
-            'suspicion_states': SuspicionState.choices(),
-            'suspicions_count': count,
-        }
-
-        overview = render_to_string('plagcheck_suspicions.html', context=context, request=request)
+        overview = render_to_string_suspicions_view(request, course)['html']
 
     challenges = Challenge.objects.all()
 
@@ -1065,31 +1050,13 @@ def similarities(request, course_short_title=None):
 
     elaboration_id = request.session.get('elaboration_id', '')
 
-    doc = Document.get_doc_from_elaboration_id(elaboration_id)
-    not_checked = False
-    if doc:
-        if Result.objects.filter(doc_id=doc.id).count() == 0:
-            not_checked = True
-    else:
-        not_checked = True
-
-    suspicion_list = Suspicion.suspicion_list_by_request(request, course)\
-        .filter(suspect_doc__elaboration_id=elaboration_id)
-
-    count = suspicion_list.count()
-
-    context = {
-        'not_checked': not_checked,
-        'course': course,
-        'suspicions': suspicion_list,
-        'suspicion_states': SuspicionState.choices(),
-        'current_suspicion_state_filter': int(request.GET.get('state', -1)),
-        'suspicions_count': count,
-        'enable_state_filter': False,
+    options = {
+        'filter_by_suspect_elaboration': elaboration_id,
         'open_new_window': True,
+        'enable_filters': False,
     }
 
-    return render(request, 'plagcheck_suspicions.html', context)
+    return HttpResponse(render_to_string_suspicions_view(request, course, options)['html'])
 
 
 @csrf_exempt
@@ -1097,28 +1064,13 @@ def similarities(request, course_short_title=None):
 def plagcheck_suspicions(request, course_short_title=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    suspicion_list = Suspicion.suspicion_list_by_request(request, course)
-
-    count = suspicion_list.count()
-
-    context = {
-        'course': course,
-        'suspicions': suspicion_list,
-        'suspicion_states': SuspicionState.choices(),
-        'current_suspicion_state_filter': int(request.GET.get('state', -1)),
-        'suspicions_count': count,
-        'open_new_window': False,
-        'enable_state_filter': True,
-    }
-
-    request.session['selection'] = 'plagcheck_suspicions'
-    request.session['count'] = count
+    ret_data = render_to_string_suspicions_view(request, course);
 
     return render(request, 'evaluation.html', {
-        'overview': render_to_string('plagcheck_suspicions.html', context=context, request=request),
+        'overview': ret_data['html'],
         'course': course,
         'stabilosiert_plagcheck_suspicions': 'stabilosiert',
-        'count_plagcheck_suspicions': count,
+        'count_plagcheck_suspicions': ret_data['count'],
         'selection': request.session['selection'],
     })
 
@@ -1127,55 +1079,12 @@ def plagcheck_suspicions(request, course_short_title=None):
 @staff_member_required
 def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
     course = Course.get_or_raise_404(short_title=course_short_title)
-
-    suspicion = Suspicion.objects.get(pk=suspicion_id)
-
-    (prev_suspicion_id, next_suspicion_id) = suspicion.get_prev_next(
-        state=SuspicionState.SUSPECTED.value,
-        #suspect_doc__submission_time__range=(course.start_date, course.end_date),
-        suspect_doc__submission_time__gt=course.start_date,
-    )
-
-    try:
-        similar_elaboration = suspicion.similar_doc.elaboration
-        suspect_elaboration = suspicion.suspect_doc.elaboration
-    except Elaboration.DoesNotExist:
-        similar_elaboration = None
-        suspect_elaboration = None
-
-    context = {
-        'course': course,
-        'suspicion': suspicion,
-        'suspicion_states': SuspicionState.states(),
-        'suspicion_states_class': SuspicionState.__members__,
-        'next_suspicion_id': next_suspicion_id,
-        'prev_suspicion_id': prev_suspicion_id,
-        'similar_elaboration': similar_elaboration,
-        'suspect_elaboration': suspect_elaboration
-    }
-
-    # number of suspicious documents
-    suspicions_count = Suspicion.objects.filter(
-        state=SuspicionState.SUSPECTED.value).count()
+    ret_data = render_to_string_compare_view(request, course, suspicion_id)
 
     return render(request, 'evaluation.html', {
-        'detail_html': render_to_string('plagcheck_compare.html', context=context, request=request),
+        'detail_html': ret_data['html'],
         'course': course,
         'stabilosiert_plagcheck_suspicions': 'stabilosiert',
-        'count_plagcheck_suspicions': suspicions_count,
+        'count_plagcheck_suspicions': ret_data['count'],
     })
 
-
-@csrf_exempt
-@staff_member_required
-@require_POST
-def plagcheck_compare_save_state(request, course_short_title=None, suspicion_id=None):
-    suspicion = Suspicion.objects.get(pk=suspicion_id)
-
-    new_state = request.POST.get('suspicion_state_selection', None)
-
-    suspicion.state_enum = new_state
-
-    suspicion.save()
-
-    return redirect('Evaluation:plagcheck_compare', course_short_title=course_short_title, suspicion_id=suspicion_id)

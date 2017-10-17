@@ -73,3 +73,64 @@ $(function() {
         }
     });
 });
+
+$(function() {
+    $("#plagcheck_suspicion_state_dropdown").on('change', function(event) {
+
+        var form = $(this).parent('form:first');
+        var token = form.children("[name='csrfmiddlewaretoken']").val();
+        var base_url = form.attr('action');
+
+        var suspicion_state = form.children("#plagcheck_suspicion_state_dropdown").val();
+
+        $.ajax({
+            type: 'POST',
+            url: base_url + suspicion_state + "/",
+            data: {
+                csrfmiddlewaretoken: token,
+            }
+        }).error(function () {
+            console.log('changing suspicion state failed')
+        }).done(function () {
+            load_notification_message();
+        });
+    });
+});
+
+$(function() {
+    $("#plagcheck_suspicion_state_forma").submit(function(event) {
+        e.preventDefault(); //Prevent the normal submission action
+        var formData = new FormData(this);
+
+        var suspicion_state = formData.get('plagcheck_suspicion_state_dropdown');
+
+        $.ajax({
+            type: 'POST',
+            url: form.action + "/" + suspicion_state,
+        }).error(function () {
+            console.log('change failed')
+        });
+    });
+});
+
+load_notification_message = function() {
+    var state = $('#plagcheck_suspicion_state_dropdown').val();
+    
+    var suspect_templates = $('div.plagcheck_info_left > div#notification_templates');
+    var similar_templates = $('div.plagcheck_info_right > div#notification_templates');
+    var suspect_message = suspect_templates.children('div#'+state).html();
+    var similar_message = similar_templates.children('div#'+state).html();
+
+    $('div.plagcheck_info_left textarea[name="message"]').val(suspect_message);
+    $('div.plagcheck_info_right textarea[name="message"]').val(similar_message);
+};
+
+$('#plagcheck_suspicion_state_dropdown').ready(function(){
+   load_notification_message();
+});
+
+$(function() {
+    /* load select notification message template */
+    load_notification_message();
+})
+

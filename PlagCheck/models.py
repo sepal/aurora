@@ -237,21 +237,6 @@ class Suspicion(models.Model):
 
         return elaborations
 
-    @staticmethod
-    def suspicion_list_by_request(request, course):
-        suspicion_list = Suspicion.objects.filter(
-            #suspect_doc__submission_time__range=(course.start_date, course.end_date),
-            suspect_doc__submission_time__gt=course.start_date,
-        )
-
-        state_filter = request.GET.get('state', None)
-        if state_filter is not None:
-            state_filter = int(state_filter)
-            if state_filter >= 0:
-                suspicion_list = suspicion_list.filter(state=state_filter)
-
-        return suspicion_list
-
 
 class Reference(models.Model):
     """
