@@ -14,7 +14,6 @@ function read_all_button_clicked(event) {
 
 function toggle_notification_field(elmt) {
     var field = $(elmt).parent().children('#notification_field')
-    console.log(field.css('display'));
     if (field.css('display') === 'block') {
         field.css('display', 'none');
     } else {
@@ -29,7 +28,7 @@ function close_notification_field(elmt) {
 
 function send_notification(elmt, course_short_title) {
     var form = $(elmt).parent('form');
-    var url = '/' + course_short_title + '/notifications/send'
+    var url = '/course/' + course_short_title + '/notifications/send'
 
     $.ajax({
         type: 'POST',
@@ -37,7 +36,7 @@ function send_notification(elmt, course_short_title) {
         data: form.serializeArray()
     }).done(function() {
         form.parent().css('display', 'none');
-    }).error(function() {
+    }).fail(function() {
         console.log('error');
     });
 }
