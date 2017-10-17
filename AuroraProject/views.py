@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.functional import cached_property
@@ -43,10 +45,12 @@ class CourseMixin:
         return course
 
 
-def course_from_next_url(next):
+def course_from_url(url):
     course = None
     try:
-        course = next.split('/')[1]
+        # Match the part between '^/course/' and the following '/' in url
+        match = re.search('(?<=^/course/)[^/]+', url)
+        course = match.group(0)
     except IndexError:
         pass
     finally:
@@ -70,9 +74,11 @@ def course_selection(request):
 
     # automatically redirect the user to its course login page
     # if a next_url is defined.
-    course = course_from_next_url(next_url)
+    course = course_from_url(next_url)
+    print('got a course: ' + str(course))
     if next_url and course:
         try:
+            print('reverse url: ' + str(reverse("User:login", args=(course, ))))
             redirect_url = reverse("User:login", args=(course, ))
         except NoReverseMatch:
             pass
