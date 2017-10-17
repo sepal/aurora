@@ -154,8 +154,8 @@ class EvaluationView(CourseMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             "overview": render_to_string(self.overview_template_name,
-                                         self.get_overview_context_data(),
-                                         RequestContext(self.request)),
+                                    context=self.get_overview_context_data(),
+                                    request=self.request),
             "count_" + self.selection_name: self.request.session.get('count', '0'),
             "stabilosiert_" + self.selection_name: 'stabilosiert',
             "selection": self.selection_name,
