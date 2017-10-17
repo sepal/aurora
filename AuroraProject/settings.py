@@ -351,7 +351,7 @@ else:
     }
 
 
-LOGIN_URL = '/'
+LOGIN_URL = '/course/{{course}}/login'
 
 EL_PAGINATION_PER_PAGE = (
     20
