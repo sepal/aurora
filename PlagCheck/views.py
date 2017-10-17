@@ -8,6 +8,54 @@ from Elaboration.models import Elaboration
 from PlagCheck.models import Suspicion, SuspicionState
 
 from django.template import Template, Context
+import datetime
+
+class Semester:
+
+    year = 0
+    winter_summer = ''
+
+    def __init__(self, name):
+
+        self.year = int(name[0:-1])
+
+        if name[4].upper() == 'W':
+            self.winter_summer = 'W'
+        elif name[4].upper() == 'S':
+            self.winter_summer = 'S'
+
+    def start(self):
+        if self.winter_summer == 'W':
+            return datetime.date(self.year, 10, 1)
+        elif self.winter_summer == 'S':
+            return datetime.date(self.year, 3, 1)
+
+        return None
+
+    def end(self):
+        if self.winter_summer == 'W':
+            return datetime.date(self.year + 1, 2, 1)
+        elif self.winter_summer == 'S':
+            return datetime.date(self.year, 7, 1)
+
+        return None
+
+    def __str__(self):
+        return "{}{}".format(self.year, self.winter_summer.upper())
+
+    @staticmethod
+    def get_last_semesters():
+        now = datetime.datetime.now()
+
+        semesters = []
+
+        for y in range(now.year - 5, now.year + 1):
+            semesters.append("{0}S".format(y))
+            semesters.append("{0}W".format(y))
+
+        return semesters
+
+
 
 
 def render_to_string_suspicions_view(request, course, options=None):
@@ -18,13 +66,44 @@ def render_to_string_suspicions_view(request, course, options=None):
         if suspect_elab_filter:
             suspicion_list = suspicion_list.filter(suspect_doc__elaboration_id=suspect_elab_filter)
 
+
+
+    current_suspect_semester_filter = None
+    if 'suspect_semester' in request.GET:
+        try:
+            current_suspect_semester_filter = Semester(request.GET.get('suspect_semester'))
+        except ValueError:
+            pass
+
+        if current_suspect_semester_filter:
+            suspicion_list = suspicion_list.filter(
+                suspect_doc__submission_time__gte=current_suspect_semester_filter.start(),
+                suspect_doc__submission_time__lte=current_suspect_semester_filter.end())
+
+    current_similar_semester_filter = None
+    if 'similar_semester' in request.GET:
+        try:
+            current_similar_semester_filter = Semester(request.GET.get('similar_semester'))
+        except ValueError:
+            pass
+
+        if current_similar_semester_filter:
+            suspicion_list = suspicion_list.filter(
+                similar_doc__submission_time__gte=current_similar_semester_filter.start(),
+                similar_doc__submission_time__lte=current_similar_semester_filter.end())
+
+
+
     count = suspicion_list.count()
 
     context = {
         'course': course,
         'suspicions': suspicion_list,
         'suspicion_states': SuspicionState.choices(),
+        'last_semesters': Semester.get_last_semesters(),
         'current_suspicion_state_filter': int(request.GET.get('state', -1)),
+        'current_suspect_semester_filter': str(current_suspect_semester_filter),
+        'current_similar_semester_filter': str(current_similar_semester_filter),
         'suspicions_count': count,
         'open_new_window': False,
         'enable_state_filter': True,
