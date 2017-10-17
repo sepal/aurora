@@ -3,12 +3,13 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
+from django.template import Template, Context
 
 from Elaboration.models import Elaboration
 from PlagCheck.models import Suspicion, SuspicionState
 
-from django.template import Template, Context
 import datetime
+
 
 class Semester:
 
@@ -56,68 +57,88 @@ class Semester:
         return semesters
 
 
+def suspicions_by_request(request, course, filter_by_suspect_elab=None):
+
+    context = {}
+    filter = {
+        'suspect_doc__submission_time__gt': course.start_date,
+    }
+
+    if filter_by_suspect_elab:
+        filter['suspect_doc__elaboration_id'] = filter_by_suspect_elab
+
+    if 'state' in request.GET:
+        try:
+            state_filter = int(request.GET.get('state', ''))
+            filter['state'] = state_filter
+            context['current_suspicion_state_filter'] = state_filter
+        except ValueError:
+            pass
+
+    if 'suspect_semester' in request.GET:
+        try:
+            semester_filter = Semester(request.GET.get('suspect_semester'))
+
+            context['current_suspect_semester_filter'] = str(semester_filter)
+            filter['suspect_doc__submission_time__gte'] = semester_filter.start()
+            filter['suspect_doc__submission_time__lte'] = semester_filter.end()
+        except ValueError:
+            pass
+
+    if 'similar_semester' in request.GET:
+        try:
+            semester_filter = Semester(request.GET.get('similar_semester'))
+
+            context['current_similar_semester_filter'] = str(semester_filter)
+            filter['similar_doc__submission_time__gte'] = semester_filter.start()
+            filter['similar_doc__submission_time__lte'] = semester_filter.end()
+        except ValueError:
+            pass
+
+
+    if 'current_suspect_user_name_filter' in request.GET:
+        user_filter = request.GET.get('current_suspect_user_name_filter', '')
+        filter['suspect_doc__user_name__icontains'] = user_filter
+        context['current_suspect_user_name_filter'] = user_filter
+
+    if 'current_similar_user_name_filter' in request.GET:
+        user_filter = request.GET.get('current_similar_user_name_filter', '')
+        filter['similar_doc__user_name__icontains'] = user_filter
+        context['current_similar_user_name_filter'] = user_filter
+
+    suspicion_list = Suspicion.objects.filter(**filter)
+
+    context['suspicions'] = suspicion_list
+    context['suspicions_count'] = suspicion_list.count()
+
+    return context
 
 
 def render_to_string_suspicions_view(request, course, options=None):
-    suspicion_list = Suspicion.suspicion_list_by_request(request, course)
 
-    if options:
-        suspect_elab_filter = options.pop('filter_by_suspect_elaboration')
-        if suspect_elab_filter:
-            suspicion_list = suspicion_list.filter(suspect_doc__elaboration_id=suspect_elab_filter)
+    filter_by_suspect_elab = None
+    if options and 'filter_by_suspect_elaboration' in options:
+        filter_by_suspect_elab = options.pop('filter_by_suspect_elaboration')
 
+    context = suspicions_by_request(request, course, filter_by_suspect_elab=filter_by_suspect_elab)
 
-
-    current_suspect_semester_filter = None
-    if 'suspect_semester' in request.GET:
-        try:
-            current_suspect_semester_filter = Semester(request.GET.get('suspect_semester'))
-        except ValueError:
-            pass
-
-        if current_suspect_semester_filter:
-            suspicion_list = suspicion_list.filter(
-                suspect_doc__submission_time__gte=current_suspect_semester_filter.start(),
-                suspect_doc__submission_time__lte=current_suspect_semester_filter.end())
-
-    current_similar_semester_filter = None
-    if 'similar_semester' in request.GET:
-        try:
-            current_similar_semester_filter = Semester(request.GET.get('similar_semester'))
-        except ValueError:
-            pass
-
-        if current_similar_semester_filter:
-            suspicion_list = suspicion_list.filter(
-                similar_doc__submission_time__gte=current_similar_semester_filter.start(),
-                similar_doc__submission_time__lte=current_similar_semester_filter.end())
-
-
-
-    count = suspicion_list.count()
-
-    context = {
+    context.update({
         'course': course,
-        'suspicions': suspicion_list,
         'suspicion_states': SuspicionState.choices(),
         'last_semesters': Semester.get_last_semesters(),
-        'current_suspicion_state_filter': int(request.GET.get('state', -1)),
-        'current_suspect_semester_filter': str(current_suspect_semester_filter),
-        'current_similar_semester_filter': str(current_similar_semester_filter),
-        'suspicions_count': count,
         'open_new_window': False,
         'enable_state_filter': True,
-    }
+    })
 
     if options:
         context.update(options)
 
     request.session['selection'] = 'plagcheck_suspicions'
-    request.session['count'] = count
+    request.session['count'] = context['suspicions_count']
 
     return {
         'html': render_to_string('plagcheck_suspicions.html', context, request),
-        'count': count,
+        'count': context['suspicions_count'],
     }
 
 # BEWARE: Notification texts must not exceed 100 characters

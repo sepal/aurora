@@ -9,28 +9,36 @@
     {% if enable_state_filter %}
         <form>
             <label for="state">Filter by state</label>
-            <select name="state" onchange="this.form.submit()">
-                <option value="-1">All suspicions</option>
+            <select name="state">
+                <option value="">All suspicions</option>
                 {% for state in suspicion_states %}
                     <option {% if state.0 == current_suspicion_state_filter %} selected="selected" {% endif %}value="{{ state.0 }}">{{ state.1 }}</option>
                 {% endfor %}
             </select>
 
-            <label for="state">Suspect semester</label>
-            <select name="suspect_semester" onchange="this.form.submit()">
+            <label for="suspect_semester">Suspect semester</label>
+            <select name="suspect_semester">
                 <option value>--</option>
                 {% for semester in last_semesters %}
                     <option {% if semester == current_suspect_semester_filter %} selected="selected" {% endif %}value="{{ semester }}">{{ semester }}</option>
                 {% endfor %}
             </select>
 
-            <label for="state">Similar semester</label>
-            <select name="similar_semester" onchange="this.form.submit()">
+            <label for="suspect_user_name">Suspect user</label>
+            <input type="text" name="current_suspect_user_name_filter" value="{{ current_suspect_user_name_filter }}"/>
+
+            <label for="similar_semester">Similar semester</label>
+            <select name="similar_semester">
                 <option value>--</option>
                 {% for semester in last_semesters %}
                     <option {% if semester == current_similar_semester_filter %} selected="selected" {% endif %}value="{{ semester }}">{{ semester }}</option>
                 {% endfor %}
             </select>
+
+            <label for="similar_user_name">Similar user</label>
+            <input type="text" name="current_similar_user_name_filter" value="{{ current_similar_user_name_filter }}"/>
+
+            <input type="submit" value="Filter" />
         </form>
     {% endif %}
 
