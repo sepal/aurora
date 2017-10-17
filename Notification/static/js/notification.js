@@ -12,13 +12,24 @@ function read_all_button_clicked(event) {
     });
 }
 
-function open_notification_field(elmt) {
-    $(elmt).parent().children('#notification_field').css('display', 'block');
+function toggle_notification_field(elmt) {
+    var field = $(elmt).parent().children('#notification_field')
+    console.log(field.css('display'));
+    if (field.css('display') === 'block') {
+        field.css('display', 'none');
+    } else {
+        field.css('display', 'block');
+    }
+    //$(elmt).closest('#notification_field').css('display', 'block');
+}
+
+function close_notification_field(elmt) {
+    $(elmt).parent().parent().css('display', 'none');
 }
 
 function send_notification(elmt, course_short_title) {
-    form = $(elmt).parent('form');
-    url = '/' + course_short_title + '/notifications/send'
+    var form = $(elmt).parent('form');
+    var url = '/' + course_short_title + '/notifications/send'
 
     $.ajax({
         type: 'POST',

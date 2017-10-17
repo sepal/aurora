@@ -40,10 +40,10 @@
         <div class="clear"></div>
 
         <div class="plagcheck_info_left">
-            {% include "compare_info.html" with elab=suspect_elaboration doc=suspicion.suspect_doc label='Suspicious' %}
+            {% include "compare_info.html" with elab=suspect_elaboration doc=suspicion.suspect_doc label='Suspicious' notification_templates=notification_templates_suspect %}
         </div>
         <div class="plagcheck_info_right">
-            {% include "compare_info.html" with elab=similar_elaboration doc=suspicion.similar_doc label='Source' %}
+            {% include "compare_info.html" with elab=similar_elaboration doc=suspicion.similar_doc label='Source' notification_templates=notification_templates_similar %}
         </div>
 
         <div class="clear"></div>
@@ -57,10 +57,11 @@
             <div class="spacer"></div>
 
             <div>
-                <form name="suspicion_state" method="post"
-                      action="{% url 'Evaluation:plagcheck_compare_save_state' course_short_title=course.short_title suspicion_id=suspicion.id %}">
+                <form name="plagcheck_suspicion_state_form" method="post"
+                      action="{% url 'PlagCheck:get_suspicion_state' suspicion_id=suspicion.id %}">
+                    {% csrf_token %}
                     <label>Suspicion state:</label>
-                    <select name="suspicion_state_selection" onchange="suspicion_state.submit()">
+                    <select id="plagcheck_suspicion_state_dropdown">
                         {% for state in suspicion_states %}
                             <option {% if suspicion.state_enum.value == state.value %} selected {% endif %}
                                     value="{{ state.value }}">{{ state.name }}</option>

@@ -18,5 +18,12 @@
 </div>
 <div class="spacer"></div>
 {% if elab %}
-    {% write_notification_field course.short_title elab.user.id "test" %}
+    {% write_notification_field course.short_title elab.user.id %}
+{% endif %}
+{% if notification_templates %}
+    <div id="notification_templates" hidden>
+        {% for key, value in notification_templates.items %}
+            <div id="{{ key }}">{{ value }}</div>
+        {% endfor %}
+    </div>
 {% endif %}

@@ -4,12 +4,10 @@
   <script type="text/javascript" src="{% static 'js/notification.js' %}"></script>
 {% endblock %}
 
-<i class="fa fa-external-link"></i>
-
 {% url "Notification:write" course_short_title as notify_url %}
 
 <div id="notification_field_outer">
-    <a href="#" onClick="open_notification_field(this)"
+    <a href="#" onClick="toggle_notification_field(this)"
        class="notification_link" title="send a notification to this user">
       Send Notification
     </a>
@@ -22,6 +20,7 @@
 
             <br/>
             <input type="button" value="Submit" onclick="send_notification(this, '{{ course_short_title }}')">
+            <input type="button" value="Cancel" onclick="close_notification_field(this)">
         </form>
     </div>
 </div>
