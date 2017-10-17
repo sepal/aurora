@@ -127,7 +127,7 @@ def render_to_string_suspicions_view(request, course, options=None):
         'suspicion_states': SuspicionState.choices(),
         'last_semesters': Semester.get_last_semesters(),
         'open_new_window': False,
-        'enable_state_filter': True,
+        'enable_filters': True,
     })
 
     if options:

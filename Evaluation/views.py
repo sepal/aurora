@@ -1053,7 +1053,7 @@ def similarities(request, course_short_title=None):
     options = {
         'filter_by_suspect_elaboration': elaboration_id,
         'open_new_window': True,
-        'enable_state_filter': False,
+        'enable_filters': False,
     }
 
     return HttpResponse(render_to_string_suspicions_view(request, course, options)['html'])

@@ -75,7 +75,6 @@ $(function() {
 });
 
 $(function() {
-    console.log("registering state dropdown");
     $("#plagcheck_suspicion_state_dropdown").on('change', function(event) {
 
         var form = $(this).parent('form:first');
@@ -83,9 +82,7 @@ $(function() {
         var base_url = form.attr('action');
 
         var suspicion_state = form.children("#plagcheck_suspicion_state_dropdown").val();
-        console.log("suspicion_state: " + suspicion_state);
 
-        console.log("action: " + base_url);
         $.ajax({
             type: 'POST',
             url: base_url + suspicion_state + "/",
@@ -118,7 +115,7 @@ $(function() {
 
 load_notification_message = function() {
     var state = $('#plagcheck_suspicion_state_dropdown').val();
-    console.log("state: " + state);
+    
     var suspect_templates = $('div.plagcheck_info_left > div#notification_templates');
     var similar_templates = $('div.plagcheck_info_right > div#notification_templates');
     var suspect_message = suspect_templates.children('div#'+state).html();
