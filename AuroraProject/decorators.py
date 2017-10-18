@@ -11,7 +11,7 @@ from django.shortcuts import resolve_url
 from Course.models import Course
 
 
-COURSE_URL_RE = re.compile("^/course/(?P<course_short_title>\w+)")
+COURSE_URL_RE = re.compile("^/course/(?P<course_short_title>\w{,30})")
 
 
 def aurora_login_required():
