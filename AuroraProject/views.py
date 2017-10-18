@@ -75,7 +75,6 @@ def course_selection(request):
     # automatically redirect the user to its course login page
     # if a next_url is defined.
     course = course_from_url(next_url)
-    print('got a course: ' + str(course))
     if next_url and course:
         try:
             print('reverse url: ' + str(reverse("User:login", args=(course, ))))
