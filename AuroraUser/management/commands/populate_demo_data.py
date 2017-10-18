@@ -142,6 +142,8 @@ def import_data():
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
         tuwel_course_id=5575,
+        tuwel_course_stream_id=1,
+        email='denkweisen@igw.tuwien.ac.at',
     )
     gsi.save()
 
@@ -154,6 +156,8 @@ def import_data():
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
         tuwel_course_id=5581,
+        tuwel_course_stream_id=2,
+        email='denkweisen@igw.tuwien.ac.at',
     )
     hci.save()
 
