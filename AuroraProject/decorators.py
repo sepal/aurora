@@ -60,7 +60,9 @@ def aurora_login_required():
             if ((not login_scheme or login_scheme == current_scheme) and
                     (not login_netloc or login_netloc == current_netloc)):
                 path = request.get_full_path()
+
             from django.contrib.auth.views import redirect_to_login
+            resolved_login_url = re.sub('{{\s*course\s*}}', course_short_title, resolved_login_url)
             return redirect_to_login(
                 path, resolved_login_url, REDIRECT_FIELD_NAME)
         return _wrapped_view
