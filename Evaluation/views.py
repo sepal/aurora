@@ -35,76 +35,7 @@ from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 from functools import lru_cache
 
 
-@aurora_login_required()
-@staff_member_required
-def evaluation(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    overview = ""
-    elaborations = []
-    count = 0
-    selection = request.session.get('selection', 'error')
-
-    if selection not in ('error', 'questions', 'plagcheck_suspicions'):
-        for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
-            elaborations.append(serialized_elaboration.object)
-        if selection == 'search':
-            display_points = request.session.get('display_points', 'error')
-            if display_points == "true":
-                user = AuroraUser.objects.get(
-                    username=request.session.get('selected_user'))
-                points = get_points(request, user, course)
-                data = {
-                    'elaborations': elaborations,
-                    'search': True,
-                    'stacks': points['stacks'],
-                    'courses': points['courses'],
-                    'review_evaluation_data': points['review_evaluation_data'],
-                    'course': course
-                }
-            else:
-                data = {'elaborations': elaborations,
-                        'search': True, 'course': course}
-        elif selection == 'complaints':
-            data = {'elaborations': elaborations,
-                    'course': course, 'complaints': 'true'}
-        else:
-            data = {'elaborations': elaborations, 'course': course}
-
-        data["selection"] = selection
-
-        if selection == "final_evaluation_new":
-            overview = render_to_string('overview_new.html', context=data, request=request)
-        else:
-            overview = render_to_string('overview.html', context=data, request=request)
-        count = len(elaborations)
-    elif selection == 'questions':
-        # get selected challenges from session
-        challenges = []
-        for serialized_challenge in serializers.deserialize('json', request.session.get('challenges', {})):
-            challenges.append(serialized_challenge.object)
-        count = len(challenges)
-        overview = render_to_string('questions.html', context={'challenges': challenges}, request=request)
-    elif selection == 'plagcheck_suspicions':
-        overview = render_to_string_suspicions_view(request, course)['html']
-
-    challenges = Challenge.objects.all()
-
-    return render(request, 'evaluation.html',
-                              {'challenges': challenges,
-                               'overview': overview,
-                               'count_' + selection: count,
-                               'stabilosiert_' + selection: 'stabilosiert',
-                               'course': course,
-                               'selection': selection,
-                               'selected_challenge': request.session.get('selected_challenge'),
-                               'selected_user': request.session.get('selected_user'),
-                               'selected_task': request.session.get('selected_task'),
-                               })
-
-
 class EvaluationView(CourseMixin, TemplateView):
-    #template_name = "evaluation.html"
-    #template_name = "evaluation_list_detail.html"
     mode_template_names = {
         "overview": "evaluation.html",
         "export": "evaluation_export.html",
@@ -128,12 +59,7 @@ class EvaluationView(CourseMixin, TemplateView):
         return (self.mode_template_names[self.mode],)
 
     def _update_session(self):
-        # store selected elaborations in session
-        self.request.session['elaborations'] = serializers.serialize(
-            'json', self.elaborations)
         self.request.session['selection'] = self.selection_name
-        self.request.session['count'] = len(self.elaborations)
-        self.request.session.update(self.get_extra_session())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -149,9 +75,6 @@ class EvaluationView(CourseMixin, TemplateView):
         })
 
         return context
-
-    def get_extra_session(self):
-        return {}
 
     def get_elaborations(self):
         raise NotImplemented
@@ -250,11 +173,6 @@ class AwesomeView(EvaluationView):
         self.selected_challenge = selected_challenge
         return elaborations
 
-    def get_extra_session(self):
-        return {
-            "selected_challenge": "task..."
-        }
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["selected_challenge"] = self.selected_challenge
@@ -280,13 +198,23 @@ class QuestionsView(EvaluationView):
         context["challenges"] = self.challenges
         return context
 
-    def get_extra_session(self):
-        return {
-            "challenges": serializers.serialize('json', self.challenges),
-            "count": len(self.challenges),
-        }
-
 questions = QuestionsView.as_view()
+
+
+EVALUATION_VIEWS = {
+    "awesome": awesome,
+    "complaints": complaints,
+    "final_evaluation_new": final_evaluation_new,
+    "final_evaluation_top_level_tasks": final_evaluation_top_level_tasks,
+    "top_level_tasks": top_level_tasks,
+    "non_adequate_work": non_adequate_work,
+    "missing_reviews": missing_reviews,
+    "questions": questions,
+}
+
+def evaluation(request, **kwargs):
+    selection = request.session.get('selection', 'missing_reviews')
+    return EVALUATION_VIEWS[selection](request, **kwargs)
 
 
 @aurora_login_required()
