@@ -5,6 +5,8 @@
   become: true
   become_user: vagrant
 
+- include: react.yml
+
 - name: add automatic activation of virtualenv to .bashrc
   lineinfile: dest=/home/vagrant/.bashrc
               line=". {{ py3env }}/bin/activate"
