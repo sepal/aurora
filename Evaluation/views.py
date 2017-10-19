@@ -226,21 +226,9 @@ def overview(request, course_short_title=None):
     stack = elaboration.challenge.get_stack()
     stack_challenges = stack.get_challenges()
 
-    next_elaboration = None
     try:
-        # elaborations = Elaboration.get_final_evaluation_top_level_tasks(course) | Elaboration.objects.filter(id=elaboration.id)
-        # all_elaborations = list(elaborations.order_by('submission_time'))
-
-        elaborations = []
-        for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
-            elaborations.append(serialized_elaboration.object)
-
-        next_index = elaborations.index(elaboration) + 1
-        if next_index < len(elaborations):
-            next_elaboration = elaborations[next_index]
-        else:
-            next_elaboration = None
-    except ValueError:
+        next_elaboration = elaboration.get_next_by_creation_time()
+    except Elaboration.DoesNotExist:
         next_elaboration = None
 
     challenges = []
@@ -283,11 +271,7 @@ def detail(request, course_short_title=None):
 
     course = Course.get_or_raise_404(short_title=course_short_title)
 
-    # get selected elaborations from session
-    elaborations = []
     params = {}
-    for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
-        elaborations.append(serialized_elaboration.object)
     selection = request.session.get('selection', 'error')
 
     if 'elaboration_id' not in request.GET:
@@ -358,20 +342,15 @@ def detail(request, course_short_title=None):
     reviews = Review.objects.filter(
         elaboration=elaboration, submission_time__isnull=False)
 
-    next = prev = None
+    try:
+        prev = elaboration.get_previous_by_creation_time()
+    except Elaboration.DoesNotExist:
+        prev = None
 
     try:
-        index = elaborations.index(elaboration)
-        if index + 1 < len(elaborations):
-            next = elaborations[index + 1].id
-        if not index == 0:
-            prev = elaborations[index - 1].id
-        count_next = len(elaborations) - index - 1
-        count_prev = index
-    except ValueError:
-        index = 0
-        count_next = 0
-        count_prev = 0
+        next = elaboration.get_next_by_creation_time()
+    except Elaboration.DoesNotExist:
+        next = None
 
     stack_elaborations = elaboration.user.get_stack_elaborations(
         elaboration.challenge.get_stack())
@@ -387,8 +366,6 @@ def detail(request, course_short_title=None):
     params['reviews'] = reviews
     params['next'] = next
     params['prev'] = prev
-    params['count_next'] = count_next
-    params['count_prev'] = count_prev
     params['course'] = course
 
     detail_html = render_to_string('detail.html', context=params, request=request)
