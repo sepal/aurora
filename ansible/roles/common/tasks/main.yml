@@ -44,5 +44,5 @@
 
 - name: add env var for daphne
   lineinfile:
-    line: 'DJANGO_SETTINGS_MODULE=djat.settings'
+    line: 'DJANGO_SETTINGS_MODULE=aurora.settings'
     path: /etc/environment
