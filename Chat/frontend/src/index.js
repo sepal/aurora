@@ -5,8 +5,6 @@ import Chat from './components/chat'
 
 render(
   <div>
-    <div id="room"></div>
-    <div id="chat"></div>
     <Chat />
   </div>,
 
