@@ -31,12 +31,8 @@ const ChatMessage = ({message, username}) => {
 
 ChatMessage.propTypes = {
   message: PropTypes.string.isRequired,
-  upvotes: PropTypes.number
 }
 
-ChatMessage.defaultProps = {
-  upvotes: 0
-}
 // ##################################################
 
 export default ChatMessage
