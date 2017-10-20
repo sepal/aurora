@@ -104,6 +104,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     #os.path.join(os.path.join('static'),),
+    '/vagrant/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -204,7 +205,9 @@ INSTALLED_APPS = (
     'PlagCheck',
     'diskurs',
     'django_markup',
-    'Feedback'
+    'Feedback',
+    'channels',
+    'Chat',
 )
 
 THUMBNAIL_ALIASES = {
@@ -212,6 +215,16 @@ THUMBNAIL_ALIASES = {
         'preview': {'size': (640, 480)},
         'full-res': {'size': (1920, 1080)},
     },
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+        "ROUTING": "AuroraProject.routing.channel_routing",
+    }
 }
 
 ## COMMENTS ##
