@@ -7,6 +7,7 @@ class Chat extends React.Component {
     super(props)
 
     this.state = {messages: [], questions: []}
+    this.join('main')
   }
 
   addMessage = (message) => {
@@ -30,25 +31,17 @@ class Chat extends React.Component {
     console.log("connecting to " + window.location.host);
     this.socket = new WebSocket("ws://" + window.location.hostname + ":8000/" + room);
 
-    document.getElementById("chat").innerHTML = '';
+    this.setState({messages: []})
 
     this.socket.onmessage = (e) => {
       let data = JSON.parse(e.data);
       const {messages} = this.state
       this.setState({messages: [...messages, {text: data["message"], username: data["username"]}]})
-    };
+    }
 
     this.socket.onopen = () => {
-      let msg = document.createElement("p");
-      let text = document.createTextNode("Current room: " + room);
-      msg.appendChild(text);
-      let roomDisplay = document.getElementById("room");
-      if (roomDisplay.firstChild) {
-        roomDisplay.replaceChild(msg, roomDisplay.firstChild);
-      } else {
-        roomDisplay.appendChild(msg);
-      }
-    };
+      console.log('joined room ' + room)
+    }
   }
 
   onInput = (value) => {
