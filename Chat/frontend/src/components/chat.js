@@ -7,6 +7,9 @@ class Chat extends React.Component {
     super(props)
 
     this.state = {messages: [], questions: []}
+  }
+
+  componentDidMount() {
     this.join('main')
   }
 
