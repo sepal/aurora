@@ -383,7 +383,18 @@ def overview(request, course_short_title=None):
 
         elaboration =  challenge.get_elaboration(user)
         challenge_data['elaboration'] = elaboration
-        challenge_data['reviews'] = challenge.get_reviews_written_by_user(user)
+
+        reviews = challenge.get_reviews_written_by_user(user)
+
+        for review in reviews:
+            review_evaluation = ReviewEvaluation.objects.filter(review=review.id, user=request.user)
+            try:
+                review.appraisal = review_evaluation.values()[0].get('appraisal')
+            except IndexError:
+                pass
+
+        challenge_data['reviews'] = reviews
+
         challenge_data['reveiced_reviews'] = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False)
         challenges.append(challenge_data)
 
