@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const MessageList = ({messages}) => {
   const messageList = messages.map((message, i) =>
-    <ChatMessage key={i} message={message.text} username={message.username}/>)
+    <ChatMessage key={i} message={message}/>)
 
   return (<div>{messageList}</div>)
 }

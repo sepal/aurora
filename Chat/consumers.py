@@ -4,6 +4,8 @@ from channels.auth import channel_session_user, channel_session_user_from_http
 from datetime import datetime
 from django.contrib.auth.models import User
 
+from AuroraUser.models import AuroraUser
+
 from .models import ChatMessage
 
 
@@ -13,13 +15,19 @@ def msg_consumer(message):
     ChatMessage.objects.create(
         room=room,
         username=username,
-        message=message.content['message'],
+        message=message.content['text'],
         post_date=datetime.now()
     )
+
+    user = AuroraUser.objects.get(username=username)
+
     Group("chat-%s" % room).send({
         "text": json.dumps({
-            "message": message.content['message'],
-            "username": username,
+            "text": message.content['text'],
+            "user": {
+                "name": user.username,
+                "is_staff": user.is_staff,
+            },
         })
     })
 
@@ -38,10 +46,14 @@ def ws_connect(message, room_name):
 
     last_messages = ChatMessage.objects.filter(room=room_name).order_by('-post_date')[:3]
     for cm in reversed(last_messages):
+        user = AuroraUser.objects.get(username=cm.username)
         message.reply_channel.send({
             "text": json.dumps({
-                "message": cm.message,
-                "username": cm.username,
+                "text": cm.message,
+                "user": {
+                    "name": user.username,
+                    "is_staff": user.is_staff,
+                }
             })
         })
 
@@ -53,7 +65,7 @@ def ws_message(message):
         Channel("chat-messages").send({
             "room": message.channel_session['room'],
             "username": message.channel_session['username'],
-            "message": decoded['text'],
+            "text": decoded['text'],
         })
     elif decoded['type'] == 'question':
         print('new question: {}'.format(decoded['text']))

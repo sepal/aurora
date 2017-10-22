@@ -1,23 +1,23 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import './chat_message.css'
 
-const ChatMessage = ({message, username, staff}) => {
+const ChatMessage = ({message: {text, user: {name: username, is_staff}}}) => {
+  const staffClass = is_staff ? ' staff' : ''
   return (
     <div>
       <div>
-        <p className={'ChatMessageAuthor staff' + staff === 'true' ? 'staff' : ''}>{username}</p>
+        <p className={'ChatMessageAuthor' + staffClass}>{username}</p>
       </div>
       <div>
-        <p className='ChatMessageBody'>{message}</p>
+        <p className='ChatMessageBody'>{text}</p>
       </div>
     </div>
   )
 }
 
-ChatMessage.propTypes = {
-  message: PropTypes.string.isRequired,
+ChatMessage.defaultProps = {
+  message: {text: '', user: {name: '', is_staff: false}}
 }
 
 export default ChatMessage
