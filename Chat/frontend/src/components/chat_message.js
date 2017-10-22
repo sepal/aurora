@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './chat_message.css'
 
 const ChatMessage = ({message, username, staff}) => {
   return (
