@@ -39,7 +39,7 @@ class Chat extends React.Component {
     this.socket.onmessage = (e) => {
       let data = JSON.parse(e.data);
       const {messages} = this.state
-      this.setState({messages: [...messages, {text: data["message"], username: data["username"]}]})
+      this.setState({messages: [...messages, data]})
     }
 
     this.socket.onopen = () => {
