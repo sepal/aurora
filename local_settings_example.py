@@ -1,6 +1,6 @@
 # Use other paths if you intend to run this without vagrant
 MEDIA_ROOT = '/vagrant/aurora/media'
-#STATIC_ROOT = '/vagrant/aurora/static'
+STATIC_ROOT = '/vagrant/aurora/static'
 
 MEDIA_URL = '/media/'
 
@@ -13,10 +13,6 @@ LECTURER_USERNAME = 'lecturer'
 LECTURER_SECRET = 'lecturersecret'
 
 SSO_SHARED_SECRET = 'ssosecret'
-
-STATICFILES_DIRS = [
-    "/vagrant/aurora/static"
-]
 
 AUTHENTICATION_BACKENDS = (
     'middleware.AuroraAuthenticationBackend.AuroraAuthenticationBackend',
