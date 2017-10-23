@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^complaints/(?P<mode>overview|export)?$', Evaluation.views.complaints, name='complaints'),
     url(r'^questions$', Evaluation.views.questions, name='questions'),
     url(r'^awesome/(?P<mode>overview|export)?$', Evaluation.views.awesome, name='awesome'),
-    url(r'^user$', Evaluation.views.search_user, name='search_user'),
+    url(r'^user/(?P<mode>overview|export)$', Evaluation.views.search_user, name='search_user'),
     url(r'^similarities', Evaluation.views.similarities, name='similarities'),
 
     url(r'^autocomplete_challenge/$', Evaluation.views.autocomplete_challenge),

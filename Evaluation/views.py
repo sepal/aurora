@@ -201,6 +201,15 @@ class QuestionsView(EvaluationView):
 questions = QuestionsView.as_view()
 
 
+class SearchUserView(EvaluationView):
+    selection_name = "search"
+    def get_elaborations(self):
+        user = AuroraUser.get_or_raise_404(pk=request.GET['id'])
+        return user.get_course_elaborations(self.course)
+
+search_user = SearchUserView.as_view()
+
+
 EVALUATION_VIEWS = {
     "awesome": awesome,
     "complaints": complaints,
@@ -210,6 +219,7 @@ EVALUATION_VIEWS = {
     "non_adequate_work": non_adequate_work,
     "missing_reviews": missing_reviews,
     "questions": questions,
+    "search": search_user,
 }
 
 def evaluation(request, **kwargs):
@@ -737,27 +747,6 @@ def reviewlist(request, course_short_title=None):
     return render(request, 'reviewlist.html', {'reviews': reviews})
 
 
-@aurora_login_required()
-@staff_member_required
-def search_user(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    if request.GET:
-        user = AuroraUser.objects.get(pk=request.GET['id'])
-        elaborations = user.get_course_elaborations(course)
-
-        # sort elaborations by submission time
-        if type(elaborations) == list:
-            elaborations.sort(
-                key=lambda elaboration: elaboration.submission_time)
-        else:
-            elaborations = elaborations.order_by('submission_time')
-
-        # store selected elaborations in session
-        request.session['elaborations'] = serializers.serialize(
-            'json', elaborations)
-        request.session['selection'] = 'search'
-
-    return evaluation(request, course_short_title)
 
 
 # TODO: Do we really want to submit the users current list to server and
