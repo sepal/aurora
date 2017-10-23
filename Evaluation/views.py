@@ -41,6 +41,10 @@ class EvaluationView(CourseMixin, TemplateView):
         "export": "evaluation_export.html",
     }
     overview_template_name = "overview.html"
+    valid_ordering_fields = [
+        "submission_time",
+        "creation_time",
+    ]
     def __init__(self, *args, **kwargs):
         return super().__init__(*args, **kwargs)
 
@@ -76,6 +80,13 @@ class EvaluationView(CourseMixin, TemplateView):
 
         return context
 
+    def get_order_by(self):
+        order_by = self.request.GET.get("order_by", None)
+        if (order_by is None or
+                (not order_by.lstrip("-") in self.valid_ordering_fields)):
+            return "submission_time"
+        return order_by
+
     def get_elaborations(self):
         raise NotImplemented
 
@@ -84,9 +95,10 @@ class EvaluationView(CourseMixin, TemplateView):
 
         # sort elaborations by submission time
         if type(elaborations) == list:
-            elaborations.sort(key=lambda elaboration: elaboration.submission_time)
+            elaborations.sort(
+                    key=lambda elaboration: elaboration.submission_time)
         else:
-            elaborations = elaborations.order_by('submission_time')
+            elaborations = elaborations.order_by(self.get_order_by())
 
         return elaborations
 
@@ -745,97 +757,6 @@ def reviewlist(request, course_short_title=None):
         'elaboration__challenge__id')
 
     return render(request, 'reviewlist.html', {'reviews': reviews})
-
-
-
-
-# TODO: Do we really want to submit the users current list to server and
-# then sort it there?
-@aurora_login_required()
-@staff_member_required
-def sort(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-
-    elaborations = []
-    for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
-        elaborations.append(serialized_elaboration.object)
-
-    if request.GET.get('data', '') == "date_asc":
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    if request.GET.get('data', '') == "date_desc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.submission_time, reverse=True)
-    if request.GET.get('data', '') == "elab_asc":
-        elaborations.sort(key=lambda elaboration: elaboration.challenge.title)
-    if request.GET.get('data', '') == "elab_desc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.challenge.title, reverse=True)
-    if request.GET.get('data', '') == "post_asc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.get_last_post_date())
-    if request.GET.get('data', '') == "post_desc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.get_last_post_date(), reverse=True)
-
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['count'] = len(elaborations)
-
-    data = {
-        'overview_html': render_to_string('overview.html', context={'elaborations': elaborations, 'course': course}, request=request),
-        'menu_html': render_to_string('menu.html', context={
-            'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
-            'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course,
-        }, request=request),
-        'selection': request.session['selection']
-    }
-
-    return HttpResponse(json.dumps(data))
-
-# TODO: Do we really want to submit the users current list to server and
-# then sort it there?
-@aurora_login_required()
-@staff_member_required
-def sort_new(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-
-    elaborations = []
-    for serialized_elaboration in serializers.deserialize('json', request.session.get('elaborations', {})):
-        elaborations.append(serialized_elaboration.object)
-
-    if request.GET.get('data', '') == "date_asc":
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    if request.GET.get('data', '') == "date_desc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.submission_time, reverse=True)
-    if request.GET.get('data', '') == "elab_asc":
-        elaborations.sort(key=lambda elaboration: elaboration.challenge.title)
-    if request.GET.get('data', '') == "elab_desc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.challenge.title, reverse=True)
-    if request.GET.get('data', '') == "post_asc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.get_last_post_date())
-    if request.GET.get('data', '') == "post_desc":
-        elaborations.sort(
-            key=lambda elaboration: elaboration.get_last_post_date(), reverse=True)
-
-    # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
-    request.session['count'] = len(elaborations)
-
-    data = {
-        'overview_html': render_to_string('overview_new.html', {'elaborations': elaborations, 'course': course}, RequestContext(request)),
-        'menu_html': render_to_string('menu.html', {
-            'count_' + request.session.get('selection', ''): request.session.get('count', '0'),
-            'stabilosiert_' + request.session.get('selection', ''): 'stabilosiert', 'course': course,
-        }, RequestContext(request)),
-        'selection': request.session['selection']
-    }
-
-    return HttpResponse(json.dumps(data))
 
 
 @aurora_login_required()
