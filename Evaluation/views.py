@@ -544,7 +544,7 @@ def submit_evaluation(request, course_short_title=None):
     )
 
     obj.read = False
-    obj.save
+    obj.save()
     return HttpResponse()
 
 
