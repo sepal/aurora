@@ -8,5 +8,5 @@ render(
     <Chat />
   </div>,
 
-  document.getElementById('root')
+  document.getElementById('chat-root')
 )
