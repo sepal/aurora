@@ -177,4 +177,9 @@ td {
 	display:none;
 }
 
-
+.credits {
+	padding-top:10em;
+	padding-left:3em;
+	font-size:80%;
+	color:gray;
+}
