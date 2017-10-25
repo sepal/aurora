@@ -132,34 +132,21 @@ def import_data():
     superuser.save()
 
 
-    # create courses "GSI" and "HCI"
-    print('adding course gsi')
-    gsi = Course(
-        title='Gesellschaftliche Spannungsfelder der Informatik',
-        short_title='gsi',
-        description='GSI Description',
-        course_number='123.456',
+    # create course "dwi" "
+    print('adding course dwi')
+    dwi = Course(
+        title='Denkweisen der Informatik',
+        short_title='dwi',
+        description='Denkweisen der Informatik',
+        course_number='187.B12',
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
         tuwel_course_id=5575,
         tuwel_course_stream_id=1,
         email='denkweisen@igw.tuwien.ac.at',
     )
-    gsi.save()
+    dwi.save()
 
-    print('adding course hci')
-    hci = Course(
-        title='Human Computer Interaction',
-        short_title='hci',
-        description='HCI Description',
-        course_number='123.457',
-        start_date=date.today() - timedelta(days=100),
-        end_date=date.today() + timedelta(days=100),
-        tuwel_course_id=5581,
-        tuwel_course_stream_id=2,
-        email='denkweisen@igw.tuwien.ac.at',
-    )
-    hci.save()
 
     # add faq
     print('adding faq')
@@ -172,7 +159,7 @@ def import_data():
                        "neue Dinge zu versuchen.",
                 order=0
             ),
-            [hci, gsi]
+            [dwi]
         ),
         (
             Faq(
@@ -181,29 +168,20 @@ def import_data():
                        "eine Challenge absolvieren. Ansonsten steht Ihnen frei, was sie wann machen.",
                 order=1
             ),
-            [hci, gsi]
+            [dwi]
         ),
         (
             Faq(
-                question="Was sind die 4 Kategorien in BHCI?",
-                answer="<ul><li>Kategorie 1: User-centered design + design basics (B1cX)</li>"
-                       "<li>Kategorie 2: Methoden (B2cX)</li>"
-                       "<li>Kategorie 3: psycholog. Grundlagen, Evaluation (B3cX)</li>"
-                       "<li>Kategorie 4: Prototyping, Beyond the desktop (B4cX)</li></ul>",
+                question="Was sind die 6 Kapitel in den denkweisen?",
+                answer="<ul><li>Kapitel 1: Scientific Thinking</li>"
+                       "<li>Kapitel 2: computational thinking</li>"
+                       "<li>Kapitel 3: design thinking</li>"
+                       "<li>Kapitel 4: creative thinking</li>"
+                       "<li>Kapitel 5: critical thinking</li>"
+                       "<li>Kapitel 6: responsible thinking</li>",
                 order=2
             ),
-            [hci]
-        ),
-        (
-            Faq(
-                question="Was sind die 4 Kategorien in GSI?",
-                answer="<ul><li>Kategorie 1: Praxis (G1cX)</li>"
-                       "<li>Kategorie 2: IT-Branche (G2cX)</li>"
-                       "<li>Kategorie 3: Ideen (G3cX)</li>"
-                       "<li>Kategorie 4: Gesellschaft (G4cX)</li></ul>",
-                order=2
-            ),
-            [gsi]
+            [dwi]
         ),
         (
             Faq(
@@ -216,7 +194,7 @@ def import_data():
                        "können!",
                 order=3
             ),
-            [hci, gsi]
+            [dwi]
         ),
         (
             Faq(
@@ -227,7 +205,7 @@ def import_data():
                        "manchmal etwas dauert.",
                 order=4
             ),
-            [hci, gsi]
+            [dwi]
         ),
         (
             Faq(
@@ -236,7 +214,7 @@ def import_data():
                        "Zeugnis ausgestellt.",
                 order=5
             ),
-            [hci,gsi]
+            [dwi]
         ),
         (
             Faq(
@@ -244,7 +222,7 @@ def import_data():
                 answer='Siehe <a href="http://igw.tuwien.ac.at/aurora/aurora_reviews.pdf">Zum Schreiben von Reviews</a>',
                 order=6
             ),
-            [hci, gsi]
+            [dwi]
         ),
         (
             Faq(
@@ -258,7 +236,7 @@ def import_data():
                        "Challenges bekommen, bestimmt Ihre Note nach dem oben angegebenen Notenspiegel.",
                 order=7
             ),
-            [hci, gsi]
+            [dwi]
         ),
     ]
     for (faq, courses) in faqs:
@@ -270,22 +248,16 @@ def import_data():
 
     # create course-user relations
     print('adding course-user relations')
-    CourseUserRelation(course=gsi, user=amanaman).save()
-    CourseUserRelation(course=hci, user=amanaman).save()
-    CourseUserRelation(course=gsi, user=superuser).save()
-    CourseUserRelation(course=hci, user=superuser).save()
+    CourseUserRelation(course=dwi, user=amanaman).save()
+    CourseUserRelation(course=dwi, user=superuser).save()
 
     for tutor in tutors:
-        CourseUserRelation(course=gsi, user=tutor).save()
-        CourseUserRelation(course=hci, user=tutor).save()
-        Notification(user=tutor, course=gsi, text="Welcome to GSI!").save()
-        Notification(user=tutor, course=hci, text="Welcome to HCI!").save()
+        CourseUserRelation(course=dwi, user=tutor).save()
+        Notification(user=tutor, course=dwi, text="Willkommen bei Denkweisen der Informatik!").save()
 
     for user in users:
-        CourseUserRelation(course=gsi, user=user).save()
-        CourseUserRelation(course=hci, user=user).save()
-        Notification(user=user, course=gsi, text="Welcome to GSI!").save()
-        Notification(user=user, course=hci, text="Welcome to HCI!").save()
+        CourseUserRelation(course=dwi, user=user).save()
+        Notification(user=user, course=dwi, text="Willkommen bei Denkweisen der Informatik!").save()
 
 
     # create challenges
@@ -294,7 +266,7 @@ def import_data():
                             subtitle='meine meinung',
                             description='Gehen Sie nach derstandard.at, suchen Sie einen beliebigen Artikel und posten Sie den Text dieses Artikels hier.',
                             accepted_files='',
-                            course=gsi,
+                            course=dwi,
                             points=15,
     )
     challenge_1.image.save('1.png', File(open(os.path.join(STATIC_ROOT, 'img', '1.png'), 'rb')))
@@ -309,7 +281,7 @@ def import_data():
                             prerequisite=challenge_1,
                             description='Finden Sie einen Webcomic, den Sie lustig finden und laden Sie ihn hier hoch. Beschreiben Sie kurz, wie lange Sie diesen Webcomic schon lesen.',
                             accepted_files='image/*',
-                            course=gsi,
+                            course=dwi,
                             points=10,
     )
     challenge_2.image.save('2.png', File(open(os.path.join(STATIC_ROOT, 'img', '2.png'), 'rb')))
@@ -325,7 +297,7 @@ def import_data():
                             prerequisite=challenge_2,
                             description='Kopieren Sie 4 Absätze aus einem Wikipedia-Artikel und geben Sie sie ab! Setzen Sie ans Ende der arbeit den Link auf den Wikipedia-Artikel!',
                             accepted_files='',
-                            course=gsi,
+                            course=dwi,
                             points=8,
     )
     challenge_3.image.save('3.png', File(open(os.path.join(STATIC_ROOT, 'img', '3.png'), 'rb')))
@@ -341,7 +313,7 @@ def import_data():
                             prerequisite=challenge_3,
                             description='Finden Sie einen pseudowissenschaftlichen Artikel und laden Sie ihn hier hoch.',
                             accepted_files='application/pdf',
-                            course=gsi,
+                            course=dwi,
                             points=9,
     )
     challenge_4.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
@@ -351,7 +323,7 @@ def import_data():
                             subtitle='ping',
                             description='Laden Sie drei Bilder im png-Format hoch. Beschreiben Sie dann kurz, was auf diesen Bildern zu sehen ist.',
                             accepted_files='image/png',
-                            course=gsi,
+                            course=dwi,
                             points=10,
     )
     challenge_5.image.save('5.png', File(open(os.path.join(STATIC_ROOT, 'img', '5.png'), 'rb')))
@@ -366,7 +338,7 @@ def import_data():
                             prerequisite=challenge_5,
                             description='Suchen Sie ein »advice animal« Bild und posten Sie es hier. Geben sie die Quelle dazu an.',
                             accepted_files='image/*',
-                            course=gsi,
+                            course=dwi,
                             points=12,
     )
     challenge_6.image.save('6.png', File(open(os.path.join(STATIC_ROOT, 'img', '6.png'), 'rb')))
@@ -382,7 +354,7 @@ def import_data():
                             prerequisite=challenge_6,
                             description='suchen sie ein animated gif und posten sie es. geben sie die quelle dazu an.',
                             accepted_files='image/gif',
-                            course=gsi,
+                            course=dwi,
                             points=14,
     )
     challenge_7.image.save('7.png', File(open(os.path.join(STATIC_ROOT, 'img', '7.png'), 'rb')))
@@ -397,7 +369,7 @@ def import_data():
                             prerequisite=challenge_7,
                             description='Laden Sie zwei Bilder von zwei verschiedenen Menschen hoch. Erklären Sie dann, wer diese beiden Menschen sind. Vergessen Sie nicht auf die Quellenangabe!!11elf',
                             accepted_files='image/*',
-                            course=gsi,
+                            course=dwi,
                             points=5,
     )
     challenge_8.image.save('8.png', File(open(os.path.join(STATIC_ROOT, 'img', '8.png'), 'rb')))
@@ -407,7 +379,7 @@ def import_data():
                             subtitle='youtube',
                             description='Suchen Sie ein gutes YouTube-Video und posten Sie den Link hier. Wenn Sherlock Holmes darin vorkommt, dann können Sie auch einen Extrapunkt bekommen.',
                             accepted_files='',
-                            course=gsi,
+                            course=dwi,
                             points=25,
     )
     challenge_9.image.save('9.png', File(open(os.path.join(STATIC_ROOT, 'img', '9.png'), 'rb')))
@@ -424,7 +396,7 @@ def import_data():
                              prerequisite=challenge_9,
                              description='Suchen Sie in Google Image Search Schmetterlingsbilder und laden Sie diese hier hoch. Vergessen Sie nicht auf die Quellenangaben!',
                              accepted_files='image/*',
-                             course=gsi,
+                             course=dwi,
                              points=3,
     )
     challenge_10.image.save('4.png', File(open(os.path.join(STATIC_ROOT, 'img', '4.png'), 'rb')))
@@ -435,7 +407,7 @@ def import_data():
     accessibility = Stack(
         title='Universal Design',
         description='In diesem Block setzen sie sich mit »Unversal Design« auseinander. Universal Design (Universelles Design) ist ein internationales Design-Konzept, das Produkte, Geräte, Umgebungen und Systeme derart gestaltet, dass sie für so viele Menschen wie möglich ohne weitere Anpassung oder Spezialisierung nutzbar sind. In der Informatik bedeutet das im allgemeinen, Systeme so zu gestalten, dass sie von Menschen mit Behinderungen, insbesondere blinde Menschen, auch benutzt werden können.',
-        course=gsi,
+        course=dwi,
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
     )
@@ -445,7 +417,7 @@ def import_data():
     digitallife = Stack(
         title='Copyleft vs. Business',
         description='In diesem Block geht es um die Suche nach neuen Business-Modellen für die geänderten Bedingngen, die durch neue Technologien geschaffen wurden. Viele traditionelel Business-Modelle gehen dabei den Bach runter, neue Ansätze sind gefragt.',
-        course=gsi,
+        course=dwi,
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
     )
@@ -455,7 +427,7 @@ def import_data():
     gtav = Stack(
         title='Geschichte der Informatik',
         description='Dieser Block führt sie in die Geschichte der Informatik, zurück zu den Anfängen des interaktiven Computers. Sie setzen sich damit auseinander, welche Vorstellungen von Interaktivität im Laufe der Geschichte entstanden, probiert und wieder verworfen wurden. Dabei werden Darstellungen in Film und Fernsehen ebenso aufgearbeitet wie die Visionen der Techniker und wissenschaftliche Diskussionen.',
-        course=gsi,
+        course=dwi,
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
     )

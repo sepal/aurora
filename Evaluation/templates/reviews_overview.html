@@ -7,6 +7,15 @@
   <script type="text/javascript" src="{{ STATIC_URL }}js/reviews.js"></script>
 {% endblock %}
 
+<script type="text/javascript">
+  //var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
+  //var SAVE_REVISION_URL = "{% url 'Elaboration:save_revision' course_short_title=course.short_title %}";
+  //var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
+  //var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
+  var REVIEW_EVALUATION_URL = "{% url 'Review:evaluate' course_short_title=course.short_title %}";
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/review_evaluation.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
 
 <div class="reviews">
 
@@ -75,6 +84,27 @@
           </div>
       {% endif %}
       {% include 'elaboration_indicators.html' with elaboration=review.elaboration %}
+    </div>
+    <div class="review_evaluation_drawer">
+		<div class="review_evaluation_text">This review...</div>
+        <div id="{{ review.id }}" class="review_evaluation_container">
+            <div review_id="{{ review.id }}" appraisal="P"
+                 class="review_evaluation positive {% if review.appraisal == "P" %} active{% endif %}">
+                ... helped me improve my work
+            </div>
+            <div review_id="{{ review.id }}" appraisal="D"
+                 class="review_evaluation neutral {% if review.appraisal == "D" %} active{% endif %}">
+                ... was ok
+            </div>
+            <div review_id="{{ review.id }}" appraisal="B"
+                 class="review_evaluation neutral {% if review.appraisal == "B" %} active{% endif %}">
+                ... was meaningless
+            </div>
+            <div review_id="{{ review.id }}" appraisal="N"
+                 class="review_evaluation negative {% if review.appraisal == "N" %} active{% endif %}">
+                ... was minimalist or offensive
+            </div>
+        </div>
     </div>
 </div>
     {% endfor %}
