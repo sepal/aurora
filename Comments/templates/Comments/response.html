@@ -65,7 +65,7 @@
        {% send_notification_button course.short_title response.author.id%}
        {% if not response.author.is_staff %}
          {% if course %}
-           &mdash;   <a href="{% url 'Evaluation:search_user' course.short_title %}?id={{response.author.id}}">{{response.author.display_name}}'s work</a>
+           &mdash;   <a href="{% url 'Evaluation:search_user' course.short_title mode='overview' %}?id={{response.author.id}}">{{response.author.display_name}}'s work</a>
          {% endif %}
        {% endif %}
      {% endif %}
