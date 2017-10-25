@@ -24,8 +24,8 @@ from memoize import memoize
 logger = logging.getLogger('review')
 
 class Elaboration(models.Model):
-    challenge = models.ForeignKey('Challenge.Challenge')
-    user = models.ForeignKey('AuroraUser.AuroraUser')
+    challenge = models.ForeignKey('Challenge.Challenge', on_delete=models.CASCADE)
+    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
     creation_time = models.DateTimeField(auto_now_add=True)
     elaboration_text = models.TextField(default='')
     revised_elaboration_text = models.TextField(default='')
@@ -435,7 +435,11 @@ class Elaboration(models.Model):
                 .exclude(user=user)
                 .exclude(id__in=already_submitted_reviews_ids)
             ).order_by('num_reviews')
-            chosen_candidate = candidates[0]
+            if len(candidates) > 0:
+                chosen_candidate = candidates[0]
+            else:
+                logger.error('No dummy elaborations found for review')
+                return
 
         return { 'chosen_by': 'random', 'candidate': chosen_candidate }
 

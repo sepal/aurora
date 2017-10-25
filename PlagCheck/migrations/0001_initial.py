@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('hash', models.CharField(max_length=255, db_index=True)),
-                ('suspect_doc', models.ForeignKey(to='PlagCheck.Document')),
+                ('suspect_doc', models.ForeignKey(to='PlagCheck.Document', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('hash_count', models.IntegerField()),
                 ('submission_time', models.DateTimeField()),
-                ('doc', models.ForeignKey(to='PlagCheck.Document')),
+                ('doc', models.ForeignKey(to='PlagCheck.Document', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -57,9 +57,9 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('state', models.CharField(choices=[(0, 'SUSPECTED'), (1, 'PLAGIARISM'), (2, 'FALSE_POSITIVE'), (3, 'CITED')], max_length=2, default=0)),
                 ('match_count', models.IntegerField()),
-                ('result', models.ForeignKey(to='PlagCheck.Result')),
-                ('similar_doc', models.ForeignKey(related_name='suspicion_similar', to='PlagCheck.Document')),
-                ('suspect_doc', models.ForeignKey(related_name='suspicion_suspect', to='PlagCheck.Document')),
+                ('result', models.ForeignKey(to='PlagCheck.Result', on_delete=models.CASCADE)),
+                ('similar_doc', models.ForeignKey(related_name='suspicion_similar', to='PlagCheck.Document', on_delete=models.CASCADE)),
+                ('suspect_doc', models.ForeignKey(related_name='suspicion_suspect', to='PlagCheck.Document', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['-created'],

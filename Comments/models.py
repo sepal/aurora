@@ -15,7 +15,7 @@ class CommentList(models.Model):
     revision = models.BigIntegerField(default=0)
     uri = models.CharField(max_length=200, null=True)
 
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
@@ -63,8 +63,8 @@ class Vote(models.Model):
     direction = models.BooleanField(choices=((UP, True), (DOWN, False)),
                                     default=True)
 
-    voter = models.ForeignKey('AuroraUser.AuroraUser')
-    comment = models.ForeignKey('Comment', related_name='votes')
+    voter = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
+    comment = models.ForeignKey('Comment', related_name='votes', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('voter', 'comment')
@@ -72,21 +72,21 @@ class Vote(models.Model):
 
 class Comment(models.Model):
     text = models.TextField()
-    author = models.ForeignKey('AuroraUser.AuroraUser')
+    author = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
     post_date = models.DateTimeField('date posted')
     delete_date = models.DateTimeField('date deleted', blank=True, null=True)
     edited_date = models.DateTimeField('date edited', blank=True, null=True)
     deleter = models.ForeignKey('AuroraUser.AuroraUser',
                                 related_name='deleted_comments_set',
-                                blank=True, null=True)
+                                blank=True, null=True, on_delete=models.CASCADE)
     parent = models.ForeignKey('self', blank=True, null=True,
-                               related_name='children')
+                               related_name='children', on_delete=models.CASCADE)
     promoted = models.BooleanField(default=False)
     tags = TaggableManager()
     seen = models.BooleanField(default=False)
 
     # Foreign object this Comment is attached to
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 

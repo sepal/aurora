@@ -1,11 +1,12 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from AuroraUser import views
+from . import views
 
 admin.autodiscover()
 
+app_name = 'aurora_user'
 urlpatterns = [
    # namespace comes from main urls.py
    url(r'^login/$', views.login, name='login'),

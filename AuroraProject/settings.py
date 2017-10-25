@@ -6,7 +6,6 @@ from diskurs.markdown.giffer import GifferMarkdownFilter
 # Django settings for AuroraProject project.
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -93,7 +92,7 @@ if DEBUG:
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '/vagrant/aurora/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -104,7 +103,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.join('static'),),
+    os.path.join(os.path.dirname(PROJECT_ROOT), 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -118,12 +117,30 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'n@sn@dc_ayzqb2-u3cugqej7a_fj#^$b9$8h(m$r!us_oxz!d3'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\', '/'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+        },
+    },
+]
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -132,6 +149,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'middleware.exception_logging_middleware.ExceptionLoggingMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -145,9 +163,6 @@ ROOT_URLCONF = 'AuroraProject.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'AuroraProject.wsgi.application'
-
-import os
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -164,7 +179,9 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     # third party apps
     'easy_thumbnails',
-    'memoize',
+    'django_comments',
+    'django_comments_xtd',
+    # 'memoize',
     # own apps
     'AuroraUser',
     'Challenge',
@@ -189,6 +206,33 @@ INSTALLED_APPS = (
     'django_markup',
     'Feedback'
 )
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'preview': {'size': (640, 480)},
+        'full-res': {'size': (1920, 1080)},
+    },
+}
+
+## COMMENTS ##
+
+COMMENTS_APP = 'django_comments_xtd'
+
+# Either enable sending mail messages to the console:
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Or set up the EMAIL_* settings so that Django can send emails:
+#EMAIL_HOST = "smtp.mail.com"
+#EMAIL_PORT = "587"
+#EMAIL_HOST_USER = "alias@mail.com"
+#EMAIL_HOST_PASSWORD = "yourpassword"
+#EMAIL_USE_TLS = True
+#DEFAULT_FROM_EMAIL = "Helpdesk <helpdesk@yourdomain>"
+
+COMMENTS_XTD_CONFIRM_MAIL = False
+COMMENTS_XTD_MAX_THREAD_LEVEL = 2
+
+
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -307,18 +351,7 @@ else:
     }
 
 
-LOGIN_URL = '/'
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.request",
-)
+LOGIN_URL = '/course/{{course}}/login'
 
 EL_PAGINATION_PER_PAGE = (
     20
@@ -417,15 +450,8 @@ if DEBUG:
     ]
 
     DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
+        'DISABLE_PANELS': False,
         'SHOW_TOOLBAR_CALLBACK': 'AuroraProject.settings.show_toolbar',
-    }
-
-    THUMBNAIL_ALIASES = {
-        '': {
-            'preview': {'size': (640, 480)},
-            'full-res': {'size': (1920, 1080)},
-        },
     }
 
     ## PROFILING ##

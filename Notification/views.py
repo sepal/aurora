@@ -1,7 +1,6 @@
 from django.core import urlresolvers
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
+from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 
 from AuroraProject.decorators import aurora_login_required
@@ -43,7 +42,7 @@ def notifications(request, course_short_title=None):
     except FeedToken.DoesNotExist:
         data['feed_token'] = None
 
-    return render_to_response('notifications.html', data, context_instance=RequestContext(request))
+    return render(request, 'notifications.html', data)
 
 
 @aurora_login_required()
@@ -55,7 +54,7 @@ def write_notification(request, course_short_title=None):
         'user_id': request.GET['user'],
         'course_short_title': course_short_title,
     }
-    return render_to_response('send_notification.html', data, context_instance=RequestContext(request))
+    return render(request, 'send_notification.html', data)
 
 
 @aurora_login_required()
@@ -67,6 +66,9 @@ def send_notification(request, course_short_title=None):
         raise Http404
     user = AuroraUser.objects.get(pk=request.POST['user_id'])
     text = request.POST['message']
+    link = ""
+    if 'link' in request.POST:
+        link = request.POST['link']
     course_ids = CourseUserRelation.objects.filter(user=user).values_list('course', flat=True)
     courses = Course.objects.filter(id__in=course_ids)
     for course in courses:
@@ -74,7 +76,7 @@ def send_notification(request, course_short_title=None):
             user=user,
             course=course,
             text=text,
-            link=""
+            link=link
         )
     return HttpResponse("Notification sent to user with id: %s" % user.nickname)
 

@@ -1,12 +1,11 @@
 {% extends "slides_base.html" %}
 {% load thumbnail %}
 {% load comments %}
+{% load comments_xtd %}
 {% block content %}
 
 <link rel="stylesheet" href="{{ STATIC_URL }}Comments/comments.css" type="text/css" media="screen"/>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-2.0.3.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/autogrow.min.js"></script>
-{% comments_boilerplate %}
 
 
 <!--title and other chapters-->
@@ -56,14 +55,22 @@
 		{% endfor %}
 	<br>
 	<div class="slide-comments" id="comments_{{slide_stack.id}}">
-        {% render_multi_comment_list for slide_stack newest_last endless %}
+         {% get_comment_form for slide_stack as form %}
+    <form action="{% comment_form_target %}" method="POST">
+    {% csrf_token %}
+    {{ form.comment }}
+    {{ form.honeypot }}
+    {{ form.content_type }}
+    {{ form.object_pk }}
+    {{ form.timestamp }}
+    {{ form.security_hash }}
+    <input type="hidden" name="next" value="{% url 'Slides:slides' course_short_title=course.short_title %}" />
+    <input type="submit" value="Add comment" id="id_submit" />
+    </form>
+        {% render_comment_list for slide_stack %}
     </div>
 	</div>
 </div>
-<script>
-	$('#commentTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
-	$('#replyTextarea').autogrow({animate: true, onInitialize: false, fixMinHeight:true});
-</script>
 
 
 {% endblock content %}

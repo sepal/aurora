@@ -3,10 +3,10 @@ from taggit.managers import TaggableManager
 from django.contrib.contenttypes.models import ContentType
 
 class Review(models.Model):
-    elaboration = models.ForeignKey('Elaboration.Elaboration')
+    elaboration = models.ForeignKey('Elaboration.Elaboration', on_delete=models.CASCADE)
     creation_time = models.DateTimeField(auto_now_add=True)
     submission_time = models.DateTimeField(null=True)
-    reviewer = models.ForeignKey('AuroraUser.AuroraUser')
+    reviewer = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
     chosen_by = models.CharField(max_length=100, null=True, blank=True, default='random')
     tags = TaggableManager()
     extra_review_question_answer = models.TextField(default='')
@@ -52,9 +52,9 @@ class Review(models.Model):
 
 
 class ReviewEvaluation(models.Model):
-    review = models.ForeignKey('Review.Review')
+    review = models.ForeignKey('Review.Review', on_delete=models.CASCADE)
     creation_time = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey('AuroraUser.AuroraUser')
+    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
 
     HELPFUL= 'P'
     GOOD = 'D'

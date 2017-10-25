@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from .views import (slides, slide_topics, slide_stack, search, refresh_structure)
 
+
+app_name = 'slides'
 urlpatterns = [
     url(r'^$', slides, name='slides'),
     url(r'^search/$', search, name='search'),

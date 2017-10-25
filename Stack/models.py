@@ -5,9 +5,9 @@ from functools import lru_cache
 class Stack(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    course = models.ForeignKey('Course.Course')
+    course = models.ForeignKey('Course.Course', on_delete=models.CASCADE)
     chapter = models.ForeignKey(
-        'Stack.Chapter', null=True, blank=True, default=None)
+        'Stack.Chapter', null=True, blank=True, default=None, on_delete=models.CASCADE)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
 
@@ -127,8 +127,8 @@ class Stack(models.Model):
 
 
 class StackChallengeRelation(models.Model):
-    stack = models.ForeignKey('Stack.Stack')
-    challenge = models.ForeignKey('Challenge.Challenge')
+    stack = models.ForeignKey('Stack.Stack', on_delete=models.CASCADE)
+    challenge = models.ForeignKey('Challenge.Challenge', on_delete=models.CASCADE)
 
 
 class Chapter(models.Model):

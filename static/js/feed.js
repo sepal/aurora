@@ -93,7 +93,7 @@ function isScrolledIntoView(el) {
 
 var updateNew_Timer;
 
-$(window).load(function() {
+$(window).on('load', function() {
     "use strict";
     loadFilter();
 });

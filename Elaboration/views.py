@@ -1,8 +1,6 @@
 from datetime import datetime, date
 from django.contrib.auth.tests import *
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 
 from AuroraProject.decorators import aurora_login_required
@@ -15,6 +13,7 @@ from django.http import Http404
 from FileUpload.models import UploadFile
 from pprint import pprint
 from PlagCheck.verification import plagcheck_elaboration
+
 
 @csrf_exempt
 def save_elaboration(request, course_short_title):
@@ -75,9 +74,10 @@ def save_revision(request, course_short_title):
         else:
             raise Http404
     else:
-        Elaboration.objects.get_or_create(challenge=challenge, user=user, elaboration_text=elaboration_text)
+        Elaboration.objects.get_or_create(challenge=challenge, user=user)
 
     return HttpResponse()
+
 
 @aurora_login_required()
 def submit_elaboration(request, course_short_title):
@@ -105,6 +105,7 @@ def submit_elaboration(request, course_short_title):
        plagcheck_elaboration(elaboration)
 
        return HttpResponse()
+
 
 def get_extra_review_data(user, course, data):
     extra_reviews = Elaboration.get_extra_reviews(user, course)

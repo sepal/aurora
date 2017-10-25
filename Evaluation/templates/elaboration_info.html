@@ -1,2 +1,6 @@
-<div class="elab_title">{{elaboration.challenge.title|safe}}</div>
+<div class="elab_title">
+  <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}?elaboration_id={{ elaboration.id }} ">
+    {{ elaboration.challenge.title|safe }}
+  </a>
+</div>
 {% include 'user_info.html' with author=elaboration.user %}

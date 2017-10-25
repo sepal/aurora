@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class InputElement extends React.Component {
   static propTypes = {
-    label: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string.isRequired,
-    error: React.PropTypes.string,
-    onChange: React.PropTypes.func
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    error: PropTypes.string,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {

@@ -9,3 +9,13 @@ def send_notification_button(course_short_title, user_id):
         'course_short_title': course_short_title,
         'notification_user_id': user_id,
     }
+
+
+@register.inclusion_tag('write_notification_field.html')
+def write_notification_field(course_short_title, user_id, text=None, link=None):
+    return {
+        'course_short_title': course_short_title,
+        'user_id': user_id,
+        'text': text,
+        'link': link,
+    }

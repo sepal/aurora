@@ -28,8 +28,8 @@ class Migration(migrations.Migration):
             name='CourseUserRelation',
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
-                ('course', models.ForeignKey(to='Course.Course')),
-                ('user', models.ForeignKey(to='AuroraUser.AuroraUser')),
+                ('course', models.ForeignKey(to='Course.Course', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to='AuroraUser.AuroraUser', on_delete=models.CASCADE)),
             ],
             options={
             },

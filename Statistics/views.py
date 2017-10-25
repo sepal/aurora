@@ -1,7 +1,6 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q, Sum, Count
 
 from AuroraProject.decorators import aurora_login_required
@@ -23,8 +22,9 @@ from memoize import memoize
 def statistics(request, course_short_title=None):
     data = {}
     course = Course.get_or_raise_404(course_short_title)
-    data = create_stat_data(course,data)
-    return render_to_response('statistics.html', data, context_instance=RequestContext(request))
+    data = create_stat_data(course, data)
+    return render(request, 'statistics.html', data)
+
 
 # @memoize(timeout=10)
 def create_stat_data(course, data):
@@ -59,6 +59,7 @@ def create_stat_data(course, data):
     data['not_evaluated_final_tasks'] = not_evaluated_final_tasks(course)
     data['final_tasks'] = final_tasks(course)
     return data
+
 
 def students_with_at_least_one_submission(course):
     final_challenge_ids = Challenge.get_final_challenge_ids()
@@ -208,6 +209,9 @@ def tutor_statistics_reduced(course):
     return new_tutors
 
 def tutor_statistics_average(tutors):
+    if len(tutors) <= 0:
+        return 0
+
     sume = 0
     for tutor in tutors:
         sume = sume + tutor['all_evaluations']

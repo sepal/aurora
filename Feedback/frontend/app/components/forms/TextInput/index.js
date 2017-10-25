@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import InputElement from '../InputElement';
 
 export default class TextInput extends InputElement {
   static propTypes = {
-    name: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    size: React.PropTypes.number,
-    onChange: React.PropTypes.func
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    size: PropTypes.number,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {
@@ -32,4 +33,4 @@ export default class TextInput extends InputElement {
       </div>
     );
   }
-};
+}

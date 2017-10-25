@@ -5,6 +5,7 @@ from datetime import datetime, date
 from Stack.models import *
 import logging
 
+
 class Course(models.Model):
     title = models.CharField(max_length=100, unique=True)
     short_title = models.CharField(max_length=30, unique=True)
@@ -12,6 +13,9 @@ class Course(models.Model):
     course_number = models.CharField(max_length=100, unique=True)
     start_date = models.DateField(default=datetime.now, blank=True)
     end_date = models.DateField(default=datetime.now, blank=True)
+    tuwel_course_id = models.PositiveIntegerField(null=False)
+    tuwel_course_stream_id = models.PositiveIntegerField(null=False)
+    email = models.EmailField(null=False)
 
     def __unicode__(self):
         return str(self.title)
@@ -55,8 +59,8 @@ class Course(models.Model):
 
 
 class CourseUserRelation(models.Model):
-    user = models.ForeignKey('AuroraUser.AuroraUser')
-    course = models.ForeignKey(Course)
+    user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     review_karma = models.DecimalField(max_digits=20, decimal_places=19, default=0.0)
     review_group = models.PositiveSmallIntegerField(default=1)

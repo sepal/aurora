@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
                 ('creation_time', models.DateTimeField(auto_now_add=True)),
                 ('submission_time', models.DateTimeField(null=True)),
                 ('appraisal', models.CharField(choices=[('N', 'Not even trying'), ('F', 'Fail'), ('S', 'Success'), ('A', 'Awesome')], max_length=1, null=True)),
-                ('elaboration', models.ForeignKey(to='Elaboration.Elaboration')),
-                ('reviewer', models.ForeignKey(to='AuroraUser.AuroraUser')),
+                ('elaboration', models.ForeignKey(to='Elaboration.Elaboration', on_delete=models.CASCADE)),
+                ('reviewer', models.ForeignKey(to='AuroraUser.AuroraUser', on_delete=models.CASCADE)),
                 ('tags', taggit.managers.TaggableManager(to='taggit.Tag', verbose_name='Tags', help_text='A comma-separated list of tags.', through='taggit.TaggedItem')),
             ],
             options={
@@ -46,8 +46,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
                 ('creation_time', models.DateTimeField(auto_now_add=True)),
                 ('appraisal', models.CharField(default='D', choices=[('D', 'Average Review'), ('N', 'Flag this review as meaningless or offensive'), ('P', 'This review was helpful')], max_length=1)),
-                ('review', models.ForeignKey(to='Review.Review')),
-                ('user', models.ForeignKey(to='AuroraUser.AuroraUser')),
+                ('review', models.ForeignKey(to='Review.Review', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to='AuroraUser.AuroraUser', on_delete=models.CASCADE)),
             ],
             options={
             },

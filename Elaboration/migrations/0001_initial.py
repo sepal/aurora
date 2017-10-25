@@ -21,9 +21,9 @@ class Migration(migrations.Migration):
                 ('creation_time', models.DateTimeField(auto_now_add=True)),
                 ('elaboration_text', models.TextField(default='')),
                 ('submission_time', models.DateTimeField(null=True)),
-                ('challenge', models.ForeignKey(to='Challenge.Challenge')),
+                ('challenge', models.ForeignKey(to='Challenge.Challenge', on_delete=models.CASCADE)),
                 ('tags', taggit.managers.TaggableManager(to='taggit.Tag', verbose_name='Tags', through='taggit.TaggedItem', help_text='A comma-separated list of tags.')),
-                ('user', models.ForeignKey(to='AuroraUser.AuroraUser')),
+                ('user', models.ForeignKey(to='AuroraUser.AuroraUser', on_delete=models.CASCADE)),
             ],
             options={
             },

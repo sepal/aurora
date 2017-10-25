@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='stack',
             name='chapter',
-            field=models.ForeignKey(to='Stack.Chapter', null=True, blank=True, default=None),
+            field=models.ForeignKey(to='Stack.Chapter', null=True, blank=True, default=None, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

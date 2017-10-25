@@ -27,7 +27,7 @@
 		            <tr class="{{ forloop.parentloop.counter }}">
 		              <td class="stack_name">
 		                <a style="text-decoration:none; color:black;"
-		                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
+		                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
 		                  <i class="fa fa-check-circle" style="color:gray"></i>
 		                  <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
 		                </a>
@@ -43,7 +43,7 @@
             <tr class="pZeile{{ forloop.parentloop.counter }}">
               <td class="stack_name">
                 <a style="text-decoration:none; color:black;"
-                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
+                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
                   <i class="fa fa-times" style="color:#D00"></i>
                   <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
                 </a>
@@ -112,7 +112,7 @@
 	            <tr class="pZeile{{ forloop.parentloop.counter }}">
 	              <td class="stack_name">
 	                <a style="text-decoration:none; color:black;"
-	                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
+	                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
 	                  <i style="color:gray" class="fa fa-circle-o"></i>
 	                  <abbr title="{{stack.stack.get_final_challenge.id}}">{{ stack.stack.title|truncatechars:36 }}</abbr>
 					  {% comment %}
@@ -159,7 +159,7 @@
 	            <tr class="pZeile{{ forloop.parentloop.counter }}">
 	              <td class="stack_name">
 	                <a style="text-decoration:none; color:black;"
-	                   href="/{{ course.short_title }}/challenge/stack?id={{ stack.stack.id }}">
+	                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
 					   {% if stack.is_blocked %}
 	                  		<i style="color:#D00" class="fa fa-times"></i>
 					   {% else %}

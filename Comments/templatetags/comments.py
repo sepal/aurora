@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from Comments.models import Comment, CommentList
 from Comments.views import CommentForm, ReplyForm
 from django.template.loader import render_to_string
-from AuroraUser.models import AuroraUser
 
 register = template.Library()
 
@@ -20,6 +19,9 @@ class CommentListNode(template.Node):
         self.options = []
 
     def render(self, context):
+        # TODO these comments are disabled for now. remove next line to enable again
+        return ''
+
         try:
             ref_object = self.reference_var.resolve(context)
             ref_type = ContentType.objects.get_for_model(ref_object)

@@ -1,6 +1,10 @@
-
 a.btn-next[href=''],a.btn-prev[href='']{
     display:none;
+}
+
+.slide-title {
+	max-width:320px;
+	overflow:hidden;
 }
 
 
@@ -51,8 +55,8 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .card-with-note::after {
 	content:"\1F4AC";
 	position:absolute;
-	right:12;
-	bottom:40;
+	right:12px;
+	bottom:40px;
 	font-size:162%;
 	font-weight:bold;
 	color:black;
@@ -82,7 +86,7 @@ a.btn-next[href=''],a.btn-prev[href='']{
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 	filter:opacity(20%);
--moz-border-radius}
+}
 
 .Card h3 {
 	margin-top:6px;
@@ -96,6 +100,12 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .lecturer_note {
 	padding:6px;
 	border-radius:3px;
+}
+
+.lecturer_note br{
+	display: block; /* makes it have a width */
+	content: ""; /* clears default height */
+	margin-top: 8px; /* change this to whatever height you want it */
 }
 
 .lecturer_note_title {
@@ -120,7 +130,7 @@ a.btn-next[href=''],a.btn-prev[href='']{
 }
 
 
-.ekko-lightbox-nav-overlay a span 
+.ekko-lightbox-nav-overlay a span
 {
 	color:rgb(58, 201, 88);
 	font-size:200%;
@@ -190,11 +200,16 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .btn-next,.btn-prev{
 	font-weight:normal;
 	color:rgb(58, 201, 88);
+	z-index:100;
 }
 
 .btn-next-not,.btn-prev-not {
 	font-weight:normal;
 	color:lightgray;
+}
+
+.slides_origin_center {
+	margin-left:40%;
 }
 
 
@@ -208,21 +223,12 @@ a.btn-next[href=''],a.btn-prev[href='']{
 }
 
 .slides_navi_next {
-	float:right;
 }
 
 .slides_navi_prev {
 	float:left;
 }
 
-.slides_origin_center {
-	width:100%;
-	float:left;
-	text-align:center;
-	position:relative;
-	top:38px;
-	z-index:101;
-}
 
 .row {
 	position:relative;
@@ -246,4 +252,40 @@ a.btn-next[href=''],a.btn-prev[href='']{
 .modal-header button {
 	padding-top:4px;
 }
+@media all and (min-width: 960px) {
+	.slides_search_field input[type="text"] {
+		width:480px;
+		height:32px;
+		border-radius:30px;
+		border:1px solid silver;
+		padding-left:20px;
+		position:absolute;
+		right:8px;
+	}
+	.slides_search_field input[type="submit"] {
+		border:0;
+		padding:2px;
+		background:none;
+		position:relative;
+		right:10px;
+		top:5px;
+	}
+}
 
+@media all and (max-width: 959px) {
+	.slides_search_field input[type="text"] {
+		width:100%;
+		height:32px;
+		border-radius:30px;
+		border:1px solid silver;
+		padding-left:20px;
+	}
+	.slides_search_field input[type="submit"] {
+		border:0;
+		padding:2px;
+		background:none;
+		position:relative;
+		top:-26px;
+		right:8px;
+	}
+}

@@ -36,4 +36,5 @@ class NotificationFeed(Feed):
 
     # item_link is only needed if NewsItem has no get_absolute_url method.
     def item_link(self, item):
+        # gets the link from the Notification model object
         return item.link

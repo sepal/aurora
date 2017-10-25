@@ -1,4 +1,7 @@
+
+import re
 from functools import wraps
+
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.utils.decorators import available_attrs
@@ -6,6 +9,10 @@ from django.utils.encoding import force_str
 from django.utils.six.moves.urllib.parse import urlparse
 from django.shortcuts import resolve_url
 from Course.models import Course
+
+
+COURSE_URL_RE = re.compile("^/course/(?P<course_short_title>\w{,30})")
+
 
 def aurora_login_required():
     """
@@ -31,13 +38,15 @@ def aurora_login_required():
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
 
-            try:
-                course_title = request.path.split("/")[1]
-                course = Course.objects.get(short_title=course_title)
-            except (IndexError, Course.DoesNotExist):
+            course_match = COURSE_URL_RE.match(request.path)
+            if course_match is None:
                 raise LookupError("aurora_login_required - can only be used when the url contains the course.")
+            course_short_title = course_match.groupdict()["course_short_title"]
+            course = Course.get_or_raise_404(short_title=course_short_title)
 
-            if request.user.is_authenticated() and (request.user.is_staff or course.user_is_enlisted(request.user)):
+            if (request.user.is_authenticated
+                    and (request.user.is_staff
+                        or course.user_is_enlisted(request.user))):
                 return view_func(request, *args, **kwargs)
 
             path = request.build_absolute_uri()
@@ -51,7 +60,9 @@ def aurora_login_required():
             if ((not login_scheme or login_scheme == current_scheme) and
                     (not login_netloc or login_netloc == current_netloc)):
                 path = request.get_full_path()
+
             from django.contrib.auth.views import redirect_to_login
+            resolved_login_url = re.sub('{{\s*course\s*}}', course_short_title, resolved_login_url)
             return redirect_to_login(
                 path, resolved_login_url, REDIRECT_FIELD_NAME)
         return _wrapped_view

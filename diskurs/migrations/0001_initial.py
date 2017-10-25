@@ -40,9 +40,9 @@ class Migration(migrations.Migration):
                 ('content', models.TextField(verbose_name='content')),
                 ('deleted', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('group', models.ForeignKey(to='diskurs.Group', blank=True, null=True)),
-                ('parent_post', models.ForeignKey(to='diskurs.Post', blank=True, null=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('group', models.ForeignKey(to='diskurs.Group', blank=True, null=True, on_delete=models.CASCADE)),
+                ('parent_post', models.ForeignKey(to='diskurs.Post', blank=True, null=True, on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -54,8 +54,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('value', models.IntegerField()),
-                ('post', models.ForeignKey(to='diskurs.Post')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('post', models.ForeignKey(to='diskurs.Post', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -69,9 +69,9 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('use_group_logic', models.BooleanField(default=True)),
                 ('members_in_group', models.IntegerField(default=20)),
-                ('course', models.ForeignKey(to='Course.Course')),
-                ('first_post', models.ForeignKey(to='diskurs.Post')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('course', models.ForeignKey(to='Course.Course', on_delete=models.CASCADE)),
+                ('first_post', models.ForeignKey(to='diskurs.Post', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -82,8 +82,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('group', models.ForeignKey(to='diskurs.Group')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('group', models.ForeignKey(to='diskurs.Group', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -94,8 +94,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('thread', models.ForeignKey(to='diskurs.Thread')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('thread', models.ForeignKey(to='diskurs.Thread', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -106,8 +106,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('post', models.ForeignKey(to='diskurs.Post')),
-                ('user_history', models.ForeignKey(to='diskurs.UserHistory')),
+                ('post', models.ForeignKey(to='diskurs.Post', on_delete=models.CASCADE)),
+                ('user_history', models.ForeignKey(to='diskurs.UserHistory', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -116,19 +116,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='group',
             name='thread',
-            field=models.ForeignKey(to='diskurs.Thread'),
+            field=models.ForeignKey(to='diskurs.Thread', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='favorite',
             name='post',
-            field=models.ForeignKey(to='diskurs.Post'),
+            field=models.ForeignKey(to='diskurs.Post', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='favorite',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-from datetime import date, timedelta
+from datetime import timedelta
 
 import random
 import traceback
@@ -23,7 +22,6 @@ from AuroraProject.settings import STATIC_ROOT
 import os
 from django.core.files import File
 from PlagCheck.tests import PlagcheckTestData
-from PlagCheck.verification import plagcheck_elaboration
 
 
 class Command(BaseCommand):
@@ -143,6 +141,9 @@ def import_data():
         course_number='123.456',
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
+        tuwel_course_id=5575,
+        tuwel_course_stream_id=1,
+        email='denkweisen@igw.tuwien.ac.at',
     )
     gsi.save()
 
@@ -154,6 +155,9 @@ def import_data():
         course_number='123.457',
         start_date=date.today() - timedelta(days=100),
         end_date=date.today() + timedelta(days=100),
+        tuwel_course_id=5581,
+        tuwel_course_stream_id=2,
+        email='denkweisen@igw.tuwien.ac.at',
     )
     hci.save()
 

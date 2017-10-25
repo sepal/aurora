@@ -14,12 +14,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='slide',
             name='slide_stack',
-            field=models.ForeignKey(default=3, to='Slides.SlideStack'),
+            field=models.ForeignKey(default=3, to='Slides.SlideStack', on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='slidestack',
             name='course',
-            field=models.ForeignKey(to='Course.Course'),
+            field=models.ForeignKey(to='Course.Course', on_delete=models.CASCADE),
         ),
     ]

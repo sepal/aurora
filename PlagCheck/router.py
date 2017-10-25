@@ -20,16 +20,16 @@ class PlagCheckRouter(object):
             return True
         return False
 
-    def allow_migrate(self, db, model):
+    def allow_migrate(self, db, app_label, model_name=None, **hints):
         """
         Make sure only plagcheck migrations get applied on the plagcheck db
         and just there.
         """
         if db == PlagCheckSettings.database:
-            if model._meta.app_label == 'PlagCheck':
+            if app_label == 'PlagCheck':
                 return True
             else:
                 return False
-        elif model._meta.app_label == 'PlagCheck':
+        elif app_label == 'PlagCheck':
             return False
         return None

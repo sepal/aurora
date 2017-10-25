@@ -1,0 +1,96 @@
+{% load humanize %}
+{% load render_uploads %}
+{% load static %}
+{% load comments %}
+{% comments_boilerplate %}
+
+{% block additional_headers %}
+    <script type="text/javascript" src="{% static "js/detail.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery-3.2.1.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery-ui.autocomplete.min.js" %}"></script>
+    <link rel="stylesheet" href="{% static "css/evaluation.css" %}" type="text/css" media="screen"/>
+    <script type="text/javascript" src="{% static "js/jsdiff/diff.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/plagcheck.js" %}"></script>
+    <link rel="stylesheet" href="{% static "css/plagcheck.css" %}" type="text/css" media="screen"/>
+{% endblock %}
+
+
+{% block content %}
+    <h1>
+        <a href="{% url 'Evaluation:home' course.short_title %}"><div class="back"  title="Back to evaluation overview" id="{{ selection }}"><i class="fa fa-angle-double-up"></i> go back</div> <b>&nbsp;{{ selection|title }}&nbsp;</b></a>
+    </h1>
+    <div class="plagcheck_compare">
+        <div class="pagination">
+            {% if prev_suspicion_id %}
+                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspicion_id=prev_suspicion_id  %}?{{ request.GET.urlencode }}">
+                    <div class="paginator prev"><i class="fa fa-angle-double-left"></i> prev</div>
+                </a>
+            {% else %}
+                <div class="no-paginator prev">no prev</div>
+            {% endif %}
+            {% if next_suspicion_id %}
+                <a href="{% url 'Evaluation:plagcheck_compare' course_short_title=course.short_title suspicion_id=next_suspicion_id  %}?{{ request.GET.urlencode }}">
+                    <div class="paginator next"> next <i class="fa fa-angle-double-right"></i></div>
+                </a>
+            {% else %}
+                <div class="no-paginator next">no next</div>
+            {% endif %}
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="plagcheck_info_left">
+            {% include "compare_info.html" with elab=suspect_elaboration doc=suspicion.suspect_doc label='Suspicious' notification_templates=notification_templates_suspect challenge_link=suspect_challenge_link %}
+        </div>
+        <div class="plagcheck_info_right">
+            {% include "compare_info.html" with elab=similar_elaboration doc=suspicion.similar_doc label='Source' notification_templates=notification_templates_similar challenge_link=similar_challenge_link %}
+        </div>
+
+        <div class="clear"></div>
+        <div class="spacer"></div>
+
+        <div class="plagcheck_verification_info">
+            {% for key, value in suspicion.suspicion_info.items %}
+                <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+            {% endfor %}
+
+            <div class="spacer"></div>
+
+            <div>
+                <form name="plagcheck_suspicion_state_form" method="post"
+                      action="{% url 'PlagCheck:get_suspicion_state' suspicion_id=suspicion.id %}">
+                    {% csrf_token %}
+                    <label>Suspicion state:</label>
+                    <select id="plagcheck_suspicion_state_dropdown">
+                        {% for state in suspicion_states %}
+                            <option {% if suspicion.state_enum.value == state.value %} selected {% endif %}
+                                    value="{{ state.value }}">{{ state.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="clear"></div>
+
+        <div class="plagcheck_text">
+            <div class="plagcheck_text_left">
+                {% include 'compare_text.html' with elab=suspect_elaboration id_prefix='suspect' %}
+            </div>
+            <div class="plagcheck_text_right">
+                {% include 'compare_text.html' with elab=similar_elaboration id_prefix='similar' %}
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+    <script>
+        {% autoescape off %}
+            var suspect = {{ suspicion.suspect_doc.json_text }};
+            var similar = {{ suspicion.similar_doc.json_text }};
+            load_plagcheck_diff(suspect.content, similar.content);
+        {% endautoescape %}
+    </script>
+
+{% endblock %}

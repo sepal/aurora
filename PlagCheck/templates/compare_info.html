@@ -1,0 +1,30 @@
+{% load notification %}
+
+<div class="plagcheck_compare_label">{{ label }} document</div>
+<div class="spacer"></div>
+{% if elab %}
+    {% include 'elaboration_info.html' with elaboration=elab %}
+{% endif %}
+<div class="plagcheck_compare_info">
+    {% for key, value in doc.document_info.items %}
+        <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+    {% endfor %}
+</div>
+<div class="spacer"></div>
+<div class="plagcheck_compare_info">
+    {% for key, value in doc.plagcheck_info.items %}
+        <div class="info"><label>{{ key }}:</label> {{ value }}</div>
+    {% endfor %}
+</div>
+<div class="spacer"></div>
+{% if elab %}
+    {% write_notification_field course_short_title=course.short_title user_id=elab.user.id link=challenge_link%}
+{% endif %}
+{% if notification_templates %}
+    <div id="notification_templates" hidden>
+        {% for key, value in notification_templates.items %}
+            <div id="{{ key }}">{{ value }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+<div id="challenge_url" hidden>{{ challenge_url }}</div>

@@ -1,7 +1,9 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 import Evaluation.views
 
+
+app_name = 'evaluation'
 urlpatterns = [
     url(r'^$', Evaluation.views.evaluation, name='home'),
     url(r'^detail$', Evaluation.views.detail, name='detail'),
@@ -11,22 +13,20 @@ urlpatterns = [
     url(r'^challenge_txt/$', Evaluation.views.challenge_txt, name='task_description'),
     url(r'^user-detail$', Evaluation.views.user_detail, name='user-detail'),
     url(r'^reviewlist/$', Evaluation.views.reviewlist, name='reviews'),
-    url(r'^missing_reviews$', Evaluation.views.missing_reviews, name='missing_reviews'),
-    url(r'^non_adequate_work$', Evaluation.views.non_adequate_work, name='non_adequate_work'),
-    url(r'^top_level_tasks$', Evaluation.views.top_level_tasks, name='top_level_tasks'),
-    url(r'^final_evaluation_top_level_tasks$', Evaluation.views.final_evaluation_top_level_tasks, name='final_evaluation_top_level_tasks'),
-    url(r'^final_evaluation_new$', Evaluation.views.final_evaluation_new, name='final_evaluation_new'),
-    url(r'^complaints$', Evaluation.views.complaints, name='complaints'),
+    url(r'^missing_reviews/(?P<mode>overview|export)?$', Evaluation.views.missing_reviews, name='missing_reviews'),
+    url(r'^non_adequate_work/(?P<mode>overview|export)?$', Evaluation.views.non_adequate_work, name='non_adequate_work'),
+    url(r'^top_level_tasks/(?P<mode>overview|export)?$', Evaluation.views.top_level_tasks, name='top_level_tasks'),
+    url(r'^final_evaluation_top_level_tasks/(?P<mode>overview|export)?$', Evaluation.views.final_evaluation_top_level_tasks, name='final_evaluation_top_level_tasks'),
+    url(r'^final_evaluation_new/(?P<mode>overview|export)?$', Evaluation.views.final_evaluation_new, name='final_evaluation_new'),
+    url(r'^complaints/(?P<mode>overview|export)?$', Evaluation.views.complaints, name='complaints'),
     url(r'^questions$', Evaluation.views.questions, name='questions'),
-    url(r'^awesome$', Evaluation.views.awesome, name='awesome'),
-    url(r'^user$', Evaluation.views.search_user, name='search_user'),
+    url(r'^awesome/(?P<mode>overview|export)?$', Evaluation.views.awesome, name='awesome'),
+    url(r'^user/(?P<mode>overview|export)$', Evaluation.views.search_user, name='search_user'),
     url(r'^similarities', Evaluation.views.similarities, name='similarities'),
 
     url(r'^autocomplete_challenge/$', Evaluation.views.autocomplete_challenge),
     url(r'^autocomplete_user/$', Evaluation.views.autocomplete_user),
     url(r'^search/$', Evaluation.views.search),
-    url(r'^sort$', Evaluation.views.sort),
-    url(r'^sort_new$', Evaluation.views.sort_new),
     url(r'^set_appraisal/$', Evaluation.views.set_appraisal),
     url(r'^review_answer/$', Evaluation.views.review_answer),
     url(r'^load_reviews/$', Evaluation.views.load_reviews),
@@ -39,5 +39,4 @@ urlpatterns = [
 
     url(r'^plagcheck/$', Evaluation.views.plagcheck_suspicions, name='plagcheck_suspicions'),
     url(r'^plagcheck/(?P<suspicion_id>\d+)/$', Evaluation.views.plagcheck_compare, name='plagcheck_compare'),
-    url(r'^plagcheck/(?P<suspicion_id>\d+)/save_state/$', Evaluation.views.plagcheck_compare_save_state, name='plagcheck_compare_save_state'),
 ]

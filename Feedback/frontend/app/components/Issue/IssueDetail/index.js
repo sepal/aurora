@@ -1,5 +1,6 @@
 import Moment from 'moment';
-import React, {PropTypes, Component} from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import platform from 'platform';
 
 import IssueLabel from '../IssueLabel'
@@ -95,9 +96,7 @@ export default class IssueDetail extends Component {
 
   renderPlatform() {
     if (this.props.user_agent !== undefined) {
-      console.log(this.props.user_agent);
       const info = platform.parse(this.props.user_agent);
-      console.log(info);
       let product = null;
       if (info.product !== null) {
         product = (

@@ -1,5 +1,8 @@
+import re
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render
+from django.utils.functional import cached_property
 from django.template import RequestContext
 from django.shortcuts import redirect
 from django.http import HttpResponse
@@ -19,10 +22,12 @@ from Evaluation.models import Evaluation
 from Review.models import Review
 from ReviewAnswer.models import ReviewAnswer
 from Elaboration.models import Elaboration
-from Evaluation.views import get_points
 from Challenge.models import Challenge
-from Statistics.views import create_stat_data
-from Elaboration.views import get_extra_review_data
+# unused, and therefore commented out because importing app views means they
+# can't import this module properly
+#from Evaluation.views import get_points
+#from Statistics.views import create_stat_data
+#from Elaboration.views import get_extra_review_data
 from Faq.models import Faq
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 
@@ -31,10 +36,21 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def course_from_next_url(next):
+class CourseMixin:
+    course_kwarg_name = "course_short_title"
+    @cached_property
+    def course(self):
+        course_short_title = self.kwargs.get(self.course_kwarg_name)
+        course = Course.get_or_raise_404(short_title=course_short_title)
+        return course
+
+
+def course_from_url(url):
     course = None
     try:
-        course = next.split('/')[1]
+        # Match the part between '^/course/' and the following '/' in url
+        match = re.search('(?<=^/course/)[^/]+', url)
+        course = match.group(0)
     except IndexError:
         pass
     finally:
@@ -51,16 +67,17 @@ def course_selection(request):
     if next_url:
         request.session['next_url'] = next_url
 
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         if 'sKey' in request.GET:
             from AuroraUser.views import sso_auth_callback
             return sso_auth_callback(request)
 
     # automatically redirect the user to its course login page
     # if a next_url is defined.
-    course = course_from_next_url(next_url)
+    course = course_from_url(next_url)
     if next_url and course:
         try:
+            print('reverse url: ' + str(reverse("User:login", args=(course, ))))
             redirect_url = reverse("User:login", args=(course, ))
         except NoReverseMatch:
             pass
@@ -68,7 +85,8 @@ def course_selection(request):
             return redirect(redirect_url)
 
     data = {'courses': Course.objects.all(), 'next': next_url, 'debug': settings.DEBUG}
-    return render_to_response('course_selection.html', data)
+    return render(request, 'course_selection.html', data)
+
 
 @aurora_login_required()
 def home(request, course_short_title=None):
@@ -97,9 +115,10 @@ def home(request, course_short_title=None):
     data['extra_points_earned_by_rating_reviews'] = user.extra_points_earned_by_rating_reviews(course)
     data['total_extra_points_earned'] = user.total_extra_points_earned(course)
     faq_list = Faq.get_faqs(course_short_title)
-    context = RequestContext(request, {'newsfeed': data['course'], 'faq_list': faq_list})
 
-    return render_to_response('home.html', data, context)
+    data["all_courses"] = Course.objects.all()
+
+    return render(request, 'home.html', data)
 
 
 def time_to_unix_string(time):
@@ -238,6 +257,7 @@ def result_reviews(request):
 
     return HttpResponse(result, mimetype="text/plain; charset=utf-8")
 
+
 @csrf_exempt
 @staff_member_required
 def add_tags(request, course_short_title=None):
@@ -249,7 +269,8 @@ def add_tags(request, course_short_title=None):
     taggable_object = content_type.get_object_for_this_type(pk=object_id)
     taggable_object.add_tags_from_text(text)
 
-    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+    return render(request, 'tags.html', {'tagged_object': taggable_object})
+
 
 @csrf_exempt
 @staff_member_required
@@ -262,7 +283,7 @@ def remove_tag(request, course_short_title=None):
     taggable_object = content_type.get_object_for_this_type(pk=object_id)
     taggable_object.remove_tag(tag)
 
-    return render_to_response('tags.html', {'tagged_object': taggable_object}, context_instance=RequestContext(request))
+    return render(request, 'tags.html', {'tagged_object': taggable_object})
 
 
 @login_required()

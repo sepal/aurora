@@ -10,7 +10,7 @@ from django.utils import timezone
 # Create your views here.
 from AuroraProject.decorators import aurora_login_required
 from .models import Slide, SlideStack
-from .structures import GsiStructure, GsiDataStructure, HciStructure, HciDataStructure
+from .structures import Structure, DataStructure
 from Course.models import Course
 
 
@@ -20,11 +20,7 @@ def slides(request, course_short_title=None):
     :param request:
     :return: a view of all categories and their assigned topics.
     """
-    data_structure = []
-    if course_short_title == 'gsi':
-        data_structure = GsiDataStructure.data_structure
-    elif course_short_title == 'hci':
-        data_structure = HciDataStructure.data_structure
+    data_structure = DataStructure.data_structure
 
     print(timezone.now())
     context = {
@@ -44,7 +40,7 @@ def slide_topics(request, topic=None, course_short_title=None):
 
     # search for all slideStacks assigned to the topic
     used_slide_stacks = list()
-    for ss in SlideStack.objects.filter(course=Course.objects.get(short_title=course_short_title)):
+    for ss in SlideStack.objects.all():
         if topic.lower() in (x.lower() for x in ss.list_categories):
             used_slide_stacks.append(ss)
 
@@ -54,11 +50,7 @@ def slide_topics(request, topic=None, course_short_title=None):
     complete_list = sort_list_by_id(used_slide_stacks)
 
     # create next and previous link
-    structure = list()
-    if course_short_title == 'gsi':
-        structure = GsiStructure.structure
-    elif course_short_title == 'hci':
-        structure = HciStructure.structure
+    structure = Structure.structure
 
     tup = topic.split('_')
     prev = ''
@@ -108,7 +100,7 @@ def slide_stack(request, topic=None, slug=None, course_short_title=None):
         ind = -1
         stop = False
         used_slide_stacks = list()
-        for ss in SlideStack.objects.filter(course=Course.objects.get(short_title=course_short_title)):
+        for ss in SlideStack.objects.all():
             if topic.lower() in (x.lower() for x in ss.list_categories):
                 used_slide_stacks.append(ss)
 
@@ -178,20 +170,14 @@ def search(request, course_short_title=None):
         for slide in queryset_slides:
             complete_set.add(slide.slide_stack)
 
-        # filter for course
-        course_filtered_list = []
-        for item in complete_set:
-            if item.course.short_title == course_short_title:
-                course_filtered_list.append(item)
-
         # check date
-        filter_future_dates(course_filtered_list)
+        filter_future_dates(complete_set)
 
-        complete_list = sort_list_by_id(course_filtered_list)
+        complete_list = sort_list_by_id(complete_set)
 
         title = 'nothing found'
         if len(complete_list) != 0:
-            title = 'results found:'
+            title = 'results found for ' + query + ':'
 
     context = {
         "title": title,
@@ -215,8 +201,7 @@ def refresh_structure(request, course_short_title=None):
         raise Http404("You are not authorized for this action!")
 
     print('data structure will be redefined')
-    GsiDataStructure.redefine_data_structure()
-    HciDataStructure.redefine_data_structure()
+    DataStructure.redefine_data_structure()
 
     return slides(request, course_short_title=course_short_title)
 

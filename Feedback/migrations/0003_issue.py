@@ -21,9 +21,9 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(max_length=25, choices=[('bug', 'Bug'), ('feature_request', 'Feature Request'), ('feedback', 'Feedback'), ('security', 'Security')])),
                 ('title', models.CharField(max_length=100)),
                 ('body', models.TextField()),
-                ('author', models.ForeignKey(to='AuroraUser.AuroraUser')),
-                ('course', models.ForeignKey(to='Course.Course')),
-                ('lane', models.ForeignKey(to='Feedback.Lane')),
+                ('author', models.ForeignKey(to='AuroraUser.AuroraUser', on_delete=models.CASCADE)),
+                ('course', models.ForeignKey(to='Course.Course', on_delete=models.CASCADE)),
+                ('lane', models.ForeignKey(to='Feedback.Lane', on_delete=models.CASCADE)),
             ],
             options={
             },
