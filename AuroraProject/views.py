@@ -114,7 +114,7 @@ def home(request, course_short_title=None):
     data['extra_points_earned_with_comments'] = user.extra_points_earned_with_comments(course)
     data['extra_points_earned_by_rating_reviews'] = user.extra_points_earned_by_rating_reviews(course)
     data['total_extra_points_earned'] = user.total_extra_points_earned(course)
-    faq_list = Faq.get_faqs(course_short_title)
+    data["faq_list"] = Faq.get_faqs(course_short_title)
 
     data["all_courses"] = Course.objects.all()
 
