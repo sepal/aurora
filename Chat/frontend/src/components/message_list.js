@@ -6,7 +6,7 @@ const MessageList = ({messages}) => {
   const messageList = messages.map((message, i) =>
     <ChatMessage key={i} message={message}/>)
 
-  return (<div>{messageList}</div>)
+  return (<div className="MessageList">{messageList}</div>)
 }
 
 MessageList.propTypes = {

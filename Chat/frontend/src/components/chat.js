@@ -20,7 +20,7 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="Chat">
         <MessageList messages={this.state.messages}/>
         <ChatInput onInput={this.onInput}/>
       </div>
