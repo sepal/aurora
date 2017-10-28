@@ -2,6 +2,8 @@ import React from 'react'
 import ChatInput from "./input"
 import MessageList from "./message_list"
 
+import './chat.css'
+
 class Chat extends React.Component {
   constructor(props) {
     super(props)

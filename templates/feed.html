@@ -24,11 +24,15 @@
 
 {% block content %}
   {#    {% comments_boilerplate %}#}
-  <div class="feed_header newsfeed" id="all_the_news"><i class="fa fa-angle-up fa-2x half eventually"></i> <b>General
-    Chat</b></div>
+  <div class="feed_header newsfeed" id="all_the_news">
+    <i class="fa fa-angle-up fa-2x half eventually"></i>
+    <b>General Chat</b>
+  </div>
+
+  <p>{{ settings.DEV_FRONTEND }}</p>
   {% if not settings.DEV_FRONTEND %}
-    <div id="root"></div>
-    <script type="text/javascript" src={% static "chat/js/main.643947c4.js" %}></script>
+    <div id="chat-root"></div>
+    <script type="text/javascript" src={% static "chat/js/main.5a885d79.js" %}></script>
   {% else %}
     <iframe frameborder="0" src="http://localhost:3000" height="800" width="500"></iframe>
   {% endif %}

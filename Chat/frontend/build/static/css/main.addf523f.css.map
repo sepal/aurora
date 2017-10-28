@@ -1,13 +1,1 @@
-{
-  "version": 3,
-  "sources": [
-    "components/chat_message.css"
-  ],
-  "names": [],
-  "mappings": "AAAA,aACI,eAAkB,CAGtB,mBAEI,gBAEA,YACA,eACA,qDAA4D,CAGhE,OACI,wBAAmC,CAGvC,iBACI,8BACQ,sBACR,2BACA,6BACA,YACA,sDACA,eACA,iBACA,gBACA,gBACA,sBACA,kBAAoB",
-  "file": "static/css/main.addf523f.css",
-  "sourcesContent": [
-    ".ChatMessage {\n    font-weight: bold;\n}\n\n.ChatMessageAuthor {\n    /*height:15px;*/\n    font-weight:bold;\n    /*float:left;*/\n    padding:2px;\n    font-size:12px;\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\n.staff {\n    background-color: rgb(216,252,212);\n}\n\n.ChatMessageBody {\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    border-bottom: 1px solid #ddd;\n    padding:2px;\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size:14px;\n    line-height:17px;\n    padding-top:4px;\n    min-height:40px;\n    word-break: break-word;\n    background: #f8f8f8;\n}\n\n\n\n// WEBPACK FOOTER //\n// ./src/components/chat_message.css"
-  ],
-  "sourceRoot": ""
-}
+{"version":3,"sources":["components/chat_message.css"],"names":[],"mappings":"AAAA,aACI,eAAkB,CAGtB,mBAEI,gBAEA,YACA,eACA,qDAA4D,CAGhE,OACI,wBAAmC,CAGvC,iBACI,8BACQ,sBACR,2BACA,6BACA,YACA,sDACA,eACA,iBACA,gBACA,gBACA,sBACA,kBAAoB","file":"static/css/main.addf523f.css","sourcesContent":[".ChatMessage {\n    font-weight: bold;\n}\n\n.ChatMessageAuthor {\n    /*height:15px;*/\n    font-weight:bold;\n    /*float:left;*/\n    padding:2px;\n    font-size:12px;\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\n.staff {\n    background-color: rgb(216,252,212);\n}\n\n.ChatMessageBody {\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    border-bottom: 1px solid #ddd;\n    padding:2px;\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size:14px;\n    line-height:17px;\n    padding-top:4px;\n    min-height:40px;\n    word-break: break-word;\n    background: #f8f8f8;\n}\n\n\n\n// WEBPACK FOOTER //\n// ./src/components/chat_message.css"],"sourceRoot":""}
