@@ -77,7 +77,6 @@ def course_selection(request):
     course = course_from_url(next_url)
     if next_url and course:
         try:
-            print('reverse url: ' + str(reverse("User:login", args=(course, ))))
             redirect_url = reverse("User:login", args=(course, ))
         except NoReverseMatch:
             pass
