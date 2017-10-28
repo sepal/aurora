@@ -1,22 +1,21 @@
-
 {% load staticfiles %}
 {% load comments_xtd %}
 
 {% block additional_headers %}
-    <script type="text/javascript" src="{% static "js/feed.js" %}"></script>
-    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>
-        $.endlessPaginate({
-            paginateOnScroll: true,
-            paginateOnScrollMargin: 300,
-            onCompleted: function() {
-                COMMENTS.registerAllTheElements();
-                COMMENTS.stopPolling();
-                loadFilter();
-            }
-        });
-    </script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
+  <script type="text/javascript" src="{% static "js/feed.js" %}"></script>
+  <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+  <script>
+    $.endlessPaginate({
+      paginateOnScroll: true,
+      paginateOnScrollMargin: 300,
+      onCompleted: function () {
+        COMMENTS.registerAllTheElements();
+        COMMENTS.stopPolling();
+        loadFilter();
+      }
+    });
+  </script>
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
 
   {% if not settings.DEV_FRONTEND %}
     <link href="{% static "chat/css/main.addf523f.css" %}" rel="stylesheet">
@@ -24,13 +23,14 @@
 {% endblock %}
 
 {% block content %}
-{#    {% comments_boilerplate %}#}
-  <div class="feed_header newsfeed" id="all_the_news"><i class="fa fa-angle-up fa-2x half eventually"></i> <b>General Chat</b></div>
-    {% if not settings.DEV_FRONTEND %}
-      <div id="root"></div>
-      <script type="text/javascript" src={% static "chat/js/main.643947c4.js" %}></script>
-    {% else %}
-      <iframe frameborder="0" src="http://localhost:3000" height="800" width="500"></iframe>
-    {% endif %}
+  {#    {% comments_boilerplate %}#}
+  <div class="feed_header newsfeed" id="all_the_news"><i class="fa fa-angle-up fa-2x half eventually"></i> <b>General
+    Chat</b></div>
+  {% if not settings.DEV_FRONTEND %}
+    <div id="root"></div>
+    <script type="text/javascript" src={% static "chat/js/main.643947c4.js" %}></script>
+  {% else %}
+    <iframe frameborder="0" src="http://localhost:3000" height="800" width="500"></iframe>
+  {% endif %}
   </div>
 {% endblock content %}
