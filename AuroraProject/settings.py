@@ -7,6 +7,9 @@ from diskurs.markdown.giffer import GifferMarkdownFilter
 
 DEBUG = True
 
+# If this is set to True it is assumed that yarn dev server is providing the Chat frontend
+DEV_FRONTEND = False
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 ADMINS = (

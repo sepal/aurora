@@ -17,14 +17,20 @@
         });
     </script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
+
+  {% if not settings.DEV_FRONTEND %}
+    <link href="{% static "chat/css/main.addf523f.css" %}" rel="stylesheet">
+  {% endif %}
 {% endblock %}
 
 {% block content %}
 {#    {% comments_boilerplate %}#}
-
-
-    <div id="comments_column_1">
-		<div class="feed_header newsfeed" id="all_the_news"><i class="fa fa-angle-up fa-2x half eventually"></i> <b>General Chat</b></div>
+  <div class="feed_header newsfeed" id="all_the_news"><i class="fa fa-angle-up fa-2x half eventually"></i> <b>General Chat</b></div>
+    {% if not settings.DEV_FRONTEND %}
+      <div id="root"></div>
+      <script type="text/javascript" src={% static "chat/js/main.643947c4.js" %}></script>
+    {% else %}
       <iframe frameborder="0" src="http://localhost:3000" height="800" width="500"></iframe>
-    </div>
+    {% endif %}
+  </div>
 {% endblock content %}
