@@ -44,3 +44,23 @@
   pip: name=/vagrant/PlagCheck/hashing/sherlock/dist/sherlock-1.0.tar.gz
        virtualenv={{ py3env }}
 
+- name: copy uwsgi config for testing prod config
+  copy:
+    src: uwsgi.ini
+    dest: /etc/uwsgi.ini
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  become_user: root
+
+- name: copy nginx config for testing prod config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  become_user: root
+

@@ -27,3 +27,6 @@ django-contrib-comments
 # chat
 channels==1.1.8
 asgi_redis==1.4.3
+
+# task runner
+invoke
