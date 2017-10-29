@@ -34,7 +34,7 @@ class Chat extends React.Component {
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) this.socket.close();
     console.log("connecting to " + window.location.host);
-    this.socket = new WebSocket("ws://" + window.location.hostname + ":8000/" + room);
+    this.socket = new WebSocket("ws://" + window.location.hostname + ":8000/ws/" + room);
 
     this.setState({messages: []})
 
