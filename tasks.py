@@ -109,6 +109,26 @@ def server(ctx):
     ctx.run('python manage.py runserver', pty=True)
 
 @task
+def daphne(ctx):
+    """Run daphne interface server"""
+    ctx.run('daphne AuroraProject.asgi:channel_layer -p 8001')
+
+@task
+def asgiworker(ctx):
+    """Run asgi worker for daphne"""
+    ctx.run('python manage.py runworker')
+
+@task
+def uwsgi(ctx):
+    """Run uWSGI server"""
+    ctx.run('uwsgi /etc/uwsgi.ini')
+
+@task
+def nginx(ctx):
+    """Run nginx"""
+    ctx.run('sudo nginx')
+
+@task
 def celery(ctx, worker=1):
     """ Run the background worker"""
     ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)

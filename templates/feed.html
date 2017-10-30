@@ -1,42 +1,40 @@
-
 {% load staticfiles %}
 {% load comments_xtd %}
 
 {% block additional_headers %}
-    <script type="text/javascript" src="{% static "js/feed.js" %}"></script>
-    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>
-        $.endlessPaginate({
-            paginateOnScroll: true,
-            paginateOnScrollMargin: 300,
-            onCompleted: function() {
-                COMMENTS.registerAllTheElements();
-                COMMENTS.stopPolling();
-                loadFilter();
-            }
-        });
-    </script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
+  <script type="text/javascript" src="{% static "js/feed.js" %}"></script>
+  <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+  <script>
+    $.endlessPaginate({
+      paginateOnScroll: true,
+      paginateOnScrollMargin: 300,
+      onCompleted: function () {
+        COMMENTS.registerAllTheElements();
+        COMMENTS.stopPolling();
+        loadFilter();
+      }
+    });
+  </script>
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
+
+  {% if not settings.DEV_FRONTEND %}
+    <link href="{% static "chat/css/main.addf523f.css" %}" rel="stylesheet">
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-{#    {% comments_boilerplate %}#}
+  {#    {% comments_boilerplate %}#}
+  <div class="feed_header newsfeed" id="all_the_news">
+    <i class="fa fa-angle-up fa-2x half eventually"></i>
+    <b>General Chat</b>
+  </div>
 
-
-    <div id="comments_column_1">
-		<div class="feed_header newsfeed" id="all_the_news"><i class="fa fa-angle-up fa-2x half eventually"></i> <b>Open Newsfeed</b></div>
-		<div id="content_all_the_news">
-		<ul class="toolbar">
-			<li class="button filterbtn" id="1" title="Show all comments" onclick="filterClick(this.id,'{{user.username}}');">SHOW All</li>
-			<li>SHOW ONLY…</li>
-			<li class="button filterbtn" id="3" title="Show only top-level comments from the course team" onclick="filterClick(this.id,'{{user.username}}');">Announcements</li>
-			<li class="button filterbtn" id="2" title="Show only comments posted by lecturers, tutors or yourself" onclick="filterClick(this.id,'{{user.username}}');">LVA Team Comments</li>
-			<li class="button filterbtn" id="0" title="Show only comments posted after you activate this filter" onclick="markT('{{user.username}}');filterClick(this.id,'{{user.username}}')">new <span id="new_date"></span></li>
-
-		</ul>
-		<div id="lindicator" style="display:none;float:right;position:relative;top:15px;color:silver;font-size:9px"><i class="fa fa-spinner fa-pulse fa-fw"></i>
-</div>
-{#        {% render_multi_comment_list for newsfeed %}#}
-		</div>
-    </div>
+  <p>{{ settings.DEV_FRONTEND }}</p>
+  {% if not settings.DEV_FRONTEND %}
+    <div id="chat-root"></div>
+    <script type="text/javascript" src={% static "chat/js/main.2ed1f267.js" %}></script>
+  {% else %}
+    <iframe frameborder="0" src="http://localhost:3000" height="800" width="500"></iframe>
+  {% endif %}
+  </div>
 {% endblock content %}

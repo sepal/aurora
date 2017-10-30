@@ -7,6 +7,9 @@ from diskurs.markdown.giffer import GifferMarkdownFilter
 
 DEBUG = True
 
+# If this is set to True it is assumed that yarn dev server is providing the Chat frontend
+DEV_FRONTEND = False
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 ADMINS = (
@@ -98,12 +101,14 @@ STATIC_ROOT = '/vagrant/aurora/static/'
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(os.path.dirname(PROJECT_ROOT), 'static'),
+    ('chat', os.path.join(os.path.dirname(PROJECT_ROOT), 'Chat', 'frontend', 'build', 'static'))
 )
 
 # List of finder classes that know how to find static files in
@@ -204,7 +209,9 @@ INSTALLED_APPS = (
     'PlagCheck',
     'diskurs',
     'django_markup',
-    'Feedback'
+    'Feedback',
+    'channels',
+    'Chat',
 )
 
 THUMBNAIL_ALIASES = {
@@ -212,6 +219,16 @@ THUMBNAIL_ALIASES = {
         'preview': {'size': (640, 480)},
         'full-res': {'size': (1920, 1080)},
     },
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+        "ROUTING": "AuroraProject.routing.channel_routing",
+    }
 }
 
 ## COMMENTS ##

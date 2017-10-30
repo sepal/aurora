@@ -33,3 +33,16 @@
 
 - name: install rabbitmq-server
   yum: name=rabbitmq-server
+
+- name: install redis (required by Django-Channels/Chat)
+  yum: name=redis
+
+- name: Start Redis and enable at boot
+  systemd: name=redis
+           enabled=yes
+           state=started
+
+- name: add env var for daphne
+  lineinfile:
+    line: 'DJANGO_SETTINGS_MODULE=AuroraProject.settings'
+    path: /etc/environment
