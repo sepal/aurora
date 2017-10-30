@@ -10,6 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from django.db import transaction
 from taggit.models import TaggedItem
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseForbidden, Http404
@@ -725,22 +726,23 @@ def review_answer(request, course_short_title=None):
     answers = data['answers']
     elab_id_from_client = data['elab']
 
-    review = Review.objects.create(
-        elaboration_id=elab_id_from_client, reviewer_id=user.id)
+    with transaction.atomic():
+        review = Review.objects.create(
+            elaboration_id=elab_id_from_client, reviewer_id=user.id)
 
-    review.appraisal = data['appraisal']
-    review.submission_time = datetime.now()
-    review.save()
-    for answer in answers:
-        question_id = answer['question_id']
-        text = answer['answer']
-        review_question = ReviewQuestion.objects.get(pk=question_id)
-        ReviewAnswer(
-            review=review, review_question=review_question, text=text).save()
-    if review.appraisal == review.NOTHING:
-        Notification.bad_review(review)
-    else:
-        Notification.enough_peer_reviews(review)
+        review.appraisal = data['appraisal']
+        review.submission_time = datetime.now()
+        review.save()
+        for answer in answers:
+            question_id = answer['question_id']
+            text = answer['answer']
+            review_question = ReviewQuestion.objects.get(pk=question_id)
+            ReviewAnswer(
+                review=review, review_question=review_question, text=text).save()
+        if review.appraisal == review.NOTHING:
+            Notification.bad_review(review)
+        else:
+            Notification.enough_peer_reviews(review)
 
     if review.elaboration.is_reviewed_2times():
         evaluation_url = reverse('Evaluation:home', args=[course_short_title])
