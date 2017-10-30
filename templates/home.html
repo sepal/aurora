@@ -9,11 +9,10 @@
 
 {% block content %}
   {% include 'feed.html' %}
-
   <div id="info_column">
-
+{% comment %}
     {% if not user.is_staff %}
-      <div class="sidebar_item">
+      <div class="sidebar_item general_item">
         <div class="feed_header"  id="part_0">
           <i class="fa fa-angle-up fa-2x half"></i>
           <b>Your work</b>
@@ -26,7 +25,7 @@
         </div>
       </div>
     {% else %}
-      <div class="sidebar_item">
+      <div class="sidebar_item general_item">
         <div class="feed_header"  id="part_0">
           <i class="fa fa-angle-up fa-2x half"></i>
           <b>Your work</b>
@@ -35,16 +34,19 @@
         </div>
       </div>
     {% endif %}
+{% endcomment %}
     {% if user.is_staff %}
-      <div class="sidebar_item">
+      <div class="sidebar_item general_item">
         <div class="feed_header" id="part_X">
           <i class="fa fa-angle-up half fa-2x"></i>
           <b>LVA-Team Ressources </b>
         </div>
         <div class="feed_column" id="content_part_X">
           <p>
+{% comment %}		    
             <i style="color:gray" class="fa fa-arrow-right"></i>
             <a target="_blank" href="https://auri1-gsi.pbworks.com/w/page/77253689/FrontPage">Aurora Wiki</a><br>
+{% endcomment %}
             <i style="color:gray" class="fa fa-arrow-right"></i>
             TUWEL
             {% for a_course in all_courses %}
@@ -57,24 +59,25 @@
         </div>
       </div>
     {%  endif %}
-    <div class="sidebar_item">
+    <div class="sidebar_item  general_item">
       <div class="feed_header" id="part_1">
         <i class="fa fa-angle-up fa-2x half"></i>
-        <b>General Information </b>
+        <b>General Information {{course_title}}
+</b>
       </div>
       <div class="feed_column" id="content_part_1">
         <p>
-          Alle wesentlichen Informationen über die <b>Leistungsanforderungen,
+          Alle Informationen über die <b>Leistungsanforderungen,
           Notenermittlung,</b> Arbeiten in Aurora, Schreiben von Reviews,
           Zitieren etc. finden Sie in
           <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">
-          Arbeiten in Aurora</a> (version vom 11.5.2017).
-        </p><br>
+          Arbeiten in Aurora</a> (version vom 27.10.2017).
+        </p>
         <p>
           Der
           <a href="http://igw.tuwien.ac.at/aurora/plagiatsleitfaden.pdf">Plagiatsleitfaden
-          der TU Wien erklärt ausführlich, was Plagiate sind. </a>
-        </p><br>
+          der TU Wien</a> erklärt ausführlich, was Plagiate sind. 
+        </p>
         <p>
           Hinweis: Diese Seite wird mit Mozilla- und Webkit-Browsern
           <b>(Firefox, Safari, Chrome)</b> entwickelt und getestet. Bitte
@@ -82,60 +85,58 @@
           Browser &uuml;bernehmen wir keine Garantie. Melden Sie eventuelle
           Probleme auf unterstützten Browsern gegebenenfalls im
           &raquo;Bugs&amp;Feedback&laquo;-Bereich.
-        </p><br>
-        <p>
-          <b>Support:</b>
-        </p><br>
+        </p>
+       <p class="content_subheader">
+          Support
+        </p>
         <p>
           Wenn sie Probleme haben, sich nicht auskennen oder Hilfe
           ben&ouml;tigen, so stehen ihnen folgende Informationsquellen zur
           Verf&uuml;gung:
-        </p><br>
+        </p>
         <p>
-          - Lesen sie die Sidebar sorgf&auml;tig. Die Informationen hier werden
+          <i style="color:gray" class="fa fa-arrow-right"></i> Lesen sie die Sidebar sorgf&auml;tig. Die Informationen hier werden
           immer wieder aktualisiert.
         </p>
         <p>
-          - Wenn sie Fragen zu einem Task haben, dann nutzen sie bitte die
+          <i style="color:gray" class="fa fa-arrow-right"></i> Wenn sie Fragen zu einem Task haben, dann nutzen sie bitte die
           M&ouml;glichkeit, bei den Beschreibungen der Tasks mit dem LVA-Team
           zu diskutieren.
         </p>
         <p>
-          - Wenn sie mit einem Review oder einer Bewertung nicht zufrieden
+          <i style="color:gray" class="fa fa-arrow-right"></i> Wenn sie mit einem Review oder einer Bewertung nicht zufrieden
           sind, dann nutzen sie bitte die dort angegliederten Kommentare, um
           mit uns dar&uuml;ber zu reden.
         </p>
         <p>
-          - Wenn sie eine andere Frage haben, die im allgemeinen Interesse ist,
-          dann posten sie diese hier im Newsfeed.
+          <i style="color:gray" class="fa fa-arrow-right"></i> Wir versenden jede Woche einen Newsletter. Lesen Sie die letzten Ausgaben , um zu sehen, 
+	    ob Ihre Frage dort beantwortet ist. 
         </p>
         <p>
-          - Sollten sie eine Frage haben, die nur sie betrifft, dann schreiben
+          <i style="color:gray" class="fa fa-arrow-right"></i> Sollten sie eine Frage haben, die nur sie betrifft, dann schreiben
           sie uns bitte eine email:
-        </p><br>
+        </p>
         <p>
           <i>
             {% course_mailto_link course %}
           </i>
-        </p><br>
+        </p>
         <p>
           - Sie können auch in die LVA-Sprechstunde kommen: Mi 10-12h, Michael
           Urbanek, Argentinierstr. 8, 2. Stock, Mitte.
   {% comment %}           <br><br> {% endcomment %}
-        </p><br>
-        <p>
-          <b>Video-Stream:</b>
-        </p><br>
+        </p>
+       <p class="content_subheader">
+          Video-Stream
+        </p>
         <p>
           Während der Vorlesungszeit steht ein Video-Stream zur Verfügung,
-          mit dem Sie die Vorlesung remote verfolgen können: <br><br>
-          &nbsp;&nbsp;&nbsp;
-          <i class="fa fa-angle-double-right"></i>
-          {% course_stream_link course %}
-        </p><br>
+          mit dem Sie die Vorlesung remote verfolgen können:
+          <p><i style="color:gray" class="fa fa-arrow-right"></i>
+          {% course_stream_link course %}</p>
         <p>
           Ausserdem zeichnen wir diese Streams auf; Sie finden die
-          Aufzeichnungen in tuwel. Beachten Sie bitte, dass man dazu physisch
+          Aufzeichnungen in <a href="tuwel.tuwien.ac.at">tuwel</a>. Beachten Sie bitte, dass man dazu physisch
           oder zumindest logisch (VPN oder so) im Netz der TU sein muss!
         </p><br>
       </div>

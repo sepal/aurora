@@ -288,11 +288,20 @@ h1 {
 }
 
 @media all and (max-width: 959px) {
+	.stack_icon {
+		display:inline;
+		float:right;
+		font-size:60%;
+		position:relative;
+		top:22px;
+		right:4px;
+	}
 	.stack .title {
 	    font-size: 1.2em;
 		z-index:210;
 		position:relative;
 		width:800px;
+		white-space:nowrap
 	}
 
 	.chapter_name {
@@ -312,13 +321,13 @@ h1 {
 	.filterbar {
 		box-sizing: border-box;
 		color:white;
-		height:48px;
+		height:36px;
 		margin-top:2em;
 		margin-bottom:0.5em;
 		background-color:#999;
 	    background-image: url("../img/aurora_head.png");
 		padding-bottom: 12px;
-		padding-top:1em;
+		padding-top:0.35em;
 		padding-left: 10px;
 		font-size:1.4em;
 		width:100%;
@@ -359,22 +368,31 @@ h1 {
 	.large_screen {
 		display:none;
 	}
+	.filterbar i {
+		float:right;
+		padding-right:8px;
+		position:relative;
+		bottom:8px;
+		text-shadow: 0 0 3px black, 0 0 4px black, 0 0 2px black;
+	}
 }
 
-.filterbar i {
-	float:right;
-	padding-right:8px;
-	text-shadow: 0 0 3px black, 0 0 4px black, 0 0 2px black;
-}
 
 @media all and (min-width: 960px) {
+	.stack_icon {
+		display:inline;
+		float:right;
+		position:relative;
+		top:0px;
+		right:4px;
+	}
 	.stack .title {
 	    font-size: 1.4em;
 		z-index:210;
 		position:relative;
 		width:800px;
+		white-space:nowrap;
 	}
-
 	.challenge_description_text {
 		padding:0.25em;
 	}
@@ -407,7 +425,7 @@ h1 {
 		font-weight:bold;
 		border-radius: 4px 4px 1px 1px;
 		width:940px;
-		text-shadow:0 0 3px black;
+		text-shadow:0 0 3px black, 0 0 5px black;
 		cursor:pointer;
 	}
 	.stack {
@@ -437,7 +455,13 @@ h1 {
 	.small_screen {
 		display:none;
 	}
-	
+	.filterbar i {
+		float:right;
+		padding-right:8px;
+		position:relative;
+		bottom:6px;
+		text-shadow: 0 0 3px black, 0 0 4px black, 0 0 2px black;
+	}
 }
 
 .forbiddenfruit div {
@@ -661,4 +685,15 @@ form {
 	font-weight:bold;
 	border-radius:200px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(255, 255, 255, 0.5) inset;
+}
+
+.show_review_feedback {
+	
+}
+
+.contains_feedback {	
+}
+
+.no_feedback {
+	color:darkgray;
 }

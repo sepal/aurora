@@ -1118,3 +1118,23 @@ trix-editor a {
 .modal.modal-elaboration {
   max-width: 800px;
 }
+
+.review_evaluation_drawer_eval {
+	width:330px;
+	min-height: 72px;
+	border:1px solid #DDD;
+	border-right:0;
+	background: white;
+	padding:6px;
+	padding-right:0;
+	border-radius: 6px 0 0 6px;
+	display:inline-block;
+}
+
+.tutory {
+	border:1px solid #CED9BC;
+	background:#E7FFCF;
+	width:250px;
+	border-radius: 0 6px 6px 0;
+	padding-left:0;
+}

@@ -4,14 +4,34 @@
 
 .feed_header i {
 	float:right;
+	text-shadow: 0 0 3px black, 0 0 4px black;
 }
 
 #info_column p {
 	font-size:13px;
 }
 
+.general_item p {
+	margin-bottom:6px;
+}
+
+.content_subheader {
+	font-weight:bold;
+	margin-top:12px;
+	background:#eee;
+	position:relative;
+	left:-0.5em;
+	padding:0.2em 0.5em;
+}
+
+.faq_item {
+	margin-bottom:12px;
+}
 
 @media all and (min-width: 960px) {
+	.content_subheader {
+		width:346px;
+	}
 	#comments_column_1 {
 		float:left;
 	    width: 580px;
@@ -43,13 +63,16 @@
 		border-radius: 4px 4px 1px 1px;
 		cursor:pointer;
 		margin-bottom:1em;
-		text-shadow:0 0 3px black;
+		text-shadow:0 0 3px black, 0 0 4px black;
 	}
+}
+.feed_column {
+	padding:0 0.5em;
 }
 
 @media all and (max-width: 959px) {
-	.feed_column {
-		padding:0 0.5em;
+	.content_subheader {
+		width:100%;
 	}
 	#comments_column_1 {
 		float:left;
@@ -68,7 +91,7 @@
 		width:100%;
 	}
 	.feed_header {
-		height:48px;
+		height:36px;
 		background:#243D2A;
 	    background-image: url("../img/aurora_head.png");
 		background-clip: border-box;
@@ -78,8 +101,8 @@
 		-moz-box-sizing: border-box;
 		color:white;
 		border-bottom:1px solid #3F6E34;
-		padding:1em 0.5em 0.5em 0.5em;
-		border-radius: 1px 1px 1px 1px;
+		padding:0.4em 0.5em 0.5em 0.5em;
+		border-radius: 0;
 		cursor:pointer;
 		margin-bottom:0.3em;
 		text-shadow:0 0 3px black;
