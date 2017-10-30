@@ -151,20 +151,20 @@
           {% if not challenge_dict.challenge.is_final_challenge %}
 
            {% for review in challenge_dict.reviews %}
-            {% if review %}
-             {% if review.submitted %}
+            {% if review %} <!-- WENN es schon einen review gibt… -->
+             {% if review.submitted %} <!-- …und der schon submitted ist -->
               <div class="review_box done" challenge_id="{{ challenge_dict.challenge.id }}">
                 <i class="fa fa-check-square-o fa-lg green" id="{{challenge_dict.challenge.id}}" ></i>
               </div>
-             {% else %}
+             {% else %} <!-- …und der noch nciht submitted ist -->
               <div class="review_box in_progress" challenge_id="{{ challenge_dict.challenge.id }}">
                 <i class="fa fa-pencil-square fa-lg" ></i>
               </div>
              {% endif %}
-            {% elif not challenge_dict.submitted %} <!-- if review -->
+            {% elif not challenge_dict.submitted %} <!-- ODER wenns die challenge noch nicht submitted ist (trifft das jemals zu?) -->
               <div class="review_box inactive"></div>
-            {% else %} <!-- if review -->
-              <div class="review_box active" challenge_id="{{ challenge_dict.challenge.id }}">
+            {% else %} <!-- ODER wenn das der nächste review ist --> 
+              <div class="review_box {% cycle 'active' 'inactive' 'inactive' %}" challenge_id="{{ challenge_dict.challenge.id }}">
                 <i class="fa fa-pencil-square fa-lg"  ></i>
               </div>
             {% endif %} <!-- if review -->

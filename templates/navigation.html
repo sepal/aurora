@@ -30,20 +30,14 @@
           <s>Challenges</s></li>
 		{% endif %}
 
-        <li id="slides-li">
+        <li id="work-li">
           <a href="{% url 'User:work' course.short_title %}">Your work</a></li>
 
         <li id="slides-li">
           <a href="{% url 'Slides:slides' course.short_title %}">Slides</a></li>
 
-		{% if course.short_title == "gsi" %}
 	        <li id="diskurs-li">
 	          <a href="{% url 'diskurs:index' course.short_title %}">Discourse</a></li>
-		{% endif %}
-
-        <li id="bugs-li">
-          <a href={% url 'Feedback:index' course.short_title %}>Bugs &amp; Feedback</a>
-        </li>
 
         {% if user.is_staff %}
           <li id="evaluation-li">
@@ -57,6 +51,10 @@
         <li id="notifications-li" class="unread_notifications">
           <a id="unread_notifications"  class="unread_notifications_display" href="{% url 'Notification:list' course.short_title %}">{{ unread_notifications|length }}</a>
         </li>
+        <li id="bugs-li">
+          <a href={% url 'Feedback:index' course.short_title %}><i style="color:white" class="fa fa-arrow-right"></i> Bugs &amp; Feedback</a>
+        </li>
+
       </ul>
 
 	  <a href="{% url 'User:profile' course.short_title %}"><div class="user_info" style="background-image:url('{{ user.avatar.url }}')">
@@ -82,15 +80,17 @@
         <li id="slides-li-bottom">
           <a href="{% url 'Slides:slides' course.short_title %}"><i class="fa fa-tv "></i><div class="icontext">Slides</div></a></li>
 
-		{% if course.short_title == "gsi" %}
 	        <li id="diskurs-li-bottom">
 	          <a href="{% url 'diskurs:index' course.short_title %}"><i class="fa fa-comment-o "></i><div class="icontext">Diskurs</div></a></li>
-		{% endif %}
-
+	{% if not user.is_staff %}
+        <li id="work-li-bottom">
+          <a href="{% url 'User:work' course.short_title %}"><i class="fa fa-area-chart"></i><div class="icontext">Your Work</div></a></li>
+	{% endif %}
+{% comment %}
         <li id="bugs-li-bottom">
           <a href={% url 'Feedback:index' course.short_title %}><i class="fa fa-bug "></i><div class="icontext">Feedback</div></a>
         </li>
-
+{% endcomment %}
         {% if user.is_staff %}
           <li id="evaluation-li-bottom"><a href="{% url 'Evaluation:home' course.short_title %}"><i class="fa fa-star-half-empty"></i><div class="icontext">Eval</div></a></li>
         {% endif %}

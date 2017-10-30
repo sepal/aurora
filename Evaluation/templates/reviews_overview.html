@@ -85,12 +85,13 @@
       {% endif %}
       {% include 'elaboration_indicators.html' with elaboration=review.elaboration %}
     </div>
-    <div class="review_evaluation_drawer">
-		<div class="review_evaluation_text">This review...</div>
+    <div style="white-space: nowrap">
+    <div class="review_evaluation_drawer_eval">
+	  <div class="review_evaluation_text">This review</div>
         <div id="{{ review.id }}" class="review_evaluation_container">
             <div review_id="{{ review.id }}" appraisal="P"
                  class="review_evaluation positive {% if review.appraisal == "P" %} active{% endif %}">
-                ... helped me improve my work
+                ... helped improve my work
             </div>
             <div review_id="{{ review.id }}" appraisal="D"
                  class="review_evaluation neutral {% if review.appraisal == "D" %} active{% endif %}">
@@ -105,7 +106,27 @@
                 ... was minimalist or offensive
             </div>
         </div>
+    </div><div class="review_evaluation_drawer_eval tutory">
+        <div id="{{ review.id }}" class="review_evaluation_container">
+            <div review_id="{{ review.id }}" appraisal="P"
+                 class="review_evaluation positive {% if review.appraisal == "P" %} active{% endif %}">
+                ... is really good
+            </div>
+            <div review_id="{{ review.id }}" appraisal="D"
+                 class="review_evaluation neutral {% if review.appraisal == "D" %} active{% endif %}">
+                ... is ok
+            </div>
+            <div review_id="{{ review.id }}" appraisal="B"
+                 class="review_evaluation neutral {% if review.appraisal == "B" %} active{% endif %}">
+                ... is meaningless
+            </div>
+            <div review_id="{{ review.id }}" appraisal="N"
+                 class="review_evaluation negative {% if review.appraisal == "N" %} active{% endif %}">
+                ... is minimalist or offensive
+            </div>
+        </div>
     </div>
+</div>
 </div>
     {% endfor %}
 
