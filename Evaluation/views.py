@@ -741,14 +741,6 @@ def review_answer(request, course_short_title=None):
         Notification.bad_review(review)
     else:
         Notification.enough_peer_reviews(review)
-    # update overview
-    elaborations = Elaboration.get_missing_reviews(course)
-    if type(elaborations) == list:
-        elaborations.sort(key=lambda elaboration: elaboration.submission_time)
-    else:
-        elaborations = elaborations.order_by('submission_time')
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
 
     if review.elaboration.is_reviewed_2times():
         evaluation_url = reverse('Evaluation:home', args=[course_short_title])
