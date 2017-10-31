@@ -18,15 +18,12 @@ class CommentListNode(template.Node):
         self.paginator = 20
         self.options = []
 
-    def render(self, context):
-        # TODO these comments are disabled for now. remove next line to enable again
-        return ''
-
+    def render(self, request_context):
         try:
-            ref_object = self.reference_var.resolve(context)
+            ref_object = self.reference_var.resolve(request_context)
             ref_type = ContentType.objects.get_for_model(ref_object)
 
-            user = context['user']
+            user = request_context['user']
 
             queryset = Comment.query_top_level_sorted(ref_object.id, ref_type.id, user, newest_last=self.newest_last)
             revision = CommentList.get_or_create(ref_object).revision
@@ -42,15 +39,16 @@ class CommentListNode(template.Node):
             reply_form.fields['visibility'].initial = Comment.PUBLIC
 
             id_suffix = "_" + str(ref_object.id) + "_" + str(ref_type.id)
-            context.update({'comment_list': queryset,
-                            'form': form,
-                            'reply_form': reply_form,
-                            'ref_type': ref_type.id,
-                            'ref_id': ref_object.id,
-                            'id_suffix': id_suffix,
-                            'requester': user,
-                            'revision': revision,
-                            'paginator': self.paginator})
+            context = {'comment_list': queryset,
+                       'form': form,
+                       'reply_form': reply_form,
+                       'ref_type': ref_type.id,
+                       'ref_id': ref_object.id,
+                       'id_suffix': id_suffix,
+                       'requester': user,
+                       'revision': revision,
+                       'paginator': self.paginator,
+                       'request': request_context['request'],}
 
             return render_to_string(self.template, context)
         except template.VariableDoesNotExist:

@@ -57,7 +57,7 @@ def delete_comment(request):
     comment_id = request.POST['comment_id']
     deleter = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
-    comment = Comment.objects.filter(id=comment_id).select_related('parent__children')[0]
+    comment = Comment.objects.get(id=comment_id)
 
     if comment.author != deleter and not deleter.is_staff:
         return HttpResponseForbidden('You shall not delete!')
