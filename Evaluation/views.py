@@ -78,6 +78,7 @@ class EvaluationView(CourseMixin, TemplateView):
             "selection": self.selection_name,
             "course": self.course,
             "elaborations": self.elaborations,
+            "selected_challenge": self.request.session.get("selected_challenge"),
         })
 
         return context
