@@ -240,7 +240,10 @@ def review_evaluating_students_top_x(course, x):
                 .filter(elaboration__user__id=student['user__id'])
                 .count()
         )
-        data['percent'] = int((data['count'] / total) * 100)
+        try:
+            data['percent'] = int((data['count'] / total) * 100)
+        except ZeroDivisionError:
+            pass
         result.append(data)
     return result
 
