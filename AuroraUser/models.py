@@ -41,57 +41,10 @@ class AuroraUser(User):
         except CourseUserRelation.DoesNotExist:
             return False
 
-    def calculate_review_karma(self):
+    def update_review_karma(self, review_karma_tutors, review_karma_students):
         for relation in CourseUserRelation.objects.filter(user=self):
-            positive_tags = ["exceptional", "helpful", "good", ]
-            questionable_tags = ["enthusiastic", ]
-            negative_tags= ["min", "empty", "bad", "wrong", "leer", "offensive", "meaningless", ]
-
-            helpful_review_scale_factor = 3
-            good_review_scale_factor  = 1
-            bad_review_scale_factor  = 1
-            negative_review_scale_factor = 3
-            helpful_review_revision_scale_factor  = 2
-
-            positive_tag_scale_factor     = 2
-            questionable_tag_scale_factor = 1
-            negative_tag_scale_factor     = 3
-
-            course = relation.course
-
-            number_of_helpful_reviews = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='P').count()
-            number_of_good_reviews  = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='D').count()
-            number_of_bad_reviews  = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='B').count()
-            number_of_negative_reviews = ReviewEvaluation.objects.filter(review_id__reviewer_id=self.id, review__elaboration__challenge__course_id=course.id, appraisal='N').count()
-            number_of_helpful_reviews_revision  = Elaboration.objects.filter(most_helpful_other_user=self.id).count()
-
-            student_reviews = Review.objects.filter(reviewer_id=self.id, elaboration_id__challenge_id__course_id=course.id)
-            total_reviews = Review.objects.filter(elaboration_id__challenge_id__course_id=course.id, reviewer_id__is_staff=False).count()
-
-            number_of_positive_tags     = student_reviews.filter(tags__name__regex=r'(' + '|'.join(positive_tags) + ')').values('tagged_items__tag_id', 'tagged_items__object_id').distinct().count()
-            number_of_questionable_tags = student_reviews.filter(tags__name__regex=r'(' + '|'.join(questionable_tags) + ')').values('tagged_items__tag_id', 'tagged_items__object_id').distinct().count()
-            number_of_negative_tags     = student_reviews.filter(tags__name__regex=r'(' + '|'.join(negative_tags) + ')').values('tagged_items__tag_id', 'tagged_items__object_id').distinct().count()
-
-            quality_factor_numerator = number_of_helpful_reviews          * helpful_review_scale_factor + \
-                                       number_of_good_reviews             * good_review_scale_factor  + \
-                                       number_of_helpful_reviews_revision * helpful_review_revision_scale_factor  + \
-                                       number_of_positive_tags            * positive_tag_scale_factor
-
-            quality_factor_denominator = quality_factor_numerator + \
-                                         number_of_bad_reviews       * bad_review_scale_factor  + \
-                                         number_of_negative_reviews  * negative_review_scale_factor  + \
-                                         number_of_negative_tags     * negative_tag_scale_factor     + \
-                                         number_of_questionable_tags * questionable_tag_scale_factor
-
-
-            if (quality_factor_denominator == 0 or total_reviews == 0):
-                review_karma = 0.0
-            else:
-                quality_factor = quality_factor_numerator / quality_factor_denominator
-                quantity_factor = student_reviews.count() / total_reviews
-                review_karma = quantity_factor * quality_factor
-
-            relation.review_karma = review_karma
+            relation.review_karma_tutors = review_karma_tutors
+            relation.review_karma_students = review_karma_students
             relation.save()
 
     def review_karma(self, course):
