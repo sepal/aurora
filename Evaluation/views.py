@@ -65,6 +65,7 @@ class EvaluationView(CourseMixin, TemplateView):
 
     def _update_session(self):
         self.request.session['selection'] = self.selection_name
+        self.request.session.update(self.get_extra_session())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,6 +81,9 @@ class EvaluationView(CourseMixin, TemplateView):
         })
 
         return context
+
+    def get_extra_session(self):
+        return {}
 
     def get_order_by(self):
         order_by = self.request.GET.get("order_by", None)
@@ -190,6 +194,11 @@ class AwesomeView(EvaluationView):
         context = super().get_context_data(**kwargs)
         context["selected_challenge"] = self.selected_challenge
         return context
+
+    def get_extra_session(self):
+        return {
+            "selected_challenge": "task..."
+        }
 
 awesome = AwesomeView.as_view()
 
@@ -644,8 +653,6 @@ def search(request, course_short_title=None):
         elaborations = list(Elaboration.search(challenges, user))
 
     # store selected elaborations in session
-    request.session['elaborations'] = serializers.serialize(
-        'json', elaborations)
     request.session['selection'] = 'search'
     request.session['selected_challenge'] = selected_challenge
     request.session['selected_user'] = selected_user
