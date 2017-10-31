@@ -5,14 +5,14 @@
  
     <div class="comments">
         <b>Discuss this work with {{ elaboration.user.first_name }} {{ elaboration.user.last_name }} ({{ elaboration.user.nickname }})</b>
-{% comment %}         {% render_multi_comment_list for elaboration %} {% endcomment %}
+        {% render_multi_comment_list for elaboration %}
     </div>
     
   {% else %}
   
     <div class="comments">
         <b>Discuss this work with the author</b>
-{% comment %}         {% render_multi_comment_list for elaboration %} {% endcomment %}
+        {% render_multi_comment_list for elaboration %}
     </div>
  
   {% endif %}
