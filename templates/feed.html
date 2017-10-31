@@ -16,25 +16,41 @@
     });
   </script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/chat.css" type="text/css" media="screen"/>
 
   {% if not settings.DEV_FRONTEND %}
     <link href="{% static "chat/css/main.addf523f.css" %}" rel="stylesheet">
   {% endif %}
 {% endblock %}
 
+<div id="comments_column_1">
+      <div class="feed_header newsfeed" id="all_the_news">
+        <i class="fa fa-angle-up fa-2x half eventually"></i>
+        <b>Newsfeed</b>
+      </div>
+{% comment %}
+		<div id="lindicator" style="display:none;float:right;position:relative;top:15px;color:silver;font-size:9px">•</div>
+        {% render_multi_comment_list for newsfeed %}
+		</div>
+{% endcomment %}	
+</div>
 {% block content %}
+<div id="chat_column_1_header">
+      <div class="feed_header newsfeed" id="all_the_news">
+        <i class="fa fa-angle-up fa-2x half eventually"></i>
+        <b>Chat</b>
+      </div>
+</div>
+<div id="chat_column_1">
   {#    {% comments_boilerplate %}#}
-  <div class="feed_header newsfeed" id="all_the_news">
-    <i class="fa fa-angle-up fa-2x half eventually"></i>
-    <b>General Chat</b>
-  </div>
 
   <p>{{ settings.DEV_FRONTEND }}</p>
   {% if not settings.DEV_FRONTEND %}
     <div id="chat-root"></div>
     <script type="text/javascript" src={% static "chat/js/main.2ed1f267.js" %}></script>
   {% else %}
-    <iframe frameborder="0" src="http://localhost:3000" height="800" width="500"></iframe>
+    <iframe frameborder="0" src="http://localhost:3000" height="100%" width="580"></iframe>
   {% endif %}
   </div>
+</div>
 {% endblock content %}

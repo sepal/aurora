@@ -9,10 +9,14 @@
 </style>
 <div id="BG" class="course_selection_background">
     <div class="login"  id="loginXL">
-        <form>
             <div class="title">
                 Welcome to Aurora 2017
             </div>
+		<div style="height:300px;margin-bottom:20px">
+			<button class="loginButton" style="float:left" data-url = "{{ sso_uri }}">sign in via tu password</a> </button>
+		</div>
+        <form>
+		   <div class="alternate_login"><span>or</span></div>
             <div>
                 <input type="text" id="course" value="{{ course }}" hidden>
             </div>
@@ -31,7 +35,6 @@
         <div id="error" style="display:none;">
             <strong id="error_message">{{ error_message }}</strong>
         </div>
-    <div class="alternate_login"><a href="{{ sso_uri }}">sign in via tu password</a><span style="color:rgba(255,255,255,0.5)">or</span> </div>
     </div>
 </div>
 
