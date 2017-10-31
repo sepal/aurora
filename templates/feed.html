@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/chat.css" type="text/css" media="screen"/>
 
-  {% if not settings.DEV_FRONTEND %}
+  {% if not DEV_FRONTEND %}
     <link href="{% static "chat/css/main.addf523f.css" %}" rel="stylesheet">
   {% endif %}
 {% endblock %}
@@ -44,8 +44,7 @@
 <div id="chat_column_1">
   {#    {% comments_boilerplate %}#}
 
-  <p>{{ settings.DEV_FRONTEND }}</p>
-  {% if not settings.DEV_FRONTEND %}
+  {% if not DEV_FRONTEND %}
     <div id="chat-root"></div>
     <script type="text/javascript" src={% static "chat/js/main.2ed1f267.js" %}></script>
   {% else %}
