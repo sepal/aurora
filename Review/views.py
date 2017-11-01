@@ -176,8 +176,15 @@ def update_review_karma(request, review_evaluation):
     total_score_tutors = calculate_total_score(review_evaluations_tutors)
     total_score_students = calculate_total_score(review_evaluations_students)
 
-    review_karma_tutors = total_score_tutors / len(review_evaluations_tutors)
-    review_karma_students = total_score_students / len(review_evaluations_students)
+    try:
+        review_karma_tutors = total_score_tutors / len(review_evaluations_tutors)
+    except ZeroDivisionError:
+        review_karma_tutors = 0.0
+
+    try:
+        review_karma_students = total_score_students / len(review_evaluations_students)
+    except ZeroDivisionError:
+        review_karma_students = 0.0
 
     review_author.update_review_karma(review_karma_tutors, review_karma_students)
 
