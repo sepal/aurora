@@ -60,10 +60,16 @@
                     {% else %}
                         {% for evaluation in review.evaluations %}
                             <div class="show_review_feedback contains_feedback">
-                                {% if evaluation.appraisal == "P" %}   Your review has been rated as <b>&raquo;helpful&laquo;</b>.
-                                {% elif evaluation.appraisal == "D" %} Your review has been rated as <b>&raquo;ok&laquo;</b>.
-                                {% elif evaluation.appraisal == "B" %} Your review has been rated as <b>&raquo;meaningless&laquo;</b>.
-                                {% elif evaluation.appraisal == "N" %} Your review has been rated as <b>&raquo;minimalist or offensive&laquo;</b>.
+                                Your review has been rated as
+                                {% if evaluation.appraisal == "P" %}   <b>&raquo;helpful&laquo;</b>
+                                {% elif evaluation.appraisal == "D" %} <b>&raquo;ok&laquo;</b>
+                                {% elif evaluation.appraisal == "B" %} <b>&raquo;meaningless&laquo;</b>
+                                {% elif evaluation.appraisal == "N" %} <b>&raquo;minimalist or offensive&laquo;</b>
+                                {% endif %}
+                                {% if evaluation.user.is_staff %}
+                                    by the LVA team.
+                                {% else %}
+                                    by the student.
                                 {% endif %}
                             </div>
                         {% endfor %}

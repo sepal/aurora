@@ -13,6 +13,7 @@ from ReviewAnswer.models import ReviewAnswer
 
 from middleware.AuroraAuthenticationBackend import AuroraAuthenticationBackend
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,32 +30,34 @@ def my_review(request, course_short_title=None):
 
 
 def create_context_myreview(request, course_short_title):
-        data = {}
+    data = {}
 
-        if 'id' not in request.GET:
-            return data
-
-        user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
-
-        data['challenge'] = Challenge.objects.get(pk=request.GET.get('id'))
-        challenge = Challenge.objects.get(pk= request.GET.get('id'))
-
-        data['reviews'] = []
-        for review in challenge.get_reviews_written_by_user(user):
-           review_data = {}
-           review_data['review_id'] = review.id
-           review_data['review'] = review
-           review_data['extra_review_question_answer'] = review.extra_review_question_answer
-           review_data['appraisal'] = review.get_appraisal_display()
-           evaluations = ReviewEvaluation.objects.filter(review=review)
-           review_data['evaluation'] = ''
-           if evaluations:
-                review_data['evaluations'] = evaluations
-           data['reviews'].append(review_data)
-
-
-        data['course'] = Course.get_or_raise_404(course_short_title)
+    if 'id' not in request.GET:
         return data
+
+    user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
+
+    data['challenge'] = Challenge.objects.get(pk=request.GET.get('id'))
+    challenge = Challenge.objects.get(pk=request.GET.get('id'))
+
+    data['reviews'] = []
+    for review in challenge.get_reviews_written_by_user(user):
+        review_data = {}
+        review_data['review_id'] = review.id
+        review_data['review'] = review
+        review_data['is_staff'] = review.reviewer.is_staff
+        review_data['extra_review_question_answer'] = review.extra_review_question_answer
+        review_data['appraisal'] = review.get_appraisal_display()
+
+        evaluation_tutor = ReviewEvaluation.objects.filter(review=review, user__is_staff=True)
+        evaluation_student = ReviewEvaluation.objects.filter(review=review, user__is_staff=False)
+
+        review_data['evaluations'] = evaluation_tutor | evaluation_student
+
+        data['reviews'].append(review_data)
+
+    data['course'] = Course.get_or_raise_404(course_short_title)
+    return data
 
 
 def create_context_stack(request, course_short_title):
@@ -77,7 +80,7 @@ def create_context_stack(request, course_short_title):
         if not challenge.is_enabled_for_user(user):
             # except final challenges where the previous challenge has enough user reviews
             if not (challenge.is_final_challenge() and
-                    challenge.prerequisite.has_enough_user_reviews(user)):
+                        challenge.prerequisite.has_enough_user_reviews(user)):
                 challenges_inactive.append(challenge)
                 continue
 
@@ -171,7 +174,8 @@ def create_context_challenge(request, course_short_title):
         user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
         data['challenge'] = challenge
         data['review_questions'] = []
-        for review_question in ReviewQuestion.objects.filter(challenge=challenge, visible_to_author=True).order_by("order"):
+        for review_question in ReviewQuestion.objects.filter(challenge=challenge, visible_to_author=True).order_by(
+                "order"):
             data['review_questions'].append(review_question.text)
 
         # Create of load Evaluation
@@ -201,9 +205,9 @@ def create_context_challenge(request, course_short_title):
             data['blocked'] = not challenge.is_enabled_for_user(user)
             if challenge.is_in_lock_period(request.user, course):
                 data['lock'] = challenge.is_in_lock_period(request.user, course)
-#        else:
-#            context_stack = Stack.objects.get(pk=request.GET.get('id'))
-#            data['blocked'] = context_stack.is_blocked(user)
+            #        else:
+            #            context_stack = Stack.objects.get(pk=request.GET.get('id'))
+            #            data['blocked'] = context_stack.is_blocked(user)
 
     return data
 
@@ -224,7 +228,8 @@ def challenge(request, course_short_title=None):
     # user is not staff
     user_condition = not user.is_staff
     # challenge is not final challenge or the previous challenge has not enough user reviews
-    final_challenge_condition = not challenge.is_final_challenge() or not challenge.prerequisite.has_enough_user_reviews(user)
+    final_challenge_condition = not challenge.is_final_challenge() or not challenge.prerequisite.has_enough_user_reviews(
+        user)
     if challenge_condition and user_condition and final_challenge_condition:
         return render(request, 'challenge_inactive.html', data)
     if 'elaboration' in data:
@@ -238,7 +243,7 @@ def create_context_view_review(request, data):
         user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
         challenge = Challenge.objects.get(pk=request.GET.get('id'))
         elaboration = Elaboration.objects.filter(challenge=challenge, user=user)[0]
-        #TODO: use select related
+        # TODO: use select related
         reviews = Review.objects.filter(elaboration=elaboration, submission_time__isnull=False).order_by("appraisal")
         data['reviews'] = []
         for review in reviews:
