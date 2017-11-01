@@ -51,6 +51,7 @@ class CourseUserRelationAdmin(admin.ModelAdmin):
                     'user',
                     'course',
                     'active',
+                    'review_group',
                     'review_karma_tutors',
                     'review_karma_students',
                     'top_reviewer',
