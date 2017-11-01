@@ -1,12 +1,12 @@
 #msgInput {
 	position:fixed;
 	bottom:0.5em;
-	width:560px;
+	width:550px;
 	height:1.5em;
 	left:1.5em;
 	z-index:30001;
-	box-shadow:0 1px 3px rgba(0,0,0,0.3) inset;
-	background:#;
+	box-shadow:0 1px 2px rgba(0,0,0,0.3) inset;
+	background:#ddd;
 	border-radius:20px;
 	padding: 0 0.5em;
 }
@@ -27,21 +27,18 @@
 }
 
 .MessageList {
-	display:flex;
-	flex: 1 1 auto;
-	flex-direction:column;
-	height:100%;
-	align-content:flex-end;
+	max-height:100%;
+	width:580px;
 }
 
 .MessageList div {
-	width:100%;
+	width:580px;
+	height:100%;
 }
 
 .Chat {
 	width:100%;
 	height:100%;
-	display:flex;
 }
 
 .
