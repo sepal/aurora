@@ -232,11 +232,11 @@ input[type=submit] {
 
 
 
-.review_evaluation.active {
+.review_evaluation.active, .review_evaluation_readonly.active {
 	text-shadow:0 1px 3px rgba(255,255,255,0.8), 0 -1px 2px rgba(0,0,0,0.2);
 }
 
-.review_evaluation.positive.active::before {
+.review_evaluation.positive.active::before, .review_evaluation_readonly.positive.active::before {
 		content:'\25CF ';
 		font-size:16px;
 		color:green;
@@ -244,7 +244,7 @@ input[type=submit] {
 		line-height:16px;
 }
 
-.review_evaluation.neutral.active::before {
+.review_evaluation.neutral.active::before, .review_evaluation_readonly.neutral.active::before {
 		content:'\25CF ';
 		font-size:16px;
 		color:yellow;
@@ -252,7 +252,7 @@ input[type=submit] {
 		line-height:16px;
 }
 
-.review_evaluation.negative.active::before {
+.review_evaluation.negative.active::before, .review_evaluation_readonly.negative.active::before {
 		content:'\25CF ';
 		font-size:16px;
 		color:red;
@@ -260,31 +260,31 @@ input[type=submit] {
 		line-height:16px;
 }
 
-.review_evaluation:not(.active)::before {
+.review_evaluation:not(.active)::before, .review_evaluation_readonly:not(.active)::before {
 	content:'\25CF ';
 	font-size:16px;
 	visibility:hidden;
 	line-height:16px;
 }
 
-.review_evaluation:not(.active) {
+.review_evaluation:not(.active), .review_evaluation_readonly:not(.active) {
 	color:black;
 }
 
 
-.review_evaluation.positive.active {
+.review_evaluation.positive.active, .review_evaluation_readonly.positive.active {
     color: rgb(47,162,71);
 }
 
-.review_evaluation.neutral.active {
+.review_evaluation.neutral.active, .review_evaluation_readonly.neutral.active {
 	color: rgba(24,81,35,1);
 }
 
-.review_evaluation.negative.active {
+.review_evaluation.negative.active, .review_evaluation_readonly.negative.active {
     color: red;
 }
 
-.review_evaluation.waiting {
+.review_evaluation.waiting, .review_evaluation_readonly.waiting {
     color: orange;
 }
 
@@ -320,11 +320,14 @@ input[type=submit] {
 		margin: 0 200px;
 	}
 }
-.review_evaluation {
+.review_evaluation, .review_evaluation_readonly {
 	text-transform:uppercase;
 	font-size:13px;
 	cursor:pointer;
 	padding:1px 1em 1px 1em;
+}
+.review_evaluation_readonly {
+	cursor: default;
 }
 
 .lb-download {
