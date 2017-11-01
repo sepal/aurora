@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% load aurora_course %}
+{% load staticfiles %}
+{% load comments_xtd %}
 
 {% block additional_headers %}
   <script type="text/javascript" src="{{ STATIC_URL }}js/masonry.pkgd.min.js"></script>
@@ -160,5 +162,25 @@
       </div>
     </div>
     <br><br><br><br><br>
+  </div>
+  
+  <div id="smalltalk_header">
+	<div>
+	      <div id="popup_chat" class="fake_feed_header" id="smalltalk">
+	        <i class="fa fa-angle-up fa-2x half"></i>
+	        <b>Smalltalk</b>
+	      </div>
+	</div>
+  </div>
+  <div id="small_talk">
+    {# {% comments_boilerplate %} #}
+    <p>{{ settings.DEV_FRONTEND }}</p>
+    {% if not settings.DEV_FRONTEND %}
+      <div id="chat-root"></div>
+      <script type="text/javascript" src={% static "chat/js/main.2ed1f267.js" %}></script>
+    {% else %}
+      <iframe frameborder="0" src="http://localhost:3000" height="100%" width="580"></iframe>
+    {% endif %}
+    </div>
   </div>
 {% endblock %}

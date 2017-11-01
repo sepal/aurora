@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load comments_xtd %}
 
 {% block additional_headers %}
   <script type="text/javascript" src="{% static "js/feed.js" %}"></script>
@@ -23,9 +22,11 @@
   {% endif %}
 {% endblock %}
 
+{% block content %}
+
 <div id="comments_column_1">
       <div class="feed_header newsfeed" id="all_the_news">
-        <i class="fa fa-angle-up fa-2x half eventually"></i>
+        <i class="fa fa-angle-up fa-2x half eventually"></i> 
         <b>Newsfeed</b>
       </div>
 {% comment %}
@@ -34,7 +35,7 @@
 		</div>
 {% endcomment %}	
 </div>
-{% block content %}
+{% comment %}
 <div id="chat_column_1_header">
       <div class="feed_header newsfeed" id="all_the_news">
         <i class="fa fa-angle-up fa-2x half eventually"></i>
@@ -52,4 +53,5 @@
   {% endif %}
   </div>
 </div>
+{% endcomment %}	
 {% endblock content %}
