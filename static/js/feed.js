@@ -5,7 +5,7 @@
 $( window ).resize(function() {
 	if($('#small_talk').is(':visible')) {
 		cHeight = $(window).height()/3*2;
-		$('#small_talk').css('height',cHeight);
+		$('#small_talk').css('height',cHeight-31);
 		$('#smalltalk_header').css('bottom',cHeight);
 	}
 });
@@ -64,7 +64,7 @@ $(function() {
 			myIcon.removeClass('fa-angle-up');
 			myIcon.addClass('fa-angle-down');
 			$('#small_talk').show();
-			$('#small_talk').css('height',cHeight);
+			$('#small_talk').css('height',cHeight-30);
 		}
 	})
 	feedCookieLoad();

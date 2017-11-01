@@ -27,14 +27,9 @@
 }
 
 .MessageList {
-	max-height:100%;
-	width:580px;
+	padding-bottom:40px;
 }
 
-.MessageList div {
-	width:580px;
-	height:100%;
-}
 
 .Chat {
 	width:100%;
