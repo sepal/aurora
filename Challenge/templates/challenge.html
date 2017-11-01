@@ -5,332 +5,461 @@
 {% load render_review_answers %}
 
 {% block additional_headers %}
-<script type="text/javascript" src="{{ STATIC_URL }}tinymce/tinymce.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/challenge.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/review_evaluation.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}dropzone/dropzone.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/file_upload.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}tinymce/jquery.tinymce.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/challenge.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/review_evaluation.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}dropzone/dropzone.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/file_upload.js"></script>
 
-<link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/dropzone.css" type="text/css" media="screen"/>
-<link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/basic.css" type="text/css" media="screen"/>
-<link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
-<link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
-<link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
-{% load humanize %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/dropzone.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}dropzone/css/basic.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}lightbox/css/lightbox.css" type="text/css" media="screen"/>
+    {% load humanize %}
 {% endblock %}
 
 {% block content %}
-{% if user_enlisted_and_active %}
-{% comments_boilerplate %}
+    {% if user_enlisted_and_active %}
+        {% comments_boilerplate %}
 
-<script type="text/javascript">
-  var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
-  var SAVE_REVISION_URL = "{% url 'Elaboration:save_revision' course_short_title=course.short_title %}";
-  var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
-  var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
-  var REVIEW_EVALUATION_URL = "{% url 'Review:evaluate' course_short_title=course.short_title %}";
-</script>
+        <script type="text/javascript">
+            var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
+            var SAVE_REVISION_URL = "{% url 'Elaboration:save_revision' course_short_title=course.short_title %}";
+            var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
+            var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
+            var REVIEW_EVALUATION_URL = "{% url 'Review:evaluate' course_short_title=course.short_title %}";
+        </script>
 
-<div id="detail_area">
-  <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
+        <div id="detail_area">
+            <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
 
-    <div class="challenge_title" style="cursor:pointer;" {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
-		<script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
-	<div class="challenge_description_title">{{ challenge.title|safe }} <span style="font-weight:normal"> ({{challenge.points}} points)  <a href="stack?id={{challenge.get_stack.id}}" class="button" style="font-weight:normal;font-size:90%"><i class="fa fa-arrow-circle-right button"></i> {{challenge.get_stack.title}}</a></div>
-	{% if elaboration.is_submitted %}
-		<button style="font-size:16px" class="R"> toggle details </button>
-	{% endif %}
-    </div>
-    <div style="display:none">Points: {{ challenge.points }}</div>
-    <div class="challenge_description{% if elaboration.is_submitted %} nothere{% endif %}" >
-      <div class="challenge_description_text">{{ challenge.description|safe|urlize }}</div>
-      <div class="qa_section">
-        <div class="comments">
+                <div class="challenge_title" style="cursor:pointer;"
+                     {% if elaboration.is_submitted %}onclick="$('.challenge_description').slideToggle('fast');"{% endif %}>
+                    <script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
+                    <div class="challenge_description_title">{{ challenge.title|safe }} <span
+                            style="font-weight:normal"> ({{ challenge.points }} points)  <a
+                            href="stack?id={{ challenge.get_stack.id }}" class="button"
+                            style="font-weight:normal;font-size:90%"><i
+                            class="fa fa-arrow-circle-right button"></i> {{ challenge.get_stack.title }}</a></div>
+                    {% if elaboration.is_submitted %}
+                        <button style="font-size:16px" class="R"> toggle details</button>
+                    {% endif %}
+                </div>
+                <div style="display:none">Points: {{ challenge.points }}</div>
+                <div class="challenge_description{% if elaboration.is_submitted %} nothere{% endif %}">
+                    <div class="challenge_description_text">{{ challenge.description|safe|urlize }}</div>
+                    <div class="qa_section">
+                        <div class="comments">
           <span style="cursor:pointer;" onclick="$('#qa').slideToggle('fast');"><b><i class="fa fa-toggle-down"></i>
             Task Q+A Section</b> - {% comments_count for challenge %} comments so far<br>
           </span>
-          <div id="qa" class="challenge_comments"{% if not user.is_staff %} style="display:none"{% endif %}><br>{% if not user.is_staff %}If you have questions about the description of this task, post
-            them here. The course organizers will answer as soon as possible.{% endif %}
-            {% render_multi_comment_list for challenge %}
-          </div>
-        </div>
-      </div>
-	  {% if not reviews and not challenge.is_final_challenge %}
+                            <div id="qa" class="challenge_comments"{% if not user.is_staff %}
+                                 style="display:none"{% endif %}>
+                                <br>{% if not user.is_staff %}If you have questions about the description of this task,
+                                post
+                                them here. The course organizers will answer as soon as possible.{% endif %}
+                                {% render_multi_comment_list for challenge %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if not reviews and not challenge.is_final_challenge %}
 
-	  <div class="review_section">
-		<div onclick="$('.review_questions').slideToggle('fast');">
-			<i class="fa fa-toggle-down"></i>
-    		Review Questions
-    	</div>
+                        <div class="review_section">
+                            <div onclick="$('.review_questions').slideToggle('fast');">
+                                <i class="fa fa-toggle-down"></i>
+                                Review Questions
+                            </div>
 
-{% if review_questions %}
-		  <div class="review_questions nothere">
-			  <br>
-			  <div class="title">Your peers will review your work by answering the following questions:</div>
-			  <br>
-{% for review_question in review_questions %}
-        <div class="question_container">
-          <div class="question">
-            {{ review_question|safe }}
-          </div>
-        </div>
-{% endfor %}
-		  </div>
-{% endif %}
-	  </div>
-	  {% endif %}
-    </div>
+                            {% if review_questions %}
+                                <div class="review_questions nothere">
+                                    <br>
+                                    <div class="title">Your peers will review your work by answering the following
+                                        questions:
+                                    </div>
+                                    <br>
+                                    {% for review_question in review_questions %}
+                                        <div class="question_container">
+                                            <div class="question">
+                                                {{ review_question|safe }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
 
-{% if user.is_staff %}
-    [you are admin. you cannot accept tasks]
-{% else %}
-	{% if not elaboration.is_submitted %}
-		{% if not accepted %}
-			{% if blocked %}
-				<div class="XL" style="color:gray;">You cannot start this task now. Go back and check the status of the other tasks.  </div>
-			{% elif challenge.currently_active or user_can_enter_final_challenge %}
-			<div id="Caccept" class="button XL" onclick="$('.elaboration_block').slideDown('fast');$('#Caccept').slideUp('fast');$('#qa').slideUp('fast');">
-				start this task
-			</div>
-			{% else %}
-				<div class=" XL" style="color:gray;">This challenge has not yet startet or already ended</div>
-			{% endif %}
+                {% if user.is_staff %}
+                    [you are admin. you cannot accept tasks]
+                {% else %}
+                    {% if not elaboration.is_submitted %}
+                        {% if not accepted %}
+                            {% if blocked %}
+                                <div class="XL" style="color:gray;">You cannot start this task now. Go back and check
+                                    the status
+                                    of the other tasks.
+                                </div>
+                            {% elif challenge.currently_active or user_can_enter_final_challenge %}
+                                <div id="Caccept" class="button XL"
+                                     onclick="$('.elaboration_block').slideDown('fast');$('#Caccept').slideUp('fast');$('#qa').slideUp('fast');">
+                                    start this task
+                                </div>
+                            {% else %}
+                                <div class=" XL" style="color:gray;">This challenge has not yet startet or already
+                                    ended
+                                </div>
+                            {% endif %}
 
-		{% endif  %}
-      	{% if challenge.currently_active or user_can_enter_final_challenge  %}
-    		<div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
-			{% if challenge.accepted_files %}
-    		<div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
-      			<form action="/fileupload"
-   			 		class="dropzone dz-clickable{% if elaboration.is_submitted %} is_submitted{% endif %}"
-    				id="dropzone">
-        			<input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
-					{% csrf_token %}
-      			</form>
-      			<div style="font-size:80%;color:white;background:black"><b>Important note:</b> reload this page after image uploads are finished! Then, you can use »Fig.X« in your text to reference uploaded images. </div><br>
-    		</div>
-			{% endif %}
- 		   <form method="post">
-			   <textarea id="original-editor" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
- 			  <trix-editor class="trix-content" input="original-editor"></trix-editor><br>
-			  <div class="new_word_count"></div>
-			  <div class="hidden_extra_question" hidden>
-				  <label for="extra-review-question"><b>Optional review question</b> - What would you like to know from the peers reviewing your work? (No personal questions!)</label><br>
-				  <div class="gray_text">Ich wollte die Grafik besonders übersichtlich zu machen - ist mir das gelungen? Wie könnte ich es noch besser machen?</div>
-				  <input id="extra-review-question" name="extra-review-question" {% if elaboration.extra_review_question %} value={{elaboration.extra_review_question}} class="input_position" {% else %} value="" class="see_through input_position" {% endif %}><br><br>
-			  </div>
-		  </form>
+                        {% endif %}
+                        {% if challenge.currently_active or user_can_enter_final_challenge %}
+                            <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
+                                {% if challenge.accepted_files %}
+                                    <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
+                                        <form action="/fileupload"
+                                              class="dropzone dz-clickable{% if elaboration.is_submitted %} is_submitted{% endif %}"
+                                              id="dropzone">
+                                            <input id="elaboration_id" type="hidden" name="elaboration_id"
+                                                   value="{{ elaboration.id }}"/>
+                                            {% csrf_token %}
+                                        </form>
+                                        <div style="font-size:80%;color:white;background:black"><b>Important note:</b>
+                                            reload
+                                            this page after image uploads are finished! Then, you can use »Fig.X« in
+                                            your text
+                                            to reference uploaded images.
+                                        </div>
+                                        <br>
+                                    </div>
+                                {% endif %}
+                                <form method="post">
+                            <textarea id="original-editor" class="trix-content"
+                                      style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+                                    <trix-editor class="trix-content" input="original-editor"></trix-editor>
+                                    <br>
+                                    <div class="new_word_count"></div>
+                                    <div class="hidden_extra_question" hidden>
+                                        <label for="extra-review-question"><b>Optional review question</b> - What would
+                                            you like
+                                            to know from the peers reviewing your work? (No personal questions!)</label><br>
+                                        <div class="gray_text">Ich wollte die Grafik besonders übersichtlich zu machen -
+                                            ist mir
+                                            das gelungen? Wie könnte ich es noch besser machen?
+                                        </div>
+                                        <input id="extra-review-question" name="extra-review-question"
+                                                {% if elaboration.extra_review_question %}
+                                               value={{ elaboration.extra_review_question }} class="input_position" {% else %}
+                                               value="" class="see_through input_position" {% endif %}><br><br>
+                                    </div>
+                                </form>
 
-		<div class="status_under_MCE">
-	    	<button id="SagB" class="XL save_back">
+                                <div class="status_under_MCE">
+                                    <button id="SagB" class="XL save_back">
 		<span class="large_screen">
 			save and go back
 		</span>
-		<span class="small_screen">
+                                        <span class="small_screen">
             save + go back
 		</span>
-	    	</button>
-			<div class="hidden_text" id="saved_message">Text saved <i class="fa fa-check green"></i></div>
-		</div>
-      {% if not blocked %}
-        {% if lock %}
-        	<span style="color:gray;float:right;padding-top:3px;position:relative">Enter for evaluation on {{ lock }} or later<button style="font-size:110%" onClick="javascript:$('#explain').show()">WHY not now?</button><div style="display:none;position:relative;" id="explain">You have handed in another challenge recently. You have to wait a certain <br>time  before handing in another one. You can find a detailled explanation in <br>the <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">aurora</a> pdf</div></span>
-			
-        {% else %}
-			<button id="EWfE" class="{% if not lock %} submit {% endif %}XL R" {% if lock %}disabled="disabled" style="color:darkred;"{% endif %}>
-		<span class="large_screen">
+                                    </button>
+                                    <div class="hidden_text" id="saved_message">Text saved <i
+                                            class="fa fa-check green"></i>
+                                    </div>
+                                </div>
+                                {% if not blocked %}
+                                    {% if lock %}
+                                        <span style="color:gray;float:right;padding-top:3px;position:relative">Enter for evaluation on {{ lock }} or later<button
+                                                style="font-size:110%"
+                                                onClick="javascript:$('#explain').show()">WHY not now?</button><div
+                                                style="display:none;position:relative;" id="explain">You have handed in another challenge recently. You have to wait a certain <br>time  before handing in another one. You can find a detailled explanation in <br>the <a
+                                                href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">aurora</a> pdf</div></span>
+
+                                    {% else %}
+                                        <button id="EWfE" class="{% if not lock %} submit {% endif %}XL R"
+                                                {% if lock %}disabled="disabled" style="color:darkred;"{% endif %}>
+                                        <span class="large_screen">
             Enter work for evaluation
 		</span>
-		<span class="small_screen">
+                                        <span class="small_screen">
             Enter for evaluation
 		</span>
-        {% endif %}
-        </button>
-        <div class="submission_text" hidden>
-          <div class="zustimmung"><input id="zustimmungs_box" type="checkbox"></div>
-		  <div class="zustimmungstext">
-            I certify that the work presented here is, to the best of my knowledge and belief, original and the result of
-            my own investigations and creation, except as acknowledged, and has not been submitted, either in part or whole,
-            for a degree at this or any other University.
-          </div>
-          <div>
-            <button class="real_submit XL R cannot_submit" id="{{ challenge.id }}">Submit work</button>
-          </div>
+                                    {% endif %}
+                                </button>
+                                    <div class="submission_text" hidden>
+                                        <div class="zustimmung"><input id="zustimmungs_box" type="checkbox"></div>
+                                        <div class="zustimmungstext">
+                                            I certify that the work presented here is, to the best of my knowledge and
+                                            belief,
+                                            original and the result of
+                                            my own investigations and creation, except as acknowledged, and has not been
+                                            submitted, either in part or whole,
+                                            for a degree at this or any other University.
+                                        </div>
+                                        <div>
+                                            <button class="real_submit XL R cannot_submit" id="{{ challenge.id }}">
+                                                Submit work
+                                            </button>
+                                        </div>
 
+                                    </div>
+                                {% else %}
+                                    <div class="XL R" style="color:gray;">hand-in is not possible; look at other tasks
+                                        for
+                                        details
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}Original h
+                        {% else %}H
+                        {% endif %}anded in<a style="color:black;text-decoration: none;"
+                                              href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{ elaboration.submission_time|naturaltime }}'); }, 3000);void(0);"
+                                              title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i
+                            class="fa fa-calendar"></i></a>
+                        <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
+                        <div class="submitted-content">
+                            {% if not elaboration.can_be_revised and elaboration.revised_elaboration_text != elaboration.elaboration_text %}
+                                <br><b>Revised text</b>
+                                {% if challenge.accepted_files %}
+                                    {% render_uploads elaboration %}
+                                {% endif %}
+                                <textarea id="editor_challenge"
+                                          style="display: none;">{{ elaboration.revised_elaboration_text }}</textarea>
+                                <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
+
+                                <br><b>Original text</b>
+                                {% if challenge.accepted_files %}
+                                    {% render_original_uploads elaboration %}
+                                {% endif %}
+                                <textarea id="editor_challenge_orig"
+                                          style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+                                <trix-editor class="trix-content" input="editor_challenge_orig"></trix-editor><br>
+                                {% if extra_review_question_present %}
+                                    <p><strong>Additional question asked to reviewers:<strong>
+                                        {{ elaboration.extra_review_question }}
+                                    <p>
+                                {% endif %}
+                            {% else %}
+                            {% render_original_uploads elaboration %}
+                            <textarea id="editor_challenge"
+                                      style="display: none;">{{ elaboration.elaboration_text }}</textarea>
+                            <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
+                            {% if extra_review_question_present %}
+                                <p><b>Additional question asked to reviewers:</b>
+                                {{ elaboration.extra_review_question }}<p>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+
+                        {% if evaluation %}
+                            <div class="comments">
+                                <div class="evaluation_header">Feedback from the LVA team</div>
+                                <div class="evaluation_text">{{ evaluation.evaluation_text|safe }}
+                                    <br><br>
+                                    Points: {{ evaluation.evaluation_points|safe }}
+                                    {% if evaluation.evaluation_points == 0 %}
+                                        <br><br>(Please note that 0 points means that this challenge does <B>not</B>
+                                        count for
+                                        total handed-in points)
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="comment_section">
+                            <div class="comments">
+                                <div class="elaboration_comments">
+                                    <b>Discuss with LVA team</b> - {% comments_count for elaboration %} comments so far
+                                    {% render_multi_comment_list for elaboration %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="all_reviews">
+                            {% if reviews %}
+                                <div class="title">You received the following reviews for your work</div>
+                                <div>&nbsp;</div>
+                                {% for review_data in reviews %}
+                                    &nbsp; Review {{ forloop.counter }}
+                                    <div class="view_review">
+                                        {% render_review_answers review_data.review_id %}
+
+                                        <div class="question_container">
+                                            <div>
+                                                {{ elaboration.extra_review_question }}
+                                                <textarea class="review_answer"
+                                                          readonly>{{ review_data.extra_review_question_answer }}</textarea>
+                                            </div>
+                                        </div>
+
+                                        {% if review_data.appraisal == "Awesome" %}
+                                            <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i>
+                                                Review conclusion:
+                                                <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b></div>
+                                        {% elif review_data.appraisal == "Success" %}
+                                            <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i>
+                                                Review conclusion:
+                                                <b>Accepted</b></div>
+                                        {% elif review_data.appraisal == "Fail" %}
+                                            <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i>
+                                                Review conclusion:
+                                                <b>Accepted (Requirements missed)</b></div>
+                                        {% elif review_data.appraisal == "Not even trying" %}
+                                            <div class="appraisal Verdict_Not"><i class="fa fa-arrow-right"></i> Review
+                                                conclusion:
+                                                <b>Plagiarism or cheated</b></div>
+                                        {% endif %} <!-- review data -->
+
+                                        <hr style="margin-top:12px;margin-bottom:12px;border:0;border-bottom:1px dashed #aaa"/>
+
+                                        {% if review_data.evaluation_tutor %}
+                                            <div class="show_review_feedback contains_feedback">
+                                                This review has been rated as
+                                                {% if review_data.evaluation_tutor.appraisal == "P" %}   <b>&raquo;helpful&laquo;</b>
+                                                {% elif review_data.evaluation_tutor.appraisal == "D" %} <b>&raquo;ok&laquo;</b>
+                                                {% elif review_data.evaluation_tutor.appraisal == "B" %} <b>&raquo;meaningless&laquo;</b>
+                                                {% elif review_data.evaluation_tutor.appraisal == "N" %} <b>&raquo;minimalist or offensive&laquo;</b>
+                                                {% endif %}
+                                                    by the LVA team.
+                                            </div>
+                                        {% else %}
+                                            <div class="show_review_feedback no_feedback">
+                                                This review has not yet been rated by the LVA team.
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="review_evaluation_drawer">
+                                        <div class="review_evaluation_text">This review...</div>
+                                        <div id="{{ review_data.review_id }}" class="review_evaluation_container">
+                                            <div review_id="{{ review_data.review_id }}" appraisal="P"
+                                                 class="review_evaluation positive {% if review_data.evaluation_student.appraisal == "P" %} active{% endif %}">
+                                                ... helped me improve my work
+                                            </div>
+                                            <div review_id="{{ review_data.review_id }}" appraisal="D"
+                                                 class="review_evaluation neutral {% if review_data.evaluation_student.appraisal == "D" %} active{% endif %}">
+                                                ... was ok
+                                            </div>
+                                            <div review_id="{{ review_data.review_id }}" appraisal="B"
+                                                 class="review_evaluation neutral {% if review_data.evaluation_student.appraisal == "B" %} active{% endif %}">
+                                                ... was meaningless
+                                            </div>
+                                            <div review_id="{{ review_data.review_id }}" appraisal="N"
+                                                 class="review_evaluation negative {% if review_data.evaluation_student.appraisal == "N" %} active{% endif %}">
+                                                ... was minimalist or offensive
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>&nbsp;</div>
+                                    {% if review_data.appraisal == "Not even trying" %}
+                                        <div class="review-went-south-action">
+                                            <i class="fa fa-exclamation-circle fa-2x"
+                                               style="float:left;margin-right:6px;padding:2px"></i>
+                                            If you feel that this review comes to an unfair conclusion, write a comment
+                                            in the
+                                            »Discuss with LVA team« area above, and explain why you think this is wrong.
+                                            We will
+                                            look at it as soon as possible.
+                                        </div>
+                                    {% endif %}
+                                {% endfor %} <!-- review data -->
+                                </div>
+                            {% endif %} <!-- in reviews -->
+                        {% if elaboration.can_be_revised %}
+                            {% if not elaboration.final_challenge_submitted %}
+                                <div class="create_revision"
+                                     {% if elaboration.has_revision %}style="display:none"{% endif %}>
+                                    <div class="create_revision_text">Based on these reviews, you can create a revision
+                                        of your
+                                        work:
+                                    </div>
+                                    <div class="create_revision_link XL button">Create revision.</div>
+                                </div>
+                            {% endif %}
+                            <div class="revision_section"
+                                 {% if elaboration.has_revision %}style="display:block"{% endif %}>
+                                Revised Work
+                                {% if challenge.accepted_files %}
+                                    {% if not elaboration.final_challenge_submitted %}
+                                        <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
+                                            <form action="/fileupload"
+                                                  class="dropzone dz-clickable dropzone-revised"
+                                                  id="dropzone">
+                                                <input id="elaboration_id" type="hidden" name="elaboration_id"
+                                                       value="{{ elaboration.id }}"/>
+                                                {% csrf_token %}
+                                            </form>
+                                            <div style="font-size:80%%;color:white;background:black"><b>Important
+                                                note:</b>
+                                                reload this page after image uploads are finished! Then, you can use
+                                                »Fig.X« in
+                                                your text to reference uploaded images.
+                                            </div>
+                                            <br>
+                                        </div>
+                                    {% else %}
+                                        {% render_revised_uploads elaboration %}
+                                    {% endif %}
+                                {% endif %}
+
+                                <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
+                                    <div {% if elaboration.final_challenge_submitted %}
+                                        class="submitted-content" {% endif %}>
+                                <textarea id="revised-editor" class="trix-content"
+                                          style="display: none;">{{ elaboration.revised_elaboration_text }}</textarea>
+                                        <trix-editor class="trix-content" input="revised-editor"></trix-editor>
+                                    </div>
+                                    <div class="changelog">
+                                        Briefly describe the changes you made to your original elaboration<br><input
+                                            type="text"
+                                            value="{{ elaboration.revised_elaboration_changelog }}"
+                                            id="changelog"
+                                            {% if elaboration.final_challenge_submitted %} disabled {% endif %} />
+                                        <br><br>What helped you most while writing this revision:
+                                        <select id="most_helpful_other_user" name="most_helpful_other_user"
+                                                {% if elaboration.final_challenge_submitted %} disabled {% endif %}>
+                                            <option>Please Select...</option>
+                                            {% for review in elaboration.get_reviews %}
+                                                {{ review.reviewer.pk }}
+                                                <option
+                                                        {% if review.reviewer.pk == elaboration.most_helpful_other_user %}
+                                                            selected {% endif %}
+                                                            value="{{ review.id }}">
+                                                    Review {{ forloop.counter }}</option>
+                                            {% endfor %}
+                                            <option value="-99" {% if elaboration.most_helpful_other_user == -99 %}
+                                                    selected {% endif %} >The work I reviewed
+                                            </option>
+                                            <option {% if elaboration.most_helpful_other_user == -1 %}
+                                                selected {% endif %}
+                                                value="-1">Tutor / LVA
+                                            </option>
+                                        </select>
+                                    </div>
+                                    {% if not elaboration.final_challenge_submitted %}
+                                        <button class="real_submit_revised XL R button" id="{{ challenge.id }}">Save
+                                            revision
+                                            and go back
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="create_revision">
+                                <div class="create_revision_text">Once your work has been reviewed, you can create a
+                                    revision.
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
         </div>
-	  {% else %}
-	  	<div class="XL R" style="color:gray;">hand-in is not possible; look at other tasks for details</div>
-      {% endif %}
-    </div>
+    {% else %}
+
+        <div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;"> Nachdem Sie die Bedingungen für einen
+        erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr
+        möglich.
+
     {% endif %}
-{% else %}
-	{% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}Original h{% else %}H{% endif %}anded in <a style="color:black;text-decoration: none;" href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{elaboration.submission_time|naturaltime}}'); }, 3000);void(0);" title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i class="fa fa-calendar"></i></a> <span ID="wai_t">{{ elaboration.submission_time|naturaltime }}</span>
-  <div class="submitted-content">
-    {% if not elaboration.can_be_revised and elaboration.revised_elaboration_text != elaboration.elaboration_text%}
-      <br><b>Revised text</b>
-      {% if challenge.accepted_files %}
-       {% render_uploads elaboration %}
-      {% endif %}
-  		<textarea id="editor_challenge" style="display: none;">{{ elaboration.revised_elaboration_text }}</textarea>
-      <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
-
-  		<br><b>Original text</b>
-      {% if challenge.accepted_files %}
-       {% render_original_uploads elaboration %}
-      {% endif %}
-  		<textarea id="editor_challenge_orig" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
-      <trix-editor class="trix-content" input="editor_challenge_orig"></trix-editor><br>
-      {% if extra_review_question_present %}
-      <p><strong>Additional question asked to reviewers:<strong> {{ elaboration.extra_review_question }}<p>
-      {% endif %}
-	  {% else %}
-      {% render_original_uploads elaboration %}
-  		<textarea id="editor_challenge" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
-      <trix-editor class="trix-content" input="editor_challenge"></trix-editor>
-      {% if extra_review_question_present %}
-      <p><b>Additional question asked to reviewers:</b> {{ elaboration.extra_review_question }}<p>
-      {% endif %}
-	  {% endif %}
-  </div>
-
-{% if evaluation %}
-    <div class="comments">
-      <div class="evaluation_header">Feedback from the LVA team </div>
-	  <div class="evaluation_text">{{ evaluation.evaluation_text|safe }}
-		  <br><br>
-	  	Points: {{ evaluation.evaluation_points|safe }}
-	  	{% if evaluation.evaluation_points == 0 %}
-			<br><br>(Please note that 0 points means that this challenge does <B>not</B> count for total handed-in points)
-		{% endif %}
-  	 </div>
-    </div>
-{% endif %}
-    <div class="comment_section">
-      <div class="comments">
-        <div class="elaboration_comments">
-          <b>Discuss with LVA team</b> - {% comments_count for elaboration %} comments so far
-          {% render_multi_comment_list for elaboration %}
-        </div>
-      </div>
-    </div>
-    <div class="all_reviews">
-{% if reviews %}
-      <div class="title">You received the following reviews for your work</div>
-      <div>&nbsp;</div>
-	  {% for review_data in reviews %}
-	 &nbsp; Review {{ forloop.counter }}
-      <div class="view_review">
-		  {% render_review_answers review_data.review_id %}
-
-      <div class="question_container">
-        <div>
-          {{ elaboration.extra_review_question }}
-          <textarea class="review_answer" readonly>{{ review_data.extra_review_question_answer }}</textarea>
-        </div>
-      </div>
-
-			{% if review_data.appraisal == "Awesome" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b>
-            {% elif review_data.appraisal == "Awesome" %} Review conclusion: Accepted
-			{% elif review_data.appraisal == "Success" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted</b>
-			{% elif review_data.appraisal == "Fail" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Accepted (Requirements missed)</b>
-			{% elif review_data.appraisal == "Not even trying" %} <div class="appraisal Verdict_Not"><i class="fa fa-arrow-right"></i> Review conclusion: <b>Plagiarism or cheated</b>
-			{% endif %} <!-- review data -->
-          </b>
-        </div>
-      </div>
-	  <div class="review_evaluation_drawer">
-		<div class="review_evaluation_text">This review...</div>
-        <div id="{{ review_data.review_id }}" class="review_evaluation_container">
-            <div review_id="{{ review_data.review_id }}" appraisal="P"
-                 class="review_evaluation positive {% if review_data.evaluation == "P" %} active{% endif %}">
-                ... helped me improve my work
-            </div>
-            <div review_id="{{ review_data.review_id }}" appraisal="D"
-                 class="review_evaluation neutral {% if review_data.evaluation == "D" %} active{% endif %}">
-                ... was ok
-            </div>
-            <div review_id="{{ review_data.review_id }}" appraisal="B"
-                 class="review_evaluation neutral {% if review_data.evaluation == "B" %} active{% endif %}">
-                ... was meaningless
-            </div>
-            <div review_id="{{ review_data.review_id }}" appraisal="N"
-                 class="review_evaluation negative {% if review_data.evaluation == "N" %} active{% endif %}">
-                ... was minimalist or offensive
-            </div>
-        </div>
-      </div>
-      <div>&nbsp;</div>
-	{% if review_data.appraisal == "Not even trying" %}
-		<div class="review-went-south-action">
-			<i class="fa fa-exclamation-circle fa-2x" style="float:left;margin-right:6px;padding:2px"></i>
-			If you feel that this review comes to an unfair conclusion, write a comment in the »Discuss with LVA team« area above, and explain why you think this is wrong. We will look at it as soon as possible.
-		</div>
-	{% endif %}
-	  {% endfor %} <!-- review data -->
-    </div>
-{% endif %} <!-- in reviews -->
-    {% if elaboration.can_be_revised %}
-    {% if not elaboration.final_challenge_submitted %}
-  		<div class="create_revision" {% if elaboration.has_revision %}style="display:none"{% endif %}>
-  			<div class="create_revision_text">Based on these reviews, you can create a revision of your work:</div>
-  			<div class="create_revision_link XL button">Create revision. </div>
-  		</div>
-    {% endif %}
-		<div class="revision_section" {% if elaboration.has_revision %}style="display:block"{% endif %}>
-	      Revised Work
-	      {% if challenge.accepted_files %}
-        {% if not elaboration.final_challenge_submitted %}
-	        <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
-	            <form action="/fileupload"
-	                  class="dropzone dz-clickable dropzone-revised"
-	                  id="dropzone">
-	                <input id="elaboration_id" type="hidden" name="elaboration_id" value="{{ elaboration.id }}"/>
-					{% csrf_token %}
-	            </form>
-	            <div style="font-size:80%%;color:white;background:black"><b>Important note:</b> reload this page after image uploads are finished! Then, you can use »Fig.X« in your text to reference uploaded images.</div><br>
-	        </div>
-          {% else %}
-            {% render_revised_uploads elaboration %}
-          {% endif %}
-	      {% endif %}
-
-	      <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
-            <div {% if elaboration.final_challenge_submitted %} class="submitted-content" {% endif %}>
-            <textarea id="revised-editor" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text }}</textarea>
-            <trix-editor class="trix-content" input="revised-editor"></trix-editor>
-            </div>
-              <div class="changelog">
-				  Briefly describe the changes you made to your original elaboration<br><input type="text" value="{{ elaboration.revised_elaboration_changelog}}" id="changelog" {% if elaboration.final_challenge_submitted %} disabled {% endif %} />
-				  <br><br>What helped you most while writing this revision:
-            	  <select id="most_helpful_other_user" name="most_helpful_other_user" {% if elaboration.final_challenge_submitted %} disabled {% endif %}>
-					  <option>Please Select...</option>
-           		   {% for review in elaboration.get_reviews %}
-         			  {{review.reviewer.pk}}
-            			<option {% if review.reviewer.pk == elaboration.most_helpful_other_user %} selected {% endif %}
-              			  value="{{ review.id }}">Review {{forloop.counter}}</option>
-           	   	   {% endfor %}
-						<option value="-99" {% if elaboration.most_helpful_other_user == -99 %} selected {% endif %} >The work I reviewed</option>
-            		  <option {% if elaboration.most_helpful_other_user == -1 %} selected {% endif %} value="-1">Tutor / LVA </option>
-           	 	 </select>
-				</div>
-          {% if not elaboration.final_challenge_submitted %}
-	        <button class="real_submit_revised XL R button" id="{{ challenge.id }}">Save revision and go back</button>
-	      </div>
-         {% endif %}
-	 	</div>
-	{% else %}
-		<div class="create_revision">
-			<div class="create_revision_text">Once your work has been reviewed, you can create a revision. </div>
-		</div>
-  {% endif %}
-{% endif %}
-{% endif %}
-  </div>
-</div>
-{% else %}
-
-<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;"> Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr möglich.
-
-{% endif %}
 {% endblock %}
