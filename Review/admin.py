@@ -48,9 +48,7 @@ class ReviewEvaluationAdmin(admin.ModelAdmin):
         (
             None, {
                 'fields': [
-                    'id',
                     'review',
-                    'creation_time',
                     'user',
                     'appraisal',
                 ]
