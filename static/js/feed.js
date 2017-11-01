@@ -57,6 +57,7 @@ $(function() {
 			myIcon.removeClass('fa-angle-down');
 			myIcon.addClass('fa-angle-up');
 			$('#small_talk').hide();
+			stop_chatupdate();
 		} else {
 			cHeight = $(window).height()/3*2;
 			$('#smalltalk_header').css('bottom',cHeight);
@@ -65,6 +66,7 @@ $(function() {
 			myIcon.addClass('fa-angle-down');
 			$('#small_talk').show();
 			$('#small_talk').css('height',cHeight-30);
+			chatupdate();
 		}
 	})
 	feedCookieLoad();

@@ -6,6 +6,7 @@
 
 {% block additional_headers %}
   <script type="text/javascript" src="{{ STATIC_URL }}js/masonry.pkgd.min.js"></script>
+  <script type="text/javascript" src="{% static "js/chat.js" %}"></script>
 {% endblock %}
 
 
@@ -168,7 +169,7 @@
 	<div>
 	      <div id="popup_chat" class="fake_feed_header" id="smalltalk">
 	        <i class="fa fa-angle-up fa-2x half"></i>
-	        <b>Smalltalk</b>
+	        <b>Smalltalk</b><span id="chat_activity"></span>
 	      </div>
 	</div>
   </div>

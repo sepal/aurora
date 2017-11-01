@@ -21,11 +21,16 @@ body,html {
 	width:580px;
 	height:66%;
 	display:none;
-	overflow:scroll;
+	overflow-y:scroll;
+	overflow-x:hidden;
 	padding-top:36px;
 	background:white;
 	box-shadow: 0 3px 4px rgba(0,0,0,0.3) ;
 	z-index:29999;
+    overflow: -moz-scrollbars-none;  // Firefox
+}
+#small_talk::-webkit-scrollbar { 
+    display: none;  // Safari and Chrome
 }
 
 .former_newsfeed {
