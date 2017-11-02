@@ -30,6 +30,7 @@ class AuroraUser(User):
     study_code = models.CharField(max_length=100, null=True, blank=True, default="")
     oid = models.CharField(max_length=30, null=True, unique=True, blank=True)
     tags = TaggableManager()
+    courses = models.ManyToManyField(Course, through=CourseUserRelation)
 
     # Use UserManager to get the create_user method, etc.
     objects = UserManager()

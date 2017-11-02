@@ -838,9 +838,8 @@ def get_points(request, user, course):
         return HttpResponseForbidden()
     data = {}
     data['course'] = course
-    course_ids = CourseUserRelation.objects.filter(
-        user=user).values_list('course', flat=True)
-    courses = Course.objects.filter(id__in=course_ids)
+    courses = user.courses.all()
+
     data['courses'] = courses
     data['review_evaluation_data'] = {}
     data['review_evaluation_data'][

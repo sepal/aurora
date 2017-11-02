@@ -16,6 +16,8 @@ class Course(models.Model):
     tuwel_course_id = models.PositiveIntegerField(null=False)
     tuwel_course_stream_id = models.PositiveIntegerField(null=False)
     email = models.EmailField(null=False)
+    participants = models.ManyToManyField("AuroraUser.AuroraUser",
+                                          through="CourseUserRelation")
 
     def __unicode__(self):
         return str(self.title)
