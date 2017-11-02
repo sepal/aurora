@@ -841,22 +841,19 @@ def get_points(request, user, course):
     courses = user.courses.all()
 
     data['courses'] = courses
-    data['review_evaluation_data'] = {}
-    data['review_evaluation_data'][
-        'helpful_review_evaluations'] = ReviewEvaluation.get_helpful_review_evaluations(user, course)
-    data['review_evaluation_data'][
-        'good_review_evaluations'] = ReviewEvaluation.get_good_review_evaluations(user, course)
-    data['review_evaluation_data'][
-        'bad_review_evaluations'] = ReviewEvaluation.get_bad_review_evaluations(user, course)
-    data['review_evaluation_data'][
-        'negative_review_evaluations'] = ReviewEvaluation.get_negative_review_evaluations(user, course)
 
-    data['review_evaluation_data'][
-        'review_evaluation_percent'] = ReviewEvaluation.get_review_evaluation_percent(user, course)
-    data['review_evaluation_data'][
-        'reviews_missing_evaluation'] = ReviewEvaluation.get_unevaluated_reviews(user, course)
-    data['review_evaluation_data']['number_of_unevaluated_reviews'] = len(
-        data['review_evaluation_data']['reviews_missing_evaluation'])
+    red = {}
+
+    red['helpful_review_evaluations'] = ReviewEvaluation.get_helpful_review_evaluations(user, course)
+    red['good_review_evaluations'] = ReviewEvaluation.get_good_review_evaluations(user, course)
+    red['bad_review_evaluations'] = ReviewEvaluation.get_bad_review_evaluations(user, course)
+    red['negative_review_evaluations'] = ReviewEvaluation.get_negative_review_evaluations(user, course)
+
+    red['review_evaluation_percent'] = ReviewEvaluation.get_review_evaluation_percent(user, course)
+    red['reviews_missing_evaluation'] = ReviewEvaluation.get_unevaluated_reviews(user, course)
+    red['number_of_unevaluated_reviews'] = len(red['reviews_missing_evaluation'])
+
+    data['review_evaluation_data'] = red
 
     data['stacks'] = []
     for course in courses:
