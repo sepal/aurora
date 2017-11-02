@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.loader import render_to_string
@@ -79,6 +79,8 @@ class EvaluationView(CourseMixin, TemplateView):
             "course": self.course,
             "elaborations": self.elaborations,
             "selected_challenge": self.request.session.get("selected_challenge"),
+            "selected_tag": self.request.session.get("selected_tag"),
+            "selected_user": self.request.session.get("selected_user"),
         })
 
         return context
@@ -114,6 +116,14 @@ class EvaluationView(CourseMixin, TemplateView):
             'course': self.course,
             "selection": self.selection_name,
         }
+
+
+
+
+class BaseSearchView(EvaluationView):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class MissingReviewsView(EvaluationView):
@@ -224,13 +234,72 @@ class QuestionsView(EvaluationView):
 questions = QuestionsView.as_view()
 
 
-class SearchUserView(EvaluationView):
-    selection_name = "search"
+class SearchUserView(BaseSearchView):
+    selection_name = "search_user"
     def get_elaborations(self):
-        user = AuroraUser.get_or_raise_404(pk=request.GET['id'])
+        if "id" not in self.request.GET:
+            raise Http404
+        user = get_object_or_404(AuroraUser, pk=self.request.GET['id'])
         return user.get_course_elaborations(self.course)
 
 search_user = SearchUserView.as_view()
+
+
+class SearchView(BaseSearchView):
+    selection_name = "search"
+    def get_elaborations(self):
+        self._set_selected()
+
+        if (self.selected_challenge != 'task...'):
+            challenges = Challenge.objects.filter(
+                            title=self.selected_challenge[
+                                    :(self.selected_challenge.rindex('(') - 1)],
+                            course=self.course)
+        else:
+            challenges = Challenge.objects.filter(course=self.course)
+
+        if(self.selected_user != 'user...'):
+            user = AuroraUser.objects.filter(username=self.selected_user)
+            self.request.session['display_points'] = "true"
+        else:
+            user = AuroraUser.objects.all()
+            self.request.session['display_points'] = "false"
+
+        if(self.selected_tag != 'tag...'):
+            aurorauser_ct = ContentType.objects.get_for_model(AuroraUser)
+            tagged_items = TaggedItem.objects.filter(
+                content_type=aurorauser_ct, tag__name=selected_tag)
+            tagged_user_ids = []
+            for ti in tagged_items:
+                if not tagged_user_ids.__contains__(ti.content_object):
+                    tagged_user_ids.append(ti.content_object.id)
+
+            tagged_user = AuroraUser.objects.filter(id__in=tagged_user_ids)
+            user = user & tagged_user
+
+        return Elaboration.search(challenges, user)
+
+    def get_extra_session(self):
+        return {
+            "selected_challenge": self.selected_challenge,
+            "selected_tag": self.selected_tag,
+            "selected_user": self.selected_user,
+        }
+
+    def _set_selected(self):
+        if self.request.method == "POST":
+            self.selected_challenge = self.request.POST.get('selected_challenge', "task...")
+            self.selected_user = self.request.POST.get('selected_user', "user...").split()[0]
+            self.selected_tag = self.request.POST.get('selected_tag', "tag...")
+        else:
+            self.selected_challenge = self.request.session.get('selected_challenge', "task...")
+            self.selected_user = self.request.session.get('selected_user', "user...")
+            self.selected_tag = self.request.session.get('selected_tag', "tag...")
+
+    def post(self, *args, **kwargs):
+        return self.get(*args, **kwargs)
+
+search = SearchView.as_view()
 
 
 EVALUATION_VIEWS = {
@@ -242,12 +311,16 @@ EVALUATION_VIEWS = {
     "non_adequate_work": non_adequate_work,
     "missing_reviews": missing_reviews,
     "questions": questions,
-    "search": search_user,
+    "search": search,
+    "search_user": search_user,
 }
 
 def evaluation(request, **kwargs):
     selection = request.session.get('selection', 'missing_reviews')
-    return EVALUATION_VIEWS[selection](request, **kwargs)
+    view = EVALUATION_VIEWS.get(selection)
+    if view is None:
+        raise Http404
+    return view(request, **kwargs)
 
 
 @aurora_login_required()
@@ -363,7 +436,7 @@ def detail(request, course_short_title=None):
         params = {'selection': 'awesome'}
     if selection == "evaluated_non_adequate_work":
         params = {'selection': 'evaluated non-adequate work'}
-    if selection == "search":
+    if selection in ("search", "search_user"):
         evaluation = None
         user = request.user
         lock = False
@@ -610,56 +683,6 @@ def set_appraisal(request, course_short_title=None):
     else:
         Notification.enough_peer_reviews(review)
     return HttpResponse()
-
-
-@csrf_exempt
-@aurora_login_required()
-@staff_member_required
-def search(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-
-    selected_challenge = request.POST['selected_challenge']
-    selected_user = request.POST['selected_user'].split()[0]
-    selected_tag = request.POST['selected_tag']
-
-    challenges = []
-    if(selected_challenge != 'task...'):
-        challenges = Challenge.objects.filter(title=selected_challenge[:(
-            request.POST['selected_challenge'].rindex('(') - 1)], course=course)
-    else:
-        challenges = Challenge.objects.filter(course=course)
-
-    user = []
-    if(selected_user != 'user...'):
-        user = AuroraUser.objects.filter(username=selected_user)
-        request.session['display_points'] = "true"
-    else:
-        user = AuroraUser.objects.all()
-        request.session['display_points'] = "false"
-
-    if(selected_tag != 'tag...'):
-        aurorauser_ct = ContentType.objects.get_for_model(AuroraUser)
-        tagged_items = TaggedItem.objects.filter(
-            content_type=aurorauser_ct, tag__name=selected_tag)
-        tagged_user_ids = []
-        for ti in tagged_items:
-            if not tagged_user_ids.__contains__(ti.content_object):
-                tagged_user_ids.append(ti.content_object.id)
-
-        tagged_user = AuroraUser.objects.filter(id__in=tagged_user_ids)
-        user = user & tagged_user
-
-    elaborations = []
-    if Elaboration.search(challenges, user):
-        elaborations = list(Elaboration.search(challenges, user))
-
-    # store selected elaborations in session
-    request.session['selection'] = 'search'
-    request.session['selected_challenge'] = selected_challenge
-    request.session['selected_user'] = selected_user
-    request.session['selected_tag'] = selected_tag
-
-    return evaluation(request, course_short_title)
 
 
 @aurora_login_required()
