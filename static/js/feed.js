@@ -67,6 +67,7 @@ $(function() {
 			$('#small_talk').show();
 			$('#small_talk').css('height',cHeight-30);
 			chatupdate();
+		    $("#msgInput").focus();
 		}
 	})
 	feedCookieLoad();
