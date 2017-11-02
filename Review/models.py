@@ -90,19 +90,27 @@ class ReviewEvaluation(models.Model):
     @staticmethod
     def get_review_evaluation_percent(user, course):
         number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False).count()
-        number_of_review_evaluations = ReviewEvaluation.objects.filter(user=user, review__elaboration__challenge__course=course).count()
         if number_of_reviews == 0:
             return 0
-        else:
-            return number_of_review_evaluations/number_of_reviews
+        number_of_review_evaluations = ReviewEvaluation.objects.filter(user=user, review__elaboration__challenge__course=course).count()
+        return number_of_review_evaluations/number_of_reviews
 
-    @staticmethod
-    def get_unevaluated_reviews(user, course):
-        review_ids = Review.objects.values_list('id', flat=True).filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False)
-        rated_review_ids = ReviewEvaluation.objects.values_list('review_id', flat=True).filter(user=user, review__elaboration__challenge__course=course)
-        missing_ratings_ids = list(set(review_ids)-set(rated_review_ids))
+    @classmethod
+    def reviews_for_user_and_course(cls, user, course):
+        return Review.objects.filter(elaboration__challenge__course=course,
+                                     elaboration__user=user,
+                                     submission_time__isnull=False)
 
-        return Review.objects.filter(id__in=missing_ratings_ids)
+    @classmethod
+    def _annotate_num_review_evaluations(cls, user, course):
+        return cls.reviews_for_user_and_course(user, course).annotate(
+                    num_review_evaluations=models.Count("reviewevaluation"))
+
+    @classmethod
+    def get_unevaluated_reviews(cls, user, course):
+        return cls._annotate_num_review_evaluations(user, course).filter(
+                                                    num_review_evaluations=0)
+
 
 class ReviewConfig(models.Model):
     # in hours
