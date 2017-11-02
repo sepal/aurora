@@ -4,15 +4,15 @@
 {% load render_uploads %}
 
 {% block additional_headers %}
-  <script type="text/javascript" src="{{ STATIC_URL }}js/reviews.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/reviews.js"></script>
 {% endblock %}
 
 <script type="text/javascript">
-  //var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
-  //var SAVE_REVISION_URL = "{% url 'Elaboration:save_revision' course_short_title=course.short_title %}";
-  //var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
-  //var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
-  var REVIEW_EVALUATION_URL = "{% url 'Review:evaluate' course_short_title=course.short_title %}";
+    //var SAVE_URL = "{% url 'Elaboration:save' course_short_title=course.short_title %}";
+    //var SAVE_REVISION_URL = "{% url 'Elaboration:save_revision' course_short_title=course.short_title %}";
+    //var SUBMIT_URL = "{% url 'Elaboration:submit' course_short_title=course.short_title %}";
+    //var STACK_URL = "{% url 'Challenge:stack' course_short_title=course.short_title %}";
+    var REVIEW_EVALUATION_URL = "{% url 'Review:evaluate' course_short_title=course.short_title %}";
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/review_evaluation.js"></script>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/review.css" type="text/css" media="screen"/>
@@ -23,111 +23,129 @@
         {% if forloop.first %}
             <div class="review_head">Reviews</div>
         {% else %}
-            <div class="between_reviews"> </div>
+            <div class="between_reviews"></div>
         {% endif %}
 
-		<div class="review_body{% if review.reviewer.is_staff %} review_staff{% endif %}">
-       	 	<div style="margin-top:1.5px;padding:3px 0px; float:right;">
-         	   <span style="">{% include 'elaboration_indicators.html' with elaboration=review.elaboration %}</span>
-        	</div>
-		<div style="padding:7px 0 7px 0;width:100%;border-bottom:1px solid gray">
-			<span title="{{review.submission_time}}" >Review {{ forloop.counter }}: {{review.submission_time|naturaltime}}</span> - <a href="#review-{{ review.id }}" rel="modal:open"> View Elaboration </a>
-		</div>
-			<br>
+        <div class="review_body{% if review.reviewer.is_staff %} review_staff{% endif %}">
+            <div style="margin-top:1.5px;padding:3px 0px; float:right;">
+                <span style="">{% include 'elaboration_indicators.html' with elaboration=review.elaboration %}</span>
+            </div>
+            <div style="padding:7px 0 7px 0;width:100%;border-bottom:1px solid gray">
+                <span title="{{ review.submission_time }}">Review {{ forloop.counter }}: {{ review.submission_time|naturaltime }}</span>
+                - <a href="#review-{{ review.id }}" rel="modal:open"> View Elaboration </a>
+            </div>
+            <br>
 
-		<div class="review_overview_review_questions">
-	            {% render_review_answers_staff review.id %}
-			{% if review.elaboration.extra_review_question %}
-	            <div class="question_container">
-	              <div style="color:gray">
-	                {{ review.elaboration.extra_review_question }}
-	                <textarea class="review_answer" readonly>{{ review.extra_review_question_answer }}</textarea>
-	              </div>
-	            </div>
-			{% else %}
-			<div class="question_container">No extra question</div>
-			{% endif %}
-		</div>
+            <div class="review_overview_review_questions">
+                {% render_review_answers_staff review.id %}
+                {% if review.elaboration.extra_review_question %}
+                    <div class="question_container">
+                        <div style="color:gray">
+                            {{ review.elaboration.extra_review_question }}
+                            <textarea class="review_answer"
+                                      readonly>{{ review.extra_review_question_answer }}</textarea>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="question_container">No extra question</div>
+                {% endif %}
+            </div>
 
-        	<div class="appraisal eval_appraisal ">
-            	<input type="radio" id="X1{{forloop.counter}}{{review.id}}" name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'A')" {% if review.appraisal == 'A' %} checked {% endif %}/><label for="X1{{forloop.counter}}{{review.id}}" id="X1t">Exceptional</label>
-            	<input type="radio" id="X2{{forloop.counter}}{{review.id}}" name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'S')" {% if review.appraisal == 'S' %} checked {% endif %}/><label for="X2{{forloop.counter}}{{review.id}}" id="X2t">All req. met</label>
-            	<input type="radio" id="X3{{forloop.counter}}{{review.id}}" name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'F')" {% if review.appraisal == 'F' %} checked {% endif %}/><label for="X3{{forloop.counter}}{{review.id}}" id="X3t">Req. missed</label>
-        		<input type="radio" id="X4{{forloop.counter}}{{review.id}}" name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'N')" {% if review.appraisal == 'N' %} checked {% endif %}/><label for="X4{{forloop.counter}}{{review.id}}" id="X4t">Plagiarism/cheated</label>
-        	</div>
+            <div class="appraisal eval_appraisal ">
+                <input type="radio" id="X1{{ forloop.counter }}{{ review.id }}"
+                       name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'A')"
+                        {% if review.appraisal == 'A' %} checked {% endif %}/><label
+                    for="X1{{ forloop.counter }}{{ review.id }}" id="X1t">Exceptional</label>
+                <input type="radio" id="X2{{ forloop.counter }}{{ review.id }}"
+                       name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'S')"
+                        {% if review.appraisal == 'S' %} checked {% endif %}/><label
+                    for="X2{{ forloop.counter }}{{ review.id }}" id="X2t">All req. met</label>
+                <input type="radio" id="X3{{ forloop.counter }}{{ review.id }}"
+                       name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'F')"
+                        {% if review.appraisal == 'F' %} checked {% endif %}/><label
+                    for="X3{{ forloop.counter }}{{ review.id }}" id="X3t">Req. missed</label>
+                <input type="radio" id="X4{{ forloop.counter }}{{ review.id }}"
+                       name="reviewgroup{{ stack }}{{ review.id }}" onclick="set_appraisal({{ review.id }}, 'N')"
+                        {% if review.appraisal == 'N' %} checked {% endif %}/><label
+                    for="X4{{ forloop.counter }}{{ review.id }}" id="X4t">Plagiarism/cheated</label>
+            </div>
 
-          <div class="tags review_overview_tags tags-{{ review.get_content_type_id }}-{{ review.id }}">
-              {% include 'tags.html' with tagged_object=review %}
-			  <br><br>
-	</div>
-    <div id="review-{{ review.id }}" class="modal-elaboration" style="display:none;">
-      {% include 'user_info.html' with author=review.elaboration.user %}
-      {% render_original_uploads review.elaboration %}
-      {% if review.elaboration.elaboration_text  %}
-        <div class="submitted-content">
-            <textarea id="evaluation-editor-{{ review.id }}" class="trix-content" style="display: none;">{{ review.elaboration.elaboration_text }}</textarea>
-            <trix-editor class="trix-content" input="evaluation-editor-{{ review.id }}"></trix-editor>
+            <div class="tags review_overview_tags tags-{{ review.get_content_type_id }}-{{ review.id }}">
+                {% include 'tags.html' with tagged_object=review %}
+                <br><br>
+            </div>
+            <div id="review-{{ review.id }}" class="modal-elaboration" style="display:none;">
+                {% include 'user_info.html' with author=review.elaboration.user %}
+                {% render_original_uploads review.elaboration %}
+                {% if review.elaboration.elaboration_text %}
+                    <div class="submitted-content">
+                        <textarea id="evaluation-editor-{{ review.id }}" class="trix-content"
+                                  style="display: none;">{{ review.elaboration.elaboration_text }}</textarea>
+                        <trix-editor class="trix-content" input="evaluation-editor-{{ review.id }}"></trix-editor>
+                    </div>
+                {% endif %}
+
+                {% if review.elaboration.revised_elaboration_text != review.elaboration.elaboration_text %}
+                    <h1>Revised Work</h1>
+                    {% if review.elaboration.revised_elaboration_changelog %}
+                        <b>Changelog: </b>{{ review.elaboration.revised_elaboration_changelog }}<br>
+                        <b>{{ elaboration.most_helpful_other_user_text }}</b> helped me the most to improve my work<br>
+                        <br>
+                    {% endif %}
+
+                    {% render_revised_uploads review.elaboration %}
+                    <div class="submitted-content">
+                        <textarea id="evaluation-revised-editor-{{ review.id }}" class="trix-content"
+                                  style="display: none;">{{ review.elaboration.revised_elaboration_text }}</textarea>
+                        <trix-editor class="trix-content"
+                                     input="evaluation-revised-editor-{{ review.id }}"></trix-editor>
+                    </div>
+                {% endif %}
+                {% include 'elaboration_indicators.html' with elaboration=review.elaboration %}
+            </div>
+            <div style="white-space: nowrap">
+                <div class="review_evaluation_drawer_eval">
+                    <div class="review_evaluation_text">This review</div>
+                    <div id="{{ review.id }}" class="review_evaluation_container">
+                        <div review_id="{{ review.id }}" appraisal="P"
+                             class="review_evaluation_readonly positive {% if review.appraisal_student == "P" %} active{% endif %}">
+                            ... helped improve my work
+                        </div>
+                        <div review_id="{{ review.id }}" appraisal="D"
+                             class="review_evaluation_readonly neutral {% if review.appraisal_student == "D" %} active{% endif %}">
+                            ... was ok
+                        </div>
+                        <div review_id="{{ review.id }}" appraisal="B"
+                             class="review_evaluation_readonly neutral {% if review.appraisal_student == "B" %} active{% endif %}">
+                            ... was meaningless
+                        </div>
+                        <div review_id="{{ review.id }}" appraisal="N"
+                             class="review_evaluation_readonly negative {% if review.appraisal_student == "N" %} active{% endif %}">
+                            ... was minimalist or offensive
+                        </div>
+                    </div>
+                </div>
+                <div class="review_evaluation_drawer_eval tutory">
+                    <div id="{{ review.id }}" class="review_evaluation_container">
+                        <div review_id="{{ review.id }}" appraisal="P"
+                             class="review_evaluation positive {% if review.appraisal_tutor == "P" %} active{% endif %}">
+                            ... is really good
+                        </div>
+                        <div review_id="{{ review.id }}" appraisal="D"
+                             class="review_evaluation neutral {% if review.appraisal_tutor == "D" %} active{% endif %}">
+                            ... is ok
+                        </div>
+                        <div review_id="{{ review.id }}" appraisal="B"
+                             class="review_evaluation neutral {% if review.appraisal_tutor == "B" %} active{% endif %}">
+                            ... is meaningless
+                        </div>
+                        <div review_id="{{ review.id }}" appraisal="N"
+                             class="review_evaluation negative {% if review.appraisal_tutor == "N" %} active{% endif %}">
+                            ... is minimalist or offensive
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      {% endif %}
-
-      {% if review.elaboration.revised_elaboration_text != review.elaboration.elaboration_text %}
-          <h1>Revised Work</h1>
-          {% if review.elaboration.revised_elaboration_changelog %}
-            <b>Changelog: </b>{{ review.elaboration.revised_elaboration_changelog }}<br>
-            <b>{{ elaboration.most_helpful_other_user_text }}</b> helped me the most to improve my work<br><br>
-          {% endif %}
-
-          {% render_revised_uploads review.elaboration %}
-          <div class="submitted-content">
-              <textarea id="evaluation-revised-editor-{{ review.id }}" class="trix-content" style="display: none;">{{ review.elaboration.revised_elaboration_text}}</textarea>
-              <trix-editor class="trix-content" input="evaluation-revised-editor-{{ review.id }}"></trix-editor>
-          </div>
-      {% endif %}
-      {% include 'elaboration_indicators.html' with elaboration=review.elaboration %}
-    </div>
-    <div style="white-space: nowrap">
-    <div class="review_evaluation_drawer_eval">
-	  <div class="review_evaluation_text">This review</div>
-        <div id="{{ review.id }}" class="review_evaluation_container">
-            <div review_id="{{ review.id }}" appraisal="P"
-                 class="review_evaluation positive {% if review.appraisal == "P" %} active{% endif %}">
-                ... helped improve my work
-            </div>
-            <div review_id="{{ review.id }}" appraisal="D"
-                 class="review_evaluation neutral {% if review.appraisal == "D" %} active{% endif %}">
-                ... was ok
-            </div>
-            <div review_id="{{ review.id }}" appraisal="B"
-                 class="review_evaluation neutral {% if review.appraisal == "B" %} active{% endif %}">
-                ... was meaningless
-            </div>
-            <div review_id="{{ review.id }}" appraisal="N"
-                 class="review_evaluation negative {% if review.appraisal == "N" %} active{% endif %}">
-                ... was minimalist or offensive
-            </div>
-        </div>
-    </div><div class="review_evaluation_drawer_eval tutory">
-        <div id="{{ review.id }}" class="review_evaluation_container">
-            <div review_id="{{ review.id }}" appraisal="P"
-                 class="review_evaluation positive {% if review.appraisal == "P" %} active{% endif %}">
-                ... is really good
-            </div>
-            <div review_id="{{ review.id }}" appraisal="D"
-                 class="review_evaluation neutral {% if review.appraisal == "D" %} active{% endif %}">
-                ... is ok
-            </div>
-            <div review_id="{{ review.id }}" appraisal="B"
-                 class="review_evaluation neutral {% if review.appraisal == "B" %} active{% endif %}">
-                ... is meaningless
-            </div>
-            <div review_id="{{ review.id }}" appraisal="N"
-                 class="review_evaluation negative {% if review.appraisal == "N" %} active{% endif %}">
-                ... is minimalist or offensive
-            </div>
-        </div>
-    </div>
-</div>
-</div>
     {% endfor %}
-
 </div>

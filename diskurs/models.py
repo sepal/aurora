@@ -17,7 +17,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     filter_group_id = False
 
-    def __unicode__(self):
+    def __str__(self):
         return_string = str(self.id) + ' - ' + self.content[0:50]
 
         if len(self.content) > 50:
@@ -61,7 +61,7 @@ class Thread(models.Model):
     members_in_group = models.IntegerField(default=20)
     filter_group_id = False
 
-    def __unicode__(self):
+    def __str__(self):
         return_string = str(self.id) + ' - ' + self.title[0:50]
 
         if len(self.title) > 50:

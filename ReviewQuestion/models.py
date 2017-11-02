@@ -8,5 +8,5 @@ class ReviewQuestion(models.Model):
     boolean_answer = models.BooleanField(default=False)
     visible_to_author = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.text)

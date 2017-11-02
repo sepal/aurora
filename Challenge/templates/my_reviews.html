@@ -23,43 +23,62 @@
 
 <div id="detail_area" >
 	<div class="challenge">
-    <div class="challenge_title">
-    	{{challenge.title}} <a href="stack?id={{challenge.get_stack.id}}" class="button" style="font-weight:normal;font-size:90%"><i class="fa fa-arrow-circle-right button"></i> {{challenge.get_stack.title}}</a>
-    </div>
-	 <div class="challenge_description" >
-		  {{ challenge.description|safe|urlize }}
-	 </div>
-    <b>You wrote {{user_reviews|length}} reviews for this task</b>
-    <div class="all_reviews">
-		{% for review_data in user_reviews %}
-		<div class="view_review">
-				{% render_review_answers review_data.review_id %}
-        <div class="question_container">
-          <div>
-            {{ review_data.review.elaboration.extra_review_question }}
-            <textarea class="review_answer" readonly>{{ review_data.extra_review_question_answer }}</textarea>
-          </div>
+        <div class="challenge_title">
+            {{challenge.title}} <a href="stack?id={{challenge.get_stack.id}}" class="button" style="font-weight:normal;font-size:90%"><i class="fa fa-arrow-circle-right button"></i> {{challenge.get_stack.title}}</a>
         </div>
-			{% if review_data.appraisal == "Awesome" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b>
-            {% elif review_data.appraisal == "Awesome" %} Your Review conclusion: Accepted
-			{% elif review_data.appraisal == "Success" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Accepted</b>
-			{% elif review_data.appraisal == "Fail" %} <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Accepted (Requirements missed)</b>
-			{% elif review_data.appraisal == "Not even trying" %} <div class="appraisal Verdict_Not"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Plagiarism or cheated</b>
-			{% endif %} <!-- review data -->
-          </b>
-        </div><hr style="margin-top:12px;margin-bottom:12px;border:0;border-bottom:1px dashed #aaa">
-        <div class="show_review_feedback {% if review_data.evaluation != "" %}contains_feedback{% else %}no_feedback{% endif %}">
+        <div class="challenge_description" >
+            {{ challenge.description|safe|urlize }}
+        </div>
+        <b>You wrote {{reviews|length}} reviews for this task</b>
+        <div class="all_reviews">
+		    {% for review in reviews %}
+                <div class="view_review">
+                    {% render_review_answers review.review_id %}
+                    <div class="question_container">
+                        <div>
+                            {{ review.review.elaboration.extra_review_question }}
+                            <textarea class="review_answer" readonly>{{ review.extra_review_question_answer }}</textarea>
+                        </div>
+                    </div>
 
-			{% if review_data.evaluation == "" %} Your review has not been rated yet.
-        	{% elif review_data.evaluation == "P" %} Your review has been rated as <b>&raquo;helpful&laquo;.
-        	{% elif review_data.evaluation == "D" %} Your review has been rated as <b>&raquo;ok&laquo;.
-        	{% elif review_data.evaluation == "B" %} Your review has been rated as <b>&raquo;meaningless&laquo;.
-       		{% elif review_data.evaluation == "N" %} Your review has been rated as <b>&raquo;minimalist or offensive&laquo;.
-       		{% endif %}</b>
-		</div>
-	</div><br><br>
+                    {% if review.appraisal == "Awesome" %}
+                        <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Accepted with extra <i class="fa fa-thumbs-o-up"></i></b></div>
+                    {% elif review.appraisal == "Success" %}
+                        <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Accepted</b></div>
+                    {% elif review.appraisal == "Fail" %}
+                        <div class="appraisal Verdict_Success"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Accepted (Requirements missed)</b></div>
+                    {% elif review.appraisal == "Not even trying" %}
+                        <div class="appraisal Verdict_Not"><i class="fa fa-arrow-right"></i> Your review conclusion: <b>Plagiarism or cheated</b></div>
+                    {% endif %} <!-- review data -->
 
-{% endfor %}
+                    <hr style="margin-top:12px;margin-bottom:12px;border:0;border-bottom:1px dashed #aaa"/>
+
+                    {% if review.evaluations|length == 0 %}
+                        <div class="show_review_feedback no_feedback">
+                            Your review has not yet been rated.
+                        </div>
+                    {% else %}
+                        {% for evaluation in review.evaluations %}
+                            <div class="show_review_feedback contains_feedback">
+                                Your review has been rated as
+                                {% if evaluation.appraisal == "P" %}   <b>&raquo;helpful&laquo;</b>
+                                {% elif evaluation.appraisal == "D" %} <b>&raquo;ok&laquo;</b>
+                                {% elif evaluation.appraisal == "B" %} <b>&raquo;meaningless&laquo;</b>
+                                {% elif evaluation.appraisal == "N" %} <b>&raquo;minimalist or offensive&laquo;</b>
+                                {% endif %}
+                                {% if evaluation.user.is_staff %}
+                                    by the LVA team.
+                                {% else %}
+                                    by the student.
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <br/><br/>
+            {% endfor %}
+        </div>
     </div>
 </div>
+
 {% endblock %}

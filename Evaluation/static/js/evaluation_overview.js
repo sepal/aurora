@@ -20,18 +20,36 @@ $(document).ready(function() {
     	    else {this.style.height = (this.scrollHeight)+'px';}
         });
         $('.review_answer').redraw();
+		EcountChars();
     });
 	$("trix-editor").attr('contenteditable', 'false');
-	document.addEventListener('trix-initialize',EcountChars);
+	updateWordCount();
 });
 
+function updateWordCount() {
+	var trixies = document.querySelectorAll('trix-editor');
+
+	[].forEach.call(trixies, function(trixie) {
+		theTrix = $(trixie).attr('data-ID');
+		try { 
+			var x = trixie.editor.getDocument().toString();
+			$('#'+theTrix).text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+		}
+		catch(m) {
+			alert(m);
+		}
+	});
+}
+
 function EcountChars() {
+/*	
 	var trixDings = document.querySelector("trix-editor");
 	var x = trixDings.editor.getDocument().toString();
 	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
 	trixDings = document.querySelector("#trix2");
 	x = trixDings.editor.getDocument().toString();
 	$('.new_word_count_2').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
+*/
 }
 
 $(function() {

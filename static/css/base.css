@@ -6,6 +6,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, 
 	line-height:1.2;
 }
 
+
 @media all and (max-width: 959px) {
 	body {
 		padding-top:48px;
@@ -242,7 +243,7 @@ input:-moz-placeholder { color:rgba(58,201,88,0);	text-shadow: 0 0 2px rgba(58,2
 }
 
 .course_selection_background {
-	background: url("../img/aurora@2x.jpg");
+	background: url("/static/img/aurora@2x.jpg");
 	background-size:cover;
 	background-repeat:no-repeat;
 	background-color:black;

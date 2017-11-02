@@ -2,6 +2,14 @@
  * Created by peterpur between 22.2.2014 and now.
  */
 
+$( window ).resize(function() {
+	if($('#small_talk').is(':visible')) {
+		cHeight = $(window).height()/3*2;
+		$('#small_talk').css('height',cHeight-31);
+		$('#smalltalk_header').css('bottom',cHeight);
+	}
+});
+
 var loadMore_Timer;
 
 $(function() {
@@ -29,7 +37,7 @@ $(function() {
 	$('#feed-li').addClass('uRhere');
 	$('.feed_header').click(function() {
 		$('#content_' + $(this).attr('id')).slideToggle('fast', function() {
-			iiid = $(this).attr('id').replace('content_','');
+				iiid = $(this).attr('id').replace('content_','');
 			myIcon = $('i','#'+iiid);
 			if (myIcon.hasClass('fa-angle-up')) {
 				myIcon.removeClass('fa-angle-up');
@@ -42,8 +50,30 @@ $(function() {
 			feedCookieUpdate();
 		});
 	});
+	$('#popup_chat').click(function(){
+		if($('#small_talk').is(':visible')) {
+			$('#smalltalk_header').css('bottom',0);
+			myIcon = $(this).children('i');
+			myIcon.removeClass('fa-angle-down');
+			myIcon.addClass('fa-angle-up');
+			$('#small_talk').hide();
+			stop_chatupdate();
+		} else {
+			cHeight = $(window).height()/3*2;
+			$('#smalltalk_header').css('bottom',cHeight);
+			myIcon = $(this).children('i');
+			myIcon.removeClass('fa-angle-up');
+			myIcon.addClass('fa-angle-down');
+			$('#small_talk').show();
+			$('#small_talk').css('height',cHeight-30);
+			chatupdate();
+		    $("#msgInput").focus();
+		}
+	})
 	feedCookieLoad();
 })
+
+
 
 function feedCookieUpdate(elem) {
     "use strict";

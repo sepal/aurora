@@ -13,7 +13,6 @@ def export_csv(modeladmin, request, queryset):
     writer.writerow([
         smart_str(u"user"),
         smart_str(u"course"),
-        smart_str(u"review_karma"),
     ])
     for obj in modeladmin.model.objects.all():
         writer.writerow([
@@ -52,8 +51,9 @@ class CourseUserRelationAdmin(admin.ModelAdmin):
                     'user',
                     'course',
                     'active',
-                    'review_karma', 
                     'review_group',
+                    'review_karma_tutors',
+                    'review_karma_students',
                     'top_reviewer',
                 ]
             }

@@ -3,6 +3,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 
+import AuroraUser
 from AuroraProject.decorators import aurora_login_required
 from Course.models import Course
 from Review.models import Review, ReviewEvaluation
@@ -161,4 +162,43 @@ def evaluate(request, course_short_title):
     review_evaluation, created = ReviewEvaluation.objects.get_or_create(user=user, review=review)
     review_evaluation.appraisal = appraisal
     review_evaluation.save()
+
+    update_review_karma(request, review_evaluation)
+
     return HttpResponse()
+
+def update_review_karma(request, review_evaluation):
+    review_author = review_evaluation.review.reviewer
+    review_evaluations = ReviewEvaluation.objects.filter(review_id__reviewer_id=review_author.id)
+    review_evaluations_tutors = review_evaluations.filter(user__is_staff=True)
+    review_evaluations_students = review_evaluations.filter(user__is_staff=False)
+
+    total_score_tutors = calculate_total_score(review_evaluations_tutors)
+    total_score_students = calculate_total_score(review_evaluations_students)
+
+    try:
+        review_karma_tutors = total_score_tutors / len(review_evaluations_tutors)
+    except ZeroDivisionError:
+        review_karma_tutors = 0.0
+
+    try:
+        review_karma_students = total_score_students / len(review_evaluations_students)
+    except ZeroDivisionError:
+        review_karma_students = 0.0
+
+    review_author.update_review_karma(review_karma_tutors, review_karma_students)
+
+def calculate_total_score(review_evaluations):
+    total_score = 0.0
+    for review_evaluation in review_evaluations:
+        score = 0.0
+        if review_evaluation.appraisal == 'P':  # helpful
+            score = 1.0
+        elif review_evaluation.appraisal == 'D':  # ok
+            score = 0.5
+        elif review_evaluation.appraisal == 'B':  # meaningless
+            score = 0.2
+        elif review_evaluation.appraisal == 'N':  # minimal
+            score = 0.1
+        total_score = total_score + score
+    return total_score
