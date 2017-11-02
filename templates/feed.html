@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load comments %}
 
 {% block additional_headers %}
   <script type="text/javascript" src="{% static "js/feed.js" %}"></script>
@@ -23,17 +24,31 @@
 {% endblock %}
 
 {% block content %}
+    {% comments_boilerplate %}
 
 <div id="comments_column_1">
       <div class="feed_header newsfeed" id="all_the_news">
         <i class="fa fa-angle-up fa-2x half eventually"></i> 
         <b>Newsfeed</b>
-      </div>
-{% comment %}
+        </div>
+		<div id="content_all_the_news">
+		<ul class="toolbar">
+			<li class="button filterbtn" id="1" title="Show all comments" onclick="filterClick(this.id,'{{user.username}}');"><i class="fa fa-eye"></i> All</li>
+			<li class="button filterbtn" id="3" title="Show only top-level comments from the course team" onclick="filterClick(this.id,'{{user.username}}');"><i class="fa fa-eye"></i> Announcements</li>
+			<li class="button filterbtn" id="2" title="Show only comments posted by lecturers, tutors or yourself" onclick="filterClick(this.id,'{{user.username}}');"><i class="fa fa-eye"></i> Lecturer Comments</li>
+			<li class="button filterbtn" id="4" title="Show only top-level comments, hide all replies." onclick="filterClick(this.id,'{{user.username}}');"><i class="fa fa-eye"></i> no replies</li>
+			<li class="button filterbtn" id="0" title="Show only comments posted after you activate this filter" onclick="markT('{{user.username}}');filterClick(this.id,'{{user.username}}')"><i class="fa fa-eye"></i> new <span id="new_date"></span></li>
+			{% if user.is_staff %}
+			<li class="button filterbtn" id="99" title="Show only staff comments" onclick="filterClick(this.id,'{{user.username}}');"></i>[+S]</li>
+			{% endif %}
+			{% if user.is_staff %}
+			<li class="button filterbtn" id="98" title="Show no staff comments" onclick="filterClick(this.id,'{{user.username}}');"></i>[-S]</li>
+			{% endif %}
+			
+		</ul>
 		<div id="lindicator" style="display:none;float:right;position:relative;top:15px;color:silver;font-size:9px">•</div>
         {% render_multi_comment_list for newsfeed %}
 		</div>
-{% endcomment %}	
 </div>
 {% comment %}
 <div id="chat_column_1_header">
