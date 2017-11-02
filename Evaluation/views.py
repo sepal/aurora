@@ -302,6 +302,36 @@ class SearchView(BaseSearchView):
 search = SearchView.as_view()
 
 
+@csrf_exempt
+@staff_member_required
+def plagcheck_suspicions(request, course_short_title=None):
+    course = Course.get_or_raise_404(short_title=course_short_title)
+
+    ret_data = render_to_string_suspicions_view(request, course);
+
+    return render(request, 'evaluation.html', {
+        'overview': ret_data['html'],
+        'course': course,
+        'stabilosiert_plagcheck_suspicions': 'stabilosiert',
+        'count_plagcheck_suspicions': ret_data['count'],
+        'selection': request.session['selection'],
+    })
+
+
+@csrf_exempt
+@staff_member_required
+def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
+    course = Course.get_or_raise_404(short_title=course_short_title)
+    ret_data = render_to_string_compare_view(request, course, suspicion_id)
+
+    return render(request, 'evaluation.html', {
+        'detail_html': ret_data['html'],
+        'course': course,
+        'stabilosiert_plagcheck_suspicions': 'stabilosiert',
+        'count_plagcheck_suspicions': ret_data['count'],
+    })
+
+
 EVALUATION_VIEWS = {
     "awesome": awesome,
     "complaints": complaints,
@@ -313,7 +343,9 @@ EVALUATION_VIEWS = {
     "questions": questions,
     "search": search,
     "search_user": search_user,
+    "plagcheck_suspicions": plagcheck_suspicions,
 }
+
 
 def evaluation(request, **kwargs):
     selection = request.session.get('selection', 'missing_reviews')
@@ -911,34 +943,4 @@ def similarities(request, course_short_title=None):
     }
 
     return HttpResponse(render_to_string_suspicions_view(request, course, options)['html'])
-
-
-@csrf_exempt
-@staff_member_required
-def plagcheck_suspicions(request, course_short_title=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-
-    ret_data = render_to_string_suspicions_view(request, course);
-
-    return render(request, 'evaluation.html', {
-        'overview': ret_data['html'],
-        'course': course,
-        'stabilosiert_plagcheck_suspicions': 'stabilosiert',
-        'count_plagcheck_suspicions': ret_data['count'],
-        'selection': request.session['selection'],
-    })
-
-
-@csrf_exempt
-@staff_member_required
-def plagcheck_compare(request, course_short_title=None, suspicion_id=None):
-    course = Course.get_or_raise_404(short_title=course_short_title)
-    ret_data = render_to_string_compare_view(request, course, suspicion_id)
-
-    return render(request, 'evaluation.html', {
-        'detail_html': ret_data['html'],
-        'course': course,
-        'stabilosiert_plagcheck_suspicions': 'stabilosiert',
-        'count_plagcheck_suspicions': ret_data['count'],
-    })
 
