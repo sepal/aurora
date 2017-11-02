@@ -57,12 +57,8 @@
   {% if elaboration.elaboration_text  %}
     <div class="submitted-content" style="position:relative">
         <textarea id="evaluation-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.elaboration_text }}</textarea>
-        <trix-editor class="trix-content" input="evaluation-editor-{{elaboration.id}}" id="evaluation-editor-{{elaboration.id}}"></trix-editor><br>
-		<div class="new_word_count">
-{% comment %}
-			<script> document.write(countChars("{{elaboration.elaboration_text}}"));
-			</script>
-{% endcomment %}
+        <trix-editor class="trix-content" input="evaluation-editor-{{elaboration.id}}" id="evaluation-editor-{{elaboration.id}}" data-ID="O{{elaboration.id}}"></trix-editor><br>
+		<div class="new_word_count" id="O{{elaboration.id}}">
 		</div>
     </div>
   {% endif %}
@@ -77,9 +73,9 @@
   {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}
       <div class="submitted-content" style="position:relative">
           <textarea id="evaluation-revised-editor-{{elaboration.id}}" class="trix-content" style="display: none;">{{ elaboration.revised_elaboration_text}}</textarea>
-          <trix-editor id="trix2" class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}"></trix-editor>
+          <trix-editor id="trix2" class="trix-content" input="evaluation-revised-editor-{{elaboration.id}}" data-ID="R{{elaboration.id}}"></trix-editor>
 		  <br>
-  		<div class="new_word_count new_word_count_2">
+  		<div class="new_word_count new_word_count_2" id="R{{elaboration.id}}">
   		</div>
 		  
       </div>
