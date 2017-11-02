@@ -36,3 +36,7 @@
 	height:100%;
 }
 
+#chat_activity {
+	font-size:80%;
+	opacity:0.5;
+}
