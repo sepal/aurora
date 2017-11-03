@@ -3,13 +3,22 @@ import PropTypes from 'prop-types'
 
 import './chat_message.css'
 
-const ChatMessage = ({message: {text, user: {name: username, is_staff}}}) => {
+const ChatMessage = ({message: {text, user: {name: username, is_staff}}, display_author}) => {
   const staffClass = is_staff ? ' staff' : ''
-  return (
-    <div>
+
+  let author = null;
+  if(display_author) {
+    author =
       <div>
         <p className={'ChatMessageAuthor' + staffClass}>{username}</p>
       </div>
+  } else {
+    author = ''
+  }
+
+  return (
+    <div>
+      {author}
       <div>
         <p className='ChatMessageBody'>{text}</p>
       </div>
