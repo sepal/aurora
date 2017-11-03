@@ -139,6 +139,7 @@
                                     <trix-editor class="trix-content" input="original-editor"></trix-editor>
                                     <br>
                                     <div class="new_word_count"></div>
+						{% if not challenge.is_final_challenge %}
                                     <div class="hidden_extra_question" hidden>
                                         <label for="extra-review-question"><b>Optional review question</b> - What would
                                             you like
@@ -152,6 +153,9 @@
                                                value={{ elaboration.extra_review_question }} class="input_position" {% else %}
                                                value="" class="see_through input_position" {% endif %}><br><br>
                                     </div>
+						{% else %}
+                                    <input id="extra-review-question" name="extra-review-question" type="hidden">
+						{% endif %}
                                 </form>
 
                                 <div class="status_under_MCE">
