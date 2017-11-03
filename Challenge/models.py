@@ -318,7 +318,7 @@ class Challenge(models.Model):
         return result
 
     def is_in_lock_period(self, user, course):
-        PERIOD = 999
+        PERIOD = 0
         START_YEAR = 2017
         START_MONTH = 3
         START_DAY = 1

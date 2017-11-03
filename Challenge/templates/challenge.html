@@ -126,8 +126,7 @@
                                             {% csrf_token %}
                                         </form>
                                         <div style="font-size:80%;color:white;background:black"><b>Important note:</b>
-                                            reload
-                                            this page after image uploads are finished! Then, you can use »Fig.X« in
+                                            this page reloads after image uploads are finished! Only then the »Fig.X« can be used in
                                             your text
                                             to reference uploaded images.
                                         </div>
@@ -212,10 +211,8 @@
                                 {% endif %}
                             </div>
                         {% endif %}
-                    {% else %}
-                        {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}Original h
-                        {% else %}
-                        {% endif %}Handed in <a style="color:black;text-decoration: none;"
+                    {% else %}&nbsp;
+                        {% if elaboration.revised_elaboration_text != elaboration.elaboration_text %}<b>Original work</b> h{% else %}H{% endif %}anded in <a style="color:black;text-decoration: none;"
                                               href="javascript:$('#wai_t').text('{{ elaboration.submission_time|date:'j. F, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{ elaboration.submission_time|naturaltime }}'); }, 3000);void(0);"
                                               title="{{ elaboration.submission_time|date:'j. F, H:i' }}"><i
                             class="fa fa-calendar"></i></a>
@@ -378,9 +375,11 @@
                             {% endif %}
                             <div class="revision_section"
                                  {% if elaboration.has_revision %}style="display:block"{% endif %}>
-                                Revised Work
+					   <hr>
+                                <b>Revised Work</b><br>
                                 {% if challenge.accepted_files %}
                                     {% if not elaboration.final_challenge_submitted %}
+						<br><b>Add more images</b>
                                         <div class="file_upload" accepted_files="{{ challenge.accepted_files }}">
                                             <form action="/fileupload"
                                                   class="dropzone dz-clickable dropzone-revised"
@@ -397,11 +396,16 @@
                                             </div>
                                             <br>
                                         </div>
+						    <br><b>All images</b>
+      					    {% render_uploads elaboration %}
                                     {% else %}
+						<br><b>All images</b>
+                                        {% render_uploads elaboration %}
+						<b>Images added for revision</b>
                                         {% render_revised_uploads elaboration %}
                                     {% endif %}
                                 {% endif %}
-
+					  <b>Revised text</b>
                                 <div class="elaboration_block{% if not accepted %} unstarted{% endif %}">
                                     <div {% if elaboration.final_challenge_submitted %}
                                         class="submitted-content" {% endif %}>
