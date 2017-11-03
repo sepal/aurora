@@ -40,3 +40,8 @@
 	font-size:80%;
 	opacity:0.5;
 }
+
+.ChatMessageBody {
+	min-height:0px!important;
+	border-bottom:1px solid white!important;
+}
