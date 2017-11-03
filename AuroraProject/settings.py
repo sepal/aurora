@@ -7,8 +7,14 @@ from diskurs.markdown.giffer import GifferMarkdownFilter
 
 DEBUG = True
 
-# If this is set to True it is assumed that yarn dev server is providing the Chat frontend
-DEV_FRONTEND = False
+CHAT = {
+    # If this is set to True it is assumed that yarn dev server is providing the Chat frontend
+    # This is just a convenience option for the dev environment
+    'DEV_FRONTEND': False,
+
+    # Number of old messages displayed when the Chat loads
+    'HISTORY_LENGTH': 20
+}
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
