@@ -57,7 +57,6 @@ $(function() {
 			myIcon.removeClass('fa-angle-down');
 			myIcon.addClass('fa-angle-up');
 			$('#small_talk').hide();
-			stop_chatupdate();
 		} else {
 			cHeight = $(window).height()/3*2;
 			$('#smalltalk_header').css('bottom',cHeight);
