@@ -263,10 +263,8 @@ def create_context_view_review(request, data):
             evaluation_student = ReviewEvaluation.objects.filter(review=review, user__is_staff=False)
             if evaluation_tutor:
                 review_data['evaluation_tutor'] = evaluation_tutor[0]
-                print('-------------', evaluation_tutor.values())
             if evaluation_student:
                 review_data['evaluation_student'] = evaluation_student[0]
-                print('-------------', evaluation_student.values())
 
             data['reviews'].append(review_data)
 
