@@ -54,6 +54,9 @@ def ws_connect(message, room_name):
                 "user": {
                     "name": user.username,
                     "is_staff": user.is_staff,
+                },
+                "logged_in_user":  {
+                    "name": message.user.username
                 }
             })
         })
