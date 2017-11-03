@@ -4,6 +4,7 @@ from channels.auth import channel_session_user, channel_session_user_from_http
 from datetime import datetime
 from django.contrib.auth.models import User
 
+from AuroraProject import settings
 from AuroraUser.models import AuroraUser
 
 from .models import ChatMessage
@@ -44,7 +45,7 @@ def ws_connect(message, room_name):
         message.reply_channel.send({"close": True})
         return
 
-    last_messages = ChatMessage.objects.filter(room=room_name).order_by('-post_date')[:3]
+    last_messages = ChatMessage.objects.filter(room=room_name).order_by('-post_date')[:settings.CHAT['HISTORY_LENGTH']]
     for cm in reversed(last_messages):
         user = AuroraUser.objects.get(username=cm.username)
         message.reply_channel.send({
