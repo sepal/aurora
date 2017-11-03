@@ -16,6 +16,7 @@ from django.db.models import Q
 import json
 
 from AuroraProject.decorators import aurora_login_required
+from Comments.models import CommentReferenceObject
 from Course.models import Course
 from AuroraUser.models import AuroraUser
 from Evaluation.models import Evaluation
@@ -91,9 +92,16 @@ def course_selection(request):
 def home(request, course_short_title=None):
 
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
+
+    try:
+        newsfeed = CommentReferenceObject.objects.get(name='newsfeed')
+    except CommentReferenceObject.DoesNotExist:
+        newsfeed = CommentReferenceObject.objects.create(name='newsfeed')
+
     course = Course.get_or_raise_404(course_short_title)
     data = {}
     data['course'] = course
+    data['newsfeed'] = newsfeed
 
     # data = get_points(request, user, course)
     # data = create_stat_data(course,data)
