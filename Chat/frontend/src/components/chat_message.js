@@ -10,7 +10,7 @@ const ChatMessage = ({message: {text, user: {name: username, is_staff}, logged_i
   let author = null;
   if(display_author) {
     author =
-      <div className={'ChatMessageAuthor' + staffClass + selfAuthorClass }>
+      <div className='ChatMessageAuthor'>
         <p>{username}</p>
       </div>
   } else {
@@ -18,7 +18,7 @@ const ChatMessage = ({message: {text, user: {name: username, is_staff}, logged_i
   }
 
   return (
-    <div>
+    <div className={'ChatMessage' + staffClass + selfAuthorClass}>
       {author}
       <div className='ChatMessageBody'>
         <p>{text}</p>
