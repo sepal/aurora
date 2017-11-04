@@ -282,14 +282,16 @@ class Comment(models.Model):
         return ref_obj_model.objects.get(id=ref_id)
 
     @staticmethod
-    def count_for(app_label, model, is_staff=False):
+    def count_for(app_label, model, content_id, is_staff=False):
         """
         Returns number of comments for the given content_type and content_id
         without private notes.
 
         :param app_label:
            The name of your model as a string, e.g. issue or stack
-        :param model:
+        :param model
+           The model name, e.g. issue for the feedback system.
+        :param content_id:
            The id of the object, to which the comments are attached to.
         :param is_staff:
             True if the count should include notes visible to staff only. False
@@ -300,10 +302,12 @@ class Comment(models.Model):
         visibility = [Comment.PUBLIC]
         if is_staff:
             visibility.append(Comment.STAFF)
-        content_types = ContentType.objects.filter(app_label=app_label)
-        if len(content_types) > 0:
-            return Comment.objects.filter(content_type=content_types[0],
-                                          model=model,
+
+        content_type = ContentType.objects.filter(app_label=app_label, \
+                                                  model=model)[0]
+        if content_type:
+            return Comment.objects.filter(content_type=content_type,
+                                          object_id=content_id,
                                           delete_date=None,
                                           visibility__in=visibility).count()
         # todo: raise an error instead?

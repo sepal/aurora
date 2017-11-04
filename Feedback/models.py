@@ -127,7 +127,7 @@ class Issue(models.Model):
 
     def _number_of_comments(self, is_staff=False):
         """ Callback for the number of comments property. """
-        return  Comment.count_for('issue', self.pk, is_staff)
+        return  Comment.count_for('Feedback', 'issue', self.pk, is_staff)
 
     number_of_comments = property(_number_of_comments)
 
