@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from django.shortcuts import render
 from AuroraProject.decorators import aurora_login_required
 from django.http import JsonResponse
-from django.template import RequestContext
 from Course.models import Course
 from .models import Lane, Issue, Upvote
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, \
@@ -135,7 +134,7 @@ def api_new_issue(request, course_short_title):
     lanes = Lane.objects.all().filter(hidden=False).order_by('order')
 
     data = json.loads(request.body.decode('utf-8'))
-    user = RequestContext(request)['user']
+    user = request.user
 
     # You can't create an issue without a title, type or a body.
     if 'title' not in data or 'type' not in data or 'body' not in data:
