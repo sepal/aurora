@@ -17,7 +17,7 @@ export function getIssue(id) {
   return new Promise((resolve, reject) => {
     try {
       $.ajax({
-        url: `/${course_short_title}/feedback/api/issue/${id}`
+        url: `/course/${course_short_title}/feedback/api/issue/${id}`
       }).done((resp) => {
         // Required fields.
         let issue = {
@@ -50,11 +50,11 @@ export function getIssue(id) {
 }
 
 export function updateIssue(data, id = undefined) {
-  let url = `/${course_short_title}/feedback/api/issue`;
+  let url = `/course/${course_short_title}/feedback/api/issue`;
   let method = 'POST';
 
   if (id != undefined) {
-    url = `/${course_short_title}/feedback/api/issue/${id}`;
+    url = `/course/${course_short_title}/feedback/api/issue/${id}`;
     method = 'PUT';
   }
 
@@ -73,16 +73,18 @@ export function updateIssue(data, id = undefined) {
       }).done((resp) => {
         resolve(resp);
       }).fail((err) => {
+        console.log(err);
         reject(err);
       });
     } catch ($exception) {
+      console.log($exception);
       reject($exception);
     }
   });
 }
 
 export function getComments(issueID) {
-  const url = `/${course_short_title}/feedback/comments/${issueID}`;
+  const url = `/course/${course_short_title}/feedback/comments/${issueID}`;
   return new Promise((resolve, reject) => {
     $.ajax({
       url: url,
@@ -95,7 +97,7 @@ export function getComments(issueID) {
 }
 
 export function upvote(issueID) {
-  const url = `/${course_short_title}/feedback/api/upvote/${issueID}`;
+  const url = `/course/${course_short_title}/feedback/api/upvote/${issueID}`;
   return new Promise((resolve, reject) => {
     $.ajax({
       method: 'POST',

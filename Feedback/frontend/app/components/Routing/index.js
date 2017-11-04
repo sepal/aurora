@@ -16,14 +16,14 @@ export default function (props) {
     <BrowserRouter>
       <div>
         <div className="content">
-          <Route path={`/${props.course}/feedback`}
+          <Route path={`/course/${props.course}/feedback`}
                  component={Kanban} />
         </div>
-        <Modal returnTo={`/${props.course}/feedback`} course={props.course}>
+        <Modal returnTo={`/course/${props.course}/feedback`} course={props.course}>
           <Switch>
-            <Route exact path={`/${props.course}/feedback/issue/add`}
+            <Route exact path={`/course/${props.course}/feedback/issue/add`}
                    component={IssueFormContainer} />
-            <Route exact path={`/${props.course}/feedback/issue/:id`}
+            <Route exact path={`/course/${props.course}/feedback/issue/:id`}
                    component={IssueContainer} />
           </Switch>
         </Modal>
