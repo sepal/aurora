@@ -21,7 +21,7 @@ class Modal extends React.Component {
   render() {
     if (this.state.closed) {
       return (
-        <Redirect to={`/course/${this.props.course}/feedback/`}/>
+        <Redirect to={`${base_path}`}/>
       )
     }
 
@@ -58,7 +58,7 @@ class Modal extends React.Component {
   }
 
   onIndex() {
-    const pathPattern = new RegExp(`^(/course/${this.props.course}/feedback/?)$`, 'gi');
+    const pathPattern = new RegExp(`^(${base_path}?)$`, 'gi');
     return this.props.location.pathname.match(pathPattern);
   }
 }

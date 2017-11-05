@@ -63,7 +63,7 @@ def index(request, course_short_title):
         'current_user': {
             'is_staff': request.user.is_staff,
             'id': request.user.id,
-        }
+        },
     }
 
     return render(
