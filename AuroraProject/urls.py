@@ -3,6 +3,8 @@ from . import views, settings
 from django.conf.urls import include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from django_js_reverse.views import urls_js
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.conf.urls.static import static
@@ -48,6 +50,7 @@ urlpatterns = [
         url(r'^feedback/', include('Feedback.urls', namespace="Feedback")),
     ])),
 
+    url(r'^jsreverse/$', urls_js, name="js_reverse"),
     url(r'', include('FileUpload.urls')),
 ]
 

@@ -192,6 +192,7 @@ INSTALLED_APPS = (
     'easy_thumbnails',
     'django_comments',
     'django_comments_xtd',
+    'django_js_reverse',
     # 'memoize',
     # own apps
     'AuroraUser',

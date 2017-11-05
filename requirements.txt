@@ -9,6 +9,7 @@ django-suit==0.2.25
 six==1.10
 psycopg2==2.7.1
 django-memoize==2.1.0
+django-js-reverse==0.7.3
 
 # needed for plagcheck worker side
 django-celery==3.2.1
