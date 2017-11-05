@@ -15,11 +15,6 @@ class Chat extends React.Component {
     this.join('main')
   }
 
-  addMessage = (message) => {
-    let messages = [...this.state.messages, {text: message["message"], username: message["username"]}]
-    this.setState({messages})
-  }
-
   render() {
     return (
       <div className="Chat">
@@ -29,23 +24,31 @@ class Chat extends React.Component {
     )
   }
 
+  handleMessage(message) {
+    if (message['type'] === 'chat-message') {
+      message['logged_in_user'] = this.state['username']
+      console.log(message['logged_in_user'])
+      const {messages} = this.state
+      this.setState({messages: [...messages, message]})
+    } else if (message['type'] === 'whoami') {
+      this.setState({username: message['username']})
+    }
+  }
+
   join = (room) => {
     if (!room) return;
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) this.socket.close();
-    console.log("connecting to " + window.location.host);
     this.socket = new WebSocket("ws://" + window.location.hostname + ":8000/ws/" + room);
 
     this.setState({messages: []})
 
     this.socket.onmessage = (e) => {
       let data = JSON.parse(e.data);
-      const {messages} = this.state
-      this.setState({messages: [...messages, data]})
+      this.handleMessage(data)
     }
 
     this.socket.onopen = () => {
-      console.log('joined room ' + room)
     }
   }
 

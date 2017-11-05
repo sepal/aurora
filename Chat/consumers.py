@@ -2,7 +2,6 @@ import json
 from channels import Group, Channel
 from channels.auth import channel_session_user, channel_session_user_from_http
 from datetime import datetime
-from django.contrib.auth.models import User
 
 from AuroraProject import settings
 from AuroraUser.models import AuroraUser
@@ -24,14 +23,12 @@ def msg_consumer(message):
 
     Group("chat-%s" % room).send({
         "text": json.dumps({
+            "type": "chat-message",
             "text": message.content['text'],
             "user": {
                 "name": user.username,
                 "nick": user.nickname,
                 "is_staff": user.is_staff,
-            },
-            "logged_in_user":  {
-                "name": message.content['logged_in_user']
             },
         })
     })
@@ -49,19 +46,24 @@ def ws_connect(message, room_name):
         message.reply_channel.send({"close": True})
         return
 
+    message.reply_channel.send({
+        "text": json.dumps({
+            "type": "whoami",
+            "username": message.user.username,
+        })
+    })
+
     last_messages = ChatMessage.objects.filter(room=room_name).order_by('-post_date')[:settings.CHAT['HISTORY_LENGTH']]
     for cm in reversed(last_messages):
         user = AuroraUser.objects.get(username=cm.username)
         message.reply_channel.send({
             "text": json.dumps({
+                "type": "chat-message",
                 "text": cm.message,
                 "user": {
                     "name": user.username,
                     "nick": user.display_name,
                     "is_staff": user.is_staff,
-                },
-                "logged_in_user":  {
-                    "name": message.user.username
                 },
             })
         })
@@ -75,7 +77,6 @@ def ws_message(message):
             "room": message.channel_session['room'],
             "username": message.channel_session['username'],
             "text": decoded['text'],
-            "logged_in_user": message.user.username
         })
     elif decoded['type'] == 'question':
         print('new question: {}'.format(decoded['text']))

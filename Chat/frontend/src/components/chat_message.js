@@ -5,7 +5,7 @@ import './chat_message.css'
 
 const ChatMessage = ({message: {text, user: {name: username, nick: nickname, is_staff}, logged_in_user}, display_author}) => {
   const staffClass = is_staff ? ' staff' : ''
-  const selfAuthorClass = logged_in_user.name === username ? ' self_author' : ''
+  const selfAuthorClass = logged_in_user === username ? ' self_author' : ''
 
   let author = null;
   if(display_author) {
