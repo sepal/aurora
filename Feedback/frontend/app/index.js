@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   ReactDOM.render(
     (
       <Provider store={store}>
-        <Routing course={course_short_title} />
+        <Routing />
       </Provider>
     ), node);
 });

@@ -14,7 +14,7 @@ export default class Kanban extends React.Component {
     return (
       <div className="kanban">
         <div className="kanban__add">
-          <Link to={`/${course_short_title}/feedback/issue/add`}>
+          <Link to={`${base_path}issue/add`}>
             Add issue
           </Link>
         </div>

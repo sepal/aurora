@@ -12,8 +12,6 @@
   <script type="text/javascript"
           src="{{ STATIC_URL }}js/jquery-3.2.1.js"></script>
   <script type="text/javascript"
-          src="{{ STATIC_URL }}js/autogrow.min.js"></script>
-  <script type="text/javascript"
           src="{{ STATIC_URL }}/js/feedback_addon.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css"
         media="screen" />
@@ -26,7 +24,7 @@
 
 
   <script type="text/javascript">
-    var course_short_title = "{{ course.short_title }}";
+    var base_path = "{% url 'Feedback:index' course.short_title %}";
     var NOTIFICATION_REFRESH_URL = "{% url 'Notification:refresh' course.short_title %}";
   </script>
 </head>

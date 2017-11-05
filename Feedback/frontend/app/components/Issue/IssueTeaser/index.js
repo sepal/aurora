@@ -87,8 +87,8 @@ export default class IssueTeaser extends Component {
         <Link
           key={this.props.id}
           to={{
-            pathname: `/${course_short_title}/feedback/issue/${this.props.id}`,
-            state: {returnTo: `/${course_short_title}/feedback`}
+            pathname: `${base_path}issue/${this.props.id}`,
+            state: {returnTo: `${base_path}`}
           }}
           className={className}>
           <div className="issue--teaser__header">

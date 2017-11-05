@@ -24,7 +24,7 @@ class IssueForm extends React.Component {
   render() {
     if (this.state.submitted) {
       return (
-        <Redirect to={`/${course_short_title}/feedback`}/>
+        <Redirect to={`${base_path}`}/>
       )
     }
 
