@@ -17,11 +17,6 @@
   </script>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/feed.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/chat.css" type="text/css" media="screen"/>
-
-  {% if not DEV_FRONTEND %}
-    <link href="{% static "chat/css/main.addf523f.css" %}" rel="stylesheet">
-  {% endif %}
-  
 {% if not user.is_staff %}
 <style>
 	.button_add_comment_form {display:none;}
