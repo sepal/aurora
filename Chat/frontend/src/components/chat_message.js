@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import './chat_message.css'
 
-const ChatMessage = ({message: {text, user: {name: username, is_staff}, logged_in_user}, display_author}) => {
+const ChatMessage = ({message: {text, user: {name: username, nick: nickname, is_staff}, logged_in_user}, display_author}) => {
   const staffClass = is_staff ? ' staff' : ''
   const selfAuthorClass = logged_in_user.name === username ? ' self_author' : ''
 
@@ -11,7 +11,7 @@ const ChatMessage = ({message: {text, user: {name: username, is_staff}, logged_i
   if(display_author) {
     author =
       <div className='ChatMessageAuthor'>
-        <p>{username}</p>
+        <p>{nickname}</p>
       </div>
   } else {
     author = ''

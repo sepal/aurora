@@ -27,6 +27,7 @@ def msg_consumer(message):
             "text": message.content['text'],
             "user": {
                 "name": user.username,
+                "nick": user.nickname,
                 "is_staff": user.is_staff,
             },
             "logged_in_user":  {
@@ -56,6 +57,7 @@ def ws_connect(message, room_name):
                 "text": cm.message,
                 "user": {
                     "name": user.username,
+                    "nick": user.display_name,
                     "is_staff": user.is_staff,
                 },
                 "logged_in_user":  {
