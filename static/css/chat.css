@@ -23,17 +23,65 @@
 */
 
 .ChatMessageBody {
-	padding:3px 6px!important;
+	border-bottom:1px solid white!important;
+	padding:6px!important;
+    min-height:0px!important;
+    background: #f8f8f8;
+	width:90%!important;
+	border-radius:0 6px 6px 6px;
+	font-weight:400!important;
+	display:inline-block;
 }
 
+.self_author>.ChatMessageBody {
+    background-color: #F6F8CE!important;
+}
+
+.staff>.ChatMessageBody {
+    background-color: rgb(216,252,212)!important;
+}
+
+.ChatMessage.self_author {
+	text-align:right;
+}
+
+.staff {
+	background-color:transparent!important;
+}
+
+.ChatMessageAuthor {
+	display:inline-block;
+	background:black;
+	color:white;
+	border-radius:3px 3px 0 0;
+	padding:2px 6px!important;
+	margin-top:3px;
+	margin-right:100px;
+}
+
+.self_author>.ChatMessageAuthor{
+	margin-left:100px;
+	margin-right:0px;
+}
+
+.self_author>.ChatMessageBody {
+	border-radius:6px 0 6px 6px;
+}
+.ChatMessageAuthor.self_author {
+	margin-left:auto; margin-right:0; 
+	background:black;
+}
 .MessageList {
 	padding-bottom:40px;
 }
 
-
 .Chat {
 	width:100%;
 	height:100%;
+	padding:6px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	
 }
 
 #chat_activity {
@@ -41,7 +89,3 @@
 	opacity:0.5;
 }
 
-.ChatMessageBody {
-	min-height:0px!important;
-	border-bottom:1px solid white!important;
-}
