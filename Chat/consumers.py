@@ -29,6 +29,9 @@ def msg_consumer(message):
                 "name": user.username,
                 "is_staff": user.is_staff,
             },
+            "logged_in_user":  {
+                "name": message.content['logged_in_user']
+            },
         })
     })
 
@@ -57,7 +60,7 @@ def ws_connect(message, room_name):
                 },
                 "logged_in_user":  {
                     "name": message.user.username
-                }
+                },
             })
         })
 
@@ -70,6 +73,7 @@ def ws_message(message):
             "room": message.channel_session['room'],
             "username": message.channel_session['username'],
             "text": decoded['text'],
+            "logged_in_user": message.user.username
         })
     elif decoded['type'] == 'question':
         print('new question: {}'.format(decoded['text']))
