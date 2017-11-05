@@ -73,11 +73,9 @@ export function updateIssue(data, id = undefined) {
       }).done((resp) => {
         resolve(resp);
       }).fail((err) => {
-        console.log(err);
         reject(err);
       });
     } catch ($exception) {
-      console.log($exception);
       reject($exception);
     }
   });
