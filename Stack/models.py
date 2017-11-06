@@ -10,6 +10,7 @@ class Stack(models.Model):
         'Stack.Chapter', null=True, blank=True, default=None, on_delete=models.CASCADE)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
+    final_date = models.DateTimeField(default=datetime.now, blank=True)
 
     # @lru_cache(maxsize=128)
     def get_first_challenge(self):
