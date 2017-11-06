@@ -2,28 +2,29 @@ $(function() {
 		$('#study_code').focus(function(){
 			$('.correct_maker').removeClass('versteck',700);
 		});
-		$('#study_code').focusout(function(){
-			$('.correct_maker').addClass('versteck',700);
-		});
 		$('.bmi').click(function(){
 			$('#study_code').val('033532');
 			$('#statement').focus();
 			$('#study_code').change();
+			$('.correct_maker').addClass('versteck',700);
 		})
 		$('.bmz').click(function(){
 			$('#study_code').val('033533');
 			$('#statement').focus();
       	  	$('#study_code').change();
+			$('.correct_maker').addClass('versteck',700);
 		})
 		$('.bsi').click(function(){
 			$('#study_code').val('033534');
 			$('#statement').focus();
       	  	$('#study_code').change();
+			$('.correct_maker').addClass('versteck',700);
 		})
 		$('.bti').click(function(){
 			$('#study_code').val('033535');
 			$('#statement').focus();
      	   	$('#study_code').change();
+			$('.correct_maker').addClass('versteck',700);
 		})
 })
 
