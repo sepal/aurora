@@ -24,8 +24,10 @@ urlpatterns = [
     url(r'^user/(?P<mode>overview|export)$', Evaluation.views.search_user, name='search_user'),
     url(r'^similarities', Evaluation.views.similarities, name='similarities'),
 
-    url(r'^autocomplete_challenge/$', Evaluation.views.autocomplete_challenge),
-    url(r'^autocomplete_user/$', Evaluation.views.autocomplete_user),
+    url(r'^autocomplete_challenge/$', Evaluation.views.autocomplete_challenge,
+                                                name="autocomplete_challenge"),
+    url(r'^autocomplete_user/$', Evaluation.views.autocomplete_user,
+                                                name="autocomplete_user"),
     url(r'^search/(?P<mode>overview|export)?$', Evaluation.views.search, name="search"),
     url(r'^set_appraisal/$', Evaluation.views.set_appraisal),
     url(r'^review_answer/$', Evaluation.views.review_answer),

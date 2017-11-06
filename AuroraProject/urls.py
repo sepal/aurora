@@ -32,7 +32,7 @@ urlpatterns = [
 
     url(r'^add_tags/$', views.add_tags),
     url(r'^remove_tag/$', views.remove_tag),
-    url(r'^autocomplete_tag/$', views.autocomplete_tag),
+    url(r'^autocomplete_tag/$', views.autocomplete_tag, name="autocomplete_tag"),
 
     url(r'^plagcheck/', include('PlagCheck.urls', namespace='PlagCheck')),
 

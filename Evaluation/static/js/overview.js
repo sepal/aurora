@@ -2,6 +2,11 @@ $(function() {
 	$('#evaluation-li').addClass('uRhere');
 });
 
+function get_course_short_title() {
+	var url_re = /^\/course\/([^\/]{1,32})\//;
+	return url_re.exec(window.location.pathname)[1];
+}
+
 function update_overview(data) {
     data = JSON.parse(data);
     $('#menu').html(data['menu_html']);
@@ -129,7 +134,8 @@ function hideWait() {
 
 $(function() {
     $("#search_challenge").autocomplete({
-        source: "./autocomplete_challenge/",
+        source: Urls["Evaluation:autocomplete_challenge"](
+													get_course_short_title()),
         select: function (event, ui) {
             search(ui.item.value, undefined, undefined);
         },
@@ -139,7 +145,7 @@ $(function() {
 
 $(function() {
     $("#search_user").autocomplete({
-        source: "./autocomplete_user/",
+        source: Urls["Evaluation:autocomplete_user"](get_course_short_title()),
         select: function (event, ui) {
             search(undefined, ui.item.value, undefined);
         },
@@ -149,7 +155,7 @@ $(function() {
 
 $(function() {
     $("#search_tag").autocomplete({
-        source: "/autocomplete_tag/",
+        source: Urls.autocomplete_tag(),
         select: function (event, ui) {
             search(undefined, undefined, ui.item.value);
         },
