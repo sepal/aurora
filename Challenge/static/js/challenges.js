@@ -8,16 +8,8 @@ $(function() {
 
 	$('.filterbar').click(function (){
 		$('.filter_'+$(this).data('filter')).toggleClass('shrinked',300);
+		$('i',this).toggleClass('obi');		
 		setTimeout(chapterCookieUpdate,350);
-		myIcon = $('i',this);
-		if (myIcon.hasClass('fa-angle-up')) {
-			myIcon.removeClass('fa-angle-up');
-			myIcon.addClass('fa-angle-down');
-		} else {
-			myIcon.removeClass('fa-angle-down');
-			myIcon.addClass('fa-angle-up');
-		}
-		
 	})
 	chapterCookieLoad();
 });

@@ -37,18 +37,18 @@ $(function() {
 	$('#feed-li').addClass('uRhere');
 	$('.feed_header').click(function() {
 		$('#content_' + $(this).attr('id')).slideToggle('fast', function() {
-				iiid = $(this).attr('id').replace('content_','');
-			myIcon = $('i','#'+iiid);
-			if (myIcon.hasClass('fa-angle-up')) {
+			$('#info_column').masonry('layout');
+			feedCookieUpdate();
+		});
+		iiid = $(this).attr('id').replace('content_','');
+		$('i','#'+iiid).toggleClass('obi');
+/*			if (myIcon.hasClass('fa-angle-up')) {
 				myIcon.removeClass('fa-angle-up');
 				myIcon.addClass('fa-angle-down');
 			} else {
 				myIcon.removeClass('fa-angle-down');
 				myIcon.addClass('fa-angle-up');
-			}
-			$('#info_column').masonry('layout');
-			feedCookieUpdate();
-		});
+			}*/
 	});
 	$('#popup_chat').click(function(){
 		if($('#small_talk').is(':visible')) {

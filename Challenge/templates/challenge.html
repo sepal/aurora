@@ -35,11 +35,11 @@
         <div id="detail_area">
             <div id="{{ challenge.id }}" class="challenge" stack="{{ challenge.get_stack.id }}">
 		    <div class="backlink"><a href="stack?id={{ challenge.get_stack.id }}"><i class="fa fa-arrow-circle-right"></i> {{ challenge.get_stack.title }}</a></div>
-                <div class="challenge_title" {% if elaboration.is_submitted %}onclick="toggleDetails()" style="cursor:pointer"{% endif %}>
+                <div class="challenge_title" {% if elaboration.is_submitted %}onclick="toggleSection('.challenge_description','#TAngle')" style="cursor:pointer"{% endif %}>
                     <script> window.document.title = "Task: {{challenge.get_stack.title}} - {{challenge.title|safe}} ({{course.short_title}})";</script>
                     <div class="challenge_description_title">
 				  {% if elaboration.is_submitted %}
-                        	<button><i class="fa fa-2x fa-angle-down"></i></button>
+                        	<button><i class="fa fa-2x fa-angle-down rotare" id="TAngle"></i></button>
                    	 {% endif %}
 			  	{{ challenge.title|safe }} <span
                             style="font-weight:normal"> ({{ challenge.points }} points) 
@@ -50,7 +50,7 @@
                     <div class="challenge_description_text">{{ challenge.description|safe|urlize }}</div>
                     <div class="qa_section">
                         <div class="comments">
-          <span style="cursor:pointer;" onclick="$('#qa').slideToggle('fast');"><b><i class="fa fa-angle-down fa-lg"></i>
+          <span style="cursor:pointer;" onclick="toggleSection('#qa','#QAngle')"><b><i class="fa fa-angle-down fa-lg rotare" id="QAngle"></i>
             Task Q+A Section</b> - {% comments_count for challenge %} comments so far<br>
           </span>
                             <div id="qa" class="challenge_comments"{% if not user.is_staff %}
@@ -65,8 +65,8 @@
                     {% if not reviews and not challenge.is_final_challenge %}
 
                         <div class="review_section">
-                            <div onclick="$('.review_questions').slideToggle('fast');">
-                                <i class="fa fa-angle-down fa-lg"></i>
+                            <div onclick="toggleSection('.review_questions','#RAngle')">
+                                <i class="fa fa-angle-down fa-lg rotare" id="RAngle"></i>
                                 Review Questions
                             </div>
 

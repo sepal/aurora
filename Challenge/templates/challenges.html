@@ -27,7 +27,7 @@
 
     {% for stack in course_stacks %}
 <script>
-	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" id="F{{stack.stack.chapter.id}}" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-angle-up fa-2x half lowkey"></i> <span class="chapter_name">Chapter: </span>{{stack.stack.chapter.name}}</div>');}
+	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" id="F{{stack.stack.chapter.id}}" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-angle-up fa-2x half lowkey rotare"></i> <span class="chapter_name">Chapter: </span>{{stack.stack.chapter.name}}</div>');}
 	x =  '{{stack.stack.chapter.name}}';
 </script>
       <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active and not stack.user_can_enter_final_challenge %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}} filter_{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">

@@ -179,11 +179,10 @@
 .real_submit_revised {
 }
 
-
 .challenge_title {
 	font-size:26px;
 	font-weight:bold;
-	margin-bottom:8px;
+	margin-bottom:8px;	
 }
 
 .challenge_description {
@@ -400,7 +399,7 @@ h1 {
 	}
 	.filterbar i {
 		float:right;
-		padding-right:8px;
+		margin-right:8px;
 		position:relative;
 		bottom:8px;
 		text-shadow: 0 0 3px black, 0 0 4px black, 0 0 2px black;
@@ -491,7 +490,7 @@ h1 {
 	}
 	.filterbar i {
 		float:right;
-		padding-right:8px;
+		margin-right:8px;
 		position:relative;
 		bottom:6px;
 		text-shadow: 0 0 3px black, 0 0 4px black, 0 0 2px black;

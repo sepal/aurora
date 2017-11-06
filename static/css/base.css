@@ -767,3 +767,15 @@ button:hover, .button:hover{
 #extra-review-question {
   width: 100%;
 }
+
+.rotare {
+    -moz-transition: all 0.1s linear;
+    -webkit-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.rotare.obi {
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
