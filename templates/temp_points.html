@@ -58,6 +58,7 @@
         {% endfor %}
 	</table></div>
 
+{% comment %}
     <table>
         <tr>
           <td colspan=3></i>&nbsp;</td>
@@ -75,7 +76,7 @@
           <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Writing Reviews</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_reviews }}</td>
         </tr>
-		{% endcomment %}
+		{ endcomment }
         <tr class="pZeile1">
           <td><i style="color:#fff" class="fa fa-angle-down fa-lger"></i> Comments</td>
           <td class="punkte">{{ stack_data.extra_points_earned_with_comments }}</td>
@@ -86,6 +87,7 @@
         </tr>
       </table>
     </div>
+		{% endcomment %}
 
 
 
@@ -195,7 +197,7 @@
           <td colspan=2 style="padding-bottom:1em;">
                         <span class="punkte">
                           {% if not stack_data.lock_period %}
-                            Hand-in is possible any time now.
+                            Note: you cannot hand in more than one challenge per day.
                           {% else %}
                             <script>
                             </script>
@@ -226,7 +228,7 @@
             var dr = d==0?0:Math.round(c/(a+b+c+d)*100);
           </script>
           <td colspan="2" style="padding-top:1em;">
-            <script>document.write(a+b+c+d)</script> of your reviews have been rated:
+            <script>document.write(a+b+c+d)</script> of your reviews have been rated by colleagues:
           </td>
         </tr>
         <tr>
