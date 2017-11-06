@@ -30,6 +30,19 @@ $(document).ready(function() {
 
 $(challenge_loaded);
 
+function toggleDetails() {
+	$('.challenge_description').slideToggle('fast', function() {
+		xO = $('.challenge_description_title>button>i')
+		if(xO.hasClass('fa-angle-down')) {
+			xO.removeClass('fa-angle-down');
+			xO.addClass('fa-angle-up');
+		} else {
+			xO.removeClass('fa-angle-up');
+			xO.addClass('fa-angle-down');
+		}
+	});
+}
+
 function countChars() {
 	var x = trixDings.editor.getDocument().toString();
 	$('.new_word_count').text(x.replace(/^[\s,.;]+/, "").replace(/[\s,.;]+$/, "").split(/[\s,.;]+/).length);
