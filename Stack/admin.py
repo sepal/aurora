@@ -12,11 +12,12 @@ class StackAdmin(admin.ModelAdmin):
                     'chapter',
                     'start_date',
                     'end_date',
+                    'final_date',
                 ]
             }
         ),
     ]
-    list_display = ('id', 'title', 'description', 'course', 'start_date', 'end_date', )
+    list_display = ('id', 'title', 'description', 'course', 'start_date', 'end_date', 'final_date', )
 
 class ChapterAdmin(admin.ModelAdmin):
     fieldsets = [
