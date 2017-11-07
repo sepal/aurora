@@ -121,7 +121,7 @@ body {margin:0;padding:0;}
 
 .diskurs-index .headline {
 	font-size:162%;
-	font-weight:bold;
+	font-family: 'yanone_kaffeesatz_rgregular';
 	margin-bottom:1em;
 }
 
