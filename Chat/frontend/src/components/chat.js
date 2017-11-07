@@ -27,7 +27,6 @@ class Chat extends React.Component {
   handleMessage(message) {
     if (message['type'] === 'chat-message') {
       message['logged_in_user'] = this.state['username']
-      console.log(message['logged_in_user'])
       const {messages} = this.state
       this.setState({messages: [...messages, message]})
     } else if (message['type'] === 'whoami') {
@@ -39,7 +38,27 @@ class Chat extends React.Component {
     if (!room) return;
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) this.socket.close();
-    this.socket = new WebSocket("ws://" + window.location.hostname + ":8000/ws/" + room);
+
+    let proto
+    proto = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
+
+    let port
+    switch(window.location.port) {
+      case '3000':
+        // This is a special case for dev where the site is served by `yarn start` and ws should connect to
+        // the django backend on port `8000`
+        port = ':8000'
+        break;
+      case '':
+        port = ''
+        break;
+      default:
+        port = ':' + window.location.port
+        break;
+    }
+
+    let uri = proto + window.location.hostname + port + "/ws/" + room
+    this.socket = new WebSocket(uri);
 
     this.setState({messages: []})
 
