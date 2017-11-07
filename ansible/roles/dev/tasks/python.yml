@@ -32,7 +32,7 @@
        virtualenv={{ py3env }}
 
 - name: install project requirements
-  pip: requirements=/vagrant/requirements_dev.txt
+  pip: requirements=/vagrant/requirements.txt
        virtualenv={{ py3env }}
 
 - name: build sherlock

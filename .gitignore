@@ -16,18 +16,17 @@ reload
 current_working_version_on_aurora
 current_working_version_on_unchained
 
+# Development media & static roots
 /aurora/static
+/aurora/media
 static-root
 
 # /aurora/media
 media/
 
 static/slides/gsi/jpg/vo_10_02_13_2.jpg
-
 static/slides/gsi/minithumbs/vo_10_02_13_2_thumb.jpg
-
 static/slides/gsi/pdf/vo20140618_1.pdf
-
 static/slides/gsi/thumb/vo_10_02_13_2_thumb.jpg
 
 *.so
@@ -40,3 +39,5 @@ diskurs/static/diskurs/sass/.sass-cache
 database-mine.db
 
 AuroraUser/management/commands/create_admin.py
+
+ansible/vagrant.retry
