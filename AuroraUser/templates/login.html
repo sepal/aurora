@@ -12,10 +12,13 @@
             <div class="title">
                 Welcome to Aurora 2017
             </div>
-		<div style="height:10px;margin-bottom:0px;margin-top:0px">
-			<button class="loginButton" style="float:left" data-url = "{{ sso_uri }}">&nbsp;sign in using tu password&nbsp;</a> </button>
+		<div style="height:10px;margin-bottom:0px;margin-top:0px;float:left;margin-left:10px;" class="alternate_login">
+			<a style="background:black" href="{{ sso_uri }}">sign in via tu password</a>
+
+{%comment%}			<a href= class="loginButton" style="float:left" data-url = "{{ sso_uri }}">&nbsp;sign in using tu password&nbsp;</a> </button> {%endcomment%}
+
 		</div>
-        <form>
+        <form><br>
 		   <div class="alternate_login"><span>or sign in using </span></div>
             <div>
                 <input type="text" id="course" value="{{ course }}" hidden>
