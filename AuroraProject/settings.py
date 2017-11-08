@@ -35,8 +35,12 @@ DATABASES = {
     },
 
     'plagcheck': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'database-plagcheck.db',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'plagcheck',
+        'USER': 'plagcheck_dbuser',
+        'PASSWORD': 'nosecret',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

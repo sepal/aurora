@@ -1,8 +1,6 @@
 from invoke import task
 import os
-import tempfile
 import sys
-import stat
 
 #
 # This is a [invoke](http://www.pyinvoke.org/) tasks file which is used to automate specific tasks needed
@@ -10,10 +8,16 @@ import stat
 #
 # invoke needs to be installed inside the virtualenv
 #
-# pip requirements:
+# global pip requirements: virtualenv
+# virtual pip requirement: invoke
 #
-# invoke
-# virtualenv
+# This means that a clean installation would look like:
+#
+#   virtualenv --python=python3 .venv
+#   source .venv/bin/activate
+#   pip install invoke
+#   invoke install -f
+
 
 venv_path = '.venv'
 
@@ -77,15 +81,17 @@ def db(ctx, fresh=False, demo=False, plagcheck=True):
     print_info('Wiping databases')
     if fresh:
         if 'postgres' in settings.DATABASES['default']['ENGINE']:
-            psql_cmd(ctx, 'DROP DATABASE IF EXISTS aurora;')
-            psql_cmd(ctx, 'CREATE DATABASE aurora OWNER aurora;')
+            psql_db(ctx, settings.DATABASES['default']['NAME'],
+                    settings.DATABASES['default']['USER'],
+                    settings.DATABASES['default']['PASSWORD'])
         else:
             if os.path.isfile(settings.DATABASES['default']['NAME']):
                 os.remove(settings.DATABASES['default']['NAME'])
 
-        if plagcheck and 'plagcheck' in settings.DATABASES['default']['ENGINE']:
-            psql_cmd(ctx, 'DROP DATABASE IF EXISTS plagcheck;')
-            psql_cmd(ctx, 'CREATE DATABASE plagcheck OWNER aurora;')
+        if plagcheck and 'postgres' in settings.DATABASES['plagcheck']['ENGINE']:
+            psql_db(ctx, settings.DATABASES['plagcheck']['NAME'],
+                    settings.DATABASES['plagcheck']['USER'],
+                    settings.DATABASES['plagcheck']['PASSWORD'])
         else:
             if os.path.isfile(settings.DATABASES['plagcheck']['NAME']):
                 os.remove(settings.DATABASES['plagcheck']['NAME'])
@@ -202,6 +208,24 @@ def psql_cmd(ctx, cmd):
     ctx.sudo('psql -c "{}"'.format(cmd), user='postgres')
 
     """tmp_file.close()"""
+
+def psql_db(ctx, db_name, db_user, db_pwd):
+
+    psql_cmd(ctx, 'DROP DATABASE IF EXISTS {db_name};'.format(
+        db_name=db_name
+    ))
+
+    psql_cmd(ctx, 'DROP ROLE IF EXISTS {db_user}'.format(db_user=db_user))
+
+    psql_cmd(ctx, 'CREATE USER {db_user} WITH PASSWORD \'{db_pwd}\';'.format(
+        db_user=db_user,
+        db_pwd=db_pwd
+    ))
+
+    psql_cmd(ctx, 'CREATE DATABASE {db_name} OWNER {db_user};'.format(
+        db_name=db_name,
+        db_user=db_user
+    ))
 
 
 def getSettings(ctx):
