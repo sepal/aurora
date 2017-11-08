@@ -1,5 +1,4 @@
 import os
-import djcelery
 from django_markup.filter.markdown_filter import MarkdownMarkupFilter
 from diskurs.markdown.giffer import GifferMarkdownFilter
 
@@ -212,7 +211,7 @@ INSTALLED_APPS = (
     'el_pagination',
     'taggit',
     'Faq',
-    'djcelery',
+    'django_celery_results',
     'PlagCheck',
     'diskurs',
     'django_markup',
@@ -434,12 +433,7 @@ if DEBUG:
         CELERY_BROKER_BACKEND = "django"
         CELERY_BROKER_URL = 'django://'
 
-    # kombu is used to use djangos database as message broker while debugging
-    #INSTALLED_APPS += ('kombu.transport.django',)
-
-    djcelery.setup_loader()
-
-    CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+    CELERY_RESULT_BACKEND = 'django-db'
 
     ## DEBUG TOOLBAR ##
 

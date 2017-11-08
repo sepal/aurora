@@ -52,7 +52,7 @@ def venv(ctx, fresh=False):
 def deps(ctx):
     """ Install project dependencies"""
     ctx.run('pip install --upgrade pip wheel distribute')
-    ctx.run('pip install --upgrade -r requirements_dev.txt')
+    ctx.run('pip install --upgrade -r requirements.txt')
 
     try:
         import sherlock
@@ -79,15 +79,16 @@ def db(ctx, fresh=False, demo=False, plagcheck=True):
         if 'postgres' in settings.DATABASES['default']['ENGINE']:
             psql_cmd(ctx, 'DROP DATABASE IF EXISTS aurora;')
             psql_cmd(ctx, 'CREATE DATABASE aurora OWNER aurora;')
-            if plagcheck and 'plagcheck' in settings.DATABASES['default']['ENGINE']:
-                psql_cmd(ctx, 'DROP DATABASE IF EXISTS plagcheck;')
-                psql_cmd(ctx, 'CREATE DATABASE plagcheck OWNER aurora;')
         else:
             if os.path.isfile(settings.DATABASES['default']['NAME']):
                 os.remove(settings.DATABASES['default']['NAME'])
-            if plagcheck and 'plagcheck' in settings.DATABASES['default']['ENGINE']:
-                if os.path.isfile(settings.DATABASES['plagcheck']['NAME']):
-                    os.remove(settings.DATABASES['plagcheck']['NAME'])
+
+        if plagcheck and 'plagcheck' in settings.DATABASES['default']['ENGINE']:
+            psql_cmd(ctx, 'DROP DATABASE IF EXISTS plagcheck;')
+            psql_cmd(ctx, 'CREATE DATABASE plagcheck OWNER aurora;')
+        else:
+            if os.path.isfile(settings.DATABASES['plagcheck']['NAME']):
+                os.remove(settings.DATABASES['plagcheck']['NAME'])
 
     print_info('Running migrate')
     ctx.run('python manage.py migrate')
@@ -131,7 +132,7 @@ def nginx(ctx):
 @task
 def celery(ctx, worker=1):
     """ Run the background worker"""
-    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)
+    ctx.run('celery -A AuroraProject worker -l info -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)
 
 @task
 def flower(ctx):
@@ -148,11 +149,6 @@ def static(ctx):
 def server(ctx):
     """ Run the debugging webserver"""
     ctx.run('python manage.py runserver', pty=True)
-
-@task
-def celery(ctx, worker=1):
-    """ Run the background worker"""
-    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)
 
 @task
 def flower(ctx):

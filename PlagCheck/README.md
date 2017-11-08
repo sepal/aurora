@@ -66,7 +66,7 @@ For MAC:
 
 If everything is setup, you just need to start the task processor beside the Aurora webserver
 
-    python manage.py celery worker -E --loglevel=INFO --concurrency=1
+    celery -A AuroraProject worker -l info -E --loglevel=INFO --concurrency=1
 
 Only one worker can run at the same time, because:
  - sherlock is not yet multi-thread ready
