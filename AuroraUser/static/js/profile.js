@@ -2,6 +2,12 @@ $(function() {
 		$('#study_code').focus(function(){
 			$('.correct_maker').removeClass('versteck',700);
 		});
+		$('.bwi').click(function(){
+			$('#study_code').val('033526');
+			$('#statement').focus();
+			$('#study_code').change();
+			$('.correct_maker').addClass('versteck',700);
+		})
 		$('.bmi').click(function(){
 			$('#study_code').val('033532');
 			$('#statement').focus();
