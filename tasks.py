@@ -28,8 +28,6 @@ def install(ctx, fresh=False):
     :param fresh: Remove the virtual environment before.
     """
 
-    sys_check(ctx)
-
     deps(ctx)
     db(ctx, fresh, True, True)
 
@@ -171,13 +169,6 @@ GREEN = "\033[0;32m"
 RESET = "\033[0;0m"
 BOLD    = "\033[;1m"
 REVERSE = "\033[;7m"
-
-
-def sys_check(ctx):
-    if sys.version_info >= (3,5):
-        print_error('Django 1.7 is not supported on python version 3.5 and greater')
-        print_error('Please install python3.4 to run compatible')
-        raise EnvironmentError('Incompatible python version')
 
 
 def print_colored(msg, color):
