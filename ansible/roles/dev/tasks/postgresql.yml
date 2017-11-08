@@ -11,37 +11,61 @@
            enabled=yes
            state=started
 
-- postgresql_user: name={{ dbuser }}
-                   password={{ dbpassword }}
+- name: create db users
+  postgresql_user:
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
   become: yes
   become_user: postgres
+  with_items:
+    - "{{ dbs }}"
 
-- name: create database {{ dbname }}
-  postgresql_db: name={{ dbname }}
-                 owner={{ dbuser }}
-                 encoding='UTF-8'
-                 lc_collate='en_US.UTF-8'
-                 lc_ctype='en_US.UTF-8'
+- name: create databases
+  postgresql_db:
+    name: "{{ item.name }}"
+    owner: "{{ item.user }}"
+    encoding: 'UTF-8'
+    lc_collate: 'en_US.UTF-8'
+    lc_ctype: 'en_US.UTF-8'
   become: yes
   become_user: postgres
+  with_items:
+    - "{{ dbs }}"
 
 - name: ensure user does not have unnecessary privilege
-  postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+  postgresql_user:
+    name: "{{ item.user }} role_attr_flags=NOSUPERUSER,NOCREATEDB"
   become: yes
   become_user: postgres
+  with_items:
+    - "{{ dbs }}"
 
 - name: make sure user can authenticate via md5 (ident/peer won\'t work)
   lineinfile:
     path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
+    line: 'host	{{ item.name }}	{{ item.user }}	127.0.0.1/32	md5'
+  with_items:
+    - "{{ dbs }}"
+  notify: restart postgresql
+
+- name: remove ident authentication for ipv4
+  lineinfile:
+    path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
     regexp: '^host\s+all\s+all\s+127.0.0.1/32\s+ident'
-    line: 'host	{{dbname}}	{{dbuser}}	127.0.0.1/32	md5'
-    backrefs: yes
+    state: absent
   notify: restart postgresql
 
 - name: make sure user can authenticate via md5 (ident/peer won\'t work)
   lineinfile:
     path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
+    line: 'host	{{ item.name }}	{{ item.user }}	::1/128         md5'
+  with_items:
+    - "{{ dbs }}"
+  notify: restart postgresql
+
+- name: remove ident authentication for ipv6
+  lineinfile:
+    path: '/var/lib/pgsql/9.6/data/pg_hba.conf'
     regexp: '^host\s+all\s+all\s+::1/128\s+ident'
-    line: 'host	{{dbname}}	{{dbuser}}	::1/128         md5'
-    backrefs: yes
+    state: absent
   notify: restart postgresql
