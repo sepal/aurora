@@ -62,10 +62,8 @@ def count_new_posts(thread, user):
             group_id = UserGroup.objects.filter(group__thread=thread, user=user).first().group_id
             new_posts = Post.objects.filter(group=group_id).count()
 
-    if new_posts > 1:
-        return "<span class=\"count\">" + str(new_posts) + "</span> new posts"
-    elif new_posts > 0:
-        return "<span class=\"count\">" + str(new_posts) + "</span> new post"
+    if new_posts > 0:
+        return str(new_posts)
     else:
         return ""
 
