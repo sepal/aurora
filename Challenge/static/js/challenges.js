@@ -7,7 +7,7 @@ $(function() {
 	window.document.title="Aurora: Challenges " + course_short_title;
 
 	$('.filterbar').click(function (){
-		$('.filter_'+$(this).data('filter')).toggleClass('shrinked',300);
+		$('.filter_'+$(this).data('filter')).toggleClass('shrinked');
 		$('i',this).toggleClass('obi');		
 		setTimeout(chapterCookieUpdate,350);
 	})
