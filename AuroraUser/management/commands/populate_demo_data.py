@@ -462,7 +462,7 @@ def import_data():
 
     # create elaboration for challenge 1 for s0
     print('adding elaboration for challenge 1 for s0 and use same text as elaboration 1 for challenge 8 (=plagcheck test)')
-    e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this is a copy of elaboration 1/challenge 8 from user d3 " + PlagcheckTestData.get_random_text(),
+    e1 = Elaboration(challenge=challenge_1, user=s0, elaboration_text="this is a copy of elaboration 1/challenge 8 from user d3 " + text,
                      submission_time=datetime.now())
     e1.save()
 

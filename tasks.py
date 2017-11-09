@@ -1,8 +1,6 @@
 from invoke import task
 import os
-import tempfile
 import sys
-import stat
 
 #
 # This is a [invoke](http://www.pyinvoke.org/) tasks file which is used to automate specific tasks needed
@@ -10,10 +8,16 @@ import stat
 #
 # invoke needs to be installed inside the virtualenv
 #
-# pip requirements:
+# global pip requirements: virtualenv
+# virtual pip requirement: invoke
 #
-# invoke
-# virtualenv
+# This means that a clean installation would look like:
+#
+#   virtualenv --python=python3 .venv
+#   source .venv/bin/activate
+#   pip install invoke
+#   invoke install -f
+
 
 venv_path = '.venv'
 
@@ -23,8 +27,6 @@ def install(ctx, fresh=False):
 
     :param fresh: Remove the virtual environment before.
     """
-
-    sys_check(ctx)
 
     deps(ctx)
     db(ctx, fresh, True, True)
@@ -52,7 +54,7 @@ def venv(ctx, fresh=False):
 def deps(ctx):
     """ Install project dependencies"""
     ctx.run('pip install --upgrade pip wheel distribute')
-    ctx.run('pip install --upgrade -r requirements_dev.txt')
+    ctx.run('pip install --upgrade -r requirements.txt')
 
     try:
         import sherlock
@@ -77,17 +79,20 @@ def db(ctx, fresh=False, demo=False, plagcheck=True):
     print_info('Wiping databases')
     if fresh:
         if 'postgres' in settings.DATABASES['default']['ENGINE']:
-            psql_cmd(ctx, 'DROP DATABASE IF EXISTS aurora;')
-            psql_cmd(ctx, 'CREATE DATABASE aurora OWNER aurora;')
-            if plagcheck and 'plagcheck' in settings.DATABASES['default']['ENGINE']:
-                psql_cmd(ctx, 'DROP DATABASE IF EXISTS plagcheck;')
-                psql_cmd(ctx, 'CREATE DATABASE plagcheck OWNER aurora;')
+            psql_db(ctx, settings.DATABASES['default']['NAME'],
+                    settings.DATABASES['default']['USER'],
+                    settings.DATABASES['default']['PASSWORD'])
         else:
             if os.path.isfile(settings.DATABASES['default']['NAME']):
                 os.remove(settings.DATABASES['default']['NAME'])
-            if plagcheck and 'plagcheck' in settings.DATABASES['default']['ENGINE']:
-                if os.path.isfile(settings.DATABASES['plagcheck']['NAME']):
-                    os.remove(settings.DATABASES['plagcheck']['NAME'])
+
+        if plagcheck and 'postgres' in settings.DATABASES['plagcheck']['ENGINE']:
+            psql_db(ctx, settings.DATABASES['plagcheck']['NAME'],
+                    settings.DATABASES['plagcheck']['USER'],
+                    settings.DATABASES['plagcheck']['PASSWORD'])
+        else:
+            if os.path.isfile(settings.DATABASES['plagcheck']['NAME']):
+                os.remove(settings.DATABASES['plagcheck']['NAME'])
 
     print_info('Running migrate')
     ctx.run('python manage.py migrate')
@@ -131,7 +136,7 @@ def nginx(ctx):
 @task
 def celery(ctx, worker=1):
     """ Run the background worker"""
-    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)
+    ctx.run('celery -A AuroraProject worker -l info -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)
 
 @task
 def flower(ctx):
@@ -150,11 +155,6 @@ def server(ctx):
     ctx.run('python manage.py runserver', pty=True)
 
 @task
-def celery(ctx, worker=1):
-    """ Run the background worker"""
-    ctx.run('python manage.py celery worker -E --loglevel=INFO --concurrency={0}'.format(worker), pty=True)
-
-@task
 def flower(ctx):
     """ Run the monitor for the message queue"""
     ctx.run('celery flower', pty=True)
@@ -169,13 +169,6 @@ GREEN = "\033[0;32m"
 RESET = "\033[0;0m"
 BOLD    = "\033[;1m"
 REVERSE = "\033[;7m"
-
-
-def sys_check(ctx):
-    if sys.version_info >= (3,5):
-        print_error('Django 1.7 is not supported on python version 3.5 and greater')
-        print_error('Please install python3.4 to run compatible')
-        raise EnvironmentError('Incompatible python version')
 
 
 def print_colored(msg, color):
@@ -206,6 +199,24 @@ def psql_cmd(ctx, cmd):
     ctx.sudo('psql -c "{}"'.format(cmd), user='postgres')
 
     """tmp_file.close()"""
+
+def psql_db(ctx, db_name, db_user, db_pwd):
+
+    psql_cmd(ctx, 'DROP DATABASE IF EXISTS {db_name};'.format(
+        db_name=db_name
+    ))
+
+    psql_cmd(ctx, 'DROP ROLE IF EXISTS {db_user}'.format(db_user=db_user))
+
+    psql_cmd(ctx, 'CREATE USER {db_user} WITH PASSWORD \'{db_pwd}\';'.format(
+        db_user=db_user,
+        db_pwd=db_pwd
+    ))
+
+    psql_cmd(ctx, 'CREATE DATABASE {db_name} OWNER {db_user};'.format(
+        db_name=db_name,
+        db_user=db_user
+    ))
 
 
 def getSettings(ctx):
