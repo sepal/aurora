@@ -56,3 +56,9 @@ urlpatterns = [
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
+
+try:
+    import local_urls
+    urlpatterns += local_urls.urlpatterns
+except ImportError:
+    pass
