@@ -108,21 +108,32 @@ class Stack(models.Model):
             return True
         return False
 
-    def active_status_date(self):
+    def active_status_date(self, user):
         now = datetime.now()
         if now <= self.start_date:
-#            return 'STARTS AT ' + self.start_date.strftime('%d.%m.%Y %H:%M')
             return self.start_date
         if now >= self.end_date:
-            return self.end_date
-#            return 'ended ' + self.end_date.strftime('%d.%m.%Y %H:%M')
+            if now < self.final_date:
+                if user.can_enter_final_challenge(self):
+                    return self.final_date
+                else:
+                    return self.end_date
+            else:
+                return self.end_date
 
-    def active_status_text(self):
+    def active_status_text(self, user):
         now = datetime.now()
         if now <= self.start_date:
-            return "available"
+            return "available in"
         if now >= self.end_date:
-            return "ended"
+            if now < self.final_date:
+                if user.can_enter_final_challenge(self):
+                    return "final task available for"
+                else:
+                    return "ended"
+            else:
+                return "ended"
+
     def __str__(self):
         return u'%s' % self.title
 

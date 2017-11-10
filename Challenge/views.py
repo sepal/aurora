@@ -150,6 +150,8 @@ def challenges(request, course_short_title=None):
         data['course_stacks'].append({
             'stack': stack,
             'user_can_enter_final_challenge': user.can_enter_final_challenge(stack),
+            'active_status_date': stack.active_status_date(user),
+            'active_status_text': stack.active_status_text(user),
             'submitted': submitted,
             'submission_time': submission_time,
             'currently_active': currently_active,

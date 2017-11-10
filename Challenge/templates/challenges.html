@@ -1,98 +1,107 @@
 {% extends "base.html" %}
 
 {% block additional_headers %}
-  <script type="text/javascript" src="{{ STATIC_URL }}js/challenges.js"></script>
-<link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
-  {% load humanize %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/challenges.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/challenge.css" type="text/css" media="screen"/>
+    {% load humanize %}
 {% endblock %}
 
 {% block content %}
+    <script>
+        var course_short_title = "{{ course.short_title }}";
+    </script>
 
-<script>
-  var course_short_title = "{{ course.short_title }}";
-</script>
+    {% if user_enlisted_and_active %}
+        <div class="not_stack">
+            Zur Zeit stehen folgende Challenges zur Verfügung. Mehr werden im Laufe des Semesters hinzugefügt.
+            Bitte beachten Sie die allgemeinen Regeln, die in <a
+                href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">Arbeiten in Aurora</a> zusammengefasst
+            sind, vor allem auf den ersten beiden Seiten.
 
-{% if user_enlisted_and_active %}
-
-	  <div class="not_stack">
-		  Zur Zeit stehen folgende Challenges zur Verf&uuml;gung. Mehr werden im Laufe des Semesters hinzugef&uuml;gt. Bitte beachten Sie die allgemeinen Regeln, die in <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">Arbeiten in Aurora</a> zusammengefasst sind, vor allem auf den ersten beiden Seiten.
-		  
-{% comment %}<br><br><span style="color:#666;font-style:italic">TL;DR: Für eine positive Note muss aus jedem Kapitel mindestens eine Challenge erfolgreich absolviert werden, und alle Challenges, die sie machen, müssen in Summe min. 60 Punkte umfassen, von denen Sie min. 40 auch bekommen haben (je nach Bewertung). Nach jeder Challenge muss eine Wartefrist von <s>10 Tagen</s> 1 Tag eingehalten werden, bevor die nächste Challenge abgegeben werden kann &rarr; unvollständig &rarr; <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">full version</a>) </span>
+            {% comment %}<br><br><span style="color:#666;font-style:italic">TL;DR: Für eine positive Note muss aus jedem Kapitel mindestens eine Challenge erfolgreich absolviert werden, und alle Challenges, die sie machen, müssen in Summe min. 60 Punkte umfassen, von denen Sie min. 40 auch bekommen haben (je nach Bewertung). Nach jeder Challenge muss eine Wartefrist von <s>10 Tagen</s> 1 Tag eingehalten werden, bevor die nächste Challenge abgegeben werden kann &rarr; unvollständig &rarr; <a href="http://igw.tuwien.ac.at/designlehren/aurora/aurora.pdf">full version</a>) </span>
 {% endcomment %}
-	  </div><br>
+        </div><br>
 
-	  <div id="detail_area_1" class="grid_1" >
+        <div id="detail_area_1" class="grid_1">
+            <script>var x = ""</script>
 
-<script>var x=""</script>
+            {% for stack in course_stacks %}
+                <script>
+                    if (x != '{{stack.stack.chapter.name}}') {
+                        document.write('<div class="filterbar" id="F{{stack.stack.chapter.id}}" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-angle-up fa-2x half lowkey rotare"></i> <span class="chapter_name">Chapter: </span>{{stack.stack.chapter.name}}</div>');
+                    }
+                    x = '{{stack.stack.chapter.name}}';
+                </script>
+                <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active and not stack.user_can_enter_final_challenge %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{ stack.stack.chapter.id }} filter_{{ stack.stack.chapter.id }}"
+                     id="{{ stack.stack.id }}" data-title="{{ stack.stack.title|safe }}"
+                     data-chapter="{{ stack.stack.chapter.name }}" data-date="{{ stack.submission_time }}"
+                     data-status="{{ stack.status.status }}">
+                    <div class="stack_icon" style="float:right">
+                        {% if stack.submitted %}
+                            {% if stack.status.status == 7 %}
+                                <i class="fa fa-check fa-2x" style="color:green"></i>
+                            {% else %}
+                                <i class="fa fa-spinner fa-2x"></i>
+                            {% endif %}
+                        {% endif %}
+                        {% if not stack.currently_active %}<i class="fa fa-lock fa-2x"></i>{% endif %}
+                        {% if stack.is_started %}
+                            {% if not stack.submitted %}<i class="fa fa-pencil fa-2x"></i>{% endif %}
+                        {% else %}
+                            {% if stack.currently_active %}<i class="fa fa-unlock fa-2x"></i>{% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="title">
+                        <b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks,
+                        max. {{ stack.possible }} Points
+                    </div>
+                    <div>
+                        {% if stack.currently_active %}Available until {{ stack.stack.end_date|date:'j.n., G:i' }} (
+                            {{ stack.stack.end_date|naturaltime }}){% else %}Not currently active{% endif %}
+                    </div>
+                    <div class="description  {% if stack.submitted %}finished_challenge{% endif %}">{{ stack.stack.description|safe|urlize }}</div>
+                    <div class="stack_status  {% if stack.submitted %}finished_challenge{% endif %}">
+                        {% if stack.currently_active or stack.status.status == 7 %}
+                            <a href="stack?id={{ stack.stack.id }}" class="stack_action button XL"
+                               onclick="event.stopPropagation();">ENTER CHALLENGE</a>
+                        {% else %}
+                            <a href="#" class="stack_action button XL"
+                               onclick="event.stopPropagation();">{{ stack.active_status_text }} {{ stack.active_status_date|naturaltime }}</a>
+                        {% endif %}
+                        <div class="stack_next">Status:<b>
+                            {% if not stack.currently_active and stack.status.status < 3 %}
+                                Inactive
+                            {% else %}
+                                {% if stack.is_started %}
+                                    {% if stack.status.status == 7 %}Evaluated with {% else %}{{ stack.status.next }}
+                                    {% endif %}
+                                {% else %}&nbsp;Not started
+                                {% endif %}
+                            {% endif %}
+                            {% if stack.status.status == 7 %}
+                                {% if stack.points != 0 %}
+                                    {{ stack.points }} Points
+                                {% else %}
+                                    0 Points
+                                {% endif %}
+                            {% endif %}</b><br>
+                            {% if stack.submitted %}
+                                <div class="submission_time" style="display:inline"> (Handed
+                                    in {{ stack.submission_time|naturaltime }})
+                                </div>{% endif %}
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="nothing_to_see" style="padding:3em">sorry, no challenges yet.</div>
+            {% endfor %}
+        </div>
 
-    {% for stack in course_stacks %}
-<script>
-	if (x != '{{stack.stack.chapter.name}}') {document.write('<div class="filterbar" id="F{{stack.stack.chapter.id}}" data-filter="{{stack.stack.chapter.id}}"><i class="fa fa-angle-up fa-2x half lowkey rotare"></i> <span class="chapter_name">Chapter: </span>{{stack.stack.chapter.name}}</div>');}
-	x =  '{{stack.stack.chapter.name}}';
-</script>
-      <div class="stack lineL {% if stack.submitted %}finished{% endif %}{% if not stack.currently_active and not stack.user_can_enter_final_challenge %} forbiddenfruit {% endif %} {% if stack.status.status == 7 %}allowedfruit{% endif %} {% if user.is_staff %}allowedfruit{% endif %} C{{stack.stack.chapter.id}} filter_{{stack.stack.chapter.id}}" id="{{ stack.stack.id }}" data-title="{{stack.stack.title|safe}}" data-chapter="{{stack.stack.chapter.name}}" data-date="{{stack.submission_time}}" data-status="{{stack.status.status}}">
-		<div class="stack_icon" style="float:right">
-		   	{% if stack.submitted %}
-		   		{% if stack.status.status == 7 %}
-					<i class="fa fa-check fa-2x" style="color:green"></i>
-				{% else %}
-					<i class="fa fa-spinner fa-2x"></i>
-				{% endif %}
-			{% endif %}
-		   	{% if not stack.currently_active %}<i class="fa fa-lock fa-2x"></i>{% endif %}
-		   	{% if stack.is_started %}
-				{% if not stack.submitted%}<i class="fa fa-pencil fa-2x"></i>{% endif %}
-			{% else %}
-				{% if stack.currently_active %}<i class="fa fa-unlock fa-2x"></i>{% endif %}
-			{% endif %}
-		</div>
-		<div class="title">
-			<b>{{ stack.stack.title|safe }}:</b> {{ stack.stack.get_challenge_image_urls|length }} Tasks, max. {{ stack.possible }} Points
-		</div>
-		<div>
-			{% if stack.currently_active %}Available until {{stack.stack.end_date|date:'j.n., G:i'}} ({{stack.stack.end_date|naturaltime}}){% else %}Not currently active{% endif %}
-		</div>
-        <div class="description  {% if stack.submitted %}finished_challenge{% endif %}">{{ stack.stack.description|safe|urlize }}</div>
-
-		<div class="stack_status  {% if stack.submitted %}finished_challenge{% endif %}">
-        {% if stack.currently_active or stack.status.status == 7 %}
-         <a href="stack?id={{ stack.stack.id }}" class="stack_action button XL" onclick="event.stopPropagation();">ENTER CHALLENGE</a>
-        {% else %}
-          <a href="#" class="stack_action button XL" onclick="event.stopPropagation();">{{ stack.stack.active_status_text }} {{ stack.stack.active_status_date|naturaltime }}</a>
-        {% endif %}
-			 <div class="stack_next">Status:<b>
-				 {% if not stack.currently_active and stack.status.status < 3 %}
-				 	Inactive 
-				 {% else %}
-				 	{% if stack.is_started %}
-				 		{% if stack.status.status == 7 %}Evaluated with {% else %}{{ stack.status.next }} {% endif %}
-					{% else %}&nbsp;Not started
-					{% endif %}
-				{% endif %}
-				{% if stack.status.status == 7 %}
-					{% if stack.points != 0 %}
-						{{ stack.points }} Points
-					{% else %}
-						 0 Points
-					{% endif %}
-				{% endif %}</b><br>
-    		{% if stack.submitted %}<div class="submission_time" style="display:inline"> (Handed in {{ stack.submission_time|naturaltime }})</div>{% endif %}
-           <br>
-			  </div>
-		</div>
-
-      </div>
-	{% empty %}
-	<div class="nothing_to_see" style="padding:3em">sorry, no challenges yet. </div>
-    {% endfor %}
-
-  </div>
-
-{% else %}
-
-	<div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;">
-		Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der Zugriff auf die Challenges nicht mehr möglich.
-	</div>
-
-{% endif %}
+    {% else %}
+        <div style="padding: 2em;color: darkgray;font-size: 120%;width: 50%;">
+            Nachdem Sie die Bedingungen für einen erfolgreichen Abschluss dieser LVA nicht mehr erfüllen können, ist der
+            Zugriff auf die Challenges nicht mehr möglich.
+        </div>
+    {% endif %}
 {% endblock %}

@@ -13,7 +13,9 @@ from Course.models import Course, CourseUserRelation
 from memoize import memoize
 
 import logging
+
 logger = logging.getLogger(__name__)
+
 
 def challenge_image_path(instance, filename):
     name = 'challenge_%s' % instance.id
@@ -48,17 +50,17 @@ class Challenge(models.Model):
     EVALUATED = 7
     REVIEW_FEEDBACK_GIVEN = 8
 
-#    status_dict = {
-#        -1: "Can not be submitted yet.",
-#        0: "Not started (Click card to proceed).",
-#        1: "Not submitted.",
-#        2: "Waiting for you to write a review",
-#        3: "Bad review. We need to look at this. Please be patient.",
-#        4: "Done, waiting for reviews by others.",  # can proceed but will be a problem for final challenge
-#        5: "Done, peer reviewed.",
-#        6: "Waiting for evaluation.",
-#        7: "Evaluated."
-#    }
+    #    status_dict = {
+    #        -1: "Can not be submitted yet.",
+    #        0: "Not started (Click card to proceed).",
+    #        1: "Not submitted.",
+    #        2: "Waiting for you to write a review",
+    #        3: "Bad review. We need to look at this. Please be patient.",
+    #        4: "Done, waiting for reviews by others.",  # can proceed but will be a problem for final challenge
+    #        5: "Done, peer reviewed.",
+    #        6: "Waiting for evaluation.",
+    #        7: "Evaluated."
+    #    }
 
     next_dict = {
         -1: "Not enabled...",
@@ -71,7 +73,6 @@ class Challenge(models.Model):
         6: "Waiting for evaluation of final task.",
         7: "Challenge evaluated. Points received: "
     }
-
 
     def __str__(self):
         return u'%s' % self.title
@@ -124,12 +125,12 @@ class Challenge(models.Model):
     def get_final_challenge_ids():
         peer_review_challenges = (
             Challenge.objects
-            .filter(prerequisite__isnull=False).values_list('prerequisite', flat=True)
+                .filter(prerequisite__isnull=False).values_list('prerequisite', flat=True)
         )
         final_challenge_ids = (
             Challenge.objects
-            .exclude(id__in=list(peer_review_challenges))
-            .values_list('id', flat=True)
+                .exclude(id__in=list(peer_review_challenges))
+                .values_list('id', flat=True)
         )
         return final_challenge_ids
 
@@ -137,14 +138,14 @@ class Challenge(models.Model):
     def get_course_final_challenge_ids(course):
         peer_review_challenges = (
             Challenge.objects
-            .filter(prerequisite__isnull=False).values_list('prerequisite', flat=True)
+                .filter(prerequisite__isnull=False).values_list('prerequisite', flat=True)
         )
         non_course_challenges = [challenge.id for challenge in Challenge.objects.exclude(course=course)]
         knockout_list = non_course_challenges + list(peer_review_challenges)
         final_challenge_ids = (
             Challenge.objects
-            .exclude(id__in=knockout_list)
-            .values_list('id', flat=True)
+                .exclude(id__in=knockout_list)
+                .values_list('id', flat=True)
         )
         return final_challenge_ids
 
@@ -326,7 +327,8 @@ class Challenge(models.Model):
         final_challenge_ids = Challenge.get_course_final_challenge_ids(course)
         elaborations = (
             Elaboration.objects
-            .filter(challenge__id__in=final_challenge_ids, user=user, submission_time__gt=datetime(START_YEAR, START_MONTH, START_DAY))
+                .filter(challenge__id__in=final_challenge_ids, user=user,
+                        submission_time__gt=datetime(START_YEAR, START_MONTH, START_DAY))
         )
         if elaborations:
             last_submit = elaborations.latest('submission_time')
@@ -335,3 +337,6 @@ class Challenge(models.Model):
             else:
                 return (last_submit.submission_time + timedelta(days=PERIOD))
         return False
+
+    def is_in_final_period(self, user, course):
+        pass
