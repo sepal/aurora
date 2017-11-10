@@ -76,6 +76,10 @@ def db(ctx, fresh=False, demo=False, plagcheck=True):
     """
     settings = getSettings(ctx)
 
+    if not query_yes_no("Are you sure you want to wipe the databases?",
+                        default="no"):
+        return
+
     print_info('Wiping databases')
     if fresh:
         if 'postgres' in settings.DATABASES['default']['ENGINE']:
