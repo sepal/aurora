@@ -7,6 +7,8 @@
   </div>
 
   <script type="text/javascript">
+    // course_short_title is needed by comments to create notifications
+    var course_short_title = "{{ course.short_title }}";
     var COMMENTS = COMMENTS || {}
 
     COMMENTS.POST_URL = '{% url 'Comments:post' %}';
