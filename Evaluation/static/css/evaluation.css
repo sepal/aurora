@@ -1064,16 +1064,18 @@ trix-editor a {
 }
 
 .tabs-menu li {
-    height: 30px;
-    line-height: 30px;
-    float: left;
-    margin-right: 0px;
-	width:19.9%;
-    background-color: #E7FFCF;
+	height: 30px;
+	line-height: 30px;
+	float: left;
+	margin-right: 0px;
+	padding-left: 1em;
+	padding-right: 1em;
+	max-width:19.9%;
+	background-color: #E7FFCF;
 	overflow:hidden;
 	border-right:4px solid white;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	white-space:nowrap;
 }
 
