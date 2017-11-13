@@ -1,9 +1,10 @@
 from django.http import JsonResponse
-from django.template import RequestContext, loader
+from django.template import loader
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404
+
 from .models import Thread, Post, PostVote, Group, UserGroup, UserHistory, UserHistoryPost
 from Course.models import Course
 from .utils import get_rendered_votes_sum
@@ -259,17 +260,17 @@ def post_list(request, course_short_title, thread_id, post_id):
                 depth += 1
 
             template = loader.get_template('diskurs/post_list.html')
-            context = RequestContext(request, {
+            context = {
                 'posts': posts,
                 'depth': depth,
                 'thread': thread_object,
                 'viewed_posts': viewed_posts,
                 'course': course,
-            })
+            }
 
             return JsonResponse({
                 'success': True,
-                'posts': template.render(context),
+                'posts': template.render(context, request),
                 'new_last_id': posts.last().id,
             })
         else:
@@ -340,17 +341,17 @@ def post_group_list(request, course_short_title, thread_id, post_id, group_id):
                 depth += 1
 
             template = loader.get_template('diskurs/post_list.html')
-            context = RequestContext(request, {
+            context = {
                 'posts': posts,
                 'depth': depth,
                 'thread': thread_object,
                 'viewed_posts': viewed_posts,
                 'course': course,
-            })
+            }
 
             return JsonResponse({
                 'success': True,
-                'posts': template.render(context),
+                'posts': template.render(context, request),
                 'new_last_id': posts.last().id,
             })
         else:
@@ -375,7 +376,7 @@ def new_post(request, course_short_title, thread_id):
         if thread_object.course != course:
             return JsonResponse({
                 'error': True,
-                'message': 'Invalid ID provided!'
+                'message': 'Invalid ID1 provided!'
             })
 
         parent_post_id = int(request.POST.get('parent_post_id', 0))
@@ -431,17 +432,17 @@ def new_post(request, course_short_title, thread_id):
                         user_history.add_post_id_to_history(post.id)
 
                     template = loader.get_template('diskurs/post_list.html')
-                    context = RequestContext(request, {
+                    context = {
                         'posts': posts,
                         'depth': depth,
                         'thread': thread_object,
                         'viewed_posts': viewed_posts,
                         'course': course,
-                    })
+                    }
 
                     return JsonResponse({
                         'success': True,
-                        'posts': template.render(context),
+                        'posts': template.render(context, request),
                         'new_last_id': posts.last().id,
                     })
 
@@ -536,17 +537,17 @@ def new_group_post(request, course_short_title, thread_id, group_id):
                         user_history.add_post_id_to_history(post.id)
 
                     template = loader.get_template('diskurs/post_list.html')
-                    context = RequestContext(request, {
+                    context = {
                         'posts': posts,
                         'depth': depth,
                         'thread': thread_object,
                         'viewed_posts': viewed_posts,
                         'course': course,
-                    })
+                    }
 
                     return JsonResponse({
                         'success': True,
-                        'posts': template.render(context),
+                        'posts': template.render(context, request),
                         'new_last_id': posts.last().id,
                     })
 
@@ -708,13 +709,13 @@ def delete_post(request, course_short_title, thread_id, post_id):
                     post.save()
 
                     template = loader.get_template('diskurs/thread/post/content_deleted.html')
-                    context = RequestContext(request, {
+                    context = {
                         'post': post,
-                    })
+                    }
 
                     return JsonResponse({
                         'success': True,
-                        'content': template.render(context),
+                        'content': template.render(context, request),
                     })
                 else:
                     return JsonResponse({
