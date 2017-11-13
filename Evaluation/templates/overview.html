@@ -44,7 +44,11 @@
 			{{elaboration.user.matriculation_number}}
 {% endif %}
                 </td>
-                <td>{{ elaboration.challenge.title|safe }}</td>
+                <td>
+                  <a href="{% url 'Evaluation:detail' course_short_title=course.short_title %}">
+                    {{ elaboration.challenge.title|safe }}
+                  </a>
+                </td>
                 {% if complaints %}
                     <td class="timestamp" title="{{ elaboration.get_last_post_date }}">{{ elaboration.get_last_post_date|naturaltime }}</td>
                 {% else %}

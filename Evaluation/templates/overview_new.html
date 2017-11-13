@@ -44,7 +44,11 @@
 {% endif %}
                 </td>
 
-                <td>{{ elaboration.challenge.get_stack.title|safe }}</td>
+                <td>
+                  <a href="{% url 'Evaluation:overview' course_short_title=course.short_title %}?elaboration_id={{ elaboration.id }}">
+                    {{ elaboration.challenge.get_stack.title|safe }}
+                  </a>
+                </td>
                 {% if complaints %}
                     <td class="timestamp" title="{{ elaboration.get_last_post_date }}">{{ elaboration.get_last_post_date|naturaltime }}</td>
                 {% else %}
