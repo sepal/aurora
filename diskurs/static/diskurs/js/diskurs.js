@@ -7,6 +7,7 @@ $(document).ready(function() {
 var quotePost = "";
 var quotePostMarkdown = "";
 var scrollingEnabled = true;
+var lastPostId = 0;
 
 function diskursReply() {
     var parent = $(this).parent().parent().parent();
@@ -20,6 +21,12 @@ function diskursReply() {
     $('.post_preview').html('');
     parent.addClass('show_reply');
 
+    parent.children('.child_post').children('.post_reply').find('.reply_area').emojiPicker({
+        width: '300px',
+        height: '200px',
+        button: false
+    });
+
     if (!parent.hasClass('show_child')) {
         diskursShowPost(arrow, true);
     } else {
@@ -30,9 +37,7 @@ function diskursReply() {
 function diskursNewPost(e) {
     var form = $(this);
     var postData = form.serializeArray();
-    if (form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id')) {
-        postData[postData.length] = { name: "last_id", value: form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id') };
-    }
+    postData[postData.length] = { name: "last_id", value: lastPostId };
     var formURL = form.attr('action');
     $.ajax({
         url : formURL,
@@ -41,22 +46,23 @@ function diskursNewPost(e) {
         success:function(data, textStatus, jqXHR)
         {
             if (data.success) {
-                form.parent().parent().before(data.posts);
-                form.parent().parent().parent().parent().addClass('has_children');
-                var count = parseInt(form.parent().parent().parent().children('.post').length);
-                if (count > 0) {
-                    count = '<i class="fa fa-comments-o cmtsFA"></i> ' + count;
-                } else {
-                    count = '';
+                if (data.return_object) {
+
+                    for (var post_id in data.return_object) {
+                        $(data.return_object[post_id]).insertBefore('#post-' + post_id + ' > .child_post > .post_reply');
+                        $('#post-' + post_id).addClass('has_children');
+                    }
+
+                    setLatestPostIdAndRecount();
+                    decoratePosts();
+
+                    form.find('textarea').val('');
+                    form.parent().parent().parent().parent().removeClass('show_reply');
+
+                    Gifffer();
+
+                    markPostingsAsSeen();
                 }
-                form.parent().parent().parent().parent().children('.container').children('.post_header').children('.count').html(count);
-                form.parent().parent().parent().prev().prev('.arrow_wrapper').data('last_id', data.new_last_id);
-                form.find('textarea').val('');
-                form.parent().parent().parent().parent().removeClass('show_reply');
-
-                Gifffer();
-
-                markPostingsAsSeen();
             } else {
                 alert(data.message);
             }
@@ -141,24 +147,19 @@ function diskursShowPost(element, scrollToReply) {
 
     $.ajax({
         url: url + 'ajax/',
-        data: { 'last_id': $(element).data('last_id')},
+        data: { 'last_id': lastPostId},
         success:function(data, textStatus, jqXHR)
             {
                 if (data.success) {
-                    if (data.new_last_id) {
-                        $(element).next().next('.child_post').children('.post_reply').before(data.posts);
+                    if (data.return_object) {
 
-                        var count = parseInt($(element).next().next('.child_post').children('.post').length);
-                        if (count > 0) {
-                            count = '<i class="fa fa-comments-o cmtsFA"></i> ' + count;
-                        } else {
-                            count = '';
+                        for (var post_id in data.return_object) {
+                            $(data.return_object[post_id]).insertBefore('#post-'+post_id+' > .child_post > .post_reply');
+                            $('#post-'+post_id).addClass('has_children');
                         }
-                        parent.children('.container').children('.post_header').children('.count').html(count);
 
-                        $(element).data('last_id', data.new_last_id);
-                        parent.addClass('has_children');
-
+                        setLatestPostIdAndRecount();
+                        decoratePosts();
                         Gifffer();
                     }
 
@@ -194,6 +195,7 @@ function isURL(url) {
 }
 
 $(document).ready(function() {
+    decoratePosts();
     $('#diskurs').on('click', 'a.arrow_wrapper', function() {
         if ($(this).parent().hasClass('show_child') && !$(this).parent().hasClass('level0')) {
             diskursHidePost($(this));
@@ -207,17 +209,22 @@ $(document).ready(function() {
         }
         return false;
     });
+    $('#diskurs').on('click', 'a.new_count', function() {
+
+        var next_new_id = $(this).data('next_new_id');
+        var $arrow_element = $("#" + next_new_id);
+
+        diskursShowPost($arrow_element, false);
+        if (history.state == null || history.state.post != '#'+next_new_id) {
+            history.pushState({post: '#'+next_new_id}, '', $arrow_element.attr('href'));
+        }
+        return false;
+    });
     $('#diskurs').on('click', '.reply', diskursReply);
     $('#diskurs').on('submit', 'form', diskursNewPost);
     $('#diskurs').on('click', '.cancel_reply', function() {
         var $child_post = $(this).parent().parent().parent().parent();
-        var child_post_count = $child_post.children('.post').size();
         $child_post.parent().removeClass('show_reply');
-        if (child_post_count > 0) {
-
-        } else {
-
-        }
     });
     $('#diskurs').on('click', '.preview_reply', function() {
         var preview_content = $(this).parent().children('textarea').val();
@@ -242,13 +249,6 @@ $(document).ready(function() {
     });
 
     $('#diskurs').on('click', '.toggle_emojipicker', function() {
-
-        $(this).parent().children('.reply_area').emojiPicker({
-            width: '300px',
-            height: '200px',
-            button: false
-        });
-
         $(this).parent().children('.reply_area').emojiPicker('toggle');
     });
 
@@ -353,6 +353,7 @@ $(document).ready(function() {
     }
 
     markPostingsAsSeen();
+    setLatestPostIdAndRecount();
 });
 
 window.onpopstate = function(event) {
@@ -372,6 +373,11 @@ function refreshNew() {
         if (newCount > 0) {
             $(this).children('.new_count').html(newCount);
 			$(this).children('.new_count').show();
+
+            var next_new_post = $(this).find('.child_post .new_post').first().parent().parent().parent().children('.arrow_wrapper').first().attr('id');
+            var $new_count_el = $(this).children('.new_count').first();
+
+            $new_count_el.data('next_new_id', next_new_post);
         } else {
             $(this).children('.new_count').html('');
 			$(this).children('.new_count').hide();
@@ -489,4 +495,26 @@ function markPostingsAsSeen() {
         moreLink: '<a class="read_more" href="#"><i class="fa fa-angle-double-down"></i></a>'
     });
     refreshNew();
+}
+
+function setLatestPostIdAndRecount() {
+    $('#diskurs').find('.post').each(function() {
+        var currentPostId = parseInt($(this).attr('id').substr(5));
+        if (currentPostId > lastPostId) {
+            lastPostId = currentPostId;
+        }
+        var childCount = $(this).find('.post').length;
+        if (childCount > 0) {
+            $(this).children('.container').children('.post_header').children('.count').html(childCount);
+        } else {
+            $(this).children('.container').children('.post_header').children('.count').html('');
+        }
+    })
+}
+
+function decoratePosts() {
+    $('#diskurs').find('.nolevel').each(function() {
+        $(this).removeClass('nolevel');
+        $(this).addClass('level'+$(this).parents('.post').length);
+    })
 }

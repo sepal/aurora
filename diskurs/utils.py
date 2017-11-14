@@ -5,3 +5,10 @@ def get_rendered_votes_sum(sum):
         return '[ +' + str(sum) + ' ]'
     else:
         return '[ ' + str(sum) + ' ]'
+
+
+def get_rendered_votes_sum_detailed(pos, neg):
+    if pos == 0 and neg == 0:
+        return '[ ±0 ]'
+    else:
+        return '[ +' + str(pos) + '-' + str(abs(neg)) + ' ]'

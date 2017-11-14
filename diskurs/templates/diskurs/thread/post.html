@@ -1,15 +1,14 @@
 {% load tags %}
 
-<div class="post level{{ depth }} {% if post.filtered_post_set.count > 0 %}has_children{% endif %} {% if post.id in expanded_posts %}show_child{% endif %}">
+<div id="post-{{ post.id }}" class="post nolevel {% if post.filtered_post_set.count > 0 %}has_children{% endif %} {% if post.id in expanded_posts %}show_child{% endif %}">
 
-    <a class="arrow_wrapper" href="{% if request.user.is_superuser %}{% url 'diskurs:thread_group_post' course.short_title thread.id thread.filter_group_id post.id %}{% else %}{% url 'diskurs:thread_post' course.short_title thread.id post.id %}{% endif %}" id="show-{{ post.id }}" data-last_id="{% if post.filtered_post_set.all.last.id %}{{ post.filtered_post_set.all.last.id }}{% else %}0{% endif %}">
+    <a class="arrow_wrapper" href="{% if request.user.is_superuser %}{% url 'diskurs:thread_group_post' course.short_title thread.id thread.filter_group_id post.id %}{% else %}{% url 'diskurs:thread_post' course.short_title thread.id post.id %}{% endif %}" id="show-{{ post.id }}">
         <span class="arrow nicetip right"><span class="tip"></span></span>
-        <span class="refresh"><i class="fa fa-refresh"></i></span>
     </a>
-    <span class="new_count"></span>
-    <div class="child_post {% if post.id in expanded_posts and post.id != last_post_id %}show_child{% endif %} ">
+    <a href="javascript:void" class="new_count"></a>
+    <div class="child_post {% if post.id in expanded_posts %}show_child{% endif %} ">
         {% for post in post.filtered_post_set.all %}
-            {% include "diskurs/thread/post.html" with post=post depth=depth|add:"1" thread=thread last_post_id=last_post_id %}
+            {% include "diskurs/thread/post.html" with post=post thread=thread %}
         {% endfor %}
         <div class="post_reply my_post">
             <div class="container">
@@ -31,8 +30,8 @@
                     <button type="button" class="toggle_emojipicker">EMOJIS</button>
                 </form>
                 <div class="infoText">
-                    You can use markdown<BR>
-					To quote somebody, copy/paste from their comment<BR>
+                    You can use markdown<br/>
+					To quote somebody, copy/paste from their comment<br/>
 					Paste image URLs to insert pictures
                 </div>
             </div>

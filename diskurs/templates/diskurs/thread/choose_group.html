@@ -9,5 +9,7 @@
             <li><a href="{% url 'diskurs:choose_group_set' course.short_title thread.id group.id %}">Group {{ forloop.counter }} ({{ group.size }}/{{ thread.members_in_group }})</a> <span class="new_posts">{% count_new_group_posts group request.user %}</span></li>
         {% endfor %}
     </ul>
+    <br/>
+    <a href="{% url 'diskurs:new_group' course.short_title thread.id %}" class="new_group">Add new group</a>
 </div>
 {%  endblock %}
