@@ -38,6 +38,7 @@ urlpatterns = [
 
     url(r'^course/(?P<course_short_title>(\w+))/', include([
         url(r'^$', views.home, name='home'),
+        url(r'^secret/$', views.home, {'secret_sauce': 'secret'}, name='home'),
         url(r'^challenge/', include('Challenge.urls', namespace='Challenge')),
         url(r'^elaboration/', include('Elaboration.urls', namespace='Elaboration')),
         url(r'^review/', include('Review.urls', namespace='Review')),

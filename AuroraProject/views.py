@@ -89,7 +89,7 @@ def course_selection(request):
 
 
 @aurora_login_required()
-def home(request, course_short_title=None):
+def home(request, course_short_title=None, secret_sauce=None):
 
     user = AuroraAuthenticationBackend.get_user(AuroraAuthenticationBackend(), request.user.id)
 
@@ -125,6 +125,8 @@ def home(request, course_short_title=None):
 
     data["all_courses"] = Course.objects.all()
     data['DEV_FRONTEND'] = settings.CHAT['DEV_FRONTEND']
+
+    data['chat_enabled'] = True if secret_sauce == 'secret' else False
 
     return render(request, 'home.html', data)
 
