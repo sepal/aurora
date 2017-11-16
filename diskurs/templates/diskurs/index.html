@@ -15,7 +15,7 @@
 	                <li>
 	                    <i class="fa fa-arrow-right" style="color:gray"></i> <a href="{% url 'diskurs:thread' course.short_title thread.id %}">{{ thread.title }}</a> 
 				  {% count_new_posts thread request.user as new_posts %} &mdash;
-				  	<span class="new_posts"></span class="count">{{ new_posts }}</span> new message{{new_posts|pluralize}}</span>
+				  	<span class="new_posts"><span class="count">{{ new_posts }}</span> new message{{new_posts|pluralize}}</span>
 	                </li>
 	            {% endfor %}
 	        </ul>
