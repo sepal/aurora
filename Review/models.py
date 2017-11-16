@@ -68,6 +68,11 @@ class ReviewEvaluation(models.Model):
     )
     appraisal = models.CharField(max_length=1, choices=APPRAISAL_CHOICES, default='D')
 
+    class Meta:
+        unique_together = (
+            ("user", "review"),
+        )
+
     @staticmethod
     def get_helpful_review_evaluations(user, course):
         return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
