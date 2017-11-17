@@ -159,11 +159,26 @@ def evaluate(request, course_short_title):
         raise Http404
     review_id = request.GET['review_id']
     review = Review.objects.get(id=review_id)
-    review_evaluation, created = ReviewEvaluation.objects.get_or_create(user=user, review=review)
-    review_evaluation.appraisal = appraisal
-    review_evaluation.save()
 
-    update_review_karma(request, review_evaluation)
+    if user.is_staff:
+        try:
+            review_evaluation = ReviewEvaluation.objects.get(user__is_staff=True, review=review)
+        except ReviewEvaluation.DoesNotExist:
+            review_evaluation = ReviewEvaluation(user=user, review=review, appraisal=appraisal)
+            review_evaluation.save()
+            update_review_karma(request, review_evaluation)
+        else:
+            # ReviewEvaluation already exists
+            review_evaluation.user = user
+            review_evaluation.appraisal = appraisal
+            review_evaluation.save()
+            update_review_karma(request, review_evaluation)
+
+    else:
+        review_evaluation, created = ReviewEvaluation.objects.get_or_create(user=user, review=review)
+        review_evaluation.appraisal = appraisal
+        review_evaluation.save()
+        update_review_karma(request, review_evaluation)
 
     return HttpResponse()
 

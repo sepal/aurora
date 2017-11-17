@@ -380,7 +380,7 @@ def overview(request, course_short_title=None):
 
         reviews = challenge.get_reviews_written_by_user(user)
         for review in reviews:
-            review_evaluation_tutor = ReviewEvaluation.objects.filter(review=review.id, user=request.user)
+            review_evaluation_tutor = ReviewEvaluation.objects.filter(review=review.id, user__is_staff=True)
             review_evaluation_student = ReviewEvaluation.objects.filter(review=review.id, user__is_staff=False)
             try:
                 review.appraisal_tutor = review_evaluation_tutor.values()[0].get('appraisal')
