@@ -2,6 +2,7 @@ from django.db import models
 from taggit.managers import TaggableManager
 from django.contrib.contenttypes.models import ContentType
 
+
 class Review(models.Model):
     elaboration = models.ForeignKey('Elaboration.Elaboration', on_delete=models.CASCADE)
     creation_time = models.DateTimeField(auto_now_add=True)
@@ -55,7 +56,7 @@ class ReviewEvaluation(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey('AuroraUser.AuroraUser', on_delete=models.CASCADE)
 
-    HELPFUL= 'P'
+    HELPFUL = 'P'
     GOOD = 'D'
     BAD = 'B'
     NEGATIVE = 'N'
@@ -74,31 +75,40 @@ class ReviewEvaluation(models.Model):
         )
 
     @staticmethod
-    def get_helpful_review_evaluations(user, course):
-        return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
+    def get_helpful_review_evaluations(user, course, user_is_staff=False):
+        return ReviewEvaluation.objects.filter(review__reviewer=user, user__is_staff=user_is_staff,
+                                               review__elaboration__challenge__course=course,
                                                appraisal=ReviewEvaluation.HELPFUL).count()
 
     @staticmethod
-    def get_good_review_evaluations(user, course):
-        return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
+    def get_good_review_evaluations(user, course, user_is_staff=False):
+        return ReviewEvaluation.objects.filter(review__reviewer=user, user__is_staff=user_is_staff,
+                                               review__elaboration__challenge__course=course,
                                                appraisal=ReviewEvaluation.GOOD).count()
 
     @staticmethod
-    def get_bad_review_evaluations(user, course):
-        return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
+    def get_bad_review_evaluations(user, course, user_is_staff=False):
+        return ReviewEvaluation.objects.filter(review__reviewer=user, user__is_staff=user_is_staff,
+                                               review__elaboration__challenge__course=course,
                                                appraisal=ReviewEvaluation.BAD).count()
 
     @staticmethod
-    def get_negative_review_evaluations(user, course):
-        return ReviewEvaluation.objects.filter(review__reviewer=user, review__elaboration__challenge__course=course,
+    def get_negative_review_evaluations(user, course, user_is_staff=False):
+        return ReviewEvaluation.objects.filter(review__reviewer=user, user__is_staff=user_is_staff,
+                                               review__elaboration__challenge__course=course,
                                                appraisal=ReviewEvaluation.NEGATIVE).count()
+
     @staticmethod
     def get_review_evaluation_percent(user, course):
-        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course, submission_time__isnull=False).count()
+        number_of_reviews = Review.objects.filter(elaboration__user=user, elaboration__challenge__course=course,
+                                                  submission_time__isnull=False).count()
         if number_of_reviews == 0:
             return 0
-        number_of_review_evaluations = ReviewEvaluation.objects.filter(user=user, review__elaboration__challenge__course=course).count()
-        return number_of_review_evaluations/number_of_reviews
+        number_of_review_evaluations = ReviewEvaluation.objects.filter(user=user,
+                                                                       review__elaboration__challenge__course=course) \
+                                                                .count()
+        print(number_of_review_evaluations, number_of_reviews)
+        return number_of_review_evaluations / number_of_reviews
 
     @classmethod
     def reviews_for_user_and_course(cls, user, course):
@@ -109,12 +119,12 @@ class ReviewEvaluation(models.Model):
     @classmethod
     def _annotate_num_review_evaluations(cls, user, course):
         return cls.reviews_for_user_and_course(user, course).annotate(
-                    num_review_evaluations=models.Count("reviewevaluation"))
+            num_review_evaluations=models.Count("reviewevaluation"))
 
     @classmethod
     def get_unevaluated_reviews(cls, user, course):
         return cls._annotate_num_review_evaluations(user, course).filter(
-                                                    num_review_evaluations=0)
+            num_review_evaluations=0)
 
 
 class ReviewConfig(models.Model):
@@ -140,4 +150,4 @@ class ReviewConfig(models.Model):
 
     @staticmethod
     def setup():
-        ReviewConfig.objects.create(candidate_offset_min = 23, candidate_offset_max = 120)
+        ReviewConfig.objects.create(candidate_offset_min=23, candidate_offset_max=120)
