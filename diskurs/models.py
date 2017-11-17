@@ -34,6 +34,22 @@ class Post(models.Model):
             return 0
 
     @property
+    def pos_votes(self):
+        sum_vote = self.postvote_set.filter(value=1).aggregate(Sum('value'))
+        if sum_vote.get('value__sum'):
+            return sum_vote.get('value__sum')
+        else:
+            return 0
+
+    @property
+    def neg_votes(self):
+        sum_vote = self.postvote_set.filter(value=-1).aggregate(Sum('value'))
+        if sum_vote.get('value__sum'):
+            return sum_vote.get('value__sum')
+        else:
+            return 0
+
+    @property
     def filtered_post_set(self):
         if self.filter_group_id:
             return self.post_set.filter(group_id=self.filter_group_id).order_by('id')

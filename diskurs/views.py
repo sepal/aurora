@@ -7,7 +7,7 @@ from django.http import Http404
 
 from .models import Thread, Post, PostVote, Group, UserGroup, UserHistory, UserHistoryPost
 from Course.models import Course
-from .utils import get_rendered_votes_sum
+from .utils import get_rendered_votes_sum_detailed
 from django_markup.markup import formatter
 
 
@@ -216,73 +216,81 @@ def post_list(request, course_short_title, thread_id, post_id):
         if thread_object.course != course:
             return JsonResponse({
                 'error': True,
-                'message': 'Invalid ID provided!'
+                'message': 'Invalid ID provided!',
             })
 
+        last_id = int(request.GET.get('last_id', 0));
+
         post = Post.objects.get(pk=post_id)
-        last_id = int(request.GET.get('last_id', 0))
+        expanded_posts = list()
+        rendered_posts = list()
+        expanded_posts.append(post.id)
+        rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
+
+        while post.parent_post is not None:
+            post = post.parent_post
+            expanded_posts.append(post.id)
+            rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
+
+        user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+
+        if not user_history:
+            user_history = UserHistory()
+            user_history.thread = thread_object
+            user_history.user = request.user
+            user_history.save()
+
+        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+
+        for rendered_post_id in rendered_posts:
+            if rendered_post_id not in viewed_posts:
+                user_history.add_post_id_to_history(rendered_post_id)
 
         if request.user.is_superuser:
-            posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id).order_by('id')
-            rendered_posts = Post.objects.filter(parent_post_id=post_id).order_by('id')
+            posts = Post.objects.filter(id__gt=last_id).order_by('id')
 
         else:
             user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
 
             if user_group and (user_group.group_id == post.group_id or not post.group_id):
-                rendered_posts = Post.objects.filter(parent_post_id=post_id, group_id=user_group.group_id)\
-                    .order_by('id')
-                posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id, group_id=user_group.group_id)\
-                    .order_by('id')
+                posts = Post.objects.filter(id__gt=last_id, group_id=user_group.group_id).order_by('id')
             else:
                 return JsonResponse({
-                    'success': True,
-                    'posts': '',
+                    'error': True,
+                    'message': 'Invalid request!',
                 })
 
-        user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+        rendered_posts = list()
+        return_object = {}
 
-        if user_history:
-            viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
-            rendered_post_ids = rendered_posts.values_list('id', flat=True)
+        for post in posts:
 
-            for rendered_post_id in rendered_post_ids:
-                if rendered_post_id not in viewed_posts:
-                    user_history.add_post_id_to_history(rendered_post_id)
-        else:
-            viewed_posts = list()
+            if post.parent_post_id not in rendered_posts:
 
-        if posts.count() > 0:
+                template = loader.get_template('diskurs/thread/post.html')
+                context = {
+                    'post': post,
+                    'thread': thread_object,
+                    'viewed_posts': viewed_posts,
+                    'course': course,
+                }
 
-            depth = 1
-            while post.parent_post is not None:
-                post = post.parent_post
-                depth += 1
+                if post.parent_post_id in return_object:
+                    return_object[post.parent_post_id] = return_object[post.parent_post_id] + template.render(context, request);
+                else:
+                    return_object[post.parent_post_id] = template.render(context, request);
 
-            template = loader.get_template('diskurs/post_list.html')
-            context = {
-                'posts': posts,
-                'depth': depth,
-                'thread': thread_object,
-                'viewed_posts': viewed_posts,
-                'course': course,
-            }
+                rendered_posts.append(post.id)
 
-            return JsonResponse({
-                'success': True,
-                'posts': template.render(context, request),
-                'new_last_id': posts.last().id,
-            })
-        else:
-            return JsonResponse({
-                'success': True,
-                'posts': '',
-            })
+        return JsonResponse({
+            'success': True,
+            'return_object': return_object,
+        })
 
     except ValueError:
         return JsonResponse({
             'error': True,
-            'message': 'Invalid ID provided!'
+            'message': 'Invalid ID provided!',
         })
 
 
@@ -298,67 +306,75 @@ def post_group_list(request, course_short_title, thread_id, post_id, group_id):
                 'message': 'Invalid ID provided!'
             })
 
+        last_id = int(request.GET.get('last_id', 0));
+
         post = Post.objects.get(pk=post_id)
-        last_id = int(request.GET.get('last_id', 0))
+        expanded_posts = list()
+        rendered_posts = list()
+        expanded_posts.append(post.id)
+        rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
+
+        while post.parent_post is not None:
+            post = post.parent_post
+            expanded_posts.append(post.id)
+            rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
+
+        user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+
+        if not user_history:
+            user_history = UserHistory()
+            user_history.thread = thread_object
+            user_history.user = request.user
+            user_history.save()
+
+        viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
+
+        for rendered_post_id in rendered_posts:
+            if rendered_post_id not in viewed_posts:
+                user_history.add_post_id_to_history(rendered_post_id)
 
         if request.user.is_superuser:
-            posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id, group_id=group_id).order_by('id')
-            rendered_posts = Post.objects.filter(parent_post_id=post_id, group_id=group_id).order_by('id')
-
+            posts = Post.objects.filter(id__gt=last_id, group_id=group_id).order_by('id')
             thread_object.filter_group_id = group_id
 
         else:
             user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
 
             if user_group and (user_group.group_id == post.group_id or not post.group_id):
-                rendered_posts = Post.objects.filter(parent_post_id=post_id, group_id=user_group.group_id)\
-                    .order_by('id')
-                posts = Post.objects.filter(parent_post_id=post_id, id__gt=last_id, group_id=user_group.group_id)\
-                    .order_by('id')
+                posts = Post.objects.filter(id__gt=last_id, group_id=user_group.group_id).order_by('id')
             else:
                 return JsonResponse({
-                    'success': True,
-                    'posts': '',
+                    'error': True,
+                    'message': 'Invalid request!',
                 })
 
-        user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+        rendered_posts = list()
+        return_object = {}
 
-        if user_history:
-            viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
-            rendered_post_ids = rendered_posts.values_list('id', flat=True)
+        for post in posts:
 
-            for rendered_post_id in rendered_post_ids:
-                if rendered_post_id not in viewed_posts:
-                    user_history.add_post_id_to_history(rendered_post_id)
-        else:
-            viewed_posts = list()
+            if post.parent_post_id not in rendered_posts:
 
-        if posts.count() > 0:
+                template = loader.get_template('diskurs/thread/post.html')
+                context = {
+                    'post': post,
+                    'thread': thread_object,
+                    'viewed_posts': viewed_posts,
+                    'course': course,
+                }
 
-            depth = 1
-            while post.parent_post is not None:
-                post = post.parent_post
-                depth += 1
+                if post.parent_post_id in return_object:
+                    return_object[post.parent_post_id] = return_object[post.parent_post_id] + template.render(context,
+                                                                                                              request);
+                else:
+                    return_object[post.parent_post_id] = template.render(context, request);
 
-            template = loader.get_template('diskurs/post_list.html')
-            context = {
-                'posts': posts,
-                'depth': depth,
-                'thread': thread_object,
-                'viewed_posts': viewed_posts,
-                'course': course,
-            }
+                rendered_posts.append(post.id)
 
-            return JsonResponse({
-                'success': True,
-                'posts': template.render(context, request),
-                'new_last_id': posts.last().id,
-            })
-        else:
-            return JsonResponse({
-                'success': True,
-                'posts': '',
-            })
+        return JsonResponse({
+            'success': True,
+            'return_object': return_object,
+        })
 
     except ValueError:
         return JsonResponse({
@@ -376,7 +392,7 @@ def new_post(request, course_short_title, thread_id):
         if thread_object.course != course:
             return JsonResponse({
                 'error': True,
-                'message': 'Invalid ID1 provided!'
+                'message': 'Invalid ID provided!'
             })
 
         parent_post_id = int(request.POST.get('parent_post_id', 0))
@@ -385,72 +401,90 @@ def new_post(request, course_short_title, thread_id):
 
         if len(content) > 0:
             if parent_post_id > 0:
-                parent_post = Post.objects.get(id=parent_post_id)
-                post = Post()
-                post.content = request.POST.get('content', '')
-                post.parent_post = parent_post
-                post.user = request.user
+                post = Post.objects.get(id=parent_post_id)
+                newpost = Post()
+                newpost.content = request.POST.get('content', '')
+                newpost.parent_post = post
+                newpost.user = request.user
 
-                if parent_post.group_id:
-                    post.group_id = parent_post.group_id
+                if post.group_id:
+                    newpost.group_id = post.group_id
                 else:
                     user_group = UserGroup.objects\
                         .filter(group__thread_id=thread_id, user_id=request.user.id)\
                         .first()
-                    post.group_id = user_group.group_id
+                    newpost.group_id = user_group.group_id
 
-                depth = 1
+                newpost.save()
 
-                while parent_post.parent_post is not None:
-                    parent_post = parent_post.parent_post
-                    depth += 1
+                expanded_posts = list()
+                rendered_posts = list()
+                expanded_posts.append(post.id)
+                rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
 
-                if thread_object.first_post_id == parent_post.id:
-                    post.save()
+                while post.parent_post is not None:
+                    post = post.parent_post
+                    expanded_posts.append(post.id)
+                    rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
 
-                    if request.user.is_superuser:
-                        posts = Post.objects.filter(parent_post_id=parent_post_id, id__gt=last_id)\
-                                        .order_by('id')
-                    else:
-                        posts = Post.objects\
-                            .filter(parent_post_id=parent_post_id, id__gt=last_id, group_id=post.group_id)\
-                            .order_by('id')
+                user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
 
-                    user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+                if not user_history:
+                    user_history = UserHistory()
+                    user_history.thread = thread_object
+                    user_history.user = request.user
+                    user_history.save()
 
-                    if user_history:
-                        viewed_posts = list(user_history.userhistorypost_set.values_list('post_id', flat=True))
+                #add new post to the history
+                user_history.add_post_id_to_history(newpost.id)
 
-                        if post.id not in viewed_posts:
-                            user_history.add_post_id_to_history(post.id)
-                            viewed_posts.append(post.id)
+                viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
 
-                        for new_post_object in posts:
-                            if new_post_object.id not in viewed_posts:
-                                user_history.add_post_id_to_history(new_post_object.id)
+                for rendered_post_id in rendered_posts:
+                    if rendered_post_id not in viewed_posts:
+                        user_history.add_post_id_to_history(rendered_post_id)
 
-                        user_history.add_post_id_to_history(post.id)
-
-                    template = loader.get_template('diskurs/post_list.html')
-                    context = {
-                        'posts': posts,
-                        'depth': depth,
-                        'thread': thread_object,
-                        'viewed_posts': viewed_posts,
-                        'course': course,
-                    }
-
-                    return JsonResponse({
-                        'success': True,
-                        'posts': template.render(context, request),
-                        'new_last_id': posts.last().id,
-                    })
+                if request.user.is_superuser:
+                    posts = Post.objects.filter(id__gt=last_id).order_by('id')
 
                 else:
-                    return JsonResponse({
-                        'error': True,
-                        'message': 'Invalid post ID provided!'
-                    })
+                    user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
+
+                    if user_group and (user_group.group_id == post.group_id or not post.group_id):
+                        posts = Post.objects.filter(id__gt=last_id, group_id=user_group.group_id).order_by('id')
+                    else:
+                        return JsonResponse({
+                            'error': True,
+                            'message': 'Invalid request!',
+                        })
+
+                rendered_posts = list()
+                return_object = {}
+
+                for post in posts:
+
+                    if post.parent_post_id not in rendered_posts:
+
+                        template = loader.get_template('diskurs/thread/post.html')
+                        context = {
+                            'post': post,
+                            'thread': thread_object,
+                            'viewed_posts': viewed_posts,
+                            'course': course,
+                        }
+
+                        if post.parent_post_id in return_object:
+                            return_object[post.parent_post_id] = return_object[post.parent_post_id] + template.render(
+                                context, request);
+                        else:
+                            return_object[post.parent_post_id] = template.render(context, request);
+
+                        rendered_posts.append(post.id)
+
+                return JsonResponse({
+                    'success': True,
+                    'return_object': return_object,
+                })
             else:
                 return JsonResponse({
                     'error': True,
@@ -486,76 +520,96 @@ def new_group_post(request, course_short_title, thread_id, group_id):
 
         if len(content) > 0:
             if parent_post_id > 0:
-                parent_post = Post.objects.get(id=parent_post_id)
-                post = Post()
-                post.content = request.POST.get('content', '')
-                post.parent_post = parent_post
-                post.user = request.user
+                post = Post.objects.get(id=parent_post_id)
+                newpost = Post()
+                newpost.content = request.POST.get('content', '')
+                newpost.parent_post = post
+                newpost.user = request.user
 
-                if parent_post.group_id:
-                    post.group_id = parent_post.group_id
+                if post.group_id:
+                    newpost.group_id = post.group_id
+                    thread_object.filter_group_id = post.group_id
                 else:
                     if request.user.is_superuser:
-                        post.group_id = group_id
+                        newpost.group_id = group_id
+                        thread_object.filter_group_id = group_id
                     else:
                         user_group = UserGroup.objects\
                             .filter(group__thread_id=thread_id, user_id=request.user.id)\
                             .first()
-                        post.group_id = user_group.group_id
+                        newpost.group_id = user_group.group_id
 
-                depth = 1
+                newpost.save()
 
-                while parent_post.parent_post is not None:
-                    parent_post = parent_post.parent_post
-                    depth += 1
+                expanded_posts = list()
+                rendered_posts = list()
+                expanded_posts.append(post.id)
+                rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
 
-                if thread_object.first_post_id == parent_post.id:
-                    post.save()
+                while post.parent_post is not None:
+                    post = post.parent_post
+                    expanded_posts.append(post.id)
+                    rendered_posts.extend(post.filtered_post_set.values_list('id', flat=True))
 
-                    if request.user.is_superuser:
-                        posts = Post.objects.filter(parent_post_id=parent_post_id, id__gt=last_id, group_id=group_id)\
-                                        .order_by('id')
-                        thread_object.filter_group_id = group_id
-                    else:
-                        posts = Post.objects\
-                            .filter(parent_post_id=parent_post_id, id__gt=last_id, group_id=post.group_id)\
-                            .order_by('id')
+                user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
 
-                    user_history = UserHistory.objects.filter(user=request.user, thread=thread_object).first()
+                if not user_history:
+                    user_history = UserHistory()
+                    user_history.thread = thread_object
+                    user_history.user = request.user
+                    user_history.save()
 
-                    if user_history:
-                        viewed_posts = list(user_history.userhistorypost_set.values_list('post_id', flat=True))
+                # add new post to the history
+                user_history.add_post_id_to_history(newpost.id)
 
-                        if post.id not in viewed_posts:
-                            user_history.add_post_id_to_history(post.id)
-                            viewed_posts.append(post.id)
+                viewed_posts = user_history.userhistorypost_set.values_list('post_id', flat=True)
 
-                        for new_post_object in posts:
-                            if new_post_object.id not in viewed_posts:
-                                user_history.add_post_id_to_history(new_post_object.id)
+                for rendered_post_id in rendered_posts:
+                    if rendered_post_id not in viewed_posts:
+                        user_history.add_post_id_to_history(rendered_post_id)
 
-                        user_history.add_post_id_to_history(post.id)
-
-                    template = loader.get_template('diskurs/post_list.html')
-                    context = {
-                        'posts': posts,
-                        'depth': depth,
-                        'thread': thread_object,
-                        'viewed_posts': viewed_posts,
-                        'course': course,
-                    }
-
-                    return JsonResponse({
-                        'success': True,
-                        'posts': template.render(context, request),
-                        'new_last_id': posts.last().id,
-                    })
+                if request.user.is_superuser:
+                    posts = Post.objects.filter(id__gt=last_id, group_id=group_id).order_by('id')
 
                 else:
-                    return JsonResponse({
-                        'error': True,
-                        'message': 'Invalid post ID provided!'
-                    })
+                    user_group = UserGroup.objects.filter(group__thread=thread_object, user=request.user).first()
+
+                    if user_group and (user_group.group_id == post.group_id or not post.group_id):
+                        posts = Post.objects.filter(id__gt=last_id, group_id=user_group.group_id).order_by('id')
+                    else:
+                        return JsonResponse({
+                            'error': True,
+                            'message': 'Invalid request!',
+                        })
+
+                rendered_posts = list()
+                return_object = {}
+
+                for post in posts:
+
+                    if post.parent_post_id not in rendered_posts:
+
+                        template = loader.get_template('diskurs/thread/post.html')
+                        context = {
+                            'post': post,
+                            'thread': thread_object,
+                            'viewed_posts': viewed_posts,
+                            'course': course,
+                        }
+
+                        if post.parent_post_id in return_object:
+                            return_object[post.parent_post_id] = return_object[post.parent_post_id] + template.render(
+                                context, request);
+                        else:
+                            return_object[post.parent_post_id] = template.render(context, request);
+
+                        rendered_posts.append(post.id)
+
+                return JsonResponse({
+                    'success': True,
+                    'return_object': return_object,
+                })
+
             else:
                 return JsonResponse({
                     'error': True,
@@ -611,7 +665,8 @@ def upvote_post(request, course_short_title, thread_id, post_id):
 
                         return JsonResponse({
                             'removed': True,
-                            'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
+                            'sum': get_rendered_votes_sum_detailed(Post.objects.get(id=post_id).pos_votes,
+                                                                   Post.objects.get(id=post_id).neg_votes)
                         })
 
                 except PostVote.DoesNotExist:
@@ -624,7 +679,8 @@ def upvote_post(request, course_short_title, thread_id, post_id):
 
                 return JsonResponse({
                     'success': True,
-                    'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
+                    'sum': get_rendered_votes_sum_detailed(Post.objects.get(id=post_id).pos_votes,
+                                                           Post.objects.get(id=post_id).neg_votes)
                 })
 
             else:
@@ -662,7 +718,8 @@ def downvote_post(request, course_short_title, thread_id, post_id):
 
                         return JsonResponse({
                             'removed': True,
-                            'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
+                            'sum': get_rendered_votes_sum_detailed(Post.objects.get(id=post_id).pos_votes,
+                                                                   Post.objects.get(id=post_id).neg_votes)
                         })
 
                 except PostVote.DoesNotExist:
@@ -675,7 +732,8 @@ def downvote_post(request, course_short_title, thread_id, post_id):
 
                 return JsonResponse({
                     'success': True,
-                    'sum': get_rendered_votes_sum(Post.objects.get(id=post_id).sum_votes)
+                    'sum': get_rendered_votes_sum_detailed(Post.objects.get(id=post_id).pos_votes,
+                                                           Post.objects.get(id=post_id).neg_votes)
                 })
 
             else:
@@ -797,3 +855,14 @@ def choose_group_set(request, course_short_title, thread_id, group_id):
         return redirect('diskurs:choose_group', course_short_title=course_short_title, thread_id=thread_id)
 
     return redirect('diskurs:thread', course_short_title=course_short_title, thread_id=thread_id)
+
+
+@login_required
+def new_group(request, course_short_title, thread_id):
+
+    if request.user.is_superuser:
+        group = Group()
+        group.thread_id = thread_id
+        group.save()
+
+    return redirect('diskurs:choose_group', course_short_title=course_short_title, thread_id=thread_id)

@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^(?P<thread_id>[0-9]+)/choose-group/$', views.choose_group, name='choose_group'),
     url(r'^(?P<thread_id>[0-9]+)/choose-group/set/(?P<group_id>[0-9]+)/$', views.choose_group_set,
         name='choose_group_set'),
+    url(r'^(?P<thread_id>[0-9]+)/new-group/$', views.new_group, name='new_group'),
     url(r'^(?P<thread_id>[0-9]+)/$', views.thread, name='thread'),
     url(r'^(?P<thread_id>[0-9]+)/group/(?P<group_id>[0-9]+)/$', views.thread_group, name='thread_group'),
     url(r'^(?P<thread_id>[0-9]+)/post/(?P<post_id>[0-9]+)/$', views.thread_post, name='thread_post'),

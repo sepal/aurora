@@ -2,7 +2,7 @@ from django import template
 
 from diskurs.models import PostVote, UserHistory, Post, UserGroup
 
-from diskurs.utils import get_rendered_votes_sum
+from diskurs.utils import get_rendered_votes_sum, get_rendered_votes_sum_detailed
 
 
 register = template.Library()
@@ -37,6 +37,11 @@ def is_downvoted_post(post, user):
 @register.simple_tag
 def render_votes_sum(sum):
     return get_rendered_votes_sum(sum)
+
+
+@register.simple_tag
+def render_votes_sum_detailed(pos, neg):
+    return get_rendered_votes_sum_detailed(pos, neg)
 
 
 @register.simple_tag
