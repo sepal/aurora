@@ -42,3 +42,6 @@ database-mine.db
 AuroraUser/management/commands/create_admin.py
 
 ansible/vagrant.retry
+
+*.pg_dump.gz
+*.pg_dump
