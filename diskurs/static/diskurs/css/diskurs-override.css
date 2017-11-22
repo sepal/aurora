@@ -145,6 +145,9 @@ body {margin:0;padding:0;}
 	z-index:0;
 }
 
+.post_header {
+    color:black;
+}
 
 #diskurs .post .post_header .vote {
   display:inline-block!important;
@@ -267,7 +270,8 @@ body {margin:0;padding:0;}
 
 #diskurs .post .post_content {
 	position:relative;
-	margin:4px 0 4px 0;
+	margin:4px 0 4px 0;	
+	color:black;
 }
 
 #diskurs .post .post_header .vote {
