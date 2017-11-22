@@ -167,22 +167,20 @@
     <br><br><br><br><br>
   </div>
 
-  {% if chat_enabled %}
-    <div id="smalltalk_header">
-      <div>
-        <div id="popup_chat" class="fake_feed_header" id="smalltalk">
-          <i class="fa fa-angle-up fa-2x half rotare"></i>
-          <b>Smalltalk</b> <span id="chat_activity"></span>
-        </div>
+  <div id="smalltalk_header">
+    <div>
+      <div id="popup_chat" class="fake_feed_header" id="smalltalk">
+        <i class="fa fa-angle-up fa-2x half rotare"></i>
+        <b>Smalltalk</b> <span id="chat_activity"></span>
       </div>
     </div>
-    <div id="small_talk">
-      {% if not DEV_FRONTEND %}
-        <div id="chat-root"></div>
-        <script type="text/javascript" src={% static "chat/js/main.ada1ae85.js" %}></script>
-      {% else %}
-        <iframe frameborder="0" src="http://localhost:3000" height="100%" width="580"></iframe>
-      {% endif %}
-    </div>
-  {% endif %}
+  </div>
+  <div id="small_talk">
+    {% if not DEV_FRONTEND %}
+      <div id="chat-root"></div>
+      <script type="text/javascript" src={% static "chat/js/main.ada1ae85.js" %}></script>
+    {% else %}
+      <iframe frameborder="0" src="http://localhost:3000" height="100%" width="580"></iframe>
+    {% endif %}
+  </div>
 {% endblock %}
