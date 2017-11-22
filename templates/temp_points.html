@@ -1,64 +1,66 @@
 {% load staticfiles %}
 
 {% block additional_headers %}
-  {% load humanize %}
+    {% load humanize %}
 {% endblock %}
 
 {% for stack_data in stacks %}
-  {% if stack_data.course_title == course.title %}
-  <div class="points_table">
-
-
-      <table>
-        <tr>
-          <td colspan=3 class="subheader"></i>Challenges</td>
-        </tr>
-        <tr>
-          <td colspan=3></i>&nbsp;</td>
-        </tr>
-        <tr class="sum">
-          <td class="letztezeile sum">
-			  Awarded points so far</td>
-          <td class="letztezeile punkte"><span style="color:gray">{{ stack_data.evaluated_points_available_total }}</span> &nbsp;{{ stack_data.evaluated_points_earned_total }}</td>
-        </tr>
-		</table class="RRR"><div class="final_list"><table>
-				{% for stack in stack_data.course_stacks %} <!-- loop 1: evaluated, valid challenges -->
-		          {% if stack.is_submitted and stack.status.status == 7 and stack.points_earned != 0 %}
-		            <tr class="{{ forloop.parentloop.counter }}">
-		              <td class="stack_name">
-		                <a style="text-decoration:none; color:black;"
-		                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
-		                  <i class="fa fa-check-circle" style="color:gray"></i>
-		                  <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
-		                </a>
-		              </td>
-		              <td class="punkte" style="vertical-align:bottom;">
-		                {{ stack.points_available }}&nbsp;&nbsp;{{ stack.points_earned }}
-		              </td>
-		            </tr>
-		          {% endif %}
-      			{% endfor %}
-        {% for stack in stack_data.course_stacks %} <!-- loop 2: evaluated invalid challenges -->
-          {% if stack.is_submitted and stack.status.status == "Evaluated." and stack.points_earned == 0 %}
-            <tr class="pZeile{{ forloop.parentloop.counter }}">
-              <td class="stack_name">
-                <a style="text-decoration:none; color:black;"
-                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
-                  <i class="fa fa-times" style="color:#D00"></i>
-                  <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
-                </a>
-              </td>
-              <td class="punkte" style="vertical-align:bottom;">
+    {% if stack_data.course_title == course.title %}
+        <div class="points_table">
+            <table>
+                <tr>
+                    <td colspan=3 class="subheader"></i>Challenges</td>
+                </tr>
+                <tr>
+                    <td colspan=3></i>&nbsp;</td>
+                </tr>
+                <tr class="sum">
+                    <td class="letztezeile sum">Awarded points so far</td>
+                    <td class="letztezeile punkte"><span
+                            style="color:gray">{{ stack_data.evaluated_points_available_total }}</span>&nbsp;{{ stack_data.evaluated_points_earned_total }}
+                    </td>
+                </tr>
+            </table>
+            <div class="final_list">
+                <table>
+                    {% for stack in stack_data.course_stacks %} <!-- loop 1: evaluated, valid challenges -->
+                        {% if stack.is_submitted and stack.status.status == 7 and stack.points_earned != 0 %}
+                            <tr class="{{ forloop.parentloop.counter }}">
+                                <td class="stack_name">
+                                    <a style="text-decoration:none; color:black;"
+                                       href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
+                                        <i class="fa fa-check-circle" style="color:gray"></i>
+                                        <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
+                                    </a>
+                                </td>
+                                <td class="punkte" style="vertical-align:bottom;">
+                                    {{ stack.points_available }}&nbsp;&nbsp;{{ stack.points_earned }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    {% for stack in stack_data.course_stacks %} <!-- loop 2: evaluated invalid challenges -->
+                        {% if stack.is_submitted and stack.status.status == "Evaluated." and stack.points_earned == 0 %}
+                            <tr class="pZeile{{ forloop.parentloop.counter }}">
+                                <td class="stack_name">
+                                    <a style="text-decoration:none; color:black;"
+                                       href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
+                                        <i class="fa fa-times" style="color:#D00"></i>
+                                        <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
+                                    </a>
+                                </td>
+                                <td class="punkte" style="vertical-align:bottom;">
                     <span style="color:lightgray">
                   		{{ stack.points_earned }}/{{ stack.points_available }}
 			  		</span>
-              </td>
-            </tr>
-          {% endif %}
-        {% endfor %}
-	</table></div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
 
-{% comment %}
+            {% comment %}
     <table>
         <tr>
           <td colspan=3></i>&nbsp;</td>
@@ -90,101 +92,117 @@
 		{% endcomment %}
 
 
+            <table>
+                <tr>
+                    <td colspan=3></i>&nbsp;</td>
+                </tr>
 
-    <table>
-        <tr>
-          <td colspan=3></i>&nbsp;</td>
-        </tr>
+                {% if stack_data.submitted_points_available_total == 0 %}
+                    <tr class="sum">
+                        <td class="letztezeile sum" style="color:gray"><i style="visibility:hidden"
+                                                                          class="fa fa-angle-down fa-lger"></i> In
+                            Evaluation
+                        </td>
+                        <td class="letztezeile punkte" style="color:gray">&ndash;<span
+                                style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
+                    </tr>
+                {% else %}
+                    <tr class="sum">
+                        <td class="letztezeile sum">In Evaluation</td>
+                        <td class="letztezeile punkte">{{ stack_data.submitted_points_available_total }}<span
+                                style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
+                    </tr>
+                    </table>
+                    <div class="sub_list">
+                        <table>
+                            {% for stack in stack_data.course_stacks %} <!-- loop 3: challenges in evaluation -->
+                                {% if stack.is_submitted and stack.status.status != 7 %}
+                                    <tr class="pZeile{{ forloop.parentloop.counter }}">
+                                        <td class="stack_name">
+                                            <a style="text-decoration:none; color:black;"
+                                               href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
+                                                <i style="color:gray" class="fa fa-circle-o"></i>
+                                                <abbr title="{{ stack.stack.get_final_challenge.id }}">{{ stack.stack.title|truncatechars:36 }}</abbr>
+                                                {% comment %}
+                                                {% for task in final_tasks %}
+                                                {% if task.id = stack.stack.get_final_challenge.id %}
+                                                    <abbr title="waiting for eval.+already evaluated" style="color:gray">({{task.not_evaluated}}+{{task.evaluated}})
+                                                {% endif %}
+                                                {% endfor %}
+                                                {% endcomment %}
+                                            </a>
+                                        </td>
+                                        <td class="punkte" style="vertical-align:bottom;">
+                                            {{ stack.points_available }}<span
+                                                style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
 
-		{% if stack_data.submitted_points_available_total == 0 %}
-	        <tr class="sum">
-	          <td class="letztezeile sum" style="color:gray">
-				  	<i  style="visibility:hidden" class="fa fa-angle-down fa-lger"></i> In Evaluation</td>
-	          <td class="letztezeile punkte" style="color:gray">&ndash;<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
-	        </tr>
-		{% else %}
-	        <tr class="sum">
-	          <td class="letztezeile sum">
-			    In Evaluation</td>
-	          <td class="letztezeile punkte">{{ stack_data.submitted_points_available_total }}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
-	        </tr>
-			</table><div class="sub_list" ><table>
-	        {% for stack in stack_data.course_stacks %} <!-- loop 3: challenges in evaluation -->
-	          {% if stack.is_submitted and stack.status.status != 7 %}
-	            <tr class="pZeile{{ forloop.parentloop.counter }}">
-	              <td class="stack_name">
-	                <a style="text-decoration:none; color:black;"
-	                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
-	                  <i style="color:gray" class="fa fa-circle-o"></i>
-	                  <abbr title="{{stack.stack.get_final_challenge.id}}">{{ stack.stack.title|truncatechars:36 }}</abbr>
-					  {% comment %}
-					  {% for task in final_tasks %}
-					  {% if task.id = stack.stack.get_final_challenge.id %}
-					  	<abbr title="waiting for eval.+already evaluated" style="color:gray">({{task.not_evaluated}}+{{task.evaluated}})
-					  {% endif %}
-					  {% endfor %}
-					  {% endcomment %}
-	                </a>
-	              </td>
-	              <td class="punkte" style="vertical-align:bottom;">
-	                {{ stack.points_available }}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span>
-	              </td>
-	            </tr>
-	          {% endif %}
-	        {% endfor %}
-			</table></div>
-			
-		      <table class="">
-				<tr>
-      				<td colspan=3></i>&nbsp;</td>
-     			 	</tr>
-				<tr class="important_row">
-					<td>Handed in/achieved total</td><td class="punkte">{{ stack_data.submitted_points_available_total|add:stack_data.evaluated_points_available_total}} {{stack_data.evaluated_points_earned_total}}</td>
-				</tr>
-			</table>
-			<table>
-		{% endif %}
-        <tr>
-          <td colspan=3></i>&nbsp;</td>
-        </tr>
-		{% if stack_data.started_points_available_total == 0 %}
-	        <tr class="sum">
-	          <td class="letztezeile sum" style="color:gray">Work in progress</td>
-	          <td class="letztezeile punkte" style="color:gray">&ndash;<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
-	        </tr>
-		{% else %}
-			<tr class="sum"><td class="sum"><span>Work in progress</span></a></td>
-			          <td class="sum punkte">{{ stack_data.started_points_available_total }}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td></tr>
-			</table><div class="work_list"  ><table>
-	        {% for stack in stack_data.course_stacks %} <!-- loop 4: challenges started -->
-	          {% if stack.is_started and not stack.is_submitted %}
-	            <tr class="pZeile{{ forloop.parentloop.counter }}">
-	              <td class="stack_name">
-	                <a style="text-decoration:none; color:black;"
-	                   href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
-					   {% if stack.is_blocked %}
-	                  		<i style="color:#D00" class="fa fa-times"></i>
-					   {% else %}
-	                  		<i style="color:gray" class="fa fa-pencil"></i>
-					   {% endif %}
-	                  <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
-	                </a>
-	              </td>
-	              <td class="punkte" style="vertical-align:bottom;">
-					   {% if stack.is_blocked %}
-					   		<span style="color:lightgray">0</span><span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span>
-					   {% else %}
-							{{ stack.points_available }}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span>
-					   {% endif %}
-	              </td>
-	            </tr>
-	          {% endif %}
-	        {% endfor %}
-			</table></div><table>
-		{% endif %}
-        <tr class="sum">
-	  	</tr>
-{% comment %}
+                    <table class="">
+                        <tr>
+                            <td colspan=3></i>&nbsp;</td>
+                        </tr>
+                        <tr class="important_row">
+                            <td>Handed in/achieved total</td>
+                            <td class="punkte">{{ stack_data.submitted_points_available_total|add:stack_data.evaluated_points_available_total }} {{ stack_data.evaluated_points_earned_total }}</td>
+                        </tr>
+                    </table>
+
+                    <table>
+                {% endif %}
+                <tr>
+                    <td colspan=3></i>&nbsp;</td>
+                </tr>
+                {% if stack_data.started_points_available_total == 0 %}
+                    <tr class="sum">
+                        <td class="letztezeile sum" style="color:gray">Work in progress</td>
+                        <td class="letztezeile punkte" style="color:gray">&ndash;<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
+                    </tr>
+                {% else %}
+                    <tr class="sum">
+                        <td class="sum"><span>Work in progress</span></td>
+                        <td class="sum punkte">{{ stack_data.started_points_available_total }}<span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span></td>
+                    </tr>
+                    </table>
+                    <div class="work_list">
+                        <table>
+                            {% for stack in stack_data.course_stacks %} <!-- loop 4: challenges started -->
+                                {% if stack.is_started and not stack.is_submitted %}
+                                    <tr class="pZeile{{ forloop.parentloop.counter }}">
+                                        <td class="stack_name">
+                                            <a style="text-decoration:none; color:black;"
+                                               href="{% url 'Challenge:stack' course.short_title %}?id={{ stack.stack.id }}">
+                                                {% if stack.is_blocked %}
+                                                    <i style="color:#D00" class="fa fa-times"></i>
+                                                {% else %}
+                                                    <i style="color:gray" class="fa fa-pencil"></i>
+                                                {% endif %}
+                                                <abbr title="{{ stack.status.status }}">{{ stack.stack.title }}</abbr>
+                                            </a>
+                                        </td>
+                                        <td class="punkte" style="vertical-align:bottom;">
+                                            {% if stack.is_blocked %}
+                                                <span style="color:lightgray">0</span>
+                                                <span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span>
+                                            {% else %}
+                                                <span>{{ stack.points_available }}</span>
+                                                <span style="visibility:hidden">/{{ stack_data.evaluated_points_available_total }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <table>
+                {% endif %}
+                <tr class="sum">
+                </tr>
+                {% comment %}
         <tr>
           <td  style="color:gray;padding:0px 9px 5px 9px">
 			 <i style="color:rgba(0,0,0,0);" class="fa fa-angle-down fa-lger"></i> Overly Optimistic Sum</td>
@@ -193,124 +211,162 @@
 		  </td>
 	  	</tr>
 {% endcomment %}
-        <tr>
-          <td colspan=2 style="padding-bottom:1em;">
+                <tr>
+                    <td colspan=2 style="padding-bottom:1em;">
                         <span class="punkte">
                           {% if not stack_data.lock_period %}
-                            Note: you cannot hand in more than one challenge per day.
+                              Note: you cannot hand in more than one challenge per day.
                           {% else %}
-                            <script>
+                              <script>
                             </script>
-                            Hand-in is possible <a style="color:black;text-decoration: none;"
-                                                   href="javascript:$('#wai_t').text('{{ stack_data.lock_period|date:'j. M, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{ stack_data.lock_period|naturaltime }}'); }, 3000);void(0);"
-                                                   title="{{ stack_data.lock_period|date:'j. M, H:i' }}"><i
-                              class="fa fa-calendar"></i>
+                              Hand-in is possible <a style="color:black;text-decoration: none;"
+                                                     href="javascript:$('#wai_t').text('{{ stack_data.lock_period|date:'j. M, H:i' }}');setTimeout(function(){ $('#wai_t').text('{{ stack_data.lock_period|naturaltime }}'); }, 3000);void(0);"
+                                                     title="{{ stack_data.lock_period|date:'j. M, H:i' }}"><i
+                                  class="fa fa-calendar"></i>
                             <span ID="wai_t"> {{ stack_data.lock_period|naturaltime }}</span></a>
                           {% endif %}
                         </span>
-          </td>
-        </tr>
-  </table>
-</div>
-<div class="review_table">
-<table>
-	{% if not user.is_staff %}
-          <td colspan=3 class="subheader"></i>Reviews</td>
-        <tr>
-          <script>
-              var a = {{ review_evaluation_data.helpful_review_evaluations }};
-              var b = {{ review_evaluation_data.good_review_evaluations }};
-              var c = {{ review_evaluation_data.bad_review_evaluations }};
-              var d = {{ review_evaluation_data.negative_review_evaluations }};
-            var ar = a==0?0:Math.round(a/(a+b+c+d)*100);
-            var br = b==0?0:Math.round(b/(a+b+c+d)*100);
-            var cr = c==0?0:Math.round(c/(a+b+c+d)*100);
-            var dr = d==0?0:Math.round(c/(a+b+c+d)*100);
-          </script>
-          <td colspan="2" style="padding-top:1em;">
-            <script>document.write(a+b+c+d)</script> of your reviews have been rated by colleagues:
-          </td>
-        </tr>
-        <tr>
-          <td style="" colspan="2">
-            <span
-                style="color:rgba(0,109,0,
-                    {% if review_evaluation_data.helpful_review_evaluations == 0 %}
-                      0.5
-                    {% else %}
-                      1
-                    {% endif %}
-                    )">
-              <script>document.write(ar)</script>%
-              as »Helpful« (&empty; is {{review_evaluations_helpful_ratio|floatformat:-1}}%)
-            </span>
-            <br>
-            <span
-                style="color:rgba(0,50,0,
-                    {% if review_evaluation_data.good_review_evaluations == 0 %}
-                      0.5
-                    {% else %}
-                      1
-                    {% endif %}
-                    )">
-              <script>document.write(br)</script>%
-              as »OK« (&empty; is {{review_evaluations_good_ratio|floatformat:-1}}%)
-            </span>
-            <br>
-            <span
-                style="color:rgba(199,164,31,
-                    {% if review_evaluation_data.bad_review_evaluations == 0 %}
-                      0.65
-                    {% else %}
-                      1
-                    {% endif %}
-                    )">
-              <script>document.write(cr)</script>%
-              as »Meaningless« (&empty; is {{review_evaluations_bad_ratio|floatformat:-1}}%)
-            </span>
-            <br>
-            <span
-                style="color:rgba(255,0,0,
-                    {% if review_evaluation_data.negative_review_evaluations == 0 %}
-                      0.5
-                    {% else %}
-                      1
-                    {% endif %}
-                    )">
-              <script>document.write(dr)</script>%
-              as »Minimalist/offensive« (&empty; is {{review_evaluations_negative_ratio|floatformat:-1}}%)
-            </span>
-          </td>
-        </tr>
-	{% endif %}
-        <tr>
-          <td colspan=2 style=""><br>
-            You have rated
-            {% widthratio review_evaluation_data.review_evaluation_percent 1 100 %}% of all reviews you received.
-            <br>
-            {% if review_evaluation_data.review_evaluation_percent > 0.8 %}
-              &rarr; You are currently eligible for an
-              extra-point.
+                    </td>
+                </tr>
+                </table>
+        </div>
+        <div class="review_table">
+            {% if not user.is_staff %}
+                <div class="subheader"></i>Reviews</div>
+                <script>
+                    var a = {{ review_evaluation_data_students.helpful_review_evaluations }};
+                    var b = {{ review_evaluation_data_students.good_review_evaluations }};
+                    var c = {{ review_evaluation_data_students.bad_review_evaluations }};
+                    var d = {{ review_evaluation_data_students.negative_review_evaluations }};
+                    var ar = a == 0 ? 0 : Math.round(a / (a + b + c + d) * 100);
+                    var br = b == 0 ? 0 : Math.round(b / (a + b + c + d) * 100);
+                    var cr = c == 0 ? 0 : Math.round(c / (a + b + c + d) * 100);
+                    var dr = d == 0 ? 0 : Math.round(c / (a + b + c + d) * 100);
+                </script>
+                <script>document.write(a + b + c + d)</script>
+                of your reviews have been rated by colleagues:<br>
+                <span style="color:rgba(0,109,0,
+                        {% if review_evaluation_data_students.helpful_review_evaluations == 0 %}
+                            0.5
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(ar)</script>%
+                                as »Helpful« (&empty; is {{ review_evaluations_helpful_ratio|floatformat:-1 }}%)
+                            </span>
+                <br>
+                <span style="color:rgba(0,50,0,
+                        {% if review_evaluation_data_students.good_review_evaluations == 0 %}
+                            0.5
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(br)</script>%
+                                as »OK« (&empty; is {{ review_evaluations_good_ratio|floatformat:-1 }}%)
+                            </span>
+                <br>
+                <span style="color:rgba(199,164,31,
+                        {% if review_evaluation_data_students.bad_review_evaluations == 0 %}
+                            0.65
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(cr)</script>%
+                                as »Meaningless« (&empty; is {{ review_evaluations_bad_ratio|floatformat:-1 }}%)
+                            </span>
+                <br>
+                <span style="color:rgba(255,0,0,
+                        {% if review_evaluation_data_students.negative_review_evaluations == 0 %}
+                            0.5
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(dr)</script>%
+                                as »Minimalist/offensive« (&empty; is {{ review_evaluations_negative_ratio|floatformat:-1 }}%)
+                            </span>
+
+            <br><br>
+
+            <script>
+                    var a = {{ review_evaluation_data_tutors.helpful_review_evaluations }};
+                    var b = {{ review_evaluation_data_tutors.good_review_evaluations }};
+                    var c = {{ review_evaluation_data_tutors.bad_review_evaluations }};
+                    var d = {{ review_evaluation_data_tutors.negative_review_evaluations }};
+                    var ar = a == 0 ? 0 : Math.round(a / (a + b + c + d) * 100);
+                    var br = b == 0 ? 0 : Math.round(b / (a + b + c + d) * 100);
+                    var cr = c == 0 ? 0 : Math.round(c / (a + b + c + d) * 100);
+                    var dr = d == 0 ? 0 : Math.round(c / (a + b + c + d) * 100);
+                </script>
+                <script>document.write(a + b + c + d)</script>
+                of your reviews have been rated by the LVA team:<br>
+                <span style="color:rgba(0,109,0,
+                        {% if review_evaluation_data_tutors.helpful_review_evaluations == 0 %}
+                            0.5
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(ar)</script>%
+                                as »Helpful« (&empty; is {{ review_evaluations_helpful_ratio|floatformat:-1 }}%)
+                            </span>
+                <br>
+                <span style="color:rgba(0,50,0,
+                        {% if review_evaluation_data_tutors.good_review_evaluations == 0 %}
+                            0.5
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(br)</script>%
+                                as »OK« (&empty; is {{ review_evaluations_good_ratio|floatformat:-1 }}%)
+                            </span>
+                <br>
+                <span style="color:rgba(199,164,31,
+                        {% if review_evaluation_data_tutors.bad_review_evaluations == 0 %}
+                            0.65
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(cr)</script>%
+                                as »Meaningless« (&empty; is {{ review_evaluations_bad_ratio|floatformat:-1 }}%)
+                            </span>
+                <br>
+                <span style="color:rgba(255,0,0,
+                        {% if review_evaluation_data_tutors.negative_review_evaluations == 0 %}
+                            0.5
+                        {% else %}
+                            1
+                        {% endif %}
+                        )">
+                                <script>document.write(dr)</script>%
+                                as »Minimalist/offensive« (&empty; is {{ review_evaluations_negative_ratio|floatformat:-1 }}%)
+                            </span>
             {% endif %}
-          </td>
-	  	</tr>
-		<tr>
-			<td colspan=3>
-<br>
-		  {{review_evaluation_data.reviews_missing_evaluation|length}} Unevaluated Review{{review_evaluation_data.reviews_missing_evaluation|pluralize}}</td>
-		  </td></table>
 
-		  <div class="rev_list"><table>
-            {% for review in review_evaluation_data.reviews_missing_evaluation %}
-		        <tr class="pZeile{{ forloop.counter }}"><td class="stack_name">
-					<a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title}}</a><br>
-				</td></tr>
-            {% endfor %}
-			</table>
-		</div>
-
-    </div>
-  {% endif %}
+            <br><br>
+            You have rated {% widthratio review_evaluation_data.review_evaluation_percent 1 100 %}% of all reviews you received.
+            <br>
+            {% if review_evaluation_data.review_evaluation_percent > 0.8 %} &rarr; You are currently eligible for an extra-point.{% endif %}
+            <br>
+            {{ review_evaluation_data.reviews_missing_evaluation|length }} Unevaluated Review{{ review_evaluation_data.reviews_missing_evaluation|pluralize }}
+            <div class="rev_list">
+                <table>
+                    {% for review in review_evaluation_data.reviews_missing_evaluation %}
+                        <tr class="pZeile{{ forloop.counter }}">
+                            <td class="stack_name">
+                                <a href="{% url 'Challenge:challenge' course_short_title=course.short_title %}?id={{ review.elaboration.challenge.id }}">{{ review.elaboration.challenge.title }}</a><br>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
 {% endfor %}
 
 

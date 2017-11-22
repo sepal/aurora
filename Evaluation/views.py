@@ -380,7 +380,7 @@ def overview(request, course_short_title=None):
 
         reviews = challenge.get_reviews_written_by_user(user)
         for review in reviews:
-            review_evaluation_tutor = ReviewEvaluation.objects.filter(review=review.id, user=request.user)
+            review_evaluation_tutor = ReviewEvaluation.objects.filter(review=review.id, user__is_staff=True)
             review_evaluation_student = ReviewEvaluation.objects.filter(review=review.id, user__is_staff=False)
             try:
                 review.appraisal_tutor = review_evaluation_tutor.values()[0].get('appraisal')
@@ -842,18 +842,25 @@ def get_points(request, user, course):
 
     data['courses'] = courses
 
-    red = {}
+    review_evaluation_data_students = {}
+    review_evaluation_data_students['helpful_review_evaluations'] = ReviewEvaluation.get_helpful_review_evaluations(user, course)
+    review_evaluation_data_students['good_review_evaluations'] = ReviewEvaluation.get_good_review_evaluations(user, course)
+    review_evaluation_data_students['bad_review_evaluations'] = ReviewEvaluation.get_bad_review_evaluations(user, course)
+    review_evaluation_data_students['negative_review_evaluations'] = ReviewEvaluation.get_negative_review_evaluations(user, course)
+    data['review_evaluation_data_students'] = review_evaluation_data_students
 
-    red['helpful_review_evaluations'] = ReviewEvaluation.get_helpful_review_evaluations(user, course)
-    red['good_review_evaluations'] = ReviewEvaluation.get_good_review_evaluations(user, course)
-    red['bad_review_evaluations'] = ReviewEvaluation.get_bad_review_evaluations(user, course)
-    red['negative_review_evaluations'] = ReviewEvaluation.get_negative_review_evaluations(user, course)
-
-    red['review_evaluation_percent'] = ReviewEvaluation.get_review_evaluation_percent(user, course)
-    red['reviews_missing_evaluation'] = ReviewEvaluation.get_unevaluated_reviews(user, course)
-    red['number_of_unevaluated_reviews'] = len(red['reviews_missing_evaluation'])
-
-    data['review_evaluation_data'] = red
+    review_evaluation_data_tutors = {}
+    review_evaluation_data_tutors['helpful_review_evaluations'] = ReviewEvaluation.get_helpful_review_evaluations(user, course, user_is_staff=True)
+    review_evaluation_data_tutors['good_review_evaluations'] = ReviewEvaluation.get_good_review_evaluations(user, course, user_is_staff=True)
+    review_evaluation_data_tutors['bad_review_evaluations'] = ReviewEvaluation.get_bad_review_evaluations(user, course, user_is_staff=True)
+    review_evaluation_data_tutors['negative_review_evaluations'] = ReviewEvaluation.get_negative_review_evaluations(user, course, user_is_staff=True)
+    data['review_evaluation_data_tutors'] = review_evaluation_data_tutors
+    
+    review_evaluation_data = {}
+    review_evaluation_data['review_evaluation_percent'] = ReviewEvaluation.get_review_evaluation_percent(user, course)
+    review_evaluation_data['reviews_missing_evaluation'] = ReviewEvaluation.get_unevaluated_reviews(user, course)
+    review_evaluation_data['number_of_unevaluated_reviews'] = len(review_evaluation_data['reviews_missing_evaluation'])
+    data['review_evaluation_data'] = review_evaluation_data
 
     data['stacks'] = []
     for course in courses:
