@@ -124,7 +124,9 @@ def home(request, course_short_title=None):
     data["faq_list"] = Faq.get_faqs(course_short_title)
 
     data["all_courses"] = Course.objects.all()
-    data['DEV_FRONTEND'] = settings.CHAT['DEV_FRONTEND']
+
+    dev_param = request.GET.get('dev', 'true')
+    data['DEV_FRONTEND'] = settings.CHAT['DEV_FRONTEND'] if dev_param == 'true' else False
 
     return render(request, 'home.html', data)
 
