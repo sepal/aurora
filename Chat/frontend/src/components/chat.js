@@ -11,17 +11,26 @@ class Chat extends React.Component {
     this.state = {messages: [], questions: []}
   }
 
-  componentDidMount = () => {
-    this.join('main')
-    this.scrollToBottom()
+  handleScroll = (e) => {
+    const __chat = this.refs._chat
+    const maxScrollTop = __chat.scrollHeight - __chat.clientHeight
+
+    this.autoScroll = maxScrollTop - __chat.scrollTop <= 5
   }
 
-  render = () => {
+  componentDidMount = () => {
+    this.join('main')
+
+    this.autoScroll = true;
+    this.refs._chat.addEventListener('scroll', this.handleScroll);
+  }
+
+render = () => {
     return (
-      <div ref="_chat" className="Chat">
+      <div id="chat" ref="_chat" className="Chat">
         <MessageList messages={this.state.messages}/>
         <ChatInput onInput={this.onInput}/>
-        <div ref="_end"></div>
+        <div id="message_list_end" ref="_end"></div>
       </div>
     )
   }
@@ -35,7 +44,9 @@ class Chat extends React.Component {
       this.setState({username: message['username']})
     }
 
-    this.scrollToBottom()
+    if (this.autoScroll) {
+      this.scrollToBottom()
+    }
   }
 
   scrollToBottom = () => {
@@ -80,6 +91,7 @@ class Chat extends React.Component {
   }
 
   onInput = (value) => {
+    this.autoScroll = true
     if (value.startsWith('/join ')) {
       const room = value.split(' ')[1]
       this.join(room)
