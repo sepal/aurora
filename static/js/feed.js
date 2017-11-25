@@ -70,7 +70,7 @@ $(function() {
 			let chat = document.getElementById("chat");
 			chat.scrollTop = chat.scrollHeight - chat.clientHeight;
 
-		  $("#msgInput").focus();
+			$("#msgInput").focus();
 		}
 	})
 	feedCookieLoad();
