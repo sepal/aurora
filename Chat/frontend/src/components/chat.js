@@ -11,20 +11,31 @@ class Chat extends React.Component {
     this.state = {messages: [], questions: []}
   }
 
-  componentDidMount() {
-    this.join('main')
+  handleScroll = (e) => {
+    const __chat = this.refs._chat
+    const maxScrollTop = __chat.scrollHeight - __chat.clientHeight
+
+    this.autoScroll = maxScrollTop - __chat.scrollTop <= 5
   }
 
-  render() {
+  componentDidMount = () => {
+    this.join('main')
+
+    this.autoScroll = true;
+    this.refs._chat.addEventListener('scroll', this.handleScroll);
+  }
+
+render = () => {
     return (
-      <div className="Chat">
+      <div id="chat" ref="_chat" className="Chat">
         <MessageList messages={this.state.messages}/>
         <ChatInput onInput={this.onInput}/>
+        <div id="message_list_end" ref="_end"></div>
       </div>
     )
   }
 
-  handleMessage(message) {
+  handleMessage = (message) => {
     if (message['type'] === 'chat-message') {
       message['logged_in_user'] = this.state['username']
       const {messages} = this.state
@@ -32,6 +43,14 @@ class Chat extends React.Component {
     } else if (message['type'] === 'whoami') {
       this.setState({username: message['username']})
     }
+
+    if (this.autoScroll) {
+      this.scrollToBottom()
+    }
+  }
+
+  scrollToBottom = () => {
+    this.refs._end.scrollIntoView({behavior: 'smooth'})
   }
 
   join = (room) => {
@@ -43,7 +62,7 @@ class Chat extends React.Component {
     proto = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
 
     let port
-    switch(window.location.port) {
+    switch (window.location.port) {
       case '3000':
         // This is a special case for dev where the site is served by `yarn start` and ws should connect to
         // the django backend on port `8000`
@@ -72,6 +91,7 @@ class Chat extends React.Component {
   }
 
   onInput = (value) => {
+    this.autoScroll = true
     if (value.startsWith('/join ')) {
       const room = value.split(' ')[1]
       this.join(room)

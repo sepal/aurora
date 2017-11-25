@@ -118,6 +118,21 @@ def server(ctx):
     ctx.run('python manage.py runserver', pty=True)
 
 @task
+def build(ctx):
+    with ctx.cd("Chat/frontend"):
+        ctx.run("yarn build")
+
+    with ctx.cd("Chat/frontend/build/static/js"):
+        ctx.run("cp main.*.js main.js")
+        ctx.run("cp main.*.js.map main.js.map")
+
+    with ctx.cd("Chat/frontend/build/static/css"):
+        ctx.run("cp main.*.css main.css")
+        ctx.run("cp main.*.css.map main.css.map")
+
+    ctx.run("echo yes | python manage.py collectstatic")
+
+@task
 def daphne(ctx):
     """Run daphne interface server"""
     ctx.run('daphne AuroraProject.asgi:channel_layer -p 8001')

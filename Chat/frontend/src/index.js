@@ -4,9 +4,6 @@ import {render} from 'react-dom'
 import Chat from './components/chat'
 
 render(
-  <div>
-    <Chat />
-  </div>,
-
+  <Chat/>,
   document.getElementById('chat-root')
 )

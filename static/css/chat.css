@@ -11,17 +11,6 @@
 	padding: 0 0.5em;
 }
 
-/*
-.MessageList {
-  position:relative;
-}
-
-.MessageList div {
-  position:absolute;
-  bottom:0;
-}
-*/
-
 .ChatMessageBody {
 	padding:6px!important;
     min-height:0px!important;
@@ -98,3 +87,27 @@
 	opacity:0.5;
 }
 
+#chat-root {
+	position: inherit;
+    overflow: hidden;
+	height: inherit;
+	width: inherit;
+	bottom: inherit;
+	left: inherit;
+	padding-top: inherit;
+}
+
+#chat {
+	bottom: inherit;
+	left: inherit;
+	position: inherit;
+	width: inherit;
+	height: inherit;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding-top: inherit;
+}
+
+#chat::-webkit-scrollbar {
+	display: none;
+}

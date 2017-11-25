@@ -19,10 +19,9 @@ $(function(){
 
 function chatupdate()
 {
-	if (chat_scroll == 'Y') {
+  if (chat_scroll == 'Y') {
 		if($('#small_talk').css('display')=='block') {
-			$('#small_talk').scrollTop($('#small_talk')[0].scrollHeight);
-			$('#chat_activity').text('');	
+			$('#chat_activity').text('');
 			chat_msgs = $('.MessageList').children().length;
 		} else {
 			newL = $('.MessageList').children().length;
