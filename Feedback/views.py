@@ -15,6 +15,35 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound, \
 from django.views.decorators.http import require_http_methods
 
 
+def write_notification(course_short_title, issue, text):
+    """
+    Creates notifications to the correct user and with the correct link based
+    on the given issue.
+    :param course_short_title: The courses short title as passed to the view
+      function
+    :param issue: The issue for which the notification is written.
+    :param text: The text of the notification.
+    """
+
+    # Setup the notification variables.
+    user = issue.author
+    link = reverse('feedback:issue_diplay', kwargs={
+        'course_short_title': course_short_title,
+        'issue_id': issue.pk
+    })
+
+    # Write notifications for all the users courses.
+    course_ids = CourseUserRelation.objects.filter(user=user).values_list('course', flat=True)
+    courses = Course.objects.filter(id__in=course_ids)
+    for course in courses:
+        obj, created = Notification.objects.get_or_create(
+            user=user,
+            course=course,
+            text=text,
+            link=link
+        )
+
+
 @aurora_login_required()
 def index(request, course_short_title):
     """
@@ -129,34 +158,17 @@ def api_issue(request, course_short_title, issue_id):
 
     # Send a notification if the author didn't update the issue.
     if issue.author != request.user:
-        # Setup the notification variables.
-        user = issue.author
         text = 'The user {user} has updated your issue {issue}.'.format(
-            user=user.nickname,
+            user=request.user.nickname,
             issue=issue.title
         )
-
-        link = reverse('feedback:issue_diplay', kwargs={
-            'course_short_title': 'dwi',
-            'issue_id': issue.pk
-        })
         if switched_lane:
             text = 'The user {user} has moved your issue {issue} to the lane "{lane}".'.format(
-                user=user.nickname,
+                user=request.user.nickname,
                 issue=issue.title,
                 lane=issue.lane.name
             )
-
-
-        course_ids = CourseUserRelation.objects.filter(user=user).values_list('course', flat=True)
-        courses = Course.objects.filter(id__in=course_ids)
-        for course in courses:
-            obj, created = Notification.objects.get_or_create(
-                user=user,
-                course=course,
-                text=text,
-                link=link
-            )
+        write_notification(course_short_title, issue, text)
 
     # Return the issue, so redux/react can update the kanban immediately.
     return JsonResponse(issue.get_serializable(request.user.is_staff))
