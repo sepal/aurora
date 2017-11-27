@@ -2,9 +2,11 @@ import datetime
 import json
 from django.db import models
 from django.contrib import admin
+
 from AuroraUser.models import AuroraUser
 from Course.models import Course
 from Comments.models import Comment
+from django.urls import reverse
 
 
 class Lane(models.Model):
@@ -130,7 +132,6 @@ class Issue(models.Model):
         return  Comment.count_for('Feedback', 'issue', self.pk, is_staff)
 
     number_of_comments = property(_number_of_comments)
-
 
 class Upvote(models.Model):
     """
