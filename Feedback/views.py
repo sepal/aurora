@@ -255,6 +255,14 @@ def api_upvote(request, course_short_title, issue_id):
     upvote = Upvote(user=request.user, issue=issue)
     upvote.save()
 
+    # Send a notification if the author didn't upvote his own issue.
+    if issue.author != request.user:
+        text = "The user {user} has upvoted your issue {issue}.".format(
+            user=request.user.nickname,
+            issue=issue.title
+        )
+        write_notification(course_short_title, issue, text)
+
     # Return the number of up votes, so that the client side code can update
     # the number.
     upvotes = Upvote.objects.filter(issue=issue).count()
