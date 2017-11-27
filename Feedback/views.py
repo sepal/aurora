@@ -138,7 +138,7 @@ def api_issue(request, course_short_title, issue_id):
 
         link = reverse('feedback:issue_diplay', kwargs={
             'course_short_title': 'dwi',
-            'issue_id': 1
+            'issue_id': issue.pk
         })
         if switched_lane:
             text = 'The user {user} has moved your issue {issue} to the lane "{lane}".'.format(
